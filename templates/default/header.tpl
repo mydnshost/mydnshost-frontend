@@ -60,4 +60,4 @@
         {% else %}
         <main class="col-sm-12 pt-3">
         {% endif %}
-
+        {{ flash() }}

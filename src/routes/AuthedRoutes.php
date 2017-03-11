@@ -11,5 +11,16 @@
 
 				header('Location: ' . $displayEngine->getURL('/'));
 			});
+
+
+			$router->get('/login', function() use ($displayEngine) {
+				$displayEngine->flash('warning', 'Login failed', 'You are already logged in.');
+				header('Location: ' . $displayEngine->getURL('/'));
+			});
+
+			$router->post('/login', function() use ($displayEngine) {
+				$displayEngine->flash('warning', 'Login failed', 'You are already logged in.');
+				header('Location: ' . $displayEngine->getURL('/'));
+			});
 		}
 	}
