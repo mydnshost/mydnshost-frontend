@@ -15,8 +15,10 @@
 			}
 			foreach (array_unique(array_merge($themes, ['default'])) as $theme) {
 				$path = $config['dir'] . '/' . $theme;
-				$loader->addPath($path);
-				$this->directories[] = $path;
+				if (file_exists($path)) {
+					$loader->addPath($path);
+					$this->directories[] = $path;
+				}
 			}
 
 			$twig = new Twig_Environment($loader, array(
