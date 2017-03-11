@@ -10,7 +10,7 @@
 	$displayEngine->setSiteName($config['sitename']);
 
 	// API to interact with backend
-	$api = new MyDnsHostAPI($config['api']);
+	$api = new MyDNSHostAPI($config['api']);
 	if (session::exists('logindata')) {
 		$api->setAuth(session::get('logindata'));
 	}
@@ -24,10 +24,13 @@
 	$userdata = $api->getUserData();
 	if ($userdata !== NULL) {
 		session::setCurrentUser($userdata);
-		(new AuthRoutes())->addRoutes($router, $displayEngine, $api);
+		session::set('domains', $api->getDomains());
+
+		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
+		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
 	} else {
 		session::clear();
-		(new NoAuthRoutes())->addRoutes($router, $displayEngine, $api);
+		(new NotAuthedRoutes())->addRoutes($router, $displayEngine, $api);
 	}
 
 	// Begin!

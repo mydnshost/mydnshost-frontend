@@ -6,7 +6,7 @@
 				if (!session::isLoggedIn()) {
 					header('Location: ' . $displayEngine->getURL('/login'));
 				} else {
-					$displayEngine->setTitle('Home')->display('index.tpl');
+					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
 				}
 			});
 
@@ -17,13 +17,13 @@
 					echo file_get_contents($file);
 				} else {
 					header('HTTP/1.1 404 Not Found');
-					$displayEngine->setTitle('Error 404')->display('404.tpl');
+					$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
 				}
 			});
 
 			$router->set404(function() use ($displayEngine) {
 				header('HTTP/1.1 404 Not Found');
-				$displayEngine->setTitle('Error 404')->display('404.tpl');
+				$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
 			});
 		}
 	}

@@ -1,15 +1,15 @@
-/*
- * Base structure
- */
+/**********************************************************************
+ * Base
+ **********************************************************************/
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
 }
 
-/*
- * Typography
- */
+/**********************************************************************
+ * Heaaders
+ **********************************************************************/
 
 h1 {
   margin-bottom: 20px;
@@ -17,10 +17,9 @@ h1 {
   border-bottom: 1px solid #eee;
 }
 
-/*
+/**********************************************************************
  * Sidebar
- */
-
+ **********************************************************************/
 .sidebar {
   position: fixed;
   top: 51px;
@@ -33,7 +32,6 @@ h1 {
   border-right: 1px solid #eee;
 }
 
-/* Sidebar navigation */
 .sidebar {
   padding-left: 0;
   padding-right: 0;
@@ -55,3 +53,62 @@ h1 {
   border-radius: 0;
 }
 
+
+/**********************************************************************
+ * MiniGravatars
+ **********************************************************************/
+.minigravatar {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #AAA;
+}
+
+.minigravatar img {
+  opacity: 0;
+}
+
+/**********************************************************************
+ * Records
+ **********************************************************************/
+
+table#records th.name, table#records td.name {
+  width: 20%;
+}
+
+table#records th.type, table#records td.type {
+  width: 200px;
+}
+
+table#records th.priority, table#records td.priority {
+  width: 100px;
+}
+
+table#records th.content, table#records td.content {
+  swidth: 70%;
+}
+
+table#records th.ttl, table#records td.ttl {
+  width: 100px;
+}
+
+table#records th.actions, table#records td.actions {
+  width: 250px;
+}
+
+
+table#records tr.deleted td {
+  background-color: #f2dede;
+  color: #a94442;
+  text-decoration: line-through;
+}
+
+table#records tr.deleted td.actions {
+  text-decoration: none;
+}
+
+table#records td input, table#records td select {
+  width: 100%;
+}

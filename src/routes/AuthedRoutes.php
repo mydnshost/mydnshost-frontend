@@ -1,5 +1,5 @@
 <?php
-	class AuthRoutes {
+	class AuthedRoutes {
 
 		public function addRoutes($router, $displayEngine, $api) {
 

@@ -1,9 +1,10 @@
 <?php
-	class NoAuthRoutes {
+	class NotAuthedRoutes {
 
 		public function addRoutes($router, $displayEngine, $api) {
 
 			$router->get('/login', function() use ($displayEngine) {
+				$displayEngine->setPageID('login');
 				$displayEngine->displayRaw('login.tpl');
 			});
 

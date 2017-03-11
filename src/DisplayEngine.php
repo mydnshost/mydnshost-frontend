@@ -5,6 +5,7 @@
 		private $directories = [];
 		private $basepath;
 		private $vars = [];
+		private $pageID = '';
 
 		public function __construct($config) {
 			$loader = new Twig_Loader_Filesystem();
@@ -21,7 +22,10 @@
 			$twig = new Twig_Environment($loader, array(
 				'cache' => $config['cache'],
 				'auto_reload' => true,
+				'debug' => true,
 			));
+
+			$twig->addExtension(new Twig_Extension_Debug());
 
 			$this->basepath = dirname($_SERVER['SCRIPT_FILENAME']);
 			$this->basepath = preg_replace('#^' . preg_quote($_SERVER['DOCUMENT_ROOT']) . '#', '/', $this->basepath);
@@ -34,10 +38,20 @@
 			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
 
+			$twig->addFilter(new Twig_Filter('gravatar', function($input) {
+				return 'http://www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=20';
+			}));
+
 			$this->vars = ['sitename' => '', 'pagetitle' => ''];
 
 			$this->twig = $twig;
 		}
+
+		public function setPageID($pageID) {
+			$this->pageID = $pageID;
+			return $this;
+		}
+
 
 		public function setSiteName($sitename) {
 			$this->vars['sitename'] = $sitename;
@@ -49,6 +63,11 @@
 			return $this;
 		}
 
+		public function setVar($var, $value) {
+			$this->vars[$var] = $value;
+			return $this;
+		}
+
 		public function getVar($var) {
 			return array_key_exists($var, $this->vars) ? $this->vars[$var] : '';
 		}
@@ -57,13 +76,24 @@
 			return sprintf('%s/%s', rtrim($this->basepath, '/'), ltrim($path, '/'));
 		}
 
+		public function setExtraVars() {
+			if (session::isLoggedIn()) {
+				$user = session::getCurrentUser();
+				$this->setVar('user', $user);
+			}
+		}
+
 		public function display($template) {
+			$this->setExtraVars();
+
 			$this->twig->display('header.tpl', $this->vars);
 			$this->twig->display($template, $this->vars);
 			$this->twig->display('footer.tpl', $this->vars);
 		}
 
 		public function displayRaw($template) {
+			$this->setExtraVars();
+
 			$this->twig->display($template, $this->vars);
 		}
 
@@ -98,26 +128,20 @@
 
 		public function showSidebar() {
 			$menu = [];
+			$sections = [];
 
-			/* $section = [];
-			$section[] = ['link' => '#', 'title' => 'Overview', 'active' => true];
-			$section[] = ['link' => '#', 'title' => 'Reports'];
-			$section[] = ['link' => '#', 'title' => 'Analytics'];
-			$section[] = ['link' => '#', 'title' => 'Export'];
-			$menu[] = $section;
+			if (session::exists('domains')) {
+				$domains = session::get('domains');
+				foreach ($domains as $domain => $access) {
+					$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
+				}
 
-			$section = [];
-			$section[] = ['link' => '#', 'title' => 'Nav item'];
-			$section[] = ['link' => '#', 'title' => 'Nav item again'];
-			$section[] = ['link' => '#', 'title' => 'One more nav'];
-			$section[] = ['link' => '#', 'title' => 'Another nav item'];
-			$menu[] = $section;
-
-			$section = [];
-			$section[] = ['link' => '#', 'title' => 'Nav item again'];
-			$section[] = ['link' => '#', 'title' => 'One more nav'];
-			$section[] = ['link' => '#', 'title' => 'Another nav item'];
-			$menu[] = $section; */
+				foreach (['owner', 'admin', 'write', 'read'] as $section) {
+					if (array_key_exists($section, $sections)) {
+						$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+					}
+				}
+			}
 
 			$this->twig->display('sidebar_menu.tpl', ['menu' => $menu]);
 		}

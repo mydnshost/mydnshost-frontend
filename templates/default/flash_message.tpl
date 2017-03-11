@@ -5,8 +5,3 @@
 		<h4 class="alert-heading">{{ title }}</h4>
 		{{ message }}
 	</div>
-
-
-	<script type="text/javascript">
-		$(".alert").alert()
-	</script>
