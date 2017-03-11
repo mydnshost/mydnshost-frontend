@@ -11,7 +11,7 @@
 			$loader = new Twig_Loader_Filesystem();
 			$themes = [];
 			if (isset($config['theme'])) {
-				$themes[] = $config['theme'];
+				$themes = is_array($config['theme']) ? $config['theme'] : [$config['theme']];
 			}
 			foreach (array_unique(array_merge($themes, ['default'])) as $theme) {
 				$path = $config['dir'] . '/' . $theme;

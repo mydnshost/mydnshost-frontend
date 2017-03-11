@@ -22,6 +22,13 @@
 				}
 			});
 
+			$router->get('/loginsession/(.*)', function($sessionID) use ($displayEngine) {
+				session::clear();
+				session::set('logindata', ['type' => 'session', 'sessionid' => $sessionID]);
+				header('Location: ' . $displayEngine->getURL('/'));
+				return;
+			});
+
 			$router->set404(function() use ($displayEngine) {
 				header('HTTP/1.1 404 Not Found');
 				$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
