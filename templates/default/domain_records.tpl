@@ -1,6 +1,8 @@
 <H1>Domain :: {{ domain.domain }} :: Records</H1>
 
+{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 <form method="post">
+{% endif %}
 <span><strong>Serial:</strong> {{ domain.SOA.serial }}</span>
 <br><br>
 <table id="records" class="table table-striped table-bordered">
@@ -11,7 +13,9 @@
 			<th class="priority">Priority</th>
 			<th class="content">Content</th>
 			<th class="ttl">TTL</th>
+			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 			<th class="actions">Actions</th>
+			{% endif %}
 		</tr>
 	</thead>
 	<tbody>
@@ -38,40 +42,45 @@
 			<td class="ttl" data-value="{{ record.ttl | e }}" {% if record.edited %}data-edited-value="{{record.edited.ttl | e}}"{% endif %}>
 				{{ record.ttl | e }}
 			</td>
-			<td class="actions">
-				<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
+			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+				<td class="actions">
+					<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
 
-				{#
-				{% if record.disabled == 'true' %}
-					<button class="btn btn-sm btn-info" data-action="enable" role="button">Enable</button>
-				{% else %}
-					<button class="btn btn-sm btn-warning" data-action="disable" role="button">Disable</button>
-				{% endif %}
-				#}
+					{#
+					{% if record.disabled == 'true' %}
+						<button class="btn btn-sm btn-info" data-action="enable" role="button">Enable</button>
+					{% else %}
+						<button class="btn btn-sm btn-warning" data-action="disable" role="button">Disable</button>
+					{% endif %}
+					#}
 
-				<button class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
-			</td>
+					<button class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
+				</td>
+			{% endif %}
 		</tr>
 		{% endfor %}
 
 
-		{% for id,record in newRecords %}
-		<tr class="new form-group" data-edited="true" {% if record.errorData %}data-error-data="{{ record.errorData | e}}"{% endif %}>
-			<td class="name" data-edited-value="{{record.name | e}}"></td>
-			<td class="type" data-edited-value="{{record.type | e}}"></td>
-			<td class="priority" data-edited-value="{{record.priority | e}}"></td>
-			<td class="content" data-edited-value="{{record.content | e}}"></td>
-			<td class="ttl" data-edited-value="{{record.ttl | e}}"></td>
-			<td class="actions">
-				<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-				<button class="btn btn-sm btn-danger" data-action="deletenew" role="button">Delete</button>
-			</td>
-		</tr>
-		{% endfor %}
+		{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+			{% for id,record in newRecords %}
+			<tr class="new form-group" data-edited="true" {% if record.errorData %}data-error-data="{{ record.errorData | e}}"{% endif %}>
+				<td class="name" data-edited-value="{{record.name | e}}"></td>
+				<td class="type" data-edited-value="{{record.type | e}}"></td>
+				<td class="priority" data-edited-value="{{record.priority | e}}"></td>
+				<td class="content" data-edited-value="{{record.content | e}}"></td>
+				<td class="ttl" data-edited-value="{{record.ttl | e}}"></td>
+				<td class="actions">
+					<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
+					<button class="btn btn-sm btn-danger" data-action="deletenew" role="button">Delete</button>
+				</td>
+			</tr>
+			{% endfor %}
+		{% endif %}
 
 	</tbody>
 </table>
 
+{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 <div class="row">
 	<div class="col">
 		<button class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
@@ -83,3 +92,4 @@
 </form>
 
 <script src="{{ url('/assets/records.js') }}"></script>
+{% endif %}
