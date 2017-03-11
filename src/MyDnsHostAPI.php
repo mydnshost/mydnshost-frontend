@@ -34,11 +34,15 @@
 		}
 
 		public function getUserData() {
+			if ($this->auth === FALSE) { return NULL; }
+
 			$result = $this->api('/userdata');
 			return isset($result['response']['user']) ? $result['response']['user'] : NULL;
 		}
 
 		public function getSessionID() {
+			if ($this->auth === FALSE) { return NULL; }
+
 			$result = $this->api('/session');
 			return isset($result['response']['session']) ? $result['response']['session'] : NULL;
 		}
