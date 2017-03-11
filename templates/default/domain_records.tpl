@@ -1,6 +1,5 @@
 <H1>Domain :: {{ domain.domain }} :: Records</H1>
 
-<form method="post">
 <table id="records" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -47,7 +46,6 @@
 		{% endfor %}
 	</tbody>
 </table>
-</form>
 
 <div class="row">
 	<div class="col">
