@@ -96,64 +96,40 @@
 			}
 		}
 
-		public function showSidebar() { /* ?>
-		<ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Reports</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Analytics</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
-            </li>
-          </ul>
+		public function showSidebar() {
+			$menu = [];
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
+			/* $section = [];
+			$section[] = ['link' => '#', 'title' => 'Overview', 'active' => true];
+			$section[] = ['link' => '#', 'title' => 'Reports'];
+			$section[] = ['link' => '#', 'title' => 'Analytics'];
+			$section[] = ['link' => '#', 'title' => 'Export'];
+			$menu[] = $section;
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul> <?php */
+			$section = [];
+			$section[] = ['link' => '#', 'title' => 'Nav item'];
+			$section[] = ['link' => '#', 'title' => 'Nav item again'];
+			$section[] = ['link' => '#', 'title' => 'One more nav'];
+			$section[] = ['link' => '#', 'title' => 'Another nav item'];
+			$menu[] = $section;
+
+			$section = [];
+			$section[] = ['link' => '#', 'title' => 'Nav item again'];
+			$section[] = ['link' => '#', 'title' => 'One more nav'];
+			$section[] = ['link' => '#', 'title' => 'Another nav item'];
+			$menu[] = $section; */
+
+			$this->twig->display('sidebar_menu.tpl', ['menu' => $menu]);
 		}
 
-		public function showHeaderMenu() { /* ?>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Help</a>
-          </li>
-          </ul> <?php */
+		public function showHeaderMenu() {
+			$menu = [];
+
+			/* $menu[] = ['link' => '#', 'title' => 'Home', 'active' => true];
+			$menu[] = ['link' => '#', 'title' => 'Settings'];
+			$menu[] = ['link' => '#', 'title' => 'Profile'];
+			$menu[] = ['link' => '#', 'title' => 'Help']; */
+
+			$this->twig->display('header_menu.tpl', ['menu' => $menu]);
 		}
 	}
