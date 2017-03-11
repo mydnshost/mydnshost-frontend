@@ -41,7 +41,7 @@
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
 
 			$twig->addFilter(new Twig_Filter('gravatar', function($input) {
-				return 'http://www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=20';
+				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=20';
 			}));
 
 			$this->vars = ['sitename' => '', 'pagetitle' => ''];
