@@ -166,16 +166,21 @@
 
 			$url = sprintf('%s/%s/%s', rtrim($this->baseurl, '/'), $this->version, ltrim($apimethod, '/'));
 
-			if ($method == 'GET') {
-				$response = Requests::get($url, $headers, $options);
-			} else if ($method == 'POST') {
-				$response = Requests::post($url, $headers, $data, $options);
-			} else if ($method == 'DELETE') {
-				$response = Requests::delete($url, $headers, $options);
+			try {
+				if ($method == 'GET') {
+					$response = Requests::get($url, $headers, $options);
+				} else if ($method == 'POST') {
+					$response = Requests::post($url, $headers, $data, $options);
+				} else if ($method == 'DELETE') {
+					$response = Requests::delete($url, $headers, $options);
+				}
+
+				$data = @json_decode($response->body, TRUE);
+			} catch (Requests_Exception $ex) {
+				$data = NULL;
 			}
 
-			$data = @json_decode($response->body, TRUE);
-			if ($data == null) {
+			if ($data == NULL) {
 				$data = ['error' => 'There was an unknown error.'];
 			}
 
