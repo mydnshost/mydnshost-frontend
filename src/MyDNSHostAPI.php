@@ -132,7 +132,7 @@
 		}
 
 		/**
-		 * Get domain data for a given domain.
+		 * Get domain records for a given domain.
 		 *
 		 * @return Array of records or an empty array.
 		 */
@@ -141,6 +141,17 @@
 
 			$result = $this->api('/domains/' . $domain . '/records');
 			return isset($result['response']['records']) ? $result['response']['records'] : [];
+		}
+
+		/**
+		 * Set domain records for a given domain.
+		 *
+		 * @return Result from API
+		 */
+		public function setDomainRecords($domain, $data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/domains/' . $domain . '/records', 'POST', $data);
 		}
 
 		/**
@@ -170,7 +181,7 @@
 				if ($method == 'GET') {
 					$response = Requests::get($url, $headers, $options);
 				} else if ($method == 'POST') {
-					$response = Requests::post($url, $headers, $data, $options);
+					$response = Requests::post($url, $headers, json_encode(['data' => $data]), $options);
 				} else if ($method == 'DELETE') {
 					$response = Requests::delete($url, $headers, $options);
 				}

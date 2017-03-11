@@ -5,6 +5,7 @@
 			$router->get('/', function() use ($displayEngine) {
 				if (!session::isLoggedIn()) {
 					header('Location: ' . $displayEngine->getURL('/login'));
+					return;
 				} else {
 					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
 				}

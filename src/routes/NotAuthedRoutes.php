@@ -20,11 +20,13 @@
 
 					session::set('logindata', ['type' => 'session', 'sessionid' => $sessionID]);
 					header('Location: ' . $displayEngine->getURL('/'));
+					return;
 				} else {
 					$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided.');
 
 					session::setCurrentUser(null);
 					header('Location: ' . $displayEngine->getURL('/login'));
+					return;
 				}
 			});
 		}

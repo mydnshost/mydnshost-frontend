@@ -10,17 +10,20 @@
 				session::setCurrentUser(null);
 
 				header('Location: ' . $displayEngine->getURL('/'));
+				return;
 			});
 
 
 			$router->get('/login', function() use ($displayEngine) {
 				$displayEngine->flash('warning', 'Login failed', 'You are already logged in.');
 				header('Location: ' . $displayEngine->getURL('/'));
+				return;
 			});
 
 			$router->post('/login', function() use ($displayEngine) {
 				$displayEngine->flash('warning', 'Login failed', 'You are already logged in.');
 				header('Location: ' . $displayEngine->getURL('/'));
+				return;
 			});
 		}
 	}

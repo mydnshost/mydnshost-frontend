@@ -112,3 +112,7 @@ table#records tr.deleted td.actions {
 table#records td input, table#records td select {
   width: 100%;
 }
+
+table#records tr.error td {
+  background-color: #f0ad4e;
+}
