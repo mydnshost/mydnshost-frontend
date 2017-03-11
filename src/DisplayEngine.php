@@ -96,7 +96,7 @@
 			}
 		}
 
-		public function showSidebar() { ?>
+		public function showSidebar() { /* ?>
 		<ul class="nav nav-pills flex-column">
             <li class="nav-item">
               <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
@@ -137,10 +137,10 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Another nav item</a>
             </li>
-          </ul> <?php
+          </ul> <?php */
 		}
 
-		public function showHeaderMenu() { ?>
+		public function showHeaderMenu() { /* ?>
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -154,6 +154,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Help</a>
           </li>
-          </ul> <?php
+          </ul> <?php */
 		}
 	}
