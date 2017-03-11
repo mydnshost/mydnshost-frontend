@@ -29,7 +29,7 @@
 
 			$twig->addExtension(new Twig_Extension_Debug());
 
-			$this->basepath = dirname($_SERVER['SCRIPT_FILENAME']);
+			$this->basepath = dirname($_SERVER['SCRIPT_FILENAME']) . '/';
 			$this->basepath = preg_replace('#^' . preg_quote($_SERVER['DOCUMENT_ROOT']) . '#', '/', $this->basepath);
 			$this->basepath = preg_replace('#^/+#', '/', $this->basepath);
 
