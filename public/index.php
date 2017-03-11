@@ -29,7 +29,15 @@
 		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
 		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
 	} else {
+		$wasLoggedIn = session::isLoggedIn();
 		session::clear();
+		if ($wasLoggedIn) {
+			$displayEngine->flash('warning', 'Session timeout', 'Your login session has timed out. Please log in again.');
+
+			header('Location: ' . $displayEngine->getURL('/login'));
+			die();
+		}
+
 		(new NotAuthedRoutes())->addRoutes($router, $displayEngine, $api);
 	}
 
