@@ -93,3 +93,109 @@ function cancelEditSOA() {
 		field.data('edited-value', null);
 	});
 }
+
+var accessLevels = ["owner", "admin", "write", "read", "none"];
+var newAccessCount = 0;
+
+$('button[data-action="editaccess"]').click(function () {
+	var row = $(this).parent('td').parent('tr');
+	var person = row.find('td.who').data('value');
+
+	if ($(this).data('action') == "editaccess") {
+		setEditAccess(row, person);
+
+		$(this).data('action', 'cancel');
+		$(this).html('Cancel');
+	} else if ($(this).data('action') == "cancel") {
+		cancelEditAccess(row);
+
+		$(this).data('action', 'editaccess');
+		$(this).html('Edit');
+	}
+
+	// If this is a hacky edit button, remove it.
+	if (row.hasClass("new")) {
+		$(this).remove();
+	}
+	return false;
+});
+
+$('button[data-action="deleteaccess"]').click(function () {
+	var row = $(this).parent('td').parent('tr');
+	row.remove();
+	// Don't submit the form.
+	return false;
+});
+
+
+$('tr[data-edited="true"]').each(function (index) {
+	$(this).find('button[data-action="editaccess"]').click();
+});
+
+$('button[data-action="addaccess"]').click(function () {
+	var table = $('table#accessinfo');
+
+	var row = '';
+	row += '<tr class="new">';
+	row += '	<td class="who" data-value=""></td>';
+	row += '	<td class="access" data-value="read"></td>';
+	row += '	<td class="actions" data-value="">';
+	row += '		<button type="button" class="btn btn-sm btn-danger" data-action="deleteaccess" role="button">Cancel</button>';
+	row += '	</td>';
+	row += '</tr>';
+
+	row = $(row);
+	table.append(row);
+
+	setEditAccess(row, undefined);
+
+	row.find('button[data-action="deleteaccess"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		row.remove();
+		// Don't submit the form.
+		return false;
+	});
+
+	// Don't submit the form.
+	return false;
+});
+
+function cancelEditAccess(row) {
+	var fields = {"access": row.find('td.access')
+	             };
+
+    $.each(fields, function(key, field) {
+		field.text(field.data('value'));
+		field.data('edited-value', null);
+	});
+
+	row.tooltip('dispose');
+	row.removeClass('error');
+
+	return false;
+}
+
+function setEditAccess(row, who) {
+	var access = row.find('td.access');
+	var fieldName = (who == undefined) ? 'newAccess' : 'access';
+
+	var fieldID = (who == undefined) ? newAccessCount++ : who;
+
+	if (who == undefined) {
+		var whoField = row.find('td.who');
+		var whoValue = (whoField.data('edited-value') == undefined || whoField.data('edited-value') == null) ? whoField.data('value') : whoField.data('edited-value');
+		whoField.html('<input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][who]" value="' + whoValue + '">');
+	}
+
+	var accessValue = (access.data('edited-value') == undefined || access.data('edited-value') == null) ? access.data('value') : access.data('edited-value');
+
+	var select = '';
+	select += '<select class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][level]">';
+	$.each(accessLevels, function(key, value) {
+		select += '	<option ' + (accessValue == value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>';
+	});
+	select += '</select>';
+	access.html(select);
+
+	row.addClass('form-group');
+}

@@ -9,7 +9,7 @@
 
 				if ($domainData !== NULL) {
 					// Change SOA Stuff.
-					if ($router->getRequestMethod() == "POST") {
+					if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'soa') {
 
 						$data = ['disabled' => false, 'SOA' => []];
 						if (isset($_POST['disabled'])) {
@@ -22,7 +22,30 @@
 						$result = $api->setDomainData($domain, $data);
 
 						if (array_key_exists('error', $result)) {
-							$displayEngine->flash('error', '', 'There was an error with the data provided.');
+							$displayEngine->flash('error', '', 'There was an error with the soa data provided.');
+						} else {
+							$displayEngine->flash('success', '', 'Your changes have been saved.');
+
+							header('Location: ' . $displayEngine->getURL('/domain/' . $domain));
+							return;
+						}
+					} else if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'access') {
+						$edited = isset($_POST['access']) ? $_POST['access'] : [];
+						$new = isset($_POST['newAccess']) ? $_POST['newAccess'] : [];
+
+						// Try to submit, to see if we have any errors.
+						$data = ['access' => []];
+						foreach ($edited as $id => $access) {
+							$data['access'][$id] = $access['level'];
+						}
+						foreach ($new as $access) {
+							$data['access'][$access['who']] = $access['level'];
+						}
+
+						$result = $api->setDomainAccess($domain, $data);
+
+						if (array_key_exists('error', $result)) {
+							$displayEngine->flash('error', '', ['There was an error: '. $result['error'], 'None of the changes have been saved. Please fix the problems and then try again.']);
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
@@ -30,6 +53,8 @@
 							return;
 						}
 
+						$displayEngine->setVar('newaccess', $new);
+						$displayEngine->setVar('editedaccess', $edited);
 					}
 
 					$domains = session::get('domains');

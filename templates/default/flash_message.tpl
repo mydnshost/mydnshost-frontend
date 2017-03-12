@@ -3,5 +3,9 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 		{% if title %}<h4 class="alert-heading">{{ title }}</h4>{% endif %}
-		{{ message }}
+		{% if message is iterable %}
+			{{ message | join("\n") | nl2br }}
+		{% else %}
+			{{ message }}
+		{% endif %}
 	</div>

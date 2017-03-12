@@ -60,8 +60,8 @@
 			</td>
 			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 				<td class="actions">
-					<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-					<button class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
+					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
+					<button type="button" class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
 				</td>
 			{% endif %}
 		</tr>
@@ -77,8 +77,8 @@
 				<td class="content" data-edited-value="{{record.content }}"></td>
 				<td class="ttl" data-edited-value="{{record.ttl }}"></td>
 				<td class="actions">
-					<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-					<button class="btn btn-sm btn-danger" data-action="deletenew" role="button">Delete</button>
+					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
+					<button type="button" class="btn btn-sm btn-danger" data-action="deletenew" role="button">Delete</button>
 				</td>
 			</tr>
 			{% endfor %}
@@ -90,9 +90,9 @@
 {% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 <div class="row">
 	<div class="col">
-		<button class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
+		<button type="button" class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
 		<br><br>
-		<button class="btn btn-warning btn-block" data-action="reset" role="button">Reset Changes</button>
+		<button type="button" class="btn btn-warning btn-block" data-action="reset" role="button">Reset Changes</button>
 		<button type="submit" class="btn btn-success btn-block" role="button">Save Changes</a>
 	</div>
 </div>

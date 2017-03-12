@@ -1,6 +1,7 @@
 <H1>Domain :: {{ domain.domain }}</H1>
 
 <form method="post" id="editsoaform">
+<input type="hidden" name="changetype" value="soa">
 <table id="soainfo" class="table table-striped table-bordered">
 	<tbody>
 		<tr>
@@ -43,7 +44,7 @@
 		</tr>
 		<tr>
 			<th>Access level</th>
-			<td>{{ domain.access | capitalize }}</td>
+			<td data-myaccess="{{ domain.access }}">{{ domain.access | capitalize }}</td>
 		</tr>
 	</tbody>
 </table>
@@ -54,14 +55,14 @@
 		<a href="{{ url("/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
 
 		{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
-			<button data-action="editsoa" class="btn btn-primary" role="button">Edit SOA</button>
-			<button data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
+			<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit SOA</button>
+			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 		{% endif %}
 
 
 		{% if domain.access == 'owner' %}
 			<div class="float-right">
-				<button class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
+				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
 			</div>
 
 			<!-- Modal -->
@@ -94,6 +95,8 @@
 
 <H2>Domain Access</H2>
 
+<form method="post">
+<input type="hidden" name="changetype" value="access">
 <table id="accessinfo" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -106,27 +109,42 @@
 	</thead>
 	<tbody>
 		{% for email,access in domainaccess %}
-		<tr>
-			<td>
+		<tr {% if editedaccess[email] %} data-edited="true"{% endif %}>
+			<td class="who" data-value="{{ email }}">
 				<img src="{{ email | gravatar }}" alt="{{ email }}" class="minigravatar" />&nbsp;
-            	{{ email }}
+				{{ email }}
 			</td>
-			<td>
+			<td class="access" data-value="{{ access }}" {% if editedaccess[email] %} data-edited-value="{{ editedaccess[email].level }}" {% endif %}>
 				{{ access }}
 			</td>
 			{% if domain.access == 'owner' or domain.access == 'admin' %}
 				<td>
-					<a href="{{ url("/domain/#{domain.domain}/access/remove/#{email}") }}" class="btn btn-sm btn-danger" role="button">Remove</a>
+					{% if email != user.email %}
+						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
+					{% endif %}
 				</td>
 			{% endif %}
+		</tr>
+		{% endfor %}
+
+		{% for new in newaccess %}
+		<tr class="new form-group" data-edited="true">
+			<td class="who" data-edited-value="{{ new.who }}"></td>
+			<td class="access" data-edited-value="{{ new.level }}"></td>
+			<td>
+				<button type="button" class="btn btn-sm btn-danger" data-action="editaccess" role="button">Edit</button>
+				<button type="button" class="btn btn-sm btn-danger" data-action="deleteaccess" role="button">Cancel</button>
+			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
 
 {% if domain.access == 'owner' or domain.access == 'admin' %}
-	<a href="{{ url("/domain/#{domain.domain}/access/add") }}" class="btn btn-primary" role="button">Grant Access</a>
+	<button type="button" data-action="addaccess" class="btn btn-success" role="button">Add Access</button>
+	<button type="submit" class="btn btn-primary" role="button">Update Access</button>
 {% endif %}
+</form>
 
 
 <script src="{{ url('/assets/domains.js') }}"></script>

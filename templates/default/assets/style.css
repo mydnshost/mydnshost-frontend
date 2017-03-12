@@ -110,13 +110,13 @@ table#records th.actions, table#records td.actions {
   width: 200px;
 }
 
-table#records tr.deleted td {
+table tr.deleted td {
   background-color: #f2dede;
   color: #a94442;
   text-decoration: line-through;
 }
 
-table#records tr.deleted td.actions {
+table tr.deleted td.actions {
   text-decoration: none;
 }
 

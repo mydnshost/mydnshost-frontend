@@ -146,7 +146,7 @@
 		}
 
 		/**
-		 * Get domain data for a given domain.
+		 * Get domain access for a given domain.
 		 *
 		 * @param $domain Domain to get access-data for
 		 * @return Array of access info or an empty array.
@@ -156,6 +156,19 @@
 
 			$result = $this->api('/domains/' . $domain . '/access');
 			return isset($result['response']['access']) ? $result['response']['access'] : [];
+		}
+
+		/**
+		 * Set domain access for a given domain.
+		 *
+		 * @param $domain Domain to set access-data for
+		 * @param $data New access data
+		 * @return Response from the API
+		 */
+		public function setDomainAccess($domain, $data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/domains/' . $domain . '/access', 'POST', $data);
 		}
 
 		/**
