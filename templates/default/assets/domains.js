@@ -92,6 +92,14 @@ function cancelEditSOA() {
 		field.html(field.data('value'));
 		field.data('edited-value', null);
 	});
+
+	var state = $('table#soainfo td.state');
+	if (state.data('value') == "Yes") {
+		state.html('<span class="badge badge-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
+	} else {
+		state.html('<span class="badge badge-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
+	}
+	state.data('edited-value', null);
 }
 
 var accessLevels = ["owner", "admin", "write", "read", "none"];

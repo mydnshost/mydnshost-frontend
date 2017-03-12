@@ -34,11 +34,15 @@
 		</tr>
 		<tr>
 			<th>Disabled</th>
-			<td data-radio="disabled" data-value="{{ domain.disabled | yesno }}">
+			<td class="state" data-radio="disabled" data-value="{{ domain.disabled | yesno }}">
 			{% if domain.disabled == 'true' %}
-				Yes
+				<span class="badge badge-danger">
+					Yes
+				</span>
 			{% else %}
-				No
+				<span class="badge badge-success">
+					No
+				</span>
 			{% endif %}
 			</td>
 		</tr>
