@@ -33,7 +33,7 @@
 		</tr>
 		<tr>
 			<th>Disabled</th>
-			<td data-radio="disabled" data-value="{% if domain.disabled == 'true' %}Yes{% else %}No{% endif %}">
+			<td data-radio="disabled" data-value="{{ domain.disabled | yesno }}">
 			{% if domain.disabled == 'true' %}
 				Yes
 			{% else %}

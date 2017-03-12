@@ -106,7 +106,6 @@ table#records th.actions, table#records td.actions {
   width: 250px;
 }
 
-
 table#records tr.deleted td {
   background-color: #f2dede;
   color: #a94442;
@@ -122,5 +121,5 @@ table#records td input, table#records td select {
 }
 
 table#records tr.error td {
-  background-color: #f0ad4e;
+  background-color: #bcdff1
 }

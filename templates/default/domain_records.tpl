@@ -27,40 +27,30 @@
 	</thead>
 	<tbody>
 		{% for record in records %}
-		<tr data-id="{{ record.id }}"
-		    class="{% if record.disabled == 'true' %} disabled{% endif %}"
+		<tr data-id="{{ record.id }}" class=""
 			{% if record.edited %}data-edited="true"{% endif %}
 			{% if record.deleted %}data-deleted="true"{% endif %}
 			{% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}
 			>
 
-			<td class="name" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{record.edited.name }}"{% endif %}>
+			<td class="name" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}>
 				{{ record.name }}
 			</td>
-			<td class="type" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{record.edited.type }}"{% endif %}>
+			<td class="type" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
 				{{ record.type }}
 			</td>
-			<td class="priority" data-value="{{ record.priority }}" {% if record.edited %}data-edited-value="{{record.edited.priority }}"{% endif %}>
+			<td class="priority" data-value="{{ record.priority }}" {% if record.edited %}data-edited-value="{{ record.edited.priority }}"{% endif %}>
 				{{ record.priority }}
 			</td>
-			<td class="content" data-value="{{ record.content }}" {% if record.edited %}data-edited-value="{{record.edited.content }}"{% endif %}>
+			<td class="content" data-value="{{ record.content }}" {% if record.edited %}data-edited-value="{{ record.edited.content }}"{% endif %}>
 				{{ record.content }}
 			</td>
-			<td class="ttl" data-value="{{ record.ttl }}" {% if record.edited %}data-edited-value="{{record.edited.ttl }}"{% endif %}>
+			<td class="ttl" data-value="{{ record.ttl }}" {% if record.edited %}data-edited-value="{{ record.edited.ttl }}"{% endif %}>
 				{{ record.ttl }}
 			</td>
 			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 				<td class="actions">
 					<button class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-
-					{#
-					{% if record.disabled == 'true' %}
-						<button class="btn btn-sm btn-info" data-action="enable" role="button">Enable</button>
-					{% else %}
-						<button class="btn btn-sm btn-warning" data-action="disable" role="button">Disable</button>
-					{% endif %}
-					#}
-
 					<button class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
 				</td>
 			{% endif %}

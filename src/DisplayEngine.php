@@ -45,6 +45,10 @@
 				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=20';
 			}));
 
+			$twig->addFilter(new Twig_Filter('yesno', function($input) {
+				return parseBool($input) ? "Yes" : "No";
+			}));
+
 			$this->vars = ['sitename' => '', 'pagetitle' => ''];
 
 			$this->twig = $twig;

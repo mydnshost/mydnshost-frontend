@@ -172,9 +172,12 @@ function cancelEdit(row) {
 	             };
 
     $.each(fields, function(key, field) {
-		field.html(field.data('value'));
+		field.text(field.data('value'));
 		field.data('edited-value', null);
 	});
+
+	row.tooltip('dispose');
+	row.removeClass('error');
 
 	return false;
 }
