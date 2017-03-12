@@ -140,7 +140,7 @@
 			if (session::exists('domains')) {
 				$domains = session::get('domains');
 				foreach ($domains as $domain => $access) {
-					$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
+					$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'dataValue' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
 				}
 
 				foreach (['owner', 'admin', 'write', 'read'] as $section) {

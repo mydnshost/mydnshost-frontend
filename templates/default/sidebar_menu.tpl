@@ -2,12 +2,13 @@
 <strong>
 Domains List
 </strong>
+<input class="form-control" id="sidebarsearch" value="" placeholder="Domain Search...">
 </div>
 
 {% for section in menu %}
 	<ul class="nav nav-pills flex-column">
 	{% for item in section %}
-		<li class="nav-item">
+		<li class="nav-item" {% if item.dataValue %}data-value="{{ item.dataValue }}"{% endif %}>
 			{% if item.link %}
 				<a class="nav-link{% if item.active %} active{% endif %}" href="{{ item.link }}">
 			{% else %}

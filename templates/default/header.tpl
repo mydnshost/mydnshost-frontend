@@ -52,7 +52,7 @@
     <div class="container-fluid">
       <div class="row">
         {% if user %}
-          <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+          <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar" id="sidebar">
             {{ showSidebar() }}
           </nav>
 
