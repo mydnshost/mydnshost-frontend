@@ -102,8 +102,12 @@ table#records th.ttl, table#records td.ttl {
   width: 100px;
 }
 
+table#records th.state, table#records td.state {
+  width: 50px;
+}
+
 table#records th.actions, table#records td.actions {
-  width: 250px;
+  width: 200px;
 }
 
 table#records tr.deleted td {

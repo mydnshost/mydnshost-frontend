@@ -20,6 +20,7 @@
 			<th class="priority">Priority</th>
 			<th class="content">Content</th>
 			<th class="ttl">TTL</th>
+			<th class="state">Disabled</th>
 			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 			<th class="actions">Actions</th>
 			{% endif %}
@@ -27,7 +28,7 @@
 	</thead>
 	<tbody>
 		{% for record in records %}
-		<tr data-id="{{ record.id }}" class=""
+		<tr data-id="{{ record.id }}" class="{% if record.disabled == 'true' or record.edited.disabled == 'true' %}disabled{% endif %}"
 			{% if record.edited %}data-edited="true"{% endif %}
 			{% if record.deleted %}data-deleted="true"{% endif %}
 			{% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}
@@ -47,6 +48,15 @@
 			</td>
 			<td class="ttl" data-value="{{ record.ttl }}" {% if record.edited %}data-edited-value="{{ record.edited.ttl }}"{% endif %}>
 				{{ record.ttl }}
+			</td>
+			<td class="state" data-value="{{ record.disabled | yesno }}" {% if record.edited %}data-edited-value="{{ record.edited.disabled | yesno }}"{% endif %}>
+				{% if record.disabled == 'true' or record.edited.disabled == 'true' %}
+					<span class="badge badge-danger">
+				{% else %}
+					<span class="badge badge-success">
+				{% endif %}
+					{{ record.disabled | yesno }}
+				</span>
 			</td>
 			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
 				<td class="actions">

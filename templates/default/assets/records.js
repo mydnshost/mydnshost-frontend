@@ -157,8 +157,54 @@ function setEditable(row, recordid) {
 		select += '	<option ' + (typeValue == key ? 'selected' : '') + ' value="' + key + '">' + value + '</option>';
 	});
 	select += '</select>';
-
 	type.html(select);
+
+	$('td.state', row).each(function (index) {
+		var field = $(this);
+		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
+		var key = field.data('radio');
+
+		var radioButtons = '';
+		radioButtons += '<div class="btn-group" data-toggle="buttons">';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
+		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
+		radioButtons += '  </label>';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
+		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
+		radioButtons += '  </label>';
+		radioButtons += '</div>';
+		radioButtons = $(radioButtons);
+		field.html(radioButtons);
+
+		// Change state.
+		$('input[type=radio]', radioButtons).change(function() {
+			var container = $(this).parent('label').parent('div');
+
+			$('label[data-toggle-class]', container).each(function() {
+				if ($(this).find('input[type=radio]:checked').length == 0) {
+					$(this).removeClass($(this).attr('data-active'));
+					$(this).addClass($(this).attr('data-inactive'));
+				} else {
+					$(this).addClass($(this).attr('data-active'));
+					$(this).removeClass($(this).attr('data-inactive'));
+				}
+			});
+		});
+
+		// Set initial state
+		$('label[data-toggle-class]', radioButtons).each(function() {
+			if ($(this).find('input[type=radio]:checked').length == 0) {
+				$(this).removeClass($(this).attr('data-active'));
+				$(this).addClass($(this).attr('data-inactive'));
+			} else {
+				$(this).addClass($(this).attr('data-active'));
+				$(this).removeClass($(this).attr('data-inactive'));
+			}
+		});
+	});
+
+
+
 
 	row.addClass('form-group');
 }
@@ -175,6 +221,15 @@ function cancelEdit(row) {
 		field.text(field.data('value'));
 		field.data('edited-value', null);
 	});
+
+	var state = row.find('td.state');
+
+	if (state.data('value') == "Yes") {
+		state.html('<span class="badge badge-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
+	} else {
+		state.html('<span class="badge badge-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
+	}
+	state.data('edited-value', null);
 
 	row.tooltip('dispose');
 	row.removeClass('error');
