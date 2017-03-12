@@ -37,10 +37,10 @@ function setSOAEditable() {
 
 		var radioButtons = '';
 		radioButtons += '<div class="btn-group" data-toggle="buttons">';
-		radioButtons += '  <label class="btn" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
 		radioButtons += '    <input type="radio" name="' + key + '" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
-		radioButtons += '  <label class="btn" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
 		radioButtons += '    <input type="radio" name="' + key + '" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
 		radioButtons += '  </label>';
 		radioButtons += '</div>';
