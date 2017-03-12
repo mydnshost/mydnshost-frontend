@@ -3,16 +3,40 @@
 
 		public function addRoutes($router, $displayEngine, $api) {
 
-			$router->get('/domain/([^/]+)', function($domain) use ($displayEngine, $api) {
-				$data = $api->getDomainData($domain);
+			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
+				$domainData = $api->getDomainData($domain);
 				$displayEngine->setPageID('/domain/' . $domain)->setTitle('Domain :: ' . $domain);
 
-				if ($data !== NULL) {
+				if ($domainData !== NULL) {
+					// Change SOA Stuff.
+					if ($router->getRequestMethod() == "POST") {
+
+						$data = ['disabled' => false, 'SOA' => []];
+						if (isset($_POST['disabled'])) {
+							$data['disabled'] = $_POST['disabled'];
+						}
+						if (isset($_POST['soa'])) {
+							$data['SOA'] = $_POST['soa'];
+						}
+
+						$result = $api->setDomainData($domain, $data);
+
+						if (array_key_exists('error', $result)) {
+							$displayEngine->flash('error', '', 'There was an error with the data provided.');
+						} else {
+							$displayEngine->flash('success', '', 'Your changes have been saved.');
+
+							header('Location: ' . $displayEngine->getURL('/domain/' . $domain));
+							return;
+						}
+
+					}
+
 					$domains = session::get('domains');
 					if (isset($domains[$domain])) {
-						$data['access'] = $domains[$domain];
+						$domainData['access'] = $domains[$domain];
 					}
-					$displayEngine->setVar('domain', $data);
+					$displayEngine->setVar('domain', $domainData);
 
 					$displayEngine->setVar('domainaccess', $api->getDomainAccess($domain));
 
@@ -102,6 +126,26 @@
 					$displayEngine->display('domain_records.tpl');
 				} else {
 					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
+
+			$router->match('POST', '/domain/([^/]+)/delete', function($domain) use ($router, $displayEngine, $api) {
+				if (isset($_POST['confirm']) && parseBool($_POST['confirm'])) {
+					$result = $api->deleteDomain($domain);
+
+					if (array_key_exists('error', $result)) {
+						$displayEngine->flash('error', '', 'There was an error deleting the domain.');
+						header('Location: ' . $displayEngine->getURL('/domain/' . $domain ));
+						return;
+					} else {
+						$displayEngine->flash('success', '', 'Domain ' . $domain . ' has been deleted.');
+						header('Location: ' . $displayEngine->getURL('/'));
+						return;
+					}
+				} else {
+					header('Location: ' . $displayEngine->getURL('/domain/' . $domain ));
+					return;
 				}
 			});
 		}

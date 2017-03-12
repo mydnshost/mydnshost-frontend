@@ -25,6 +25,7 @@
 				'cache' => $config['cache'],
 				'auto_reload' => true,
 				'debug' => true,
+				'autoescape' => 'html',
 			));
 
 			$twig->addExtension(new Twig_Extension_Debug());

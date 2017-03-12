@@ -45,3 +45,8 @@
 
 		return (substr($haystack, -$length) === $needle);
 	}
+
+	function parseBool($input) {
+		$in = strtolower($input);
+		return ($in === true || $in == 'true' || $in == '1' || $in == 'on' || $in == 'yes');
+	}

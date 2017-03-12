@@ -108,8 +108,21 @@
 		}
 
 		/**
+		 * Delete a domain.
+		 *
+		 * @param $domain Domain to delete.
+		 * @return Result from the API
+		 */
+		public function deleteDomain($domain) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/domains/' . $domain, 'DELETE');
+		}
+
+		/**
 		 * Get domain data for a given domain.
 		 *
+		 * @param $domain Domain to get data for
 		 * @return Array of domains or an empty array.
 		 */
 		public function getDomainData($domain) {
@@ -120,8 +133,22 @@
 		}
 
 		/**
+		 * Set domain data for a given domain.
+		 *
+		 * @param $domain Domain to set data for
+		 * @param $data Data to set
+		 * @return Result from the API
+		 */
+		public function setDomainData($domain, $data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/domains/' . $domain, 'POST', $data);
+		}
+
+		/**
 		 * Get domain data for a given domain.
 		 *
+		 * @param $domain Domain to get access-data for
 		 * @return Array of access info or an empty array.
 		 */
 		public function getDomainAccess($domain) {
@@ -134,6 +161,7 @@
 		/**
 		 * Get domain records for a given domain.
 		 *
+		 * @param $domain Domain to get records for
 		 * @return Array of records or an empty array.
 		 */
 		public function getDomainRecords($domain) {
@@ -146,6 +174,8 @@
 		/**
 		 * Set domain records for a given domain.
 		 *
+		 * @param $domain Domain to set records for
+		 * @param $data Data to set
 		 * @return Result from API
 		 */
 		public function setDomainRecords($domain, $data) {
