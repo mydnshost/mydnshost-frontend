@@ -84,6 +84,67 @@
 		}
 
 		/**
+		 * Update information about the user we are authed as
+		 *
+		 * @param $data Data to use for the update
+		 * @return Result from the api
+		 */
+		public function setUserData($data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self', 'POST', $data);
+		}
+
+		/**
+		 * Get API Keys for the current user
+		 *
+		 * @return Array of api keys.
+		 */
+		public function getAPIKeys() {
+			if ($this->auth === FALSE) { return NULL; }
+
+			$result = $this->api('/users/self/keys');
+			return isset($result['response']) ? $result['response'] : NULL;
+		}
+
+		/**
+		 * Create a new API Key.
+		 *
+		 * @param $data Data to use for the create
+		 * @return Result of create operation.
+		 */
+		public function createAPIKey($data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/keys', 'POST', $data);
+		}
+
+		/**
+		 * Create a new API Key.
+		 *
+		 * @param $key Key to update
+		 * @param $data Data to use for the update
+		 * @return Result of update operation.
+		 */
+		public function updateAPIKey($key, $data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/keys/' . $key, 'POST', $data);
+		}
+
+		/**
+		 * Delete a new API Key.
+		 *
+		 * @param $key Key to delete
+		 * @return Result of delete operation.
+		 */
+		public function deleteAPIKey($key) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/keys/' . $key, 'DELETE');
+		}
+
+		/**
 		 * Get a session ID from the backend
 		 *
 		 * @return Backend session ID or null if we are not authed.

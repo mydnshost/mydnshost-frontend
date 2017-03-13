@@ -135,11 +135,6 @@ $('button[data-action="deleteaccess"]').click(function () {
 	return false;
 });
 
-
-$('tr[data-edited="true"]').each(function (index) {
-	$(this).find('button[data-action="editaccess"]').click();
-});
-
 $('button[data-action="addaccess"]').click(function () {
 	var table = $('table#accessinfo');
 
@@ -193,6 +188,11 @@ function setEditAccess(row, who) {
 		var whoField = row.find('td.who');
 		var whoValue = (whoField.data('edited-value') == undefined || whoField.data('edited-value') == null) ? whoField.data('value') : whoField.data('edited-value');
 		whoField.html('<input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][who]" value="' + whoValue + '">');
+
+		whoField.find('input').rules("add", {
+			email: true,
+			required: true
+		});
 	}
 
 	var accessValue = (access.data('edited-value') == undefined || access.data('edited-value') == null) ? access.data('value') : access.data('edited-value');
@@ -207,3 +207,17 @@ function setEditAccess(row, who) {
 
 	row.addClass('form-group');
 }
+
+$("#editaccess").validate({
+	highlight: function(element) {
+		$(element).closest('td').addClass('has-danger');
+	},
+	unhighlight: function(element) {
+		$(element).closest('td').removeClass('has-danger');
+	},
+	errorClass: 'form-control-feedback'
+});
+
+$('tr[data-edited="true"]').each(function (index) {
+	$(this).find('button[data-action="editaccess"]').click();
+});

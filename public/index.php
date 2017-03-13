@@ -28,6 +28,7 @@
 
 		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
 		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
+		(new UserRoutes())->addRoutes($router, $displayEngine, $api);
 	} else {
 		$wasLoggedIn = session::isLoggedIn();
 		session::clear();

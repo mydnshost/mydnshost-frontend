@@ -99,7 +99,7 @@
 
 <H2>Domain Access</H2>
 
-<form method="post">
+<form method="post" id="editaccess">
 <input type="hidden" name="changetype" value="access">
 <table id="accessinfo" class="table table-striped table-bordered">
 	<thead>
