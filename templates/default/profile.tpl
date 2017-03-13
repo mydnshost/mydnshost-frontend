@@ -12,6 +12,15 @@
 			<th>Email Address</th>
 			<td data-name="email" data-value="{{ user.email }}">{{ user.email }}</td>
 		</tr>
+		<tr>
+			<th>
+				Avatar<br>
+				<small class="form-text text-muted">(This can be changed at <a href="//gravatar.com/emails">Gravatar</a>)</small>
+			</th>
+			<td>
+				<img src="{{ user.email | gravatar(200) }}" alt="{{ user.realname }}" class="minigravatar" />
+			</td>
+		</tr>
 		<tr data-hidden="true" class="hidden">
 			<th>
 				New Password<br>

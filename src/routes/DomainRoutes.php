@@ -67,6 +67,7 @@
 
 					$displayEngine->display('domain.tpl');
 				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
 					$displayEngine->display('unknown_domain.tpl');
 				}
 			});
@@ -150,6 +151,7 @@
 
 					$displayEngine->display('domain_records.tpl');
 				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
 					$displayEngine->display('unknown_domain.tpl');
 				}
 			});

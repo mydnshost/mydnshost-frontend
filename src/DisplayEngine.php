@@ -41,8 +41,8 @@
 			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
 
-			$twig->addFilter(new Twig_Filter('gravatar', function($input) {
-				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=20';
+			$twig->addFilter(new Twig_Filter('gravatar', function($input, $size = 20, $default = '') {
+				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=' . $size . '&d=' . $default;
 			}));
 
 			$twig->addFilter(new Twig_Filter('yesno', function($input) {

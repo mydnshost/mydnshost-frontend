@@ -165,7 +165,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api('/domains');
-			return isset($result['response']) ? $result['response'] : [];
+			return isset($result['response']) ? $result['response'] : NULL;
 		}
 
 		/**
@@ -190,7 +190,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api('/domains/' . $domain);
-			return isset($result['response']) ? $result['response'] : [];
+			return isset($result['response']) ? $result['response'] : NULL;
 		}
 
 		/**
@@ -216,7 +216,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api('/domains/' . $domain . '/access');
-			return isset($result['response']['access']) ? $result['response']['access'] : [];
+			return isset($result['response']['access']) ? $result['response']['access'] : NULL;
 		}
 
 		/**
@@ -242,7 +242,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api('/domains/' . $domain . '/records');
-			return isset($result['response']['records']) ? $result['response']['records'] : [];
+			return isset($result['response']['records']) ? $result['response']['records'] : NULL;
 		}
 
 		/**
