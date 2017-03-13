@@ -25,5 +25,15 @@
 				header('Location: ' . $displayEngine->getURL('/'));
 				return;
 			});
+
+			$router->get('/impersonate/cancel', function() use ($displayEngine, $api) {
+				$person = session::get('impersonate');
+				$displayEngine->flash('info', '', 'You are no longer impersonating: ' . $person);
+
+				AdminRoutes::safeClearSession();
+
+				header('Location: ' . $displayEngine->getURL('/admin/users'));
+				return;
+			});
 		}
 	}

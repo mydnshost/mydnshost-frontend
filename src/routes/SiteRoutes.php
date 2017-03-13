@@ -15,7 +15,8 @@
 				$file = $displayEngine->getFile($asset);
 				if ($file !== FALSE) {
 					header('Content-Type: ' . get_mime_type($file));
-					echo file_get_contents($file);
+					$displayEngine->displayRaw($asset);
+					// echo file_get_contents($file);
 				} else {
 					header('HTTP/1.1 404 Not Found');
 					$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');

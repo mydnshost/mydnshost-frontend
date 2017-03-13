@@ -14,10 +14,15 @@
 							$canUpdate = false;
 							$displayEngine->flash('error', '', 'There was an error updating your profile data: Passwords do not match.');
 						}
+
+						if (empty($pass)) {
+							unset($_POST['password']);
+							unset($_POST['confirmpassword']);
+						}
 					}
 
 					if ($canUpdate) {
-						$result = $api->setUserData($_POST);
+						$result = $api->setUserInfo($_POST);
 
 						if (array_key_exists('error', $result)) {
 							if (!array_key_exists('errorData', $result)) {
@@ -54,6 +59,7 @@
 				}
 
 				if ($json !== NULL) {
+					header('Content-Type: application/json');
 					echo json_encode([$result[0] => $result[1]]);
 					return;
 				} else {
@@ -78,6 +84,7 @@
 				}
 
 				if ($json !== NULL) {
+					header('Content-Type: application/json');
 					echo json_encode([$result[0] => $result[1]]);
 					return;
 				} else {
@@ -101,6 +108,7 @@
 				}
 
 				if ($json !== NULL) {
+					header('Content-Type: application/json');
 					echo json_encode([$result[0] => $result[1]]);
 					return;
 				} else {

@@ -13,6 +13,12 @@
 	$api = new MyDNSHostAPI($config['api']);
 	if (session::exists('logindata')) {
 		$api->setAuth(session::get('logindata'));
+
+		if (session::exists('impersonate')) {
+			$api->impersonate(session::get('impersonate'), 'id');
+
+			$displayEngine->setVar('impersonating', true);
+		}
 	}
 
 	// Routes that exist all the time.
@@ -24,11 +30,18 @@
 	$userdata = $api->getUserData();
 	if ($userdata !== NULL) {
 		session::setCurrentUser($userdata);
+
+		$isAdmin = (isset($userdata['user']['admin']) && $userdata['user']['admin'] == 'true');
+		session::set('isadmin', $isAdmin);
 		session::set('domains', $api->getDomains());
 
 		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
 		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
 		(new UserRoutes())->addRoutes($router, $displayEngine, $api);
+
+		if ($isAdmin) {
+			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
+		}
 	} else {
 		$wasLoggedIn = session::isLoggedIn();
 		session::clear();

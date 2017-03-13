@@ -79,7 +79,21 @@ h1 {
 }
 
 /**********************************************************************
- * Records
+ * Tables
+ **********************************************************************/
+
+table tr.deleted td {
+  background-color: #f2dede;
+  color: #a94442;
+  text-decoration: line-through;
+}
+
+table tr.deleted td.actions {
+  text-decoration: none;
+}
+
+/**********************************************************************
+ * Domain Tables
  **********************************************************************/
 
 table#soainfo th {
@@ -118,16 +132,6 @@ table#records th.actions, table#records td.actions {
   width: 200px;
 }
 
-table tr.deleted td {
-  background-color: #f2dede;
-  color: #a94442;
-  text-decoration: line-through;
-}
-
-table tr.deleted td.actions {
-  text-decoration: none;
-}
-
 table#records td input, table#records td select {
   width: 100%;
 }
@@ -136,6 +140,9 @@ table#records tr.error td {
   background-color: #bcdff1
 }
 
+/**********************************************************************
+ * User Tables
+ **********************************************************************/
 
 table#apikeys th.key, table#apikeys td.key {
   width: 375px;
@@ -162,5 +169,33 @@ table#apikeys th.user_write, table#apikeys td.user_write {
 }
 
 table#apikeys th.actions, table#apikeys td.actions {
+  width: 200px;
+}
+
+
+/**********************************************************************
+ * User
+ **********************************************************************/
+table#userlist th.id, table#userlist td.id {
+  width: 50px;
+}
+
+table#userlist th.email, table#userlist td.email {
+  width: 400px;
+}
+
+table#userlist th.realname, table#userlist td.realname {
+
+}
+
+table#userlist th.admin, table#userlist td.admin {
+  width: 150px;
+}
+
+table#userlist th.state, table#userlist td.state {
+  width: 150px;
+}
+
+table#userlist th.actions, table#userlist td.actions {
   width: 200px;
 }

@@ -10,6 +10,10 @@
 		private $version = '1.0';
 		/** Auth Data. */
 		private $auth = FALSE;
+		/** Are we impersonating someone? */
+		private $impersonate = FALSE;
+		/** Are we impersonating an email address or an ID? */
+		private $impersonateType = FALSE;
 
 		/**
 		 * Create a new MyDNSHostAPI
@@ -59,6 +63,17 @@
 		}
 
 		/**
+		 * Impersonate a user
+		 *
+		 * @param $user User to impersonate
+		 * @param $type (Default: email) Is $user an email or id?
+		 */
+		public function impersonate($user, $type = 'email') {
+			$this->impersonate = $user;
+			$this->impersonateType = $type;
+		}
+
+		/**
 		 * Check if we have valid auth details.
 		 *
 		 * @return True if we can auth successfully.
@@ -72,7 +87,8 @@
 		}
 
 		/**
-		 * Get information about the user we are authed as
+		 * Get information about the user we are authed as and our current
+		 * access level.
 		 *
 		 * @return Array of user data or null if we are not authed.
 		 */
@@ -80,19 +96,69 @@
 			if ($this->auth === FALSE) { return NULL; }
 
 			$result = $this->api('/userdata');
-			return isset($result['response']['user']) ? $result['response']['user'] : NULL;
+			return isset($result['response']) ? $result['response'] : NULL;
+		}
+
+		/**
+		 * Get information about all users we can see.
+		 *
+		 * @return Result from the API.
+		 */
+		public function getUsers() {
+			if ($this->auth === FALSE) { return NULL; }
+
+			$result = $this->api('/users');
+			return $result;
+		}
+
+		/**
+		 * Set information a given user id.
+		 *
+		 * @param $userid User ID to get data for (Default: 'self')
+		 * @return Result from the api
+		 */
+		public function getUserInfo($userID = 'self') {
+			if ($this->auth === FALSE) { return NULL; }
+
+			$result = $this->api('/users/' . $userID);
+			return isset($result['response']) ? $result['response'] : NULL;
 		}
 
 		/**
 		 * Update information about the user we are authed as
 		 *
 		 * @param $data Data to use for the update
+		 * @param $userid User ID to edit (Default: 'self')
 		 * @return Result from the api
 		 */
-		public function setUserData($data) {
+		public function setUserInfo($data, $userID = 'self') {
 			if ($this->auth === FALSE) { return []; }
 
-			return $this->api('/users/self', 'POST', $data);
+			return $this->api('/users/' . $userID, 'POST', $data);
+		}
+
+		/**
+		 * Create a new user
+		 *
+		 * @param $data for the create operation
+		 * @return Result from the api
+		 */
+		public function createUser($data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/create', 'POST', $data);
+		}
+
+		/**
+		 * Delete the given user id.
+		 *
+		 * @param $userid User ID to delete.
+		 * @return Result from the api
+		 */
+		public function deleteUser($userID) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/' . $userID, 'DELETE');
 		}
 
 		/**
@@ -276,6 +342,14 @@
 					$headers['X-API-KEY'] = $this->auth['key'];
 				} else if ($this->auth['type'] == 'userpass') {
 					$options['auth'] = [$this->auth['user'], $this->auth['pass']];
+				}
+			}
+
+			if ($this->impersonate !== FALSE) {
+				if ($this->impersonateType == 'id') {
+					$headers['X-IMPERSONATE-ID'] = $this->impersonate;
+				} else {
+					$headers['X-IMPERSONATE'] = $this->impersonate;
 				}
 			}
 

@@ -1,9 +1,15 @@
-<div class="nav-link">
-<strong>
-Domains List
-</strong>
-<input class="form-control" id="sidebarsearch" value="" placeholder="Domain Search...">
-</div>
+{% if title or showsearch %}
+	<div class="nav-link">
+		{% if title %}
+			<strong>
+				{{ title }}
+			</strong>
+		{% endif %}
+		{% if showsearch %}
+			<input class="form-control" id="sidebarsearch" value="" placeholder="Search...">
+		{% endif %}
+	</div>
+{% endif %}
 
 {% for section in menu %}
 	<ul class="nav nav-pills flex-column">

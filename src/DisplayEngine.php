@@ -6,6 +6,7 @@
 		private $basepath;
 		private $vars = [];
 		private $pageID = '';
+		private $customSidebar = FALSE;
 
 		public function __construct($config) {
 			$loader = new Twig_Loader_Filesystem();
@@ -70,6 +71,11 @@
 			return $this;
 		}
 
+		public function setSidebar($vars) {
+			$this->customSidebar = $vars;
+			return $this;
+		}
+
 		public function setVar($var, $value) {
 			$this->vars[$var] = $value;
 			return $this;
@@ -80,13 +86,16 @@
 		}
 
 		public function getURL($path) {
-			return sprintf('%s/%s', rtrim($this->basepath, '/'), ltrim($path, '/'));
+			$path = sprintf('%s/%s', rtrim($this->basepath, '/'), ltrim($path, '/'));
+
+			return $path;
 		}
 
 		public function setExtraVars() {
 			if (session::isLoggedIn()) {
 				$user = session::getCurrentUser();
-				$this->setVar('user', $user);
+				$this->setVar('user', $user['user']);
+				$this->setVar('useraccess', $user['access']);
 			}
 		}
 
@@ -134,32 +143,45 @@
 		}
 
 		public function showSidebar() {
-			$menu = [];
-			$sections = [];
+			$vars = [];
 
-			if (session::exists('domains')) {
-				$domains = session::get('domains');
-				foreach ($domains as $domain => $access) {
-					$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'dataValue' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
-				}
+			if ($this->customSidebar !== FALSE) {
+				$vars = $this->customSidebar;
+			} else {
+				$menu = [];
+				$sections = [];
 
-				foreach (['owner', 'admin', 'write', 'read'] as $section) {
-					if (array_key_exists($section, $sections)) {
-						$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+				if (session::exists('domains') && !startsWith($this->pageID, '/admin')) {
+					$vars['title'] = 'Domains List';
+					$vars['showsearch'] = true;
+
+					$domains = session::get('domains');
+					foreach ($domains as $domain => $access) {
+						$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'dataValue' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
+					}
+
+					foreach (['owner', 'admin', 'write', 'read'] as $section) {
+						if (array_key_exists($section, $sections)) {
+							$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+						}
 					}
 				}
+
+				$vars['menu'] = $menu;
 			}
 
-			$this->twig->display('sidebar_menu.tpl', ['menu' => $menu]);
+			$this->twig->display('sidebar_menu.tpl', $vars);
 		}
 
 		public function showHeaderMenu() {
 			$menu = [];
 
-			/* $menu[] = ['link' => '#', 'title' => 'Home', 'active' => true];
-			$menu[] = ['link' => '#', 'title' => 'Settings'];
-			$menu[] = ['link' => '#', 'title' => 'Profile'];
-			$menu[] = ['link' => '#', 'title' => 'Help']; */
+			if (session::get('isadmin')) {
+				$menu[] = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
+
+				$menu[] = ['link' => $this->getURL('/admin/users'), 'title' => 'Manage Users', 'active' => ($this->pageID == '/admin/users')];
+				$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
+			}
 
 			$this->twig->display('header_menu.tpl', ['menu' => $menu]);
 		}
