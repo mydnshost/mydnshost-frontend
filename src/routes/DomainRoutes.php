@@ -3,6 +3,16 @@
 
 		public function addRoutes($router, $displayEngine, $api) {
 
+			$router->get('/domains', function() use ($router, $displayEngine, $api) {
+				$domains = $api->getDomains();
+				$allDomains = [];
+				foreach ($domains as $domain => $access) {
+					$allDomains[] = ['domain' => $domain, 'access' => $access];
+				}
+				$displayEngine->setVar('domains', $allDomains);
+				$displayEngine->display('alldomains.tpl');
+			});
+
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
 				$domainData = $api->getDomainData($domain);
 				$displayEngine->setPageID('/domain/' . $domain)->setTitle('Domain :: ' . $domain);
