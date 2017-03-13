@@ -68,12 +68,6 @@
 				$apiresult = $api->updateAPIKey($key, $data);
 				$result = ['unknown', 'unknown'];
 
-				echo '<pre>';
-				var_dump($data);
-				echo '<hr>';
-				var_dump($apiresult);
-				die();
-
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
 						$apiresult['errorData'] = 'Unspecified error.';
