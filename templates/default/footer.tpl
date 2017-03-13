@@ -2,6 +2,6 @@
       </div>
     </div>
 
-	<script src="{{ url('/assets/script.js') }}"></script>
+    <script src="{{ url('/assets/script.js') }}"></script>
   </body>
 </html>
