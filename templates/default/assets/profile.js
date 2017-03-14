@@ -108,6 +108,7 @@ $('button[data-action="savekey"]').click(function () {
 		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + $(this).val() + '">');
 	});
 
+	// TODO: Do this with AJAX.
 	saveform.submit();
 });
 
@@ -119,6 +120,7 @@ $('button[data-action="deletekey"]').click(function () {
 	okButton.removeClass("btn-success").addClass("btn-danger").text("Delete API Key");
 
 	okButton.off('click').click(function () {
+		// TODO: Do this with AJAX.
 		deleteform.submit();
 	});
 
