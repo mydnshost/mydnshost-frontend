@@ -38,11 +38,11 @@
 		{% if user.admin %}
 			<tr>
 				<th>Admin</th>
-				<td> {{ user.admin }}</td>
+				<td> {{ user.admin | yesno }}</td>
 			</tr>
 			<tr>
 				<th>Disabled</th>
-				<td> {{ user.disabled }}</td>
+				<td> {{ user.disabled | yesno }}</td>
 			</tr>
 		{% endif %}
 
