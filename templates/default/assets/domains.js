@@ -8,11 +8,15 @@ $('button[data-action="editsoa"]').click(function () {
 
 		$(this).data('action', 'cancel');
 		$(this).html('Cancel');
+		$(this).removeClass('btn-primary');
+		$(this).addClass('btn-warning');
 	} else if ($(this).data('action') == "cancel") {
 		cancelEditSOA();
 
 		$(this).data('action', 'editsoa');
 		$(this).html('Edit SOA');
+		$(this).addClass('btn-primary');
+		$(this).removeClass('btn-warning');
 	}
 
 	return false;
@@ -147,7 +151,7 @@ $('button[data-action="addaccess"]').click(function () {
 	row += '	<td class="who" data-value=""></td>';
 	row += '	<td class="access" data-value="read"></td>';
 	row += '	<td class="actions" data-value="">';
-	row += '		<button type="button" class="btn btn-sm btn-danger" data-action="deleteaccess" role="button">Cancel</button>';
+	row += '		<button type="button" class="btn btn-sm btn-warning" data-action="deleteaccess" role="button">Cancel</button>';
 	row += '	</td>';
 	row += '</tr>';
 
