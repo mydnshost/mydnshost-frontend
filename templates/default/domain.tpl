@@ -48,7 +48,7 @@
 		</tr>
 		<tr>
 			<th>Access level</th>
-			<td data-myaccess="{{ domain.access }}">{{ domain.access | capitalize }}</td>
+			<td data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
 		</tr>
 	</tbody>
 </table>
@@ -56,15 +56,15 @@
 
 <div class="row" id="domaincontrols">
 	<div class="col">
-		<a href="{{ url("/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
+		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
 
-		{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+		{% if has_domain_write %}
 			<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit SOA</button>
 			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 		{% endif %}
 
 
-		{% if domain.access == 'owner' %}
+		{% if has_domain_owner %}
 			<div class="float-right">
 				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
 			</div>
@@ -83,7 +83,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-							<form id="deletedomainform" method="post" action="{{ url("/domain/#{domain.domain}/delete") }}">
+							<form id="deletedomainform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/delete") }}">
 								<input type="hidden" name="confirm" value="true">
 								<button type="submit" class="btn btn-danger">Delete domain</button>
 							</form>
@@ -106,7 +106,7 @@
 		<tr>
 			<th>Who</th>
 			<th>Access Level</th>
-			{% if domain.access == 'owner' or domain.access == 'admin' %}
+			{% if has_domain_admin %}
 				<th>Actions</th>
 			{% endif %}
 		</tr>
@@ -121,9 +121,9 @@
 			<td class="access" data-value="{{ access }}" {% if editedaccess[email] %} data-edited-value="{{ editedaccess[email].level }}" {% endif %}>
 				{{ access }}
 			</td>
-			{% if domain.access == 'owner' or domain.access == 'admin' %}
+			{% if has_domain_admin %}
 				<td>
-					{% if email != user.email %}
+					{% if canChangeAccess(email) %}
 						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
 					{% endif %}
 				</td>
@@ -144,7 +144,7 @@
 	</tbody>
 </table>
 
-{% if domain.access == 'owner' or domain.access == 'admin' %}
+{% if has_domain_admin %}
 	<button type="button" data-action="addaccess" class="btn btn-success" role="button">Add Access</button>
 	<button type="submit" class="btn btn-primary" role="button">Update Access</button>
 {% endif %}

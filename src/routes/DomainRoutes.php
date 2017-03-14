@@ -1,9 +1,62 @@
 <?php
+	class AdminDomainRoutes extends DomainRoutes {
+		public function setAccessVars($displayEngine, $domainData) {
+			parent::setAccessVars($displayEngine, $domainData);
+
+			$displayEngine->setVar('has_domain_owner', true);
+			$displayEngine->setVar('has_domain_admin', true);
+			$displayEngine->setVar('has_domain_write', true);
+			$displayEngine->setVar('has_domain_read', true);
+
+			$displayEngine->setVar('domain_access_level', 'Owner (override)');
+		}
+
+		public function getURL($displayEngine, $location) {
+			return $displayEngine->getURL('/admin/' . ltrim($location, '/'));
+		}
+
+		public function setPageID($displayEngine, $pageid) {
+			return $displayEngine->setPageID('/admin/domains');
+		}
+
+		public function setVars($displayEngine) {
+			$displayEngine->setVar('pathprepend', '/admin');
+
+			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return true; }));
+		}
+	}
+
 	class DomainRoutes {
+
+		public function setAccessVars($displayEngine, $domainData) {
+			if (!isset($domainData['access'])) { $domainData['access'] = 'none'; }
+			$displayEngine->setVar('has_domain_owner', in_array($domainData['access'], ['owner']));
+			$displayEngine->setVar('has_domain_admin', in_array($domainData['access'], ['owner', 'admin']));
+			$displayEngine->setVar('has_domain_write', in_array($domainData['access'], ['owner', 'admin', 'write']));
+			$displayEngine->setVar('has_domain_read', in_array($domainData['access'], ['owner', 'admin', 'write', 'read']));
+
+			$displayEngine->setVar('domain_access_level', $domainData['access']);
+		}
+
+		public function getURL($displayEngine, $location) {
+			return $displayEngine->getURL($location);
+		}
+
+		public function setPageID($displayEngine, $pageid) {
+			return $displayEngine->setPageID($pageid);
+		}
+
+		public function setVars($displayEngine) {
+			$displayEngine->setVar('pathprepend', '');
+
+			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return $email != session::getCurrentUser()['user']['email']; }));
+		}
 
 		public function addRoutes($router, $displayEngine, $api) {
 
 			$router->get('/domains', function() use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
 				$domains = $api->getDomains();
 				$allDomains = [];
 				foreach ($domains as $domain => $access) {
@@ -14,8 +67,10 @@
 			});
 
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
 				$domainData = $api->getDomainData($domain);
-				$displayEngine->setPageID('/domain/' . $domain)->setTitle('Domain :: ' . $domain);
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain);
 
 				if ($domainData !== NULL) {
 					// Change SOA Stuff.
@@ -36,7 +91,7 @@
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
-							header('Location: ' . $displayEngine->getURL('/domain/' . $domain));
+							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain));
 							return;
 						}
 					} else if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'access') {
@@ -59,7 +114,7 @@
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
-							header('Location: ' . $displayEngine->getURL('/domain/' . $domain));
+							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain));
 							return;
 						}
 
@@ -72,6 +127,7 @@
 						$domainData['access'] = $domains[$domain];
 					}
 					$displayEngine->setVar('domain', $domainData);
+					$this->setAccessVars($displayEngine, $domainData);
 
 					$displayEngine->setVar('domainaccess', $api->getDomainAccess($domain));
 
@@ -83,8 +139,10 @@
 			});
 
 			$router->match('GET|POST', '/domain/([^/]+)/records', function($domain) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
 				$domainData = $api->getDomainData($domain);
-				$displayEngine->setPageID('/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Records');
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Records');
 
 				if ($domainData !== NULL) {
 					$records = [];
@@ -128,7 +186,7 @@
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
-							header('Location: ' . $displayEngine->getURL('/domain/' . $domain . '/records'));
+							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain . '/records'));
 							return;
 						}
 
@@ -157,6 +215,7 @@
 						$domainData['access'] = $domains[$domain];
 					}
 					$displayEngine->setVar('domain', $domainData);
+					$this->setAccessVars($displayEngine, $domainData);
 					$displayEngine->setVar('records', $records);
 
 					$displayEngine->display('domain_records.tpl');
@@ -168,20 +227,22 @@
 
 
 			$router->match('POST', '/domain/([^/]+)/delete', function($domain) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
 				if (isset($_POST['confirm']) && parseBool($_POST['confirm'])) {
 					$result = $api->deleteDomain($domain);
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'There was an error deleting the domain.');
-						header('Location: ' . $displayEngine->getURL('/domain/' . $domain ));
+						header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
 						return;
 					} else {
 						$displayEngine->flash('success', '', 'Domain ' . $domain . ' has been deleted.');
-						header('Location: ' . $displayEngine->getURL('/'));
+						header('Location: ' . $this->getURL($displayEngine, '/domains'));
 						return;
 					}
 				} else {
-					header('Location: ' . $displayEngine->getURL('/domain/' . $domain ));
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
 					return;
 				}
 			});

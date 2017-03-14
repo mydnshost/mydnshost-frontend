@@ -55,11 +55,14 @@
 			$this->twig = $twig;
 		}
 
+		public function getTwig() {
+			return $this->twig;
+		}
+
 		public function setPageID($pageID) {
 			$this->pageID = $pageID;
 			return $this;
 		}
-
 
 		public function setSiteName($sitename) {
 			$this->vars['sitename'] = $sitename;

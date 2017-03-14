@@ -1,6 +1,6 @@
 <H1>Domain :: {{ domain.domain }} :: Records</H1>
 
-{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+{% if has_domain_write %}
 <form method="post">
 {% endif %}
 <table id="soainfo" class="table table-striped table-bordered form-group">
@@ -21,7 +21,7 @@
 			<th class="content">Content</th>
 			<th class="ttl">TTL</th>
 			<th class="state">Disabled</th>
-			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+			{% if has_domain_write %}
 			<th class="actions">Actions</th>
 			{% endif %}
 		</tr>
@@ -58,7 +58,7 @@
 					{{ record.disabled | yesno }}
 				</span>
 			</td>
-			{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+			{% if has_domain_write %}
 				<td class="actions">
 					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
 					<button type="button" class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
@@ -68,7 +68,7 @@
 		{% endfor %}
 
 
-		{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+		{% if has_domain_write %}
 			{% for id,record in newRecords %}
 			<tr class="new form-group" data-edited="true" {% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}>
 				<td class="name" data-edited-value="{{record.name }}"></td>
@@ -87,7 +87,7 @@
 	</tbody>
 </table>
 
-{% if domain.access == 'owner' or domain.access == 'admin' or domain.access == 'write' %}
+{% if has_domain_write %}
 <div class="row">
 	<div class="col">
 		<button type="button" class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>

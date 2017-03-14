@@ -14,6 +14,8 @@
 		private $impersonate = FALSE;
 		/** Are we impersonating an email address or an ID? */
 		private $impersonateType = FALSE;
+		/** Are we accessing domain functions with admin override? */
+		private $domainAdminOverride = FALSE;
 
 		/**
 		 * Create a new MyDNSHostAPI
@@ -71,6 +73,8 @@
 		public function impersonate($user, $type = 'email') {
 			$this->impersonate = $user;
 			$this->impersonateType = $type;
+
+			return $this;
 		}
 
 		/**
@@ -222,6 +226,18 @@
 			return isset($result['response']['session']) ? $result['response']['session'] : NULL;
 		}
 
+
+		/**
+		 * Enable or disable domain admin-override.
+		 *
+		 * @param $value (Default: true) Set value for domain admin override.
+		 */
+		public function domainAdmin($value = true) {
+			$this->domainAdminOverride = true;
+
+			return $this;
+		}
+
 		/**
 		 * Get list of our domains.
 		 *
@@ -230,7 +246,7 @@
 		public function getDomains() {
 			if ($this->auth === FALSE) { return []; }
 
-			$result = $this->api('/domains');
+			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains');
 			return isset($result['response']) ? $result['response'] : NULL;
 		}
 
@@ -243,7 +259,7 @@
 		public function deleteDomain($domain) {
 			if ($this->auth === FALSE) { return []; }
 
-			return $this->api('/domains/' . $domain, 'DELETE');
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain, 'DELETE');
 		}
 
 		/**
@@ -255,7 +271,7 @@
 		public function getDomainData($domain) {
 			if ($this->auth === FALSE) { return []; }
 
-			$result = $this->api('/domains/' . $domain);
+			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain);
 			return isset($result['response']) ? $result['response'] : NULL;
 		}
 
@@ -269,7 +285,7 @@
 		public function setDomainData($domain, $data) {
 			if ($this->auth === FALSE) { return []; }
 
-			return $this->api('/domains/' . $domain, 'POST', $data);
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain, 'POST', $data);
 		}
 
 		/**
@@ -281,7 +297,7 @@
 		public function getDomainAccess($domain) {
 			if ($this->auth === FALSE) { return []; }
 
-			$result = $this->api('/domains/' . $domain . '/access');
+			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/access');
 			return isset($result['response']['access']) ? $result['response']['access'] : NULL;
 		}
 
@@ -295,7 +311,7 @@
 		public function setDomainAccess($domain, $data) {
 			if ($this->auth === FALSE) { return []; }
 
-			return $this->api('/domains/' . $domain . '/access', 'POST', $data);
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/access', 'POST', $data);
 		}
 
 		/**
@@ -307,7 +323,7 @@
 		public function getDomainRecords($domain) {
 			if ($this->auth === FALSE) { return []; }
 
-			$result = $this->api('/domains/' . $domain . '/records');
+			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/records');
 			return isset($result['response']['records']) ? $result['response']['records'] : NULL;
 		}
 
@@ -321,7 +337,7 @@
 		public function setDomainRecords($domain, $data) {
 			if ($this->auth === FALSE) { return []; }
 
-			return $this->api('/domains/' . $domain . '/records', 'POST', $data);
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/records', 'POST', $data);
 		}
 
 		/**

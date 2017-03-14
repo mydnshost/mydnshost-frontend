@@ -2,12 +2,26 @@
 	class AdminRoutes {
 
 		public function addRoutes($router, $displayEngine, $api) {
-			$router->get('/admin/domains', function() use ($displayEngine) {
-				$displayEngine->setPageID('/admin/domains')->setTitle('Admin :: Domains');
 
-				$displayEngine->display('blank.tpl');
+			$router->before('GET|POST', '/admin/.*', function() use ($api, $displayEngine) {
+				$displayEngine->setVar('nosidebar', true);
+				$api->domainAdmin();
 			});
 
+			$router->get('/admin/domains', function() use ($displayEngine, $api) {
+				$displayEngine->setPageID('/admin/domains')->setTitle('Admin :: Domains');
+
+				$domains = $api->domainAdmin()->getDomains();
+
+				if (isset($domains)) {
+					$displayEngine->setVar('domains', $domains);
+				}
+				$displayEngine->display('admin/domains.tpl');
+			});
+
+			$router->mount('/admin', function() use ($router, $displayEngine, $api) {
+				(new AdminDomainRoutes())->addRoutes($router, $displayEngine, $api);
+			});
 
 			$router->get('/admin/users', function() use ($displayEngine, $api) {
 				$displayEngine->setPageID('/admin/users')->setTitle('Admin :: Users');
