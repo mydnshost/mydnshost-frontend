@@ -93,7 +93,7 @@ $('button[data-action="add"]').click(function () {
 	row += '	<td class="ttl" data-value=""></td>';
 	row += '	<td class="state" data-value="No"></td>';
 	row += '	<td class="actions" data-value="">';
-	row += '		<button type="button" class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>';
+	row += '		<button type="button" class="btn btn-sm btn-warning" data-action="delete" role="button">Cancel</button>';
 	row += '	</td>';
 	row += '</tr>';
 

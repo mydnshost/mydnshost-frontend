@@ -78,7 +78,7 @@
 						header('Location: ' . $displayEngine->getURL('/admin/users'));
 						return;
 					} else {
-						AdminRoutes::safeClearSession();
+						session::clear(['logindata', 'DisplayEngine::Flash']);
 						session::set('impersonate', $impersonate);
 
 						$displayEngine->flash('info', '', 'Impersonating: ' . $result['user']['email']);
@@ -162,14 +162,5 @@
 				header('Location: ' . $displayEngine->getURL('/admin/users'));
 				return;
 			});
-		}
-
-		static function safeClearSession() {
-			// Clear unneeded session data.
-			$keep = array('logindata', 'message');
-			$keepData = array();
-			foreach ($keep as $k) { $keepData[$k] = session::get($k); }
-			session::clear();
-			foreach ($keepData as $k => $v) { session::set($k, $v); }
 		}
 	}

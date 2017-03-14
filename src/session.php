@@ -56,10 +56,23 @@
 
 		/**
 		 * Clear this session.
+		 *
+		 * @param $keep (Default: []) Array of saved vars not to clear.
 		 */
-		static function clear() {
+		static function clear($keep = []) {
+			$keepData = array();
+			foreach ($keep as $k) {
+				if (isset(self::$storedVars[$k])) {
+					$keepData[$k] = self::$storedVars[$k];
+				}
+			}
 			self::$user = null;
 			self::$storedVars = array();
+
+			foreach ($keepData as $k => $v) {
+				self::$storedVars[$k] = $v;
+			}
+
 			session::save();
 		}
 

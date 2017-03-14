@@ -30,7 +30,7 @@
 				$person = session::get('impersonate');
 				$displayEngine->flash('info', '', 'You are no longer impersonating: ' . $person);
 
-				AdminRoutes::safeClearSession();
+				session::clear(['logindata', 'DisplayEngine::Flash']);
 
 				header('Location: ' . $displayEngine->getURL('/admin/users'));
 				return;

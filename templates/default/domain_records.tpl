@@ -76,9 +76,10 @@
 				<td class="priority" data-edited-value="{{record.priority }}"></td>
 				<td class="content" data-edited-value="{{record.content }}"></td>
 				<td class="ttl" data-edited-value="{{record.ttl }}"></td>
+				<td class="ttl" data-edited-value="No"></td>
 				<td class="actions">
 					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-					<button type="button" class="btn btn-sm btn-danger" data-action="deletenew" role="button">Delete</button>
+					<button type="button" class="btn btn-sm btn-warning" data-action="deletenew" role="button">Cancel</button>
 				</td>
 			</tr>
 			{% endfor %}

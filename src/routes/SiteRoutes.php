@@ -31,8 +31,13 @@
 			});
 
 			$router->set404(function() use ($displayEngine) {
-				header('HTTP/1.1 404 Not Found');
-				$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
+				if (session::exists('logindata')) {
+					header('HTTP/1.1 404 Not Found');
+					$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
+				} else {
+					header('Location: ' . $displayEngine->getURL('/login'));
+					return;
+				}
 			});
 		}
 	}

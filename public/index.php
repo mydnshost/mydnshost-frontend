@@ -43,10 +43,11 @@
 			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
 		}
 	} else {
-		$wasLoggedIn = session::isLoggedIn();
-		session::clear();
-		if ($wasLoggedIn) {
-			$displayEngine->flash('warning', 'Session timeout', 'Your login session has timed out. Please log in again.');
+		$hadLoginDetails = session::exists('logindata');
+		session::clear(['DisplayEngine::Flash']);
+
+		if ($hadLoginDetails) {
+			$displayEngine->flash('info', 'Session timeout', 'Your login session has timed out. Please log in again.');
 
 			header('Location: ' . $displayEngine->getURL('/login'));
 			die();
