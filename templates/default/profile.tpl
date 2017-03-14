@@ -124,8 +124,23 @@
 	</tbody>
 </table>
 
-<form method="post" action="{{ url('/profile/addkey') }}">
-<button type="submit" class="btn btn-success" role="button">Add API Key</button>
+<form method="post" action="{{ url('/profile/addkey') }}" class="form-inline form-group" id="addkeyform">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	<button type="submit" class="btn btn-success" role="button">Add API Key</button>
 </form>
+
+{% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete'} only %}
+	{% block title %}
+		Delete API Key
+	{% endblock %}
+
+	{% block body %}
+		Are you sure you want to delete this API Key?
+		<br><br>
+		Deleting this key will cause any applications using it to no longer have access to the api.
+		<br><br>
+		This can not be undone and any applications will need to be updated to use a new key.
+	{% endblock %}
+{% endembed %}
 
 <script src="{{ url('/assets/profile.js') }}"></script>

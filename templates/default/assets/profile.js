@@ -115,12 +115,14 @@ $('button[data-action="deletekey"]').click(function () {
 	var row = $(this).parent('td').parent('tr');
 	var deleteform = row.find('form.deleteform');
 
-	// TODO: Make this a bootstrap modal.
-	var r = confirm("Are you sure you want to delete this API Key? This can not be undone and the key can not be re-created.");
+	var okButton = $('#confirmDelete button[data-action="ok"]');
+	okButton.removeClass("btn-success").addClass("btn-danger").text("Delete API Key");
 
-	if (r == true) {
+	okButton.off('click').click(function () {
 		deleteform.submit();
-	}
+	});
+
+	$('#confirmDelete').modal({'backdrop': 'static'});
 });
 
 var newAPIKeyCount = 0;
@@ -214,3 +216,20 @@ function editableYesNo(row, fieldName, recordid) {
 	});
 
 }
+
+
+$("#addkeyform").validate({
+	highlight: function(element) {
+		$(element).closest('.form-group').addClass('has-danger');
+	},
+	unhighlight: function(element) {
+		$(element).closest('.form-group').removeClass('has-danger');
+	},
+	errorClass: 'form-control-feedback',
+	errorPlacement: function () { },
+	rules: {
+		description: {
+			required: true
+		}
+	},
+});

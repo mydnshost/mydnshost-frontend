@@ -44,7 +44,7 @@
 			});
 
 			$router->post('/profile/addkey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
-				$apiresult = $api->createAPIKey(['description' => 'New API Key: ' . date('Y-m-d H:i:s')]);
+				$apiresult = $api->createAPIKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New API Key: ' . date('Y-m-d H:i:s'))]);
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {
