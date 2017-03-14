@@ -249,7 +249,7 @@ function cancelEdit(row) {
 }
 
 function isIPv4(input) {
-	return /^([0-9]+\.){1,3}[0-9]+$/.test(input);
+	return /^([0-9]+\.){3}[0-9]+$/.test(input);
 }
 
 function isIPv6(input) {
