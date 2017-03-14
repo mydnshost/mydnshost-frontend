@@ -83,8 +83,9 @@ h1 {
  **********************************************************************/
 
 table tr.deleted td {
-  background-color: #f2dede;
-  color: #a94442;
+  /* background-color: #f2dede; */
+  background-color: #eee;
+  color: #ccc;
   text-decoration: line-through;
 }
 
@@ -137,7 +138,7 @@ table#records td input, table#records td select {
 }
 
 table#records tr.error td {
-  background-color: #bcdff1
+  background-color: #f2dede
 }
 
 /**********************************************************************

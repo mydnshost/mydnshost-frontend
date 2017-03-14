@@ -21,12 +21,16 @@ $('button[data-action="edit"]').click(function () {
 		$(this).data('action', 'cancel');
 		$(this).html('Cancel');
 		row.addClass('edited');
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-warning');
 	} else if ($(this).data('action') == "cancel") {
 		cancelEdit(row);
 
 		$(this).data('action', 'edit');
 		$(this).html('Edit');
 		row.removeClass('edited');
+		$(this).addClass('btn-success');
+		$(this).removeClass('btn-warning');
 	}
 
 	// If this is a hacky edit button, remove it.
@@ -45,6 +49,8 @@ $('button[data-action="delete"]').click(function () {
 	cancelEdit(row);
 	row.find('button[data-action="edit"]').data('action', 'edit');
 	row.find('button[data-action="edit"]').html('Edit');
+	row.find('button[data-action="edit"]').addClass('btn-success');
+	row.find('button[data-action="edit"]').removeClass('btn-warning');
 
 	if ($(this).data('action') == "delete") {
 		row.find('button[data-action="edit"]').hide();
@@ -124,6 +130,7 @@ $('tr[data-deleted="true"]').each(function (index) {
 
 $('tr[data-error-data]').each(function (index) {
 	$(this).addClass("error");
+	$(this).addClass("has-danger");
 
 	$(this).tooltip({'title': $(this).data('error-data')});
 });
