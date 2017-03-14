@@ -114,11 +114,15 @@ $('button[data-action="editaccess"]').click(function () {
 
 		$(this).data('action', 'cancel');
 		$(this).html('Cancel');
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-warning');
 	} else if ($(this).data('action') == "cancel") {
 		cancelEditAccess(row);
 
 		$(this).data('action', 'editaccess');
 		$(this).html('Edit');
+		$(this).addClass('btn-success');
+		$(this).removeClass('btn-warning');
 	}
 
 	// If this is a hacky edit button, remove it.

@@ -27,7 +27,7 @@
 				{{ userinfo.realname }}
 			</td>
 			<td class="admin">
-				<span class="value" data-field="admin">
+				<span class="value badge {% if userinfo.admin == 'true' %}badge-primary{% else %}badge-default{% endif %}" data-field="admin" data-class-yes="badge-primary" data-class-no="badge-default">
 					{{ userinfo.admin | yesno }}
 				</span>
 				{% if userinfo.email != user.email %}
@@ -40,7 +40,7 @@
 				{% endif %}
 			</td>
 			<td class="state">
-				<span class="value" data-field="disabled">
+				<span class="value badge {% if userinfo.disabled == 'true' %}badge-success{% else %}badge-danger{% endif %}" data-field="disabled" data-class-yes="badge-success" data-class-no="badge-danger">
 					{{ userinfo.disabled | yesno }}
 				</span>
 				{% if userinfo.email != user.email %}

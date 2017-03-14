@@ -13,7 +13,12 @@ $('button[data-user-action]').click(function () {
 			alert('There was an error: ' + data['error']);
 		} else if (data['response'] !== undefined) {
 			var newVal = data['response'][value.data('field')] == 'true' ? "Yes" : "No";
+			var classVal = value.data('class-' + newVal.toLowerCase().trim());
+			var classOldVal = value.data('class-' + value.text().toLowerCase().trim());
+
 			value.text(newVal);
+			value.removeClass(classOldVal);
+			value.addClass(classVal);
 
 			col.find('span.action[data-value]').each(function() {
 				if ($(this).data('value') == newVal) {
