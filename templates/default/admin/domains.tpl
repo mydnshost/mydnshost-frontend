@@ -1,5 +1,7 @@
 <H1>All Domains</H1>
 
+<input class="form-control" data-search-top="table#domainlist" value="" placeholder="Search..."><br>
+
 <table id="domainlist" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -10,7 +12,7 @@
 	</thead>
 	<tbody>
 		{% for name,domain in domains %}
-		<tr>
+		<tr data-searchable-value="{{ name }}">
 			<td class="domain">
 				{{ name }}
 			</td>
@@ -34,3 +36,30 @@
 		{% endfor %}
 	</tbody>
 </table>
+
+<br><br>
+
+<h1>Add Domain</h1>
+
+<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
+	<div class="form-group row">
+		<label for="domainname" class="col-2 col-form-label">Domain Name</label>
+		<div class="col-10">
+			<input class="form-control" type="text" value="" id="domainname" name="domainname">
+		</div>
+	</div>
+	<div class="form-group row">
+		<label for="owner" class="col-2 col-form-label">Owner</label>
+		<div class="col-10">
+			<input class="form-control" type="text" value="" id="owner" name="owner">
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-10 offset-2">
+			<button type="submit" class="btn btn-primary btn-block">Add Domain</button>
+		</div>
+	</div>
+</form>
+
+
+<script src="{{ url('/assets/admin_domains.js') }}"></script>

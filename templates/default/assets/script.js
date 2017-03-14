@@ -1,24 +1,24 @@
 $(".alert").alert()
 
-$("#sidebarsearch").on('input', function() {
+$("input[data-search-top]").on('input', function() {
 	var value = $(this).val();
+	var searchTop = $(this).data('search-top');
 
 	if (value == "") {
-		$("nav#sidebar li[data-value]").show();
+		$(searchTop).find("[data-searchable-value]").show();
 	} else {
 		var match = new RegExp('^.*' + escapeRegExp(value) + '.*$', 'i');
 
-		$("nav#sidebar li[data-value]").each(function() {
-			if ($(this).data('value').match(match)) {
+		$(searchTop).find("[data-searchable-value]").each(function() {
+			if ($(this).data('searchable-value').match(match)) {
 				$(this).show();
 			} else {
 				$(this).hide();
 			}
 		});
 	}
-
 });
 
 function escapeRegExp(str) {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }

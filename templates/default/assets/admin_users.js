@@ -65,13 +65,19 @@ $("#adduser").validate({
 	errorClass: 'form-control-feedback',
 	rules: {
 		password: {
+			required: true,
 			minlength: 6,
 		},
 		confirmpassword: {
+			required: true,
 			equalTo: "#password",
 		},
 		email: {
+			required: true,
 			email: true
+		},
+		realname: {
+			required: true
 		}
 	},
 });

@@ -6,7 +6,7 @@
 			</strong>
 		{% endif %}
 		{% if showsearch %}
-			<input class="form-control" id="sidebarsearch" value="" placeholder="Search...">
+			<input class="form-control" data-search-top="nav#sidebar" value="" placeholder="Search...">
 		{% endif %}
 	</div>
 {% endif %}
@@ -14,7 +14,7 @@
 {% for section in menu %}
 	<ul class="nav nav-pills flex-column">
 	{% for item in section %}
-		<li class="nav-item" {% if item.dataValue %}data-value="{{ item.dataValue }}"{% endif %}>
+		<li class="nav-item" {% if item.dataValue %}data-searchable-value="{{ item.dataValue }}"{% endif %}>
 			{% if item.link %}
 				<a class="nav-link{% if item.active %} active{% endif %}" href="{{ item.link }}">
 			{% else %}

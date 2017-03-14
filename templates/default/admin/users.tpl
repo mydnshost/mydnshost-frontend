@@ -1,5 +1,7 @@
 <H1>User List</H1>
 
+<input class="form-control" data-search-top="table#userlist" value="" placeholder="Search..."><br>
+
 <table id="userlist" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -13,7 +15,7 @@
 	</thead>
 	<tbody>
 		{% for userinfo in users %}
-		<tr>
+		<tr data-searchable-value="{{ userinfo.email }}">
 			<td class="id">
 				{{ userinfo.id }}
 			</td>

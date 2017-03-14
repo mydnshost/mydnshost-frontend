@@ -251,6 +251,24 @@
 		}
 
 		/**
+		 * Create a domain.
+		 *
+		 * @param $domain Domain to create.
+		 * @param $owner (Default: NULL) Who to set as owner (if null, self);
+		 * @return Result from the API
+		 */
+		public function createDomain($domain, $owner = NULL) {
+			if ($this->auth === FALSE) { return []; }
+
+			$data = ['domain' => $domain];
+			if ($owner !== null) {
+				$data['owner'] = $owner;
+			}
+
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains', 'POST', $data);
+		}
+
+		/**
 		 * Delete a domain.
 		 *
 		 * @param $domain Domain to delete.

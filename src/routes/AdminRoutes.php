@@ -19,6 +19,40 @@
 				$displayEngine->display('admin/domains.tpl');
 			});
 
+
+			$router->post('/admin/domains/create', function() use ($displayEngine, $api) {
+				$canUpdate = true;
+
+				$fields = ['domainname' => 'You must specify a domain name to create'
+				          ];
+
+				foreach ($fields as $field => $error) {
+					if (!array_key_exists($field, $_POST) || empty($_POST[$field])) {
+						$canUpdate = false;
+						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $error);
+						break;
+					}
+				}
+
+				if ($canUpdate) {
+					$result = $api->createDomain($_POST['domainname'], isset($_POST['owner']) ? $_POST['owner'] : '');
+
+					if (array_key_exists('error', $result)) {
+						$errorData = $result['error'];
+						if (array_key_exists('errorData', $result)) {
+							$errorData .= ' => ' . $result['errorData'];
+						}
+						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $result['errorData']);
+					} else {
+						$displayEngine->flash('success', '', 'New domain ' . $_POST['domainname'] . ' has been created');
+					}
+				}
+
+				header('Location: ' . $displayEngine->getURL('/admin/domains'));
+				return;
+			});
+
+
 			$router->mount('/admin', function() use ($router, $displayEngine, $api) {
 				(new AdminDomainRoutes())->addRoutes($router, $displayEngine, $api);
 			});
@@ -113,7 +147,10 @@
 					$result = $api->createUser($_POST);
 
 					if (array_key_exists('error', $result)) {
-						if (!array_key_exists('errorData', $result)) {
+						$errorData = $result['error'];
+						if (array_key_exists('errorData', $result)) {
+							$errorData .= ' => ' . $result['errorData'];
+						} else {
 							$result['errorData'] = 'Unspecified error. (Email address already in use?)';
 						}
 						$displayEngine->flash('error', '', 'There was an error creating the user: ' . $result['errorData']);
