@@ -155,7 +155,7 @@ function setEditable(row, recordid) {
 	$.each(textFields, function(key, field) {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 
-		field.html('<input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + value + '">');
+		field.html('<input type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + value + '">');
 	});
 
 	var typeValue = (type.data('edited-value') == undefined || type.data('edited-value') == null) ? type.data('value') : type.data('edited-value');
@@ -166,6 +166,10 @@ function setEditable(row, recordid) {
 	});
 	select += '</select>';
 	type.html(select);
+
+	type.find('select').on('change', function() {
+		$("#recordsform").valid();
+	});
 
 	$('td.state', row).each(function (index) {
 		var field = $(this);
@@ -211,10 +215,9 @@ function setEditable(row, recordid) {
 		});
 	});
 
-
-
-
 	row.addClass('form-group');
+
+	$("#recordsform").valid();
 }
 
 function cancelEdit(row) {
@@ -244,3 +247,106 @@ function cancelEdit(row) {
 
 	return false;
 }
+
+function isIPv4(input) {
+	return /^([0-9]+\.){1,3}[0-9]+$/.test(input);
+}
+
+function isIPv6(input) {
+	return /^[0-9a-f]*:+[0-9a-f]*$/i.test(input);
+}
+
+function isIPAddress(input) {
+	return isIPv4(input) || isIPv6(input);
+}
+
+$.validator.addMethod("validateContent", function(value, element) {
+	var record = $(element).closest('tr');
+	var record_name = record.find('td.name input').val();
+	var record_type = record.find('td.type option:selected').val();
+	var record_content = record.find('td.content input').val();
+	var record_ttl = record.find('td.ttl input').val();
+	var record_priority = record.find('td.priority input').val();
+
+	var error = false;
+	var errorReason = '';
+
+	if ($.inArray(record_type, ['A', 'AAAA']) != -1 && !isIPAddress(record_content)) {
+		error = true;
+		errorReason = 'Record must point at an IP Address';
+	} else if ($.inArray(record_type, ['MX', 'CNAME', 'PTR']) != -1 && isIPAddress(record_content)) {
+		error = true;
+		errorReason = 'Record must point at a hostname not an IP addresses.';
+	} else if (record_type == 'CNAME' && record_content == '') {
+		error = true;
+		errorReason = 'You can not have a CNAME for the root record of the domain.';
+	} else if (record_type == 'SRV' && !record_content.match(/^[0-9]+ [0-9]+ .+$/)) {
+		error = true;
+		errorReason = 'SRV records should be formatted as \'[weight] [port] [address]\' eg \'1 443 somehost.com\'.';
+	}
+
+    $(element).data('validationErrorReason', errorReason);
+    return !error;
+}, function (params, element) {
+	return $(element).data('validationErrorReason');
+});
+
+$.validator.addMethod("validatePriority", function(value, element) {
+	var record = $(element).closest('tr');
+	var record_name = record.find('td.name input').val();
+	var record_type = record.find('td.type option:selected').val();
+	var record_content = record.find('td.content input').val();
+	var record_ttl = record.find('td.ttl input').val();
+	var record_priority = record.find('td.priority input').val();
+
+	var error = false;
+	var errorReason = '';
+
+	if ($.inArray(record_type, ['MX', 'PTR', 'SRV']) != -1 && record_priority == '') {
+		error = true;
+		errorReason = 'Priority is required for ' + record_type;
+	}
+
+    $(element).data('validationErrorReason', errorReason);
+    return !error;
+}, function (params, element) {
+	return $(element).data('validationErrorReason');
+});
+
+jQuery.validator.addClassRules('content', {
+	validateContent: true,
+	required: true,
+});
+
+jQuery.validator.addClassRules('priority', {
+	validatePriority: true,
+	digits: true,
+});
+
+jQuery.validator.addClassRules('ttl', {
+	digits: true,
+});
+
+$("#recordsform").validate({
+	highlight: function(element) {
+		$(element).closest('td').addClass('has-danger');
+		$(element).closest('tr').addClass('error');
+	},
+	unhighlight: function(element) {
+		$(element).closest('td').removeClass('has-danger');
+		$(element).closest('td').tooltip('dispose');
+
+		if ($(element).closest('tr').find('.has-danger').length == 0) {
+			$(element).closest('tr').removeClass('error');
+		}
+	},
+	errorPlacement: function (error, element) {
+		$(element).closest('td').tooltip('dispose');
+		$(element).closest('td').tooltip({'title': error});
+	},
+	errorClass: 'form-control-feedback',
+});
+
+$('button[type="submit"]').click(function () {
+	return $("#recordsform").valid();
+});

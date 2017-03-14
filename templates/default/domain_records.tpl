@@ -1,7 +1,7 @@
 <H1>Domain :: {{ domain.domain }} :: Records</H1>
 
 {% if has_domain_write %}
-<form method="post">
+<form method="post" id="recordsform">
 {% endif %}
 <table id="soainfo" class="table table-striped table-bordered form-group">
 	<tbody>
