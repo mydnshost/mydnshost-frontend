@@ -1,4 +1,10 @@
 <H1>Domain :: {{ domain.domain }} :: Records</H1>
+<p>
+This is where you can add/edit/remove records for the domain.
+</p>
+<p>
+Please note that all record names will have '<code>.{{ domain.domain }}</code>' appended to them, and all content will be saved as-is without anything appended, so you do not need to add a trailing '<code>.</code>' to content.
+</p>
 
 {% if has_domain_write %}
 <form method="post" id="recordsform">
@@ -7,7 +13,7 @@
 	<tbody>
 		<tr>
 			<th>Serial Number</th>
-			<td>{{ domain.SOA.serial }}</td>
+			<td class="mono">{{ domain.SOA.serial }}</td>
 		</tr>
 	</tbody>
 </table>
@@ -34,19 +40,19 @@
 			{% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}
 			>
 
-			<td class="name" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}>
+			<td class="name mono" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}>
 				{{ record.name }}
 			</td>
-			<td class="type" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
+			<td class="type mono" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
 				{{ record.type }}
 			</td>
-			<td class="priority" data-value="{{ record.priority }}" {% if record.edited %}data-edited-value="{{ record.edited.priority }}"{% endif %}>
+			<td class="priority mono" data-value="{{ record.priority }}" {% if record.edited %}data-edited-value="{{ record.edited.priority }}"{% endif %}>
 				{{ record.priority }}
 			</td>
-			<td class="content" data-value="{{ record.content }}" {% if record.edited %}data-edited-value="{{ record.edited.content }}"{% endif %}>
+			<td class="content mono" data-value="{{ record.content }}" {% if record.edited %}data-edited-value="{{ record.edited.content }}"{% endif %}>
 				{{ record.content }}
 			</td>
-			<td class="ttl" data-value="{{ record.ttl }}" {% if record.edited %}data-edited-value="{{ record.edited.ttl }}"{% endif %}>
+			<td class="ttl mono" data-value="{{ record.ttl }}" {% if record.edited %}data-edited-value="{{ record.edited.ttl }}"{% endif %}>
 				{{ record.ttl }}
 			</td>
 			<td class="state" data-value="{{ record.disabled | yesno }}" {% if record.edited %}data-edited-value="{{ record.edited.disabled | yesno }}"{% endif %}>

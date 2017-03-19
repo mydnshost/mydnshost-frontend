@@ -97,6 +97,10 @@ table tr.deleted td.actions {
  * Domain Tables
  **********************************************************************/
 
+.mono {
+  font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+
 table#soainfo th {
   width: 20%;
 }

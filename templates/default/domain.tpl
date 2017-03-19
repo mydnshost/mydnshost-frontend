@@ -6,31 +6,31 @@
 	<tbody>
 		<tr>
 			<th>Primary Nameserver</th>
-			<td data-name="primaryNS" data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
+			<td class="mono" data-name="primaryNS" data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
 		</tr>
 		<tr>
 			<th>Admin Email Address</th>
-			<td data-name="adminAddress" data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
+			<td class="mono" data-name="adminAddress" data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
 		</tr>
 		<tr>
 			<th>Serial Number</th>
-			<td data-name="serial" data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
+			<td class="mono" data-name="serial" data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
 		</tr>
 		<tr>
 			<th>Refresh Time</th>
-			<td data-name="refresh" data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
+			<td class="mono" data-name="refresh" data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
 		</tr>
 		<tr>
 			<th>Retry Time</th>
-			<td data-name="retry" data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
+			<td class="mono" data-name="retry" data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
 		</tr>
 		<tr>
 			<th>Expire Time</th>
-			<td data-name="expire" data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
+			<td class="mono" data-name="expire" data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
 		</tr>
 		<tr>
 			<th>Negative TTL</th>
-			<td data-name="minttl" data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
+			<td class="mono" data-name="minttl" data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
 		</tr>
 		<tr>
 			<th>Disabled</th>
@@ -48,7 +48,7 @@
 		</tr>
 		<tr>
 			<th>Access level</th>
-			<td data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
+			<td class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
 		</tr>
 	</tbody>
 </table>
