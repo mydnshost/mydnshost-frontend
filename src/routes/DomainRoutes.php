@@ -225,6 +225,57 @@
 				}
 			});
 
+			$router->match('GET', '/domain/([^/]+)/export', function($domain) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
+				$domainData = $api->getDomainData($domain);
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Export');
+
+				if ($domainData !== NULL) {
+					$zone = $api->exportZone($domain);
+
+					$displayEngine->setVar('domain', $domainData);
+					$displayEngine->setVar('zone', $zone);
+
+					$displayEngine->display('export_domain.tpl');
+				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
+					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
+
+			$router->match('GET|POST', '/domain/([^/]+)/import', function($domain) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
+				$domainData = $api->getDomainData($domain);
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Import');
+
+				if ($domainData !== NULL) {
+					$displayEngine->setVar('domain', $domainData);
+					$zone = '';
+					if ($router->getRequestMethod() == "POST") {
+						$zone = isset($_POST['zone']) ? $_POST['zone'] : '';
+						$result = $api->importZone($domain, $zone);
+
+						if (array_key_exists('error', $result)) {
+							$displayEngine->flash('error', '', 'There was an error importing the zone: ' . $result['error']);
+						} else {
+							$displayEngine->flash('success', '', 'The zone has been imported successfully.');
+
+							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain . '/records'));
+							return;
+						}
+					}
+
+					$displayEngine->setVar('zone', $zone);
+					$displayEngine->display('import_domain.tpl');
+				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
+					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
 
 			$router->match('POST', '/domain/([^/]+)/delete', function($domain) use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);
@@ -245,6 +296,14 @@
 					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
 					return;
 				}
+			});
+
+
+			$router->match('GET', '/domain/([^/]+)/sync', function($domain) use ($router, $displayEngine, $api) {
+				$api->syncDomain($domain);
+				$displayEngine->flash('success', '', 'Domain ' . $domain . ' has been synced.');
+				header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+				return;
 			});
 		}
 	}

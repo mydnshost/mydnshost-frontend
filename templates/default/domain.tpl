@@ -63,12 +63,20 @@
 			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 		{% endif %}
 
+		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
+
+		<div class="float-right">
+			{% if user.admin %}
+				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Sync Zone</a>
+			{% endif %}
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/import") }}" class="btn btn-danger" role="button">Import Zone</a>
+			{% if has_domain_owner %}
+				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
+			{% endif %}
+		</div>
+
 
 		{% if has_domain_owner %}
-			<div class="float-right">
-				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
-			</div>
-
 			<!-- Modal -->
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">

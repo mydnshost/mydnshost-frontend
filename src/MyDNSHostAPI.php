@@ -333,6 +333,45 @@
 		}
 
 		/**
+		 * Attempt to sync the domain to the backends.
+		 *
+		 * @param $domain Domain to export.
+		 * @return Array of records or an empty array.
+		 */
+		public function syncDomain($domain) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/sync');
+		}
+
+		/**
+		 * Export domain as bind zone file.
+		 *
+		 * @param $domain Domain to export.
+		 * @return Array of records or an empty array.
+		 */
+		public function exportZone($domain) {
+			if ($this->auth === FALSE) { return []; }
+
+			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/export');
+			return isset($result['response']['zone']) ? $result['response']['zone'] : NULL;
+		}
+
+		/**
+		 * Import domain from bind zone file.
+		 *
+		 * @param $domain Domain to import.
+		 * @param $zone Zonefile data
+		 * @return Array of records or an empty array.
+		 */
+		public function importZone($domain, $zone) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/import', 'POST', ['zone' => $zone]);
+		}
+
+
+		/**
 		 * Get domain records for a given domain.
 		 *
 		 * @param $domain Domain to get records for
