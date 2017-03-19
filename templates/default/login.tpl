@@ -17,7 +17,7 @@
   <body>
 
     <div class="container">
-
+      {% block contenttop %}{% endblock %}
       {{ flash() }}
 
       <form class="form-signin" method="post">
