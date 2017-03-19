@@ -19,6 +19,7 @@
   </head>
 
   <body>
+    {% block navbar %}
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
       <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -55,6 +56,7 @@
         </div>
       </div>
     </nav>
+    {% endblock %}
 
     <div class="container-fluid">
       <div class="row">
@@ -75,4 +77,5 @@
         {% else %}
           <main class="col-sm-12 pt-3">
         {% endif %}
+        {% block contenttop %}{% endblock %}
         {{ flash() }}

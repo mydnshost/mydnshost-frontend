@@ -17,7 +17,8 @@
 			foreach (array_unique(array_merge($themes, ['default'])) as $theme) {
 				$path = $config['dir'] . '/' . $theme;
 				if (file_exists($path)) {
-					$loader->addPath($path);
+					$loader->addPath($path, $theme);
+					$loader->addPath($path, '__main__');
 					$this->directories[] = $path;
 				}
 			}
