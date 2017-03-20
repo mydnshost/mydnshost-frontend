@@ -38,6 +38,7 @@
 
 			$twig->addFunction(new Twig_Function('url', function ($path) { return $this->getURL($path); }));
 			$twig->addFunction(new Twig_Function('getVar', function ($var) { return $this->getVar($var); }));
+			$twig->addFunction(new Twig_Function('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
 
 			$twig->addFunction(new Twig_Function('flash', function() { $this->displayFlash(); }));
 			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
@@ -93,6 +94,23 @@
 			$path = sprintf('%s/%s', rtrim($this->basepath, '/'), ltrim($path, '/'));
 
 			return $path;
+		}
+
+		public function hasPermission($permissions) {
+			if (session::isLoggedIn()) {
+				$user = session::getCurrentUser();
+
+				if (!is_array($permissions)) { $permissions = [$permissions]; }
+
+				foreach ($permissions as $permission) {
+					if (!array_key_exists($permission, $user['access']) || !parseBool($user['access'][$permission])) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			return false;
 		}
 
 		public function setExtraVars() {
@@ -159,6 +177,14 @@
 					$vars['title'] = 'Domains List';
 					$vars['showsearch'] = true;
 
+					if ($this->hasPermission(['domains_create'])) {
+						$section = [];
+						$section[] = ['title' => 'Extra'];
+						$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addDomain'];
+
+						$menu[] = $section;
+					}
+
 					$domains = session::get('domains');
 					foreach ($domains as $domain => $access) {
 						$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'dataValue' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
@@ -180,11 +206,16 @@
 		public function showHeaderMenu() {
 			$menu = [];
 
-			if (session::get('isadmin')) {
-				$menu[] = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
-
+			if ($this->hasPermission(['manage_users'])) {
 				$menu[] = ['link' => $this->getURL('/admin/users'), 'title' => 'Manage Users', 'active' => ($this->pageID == '/admin/users')];
+			}
+			if ($this->hasPermission(['manage_domains'])) {
 				$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
+			}
+
+			if (count($menu) > 0) {
+				$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
+				array_unshift($menu, $public);
 			}
 
 			$this->twig->display('header_menu.tpl', ['menu' => $menu]);

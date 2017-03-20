@@ -37,6 +37,7 @@
 	</tbody>
 </table>
 
+{% if hasPermission(['domains_create']) %}
 <br><br>
 
 <h1>Add Domain</h1>
@@ -48,18 +49,20 @@
 			<input class="form-control" type="text" value="" id="domainname" name="domainname">
 		</div>
 	</div>
-	<div class="form-group row">
-		<label for="owner" class="col-2 col-form-label">Owner</label>
-		<div class="col-10">
-			<input class="form-control" type="text" value="" id="owner" name="owner">
+	{% if hasPermission(['manage_domains']) %}
+		<div class="form-group row">
+			<label for="owner" class="col-2 col-form-label">Owner</label>
+			<div class="col-10">
+				<input class="form-control" type="text" value="" id="owner" name="owner">
+			</div>
 		</div>
-	</div>
+	{% endif %}
 	<div class="form-group row">
 		<div class="col-10 offset-2">
 			<button type="submit" class="btn btn-primary btn-block">Add Domain</button>
 		</div>
 	</div>
 </form>
-
+{% endif %}
 
 <script src="{{ url('/assets/admin_domains.js') }}"></script>

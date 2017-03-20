@@ -30,7 +30,7 @@
 				<span class="value badge {% if userinfo.admin == 'true' %}badge-primary{% else %}badge-default{% endif %}" data-field="admin" data-class-yes="badge-primary" data-class-no="badge-default">
 					{{ userinfo.admin | yesno }}
 				</span>
-				{% if userinfo.email != user.email %}
+				{% if userinfo.email != user.email and hasPermission(['manage_admins']) %}
 					<span class="action {% if userinfo.admin != 'true' %}hidden{% endif %}" data-value="Yes">
 						<button type="button" data-user-action="demote" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-right">Demote</button>
 					</span>
@@ -43,7 +43,7 @@
 				<span class="value badge {% if userinfo.disabled == 'true' %}badge-success{% else %}badge-danger{% endif %}" data-field="disabled" data-class-yes="badge-success" data-class-no="badge-danger">
 					{{ userinfo.disabled | yesno }}
 				</span>
-				{% if userinfo.email != user.email %}
+				{% if userinfo.email != user.email and hasPermission(['manage_users']) %}
 					<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-value="Yes">
 						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-right">Unsuspend</button>
 					</span>
@@ -54,7 +54,9 @@
 			</td>
 			<td class="actions">
 				{% if userinfo.email != user.email %}
-					<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success">Impersonate</a>
+					{% if hasPermission(['impersonate_users']) %}
+						<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success">Impersonate</a>
+					{% endif %}
 
 					<button data-action="deleteuser" data-id="{{ userinfo.id }}" class="btn btn-sm btn-danger">Delete</a>
 				{% endif %}

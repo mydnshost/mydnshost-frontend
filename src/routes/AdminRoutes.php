@@ -84,7 +84,7 @@
 						$displayEngine->flash('info', '', 'Impersonating: ' . $result['user']['email']);
 					}
 				} else {
-					$displayEngine->flash('error', '', 'Impersonation failed.');
+					$displayEngine->flash('error', '', 'Impersonation failed: ' . print_r($result, true));
 				}
 
 				header('Location: ' . $displayEngine->getURL('/'));

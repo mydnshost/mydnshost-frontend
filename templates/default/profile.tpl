@@ -45,7 +45,18 @@
 				<td> {{ user.disabled | yesno }}</td>
 			</tr>
 		{% endif %}
-
+		<tr>
+			<th>
+				Account Permissions
+			</th>
+			<td>
+				<ul>
+				{% for permission,value in useraccess %}
+					<li> {{ permission }}
+				{% endfor %}
+				</ul>
+			</td>
+		</tr>
 	</tbody>
 </table>
 </form>

@@ -17,6 +17,9 @@
 		<li class="nav-item" {% if item.dataValue %}data-searchable-value="{{ item.dataValue }}"{% endif %}>
 			{% if item.link %}
 				<a class="nav-link{% if item.active %} active{% endif %}" href="{{ item.link }}">
+			{% elseif item.button %}
+				<div class="nav-link">
+				<button class="btn btn-block btn-{{ item.button }}" data-action="{{ item.action }}">
 			{% else %}
 				<div class="nav-link"><strong>
 			{% endif %}
@@ -24,6 +27,8 @@
 			{% if item.active %}<span class="sr-only">(current)</span>{% endif %}
 			{% if item.link %}
 				</a>
+			{% elseif item.button %}
+				</button></div>
 			{% else %}
 				</strong></div>
 			{% endif %}
