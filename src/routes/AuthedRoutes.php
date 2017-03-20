@@ -27,8 +27,8 @@
 			});
 
 			$router->get('/impersonate/cancel', function() use ($displayEngine, $api) {
-				$person = session::get('impersonate');
-				$displayEngine->flash('info', '', 'You are no longer impersonating: ' . $person);
+				$person = session::getCurrentUser();
+				$displayEngine->flash('info', '', 'You are no longer impersonating: ' . $person['user']['realname'] . ' (' . $person['user']['email'] . ')');
 
 				session::clear(['logindata', 'DisplayEngine::Flash']);
 

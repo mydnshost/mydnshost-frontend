@@ -180,7 +180,7 @@
 					if ($this->hasPermission(['domains_create'])) {
 						$section = [];
 						$section[] = ['title' => 'Extra'];
-						$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addDomain'];
+						$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain'];
 
 						$menu[] = $section;
 					}

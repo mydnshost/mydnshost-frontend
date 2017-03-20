@@ -66,6 +66,39 @@
 				$displayEngine->display('alldomains.tpl');
 			});
 
+			$router->post('/domains/create', function() use ($displayEngine, $api) {
+				$this->setVars($displayEngine);
+				$canUpdate = true;
+
+				$fields = ['domainname' => 'You must specify a domain name to create'
+				          ];
+
+				foreach ($fields as $field => $error) {
+					if (!array_key_exists($field, $_POST) || empty($_POST[$field])) {
+						$canUpdate = false;
+						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $error);
+						break;
+					}
+				}
+
+				if ($canUpdate) {
+					$result = $api->createDomain($_POST['domainname'], isset($_POST['owner']) ? $_POST['owner'] : '');
+
+					if (array_key_exists('error', $result)) {
+						$errorData = $result['error'];
+						if (array_key_exists('errorData', $result)) {
+							$errorData .= ' => ' . $result['errorData'];
+						}
+						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $result['errorData']);
+					} else {
+						$displayEngine->flash('success', '', 'New domain ' . $_POST['domainname'] . ' has been created');
+					}
+				}
+
+				header('Location: ' . $displayEngine->getURL($displayEngine->getVar('pathprepend') . '/domains'));
+				return;
+			});
+
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);
 
