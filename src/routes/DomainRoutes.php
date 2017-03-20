@@ -89,7 +89,7 @@
 						if (array_key_exists('errorData', $result)) {
 							$errorData .= ' => ' . $result['errorData'];
 						}
-						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $result['errorData']);
+						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $errorData);
 					} else {
 						$displayEngine->flash('success', '', 'New domain ' . $_POST['domainname'] . ' has been created');
 					}
