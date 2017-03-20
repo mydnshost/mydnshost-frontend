@@ -30,7 +30,7 @@ $('button[data-action="addUserDomain"]').click(function () {
 	okButton.text("Create");
 
 	okButton.off('click').click(function () {
-		$("#createUserDomainForm").submit();
+		return $("#createUserDomainForm").submit();
 	});
 
 	$('#createUserDomain').modal({'backdrop': 'static'});
