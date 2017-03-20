@@ -228,9 +228,10 @@ function cancelEdit(row) {
 	              "ttl": row.find('td.ttl')
 	             };
 
-    $.each(fields, function(key, field) {
+	$.each(fields, function(key, field) {
 		field.text(field.data('value'));
 		field.data('edited-value', null);
+		field.tooltip('dispose');
 	});
 
 	var state = row.find('td.state');
