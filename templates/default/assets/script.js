@@ -30,7 +30,15 @@ $('button[data-action="addUserDomain"]').click(function () {
 	okButton.text("Create");
 
 	okButton.off('click').click(function () {
-		return $("#createUserDomainForm").submit();
+		if ($("#createUserDomainForm").valid()) {
+			$("#createUserDomainForm").submit();
+			$('#createUserDomain').modal('hide');
+		}
+	});
+
+	var cancelButton = $('#createUserDomain button[data-action="cancel"]');
+	cancelButton.off('click').click(function () {
+		$("#createUserDomainForm").validate().resetForm();
 	});
 
 	$('#createUserDomain').modal({'backdrop': 'static'});

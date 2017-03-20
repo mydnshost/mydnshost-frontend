@@ -9,8 +9,10 @@
 				{% block body %}{% endblock %}
 			</div>
 			<div class="modal-footer">
-				<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-				<button type="button" data-action="ok" class="btn btn-success" data-dismiss="modal">Ok</button>
+				{% block buttons %}
+					<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+					<button type="button" data-action="ok" class="btn btn-success" data-dismiss="modal">Ok</button>
+				{% endblock %}
 			</div>
 		</div>
 	</div>
