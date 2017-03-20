@@ -58,7 +58,7 @@ $('button[data-action="deleteuser"]').click(function () {
 });
 
 
-
+{% if hasPermission(['domains_create']) %}
 
 $("#adduser").validate({
 	highlight: function(element) {
@@ -86,3 +86,24 @@ $("#adduser").validate({
 		}
 	},
 });
+
+$('button[data-action="addNewUser"]').click(function () {
+	var okButton = $('#createUser button[data-action="ok"]');
+	okButton.text("Create");
+
+	okButton.off('click').click(function () {
+		if ($("#adduser").valid()) {
+			$("#adduser").submit();
+			$('#createUser').modal('hide');
+		}
+	});
+
+	var cancelButton = $('#createUser button[data-action="cancel"]');
+	cancelButton.off('click').click(function () {
+		$("#adduser").validate().resetForm();
+	});
+
+	$('#createUser').modal({'backdrop': 'static'});
+});
+
+{% endif %}

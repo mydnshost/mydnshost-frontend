@@ -1,3 +1,4 @@
+{% if hasPermission(['domains_create']) %}
 
 $("#adddomain").validate({
 	highlight: function(element) {
@@ -16,3 +17,24 @@ $("#adddomain").validate({
 		}
 	},
 });
+
+$('button[data-action="addAdminDomain"]').click(function () {
+	var okButton = $('#createAdminDomain button[data-action="ok"]');
+	okButton.text("Create");
+
+	okButton.off('click').click(function () {
+		if ($("#adddomain").valid()) {
+			$("#adddomain").submit();
+			$('#createAdminDomain').modal('hide');
+		}
+	});
+
+	var cancelButton = $('#createAdminDomain button[data-action="cancel"]');
+	cancelButton.off('click').click(function () {
+		$("#adddomain").validate().resetForm();
+	});
+
+	$('#createAdminDomain').modal({'backdrop': 'static'});
+});
+
+{% endif %}

@@ -2,6 +2,14 @@
 
 <input class="form-control" data-search-top="table#userlist" value="" placeholder="Search..."><br>
 
+{% if hasPermission(['manage_users']) %}
+<div class="float-right">
+	<button type="button" data-action="addNewUser" class="btn btn-success">Add User</button>
+</div>
+<br><br>
+{% endif %}
+
+
 <table id="userlist" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -78,43 +86,48 @@
 	{% endblock %}
 {% endembed %}
 
-<br><br>
 
-<h1>Add User</h1>
+{% if hasPermission(['manage_users']) %}
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUser', 'large': true} only %}
+		{% block title %}
+			Create Domain
+		{% endblock %}
 
-<form id="adduser" method="post" action="{{ url('/admin/users/create') }}">
-	<div class="form-group row">
-		<label for="email" class="col-2 col-form-label">Email Address</label>
-		<div class="col-10">
-			<input class="form-control" type="email" value="" id="email" name="email">
-		</div>
-	</div>
-	<div class="form-group row">
-		<label for="realname" class="col-2 col-form-label">Real Name</label>
-		<div class="col-10">
-			<input class="form-control" type="text" value="" id="realname" name="realname">
-		</div>
-	</div>
+		{% block body %}
+			<form id="adduser" method="post" action="{{ url('/admin/users/create') }}">
+				<div class="form-group row">
+					<label for="email" class="col-3 col-form-label">Email Address</label>
+					<div class="col-9">
+						<input class="form-control" type="email" value="" id="email" name="email">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="realname" class="col-3 col-form-label">Real Name</label>
+					<div class="col-9">
+						<input class="form-control" type="text" value="" id="realname" name="realname">
+					</div>
+				</div>
 
-	<div class="form-group row">
-		<label for="password" class="col-2 col-form-label">Password</label>
-		<div class="col-10">
-			<input class="form-control" type="password" value="" id="password" name="password">
-		</div>
-	</div>
-	<div class="form-group row">
-		<label for="confirmpassword" class="col-2 col-form-label">Confirm Password</label>
-		<div class="col-10">
-			<input class="form-control" type="password" value="" id="confirmpassword" name="confirmpassword">
-		</div>
-	</div>
+				<div class="form-group row">
+					<label for="password" class="col-3 col-form-label">Password</label>
+					<div class="col-9">
+						<input class="form-control" type="password" value="" id="password" name="password">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="confirmpassword" class="col-3 col-form-label">Confirm Password</label>
+					<div class="col-9">
+						<input class="form-control" type="password" value="" id="confirmpassword" name="confirmpassword">
+					</div>
+				</div>
+			</form>
+		{% endblock %}
 
-	<div class="form-group row">
-		<div class="col-10 offset-2">
-			<button type="submit" class="btn btn-primary btn-block">Add User</button>
-		</div>
-	</div>
-</form>
-
+		{% block buttons %}
+			<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+			<button type="button" data-action="ok" class="btn btn-success">Ok</button>
+		{% endblock %}
+	{% endembed %}
+{% endif %}
 
 <script src="{{ url('/assets/admin_users.js') }}"></script>

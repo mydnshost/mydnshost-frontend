@@ -2,6 +2,13 @@
 
 <input class="form-control" data-search-top="table#domainlist" value="" placeholder="Search..."><br>
 
+{% if hasPermission(['domains_create']) %}
+<div class="float-right">
+	<button type="button" data-action="addAdminDomain" class="btn btn-success">Add Domain</button>
+</div>
+<br><br>
+{% endif %}
+
 <table id="domainlist" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -30,7 +37,7 @@
 				{% endif %}
 			</td>
 			<td class="actions">
-				<a href="{{ url('/admin/domain/' ~ name) }}" class="btn btn-success">Manage</a>
+				<a href="{{ url('/admin/domain/' ~ name) }}" class="btn btn-success btn-sm">Manage</a>
 			</td>
 		</tr>
 		{% endfor %}
@@ -38,31 +45,35 @@
 </table>
 
 {% if hasPermission(['domains_create']) %}
-<br><br>
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createAdminDomain', 'large': true} only %}
+		{% block title %}
+			Create Domain
+		{% endblock %}
 
-<h1>Add Domain</h1>
+		{% block body %}
+			<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
+				<div class="form-group row">
+					<label for="domainname" class="col-3 col-form-label">Domain Name</label>
+					<div class="col-9">
+						<input class="form-control" type="text" value="" id="domainname" name="domainname">
+					</div>
+				</div>
+				{% if hasPermission(['manage_domains']) %}
+					<div class="form-group row">
+						<label for="owner" class="col-3 col-form-label">Owner</label>
+						<div class="col-9">
+							<input class="form-control" type="text" value="" id="owner" name="owner">
+						</div>
+					</div>
+				{% endif %}
+			</form>
+		{% endblock %}
 
-<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
-	<div class="form-group row">
-		<label for="domainname" class="col-2 col-form-label">Domain Name</label>
-		<div class="col-10">
-			<input class="form-control" type="text" value="" id="domainname" name="domainname">
-		</div>
-	</div>
-	{% if hasPermission(['manage_domains']) %}
-		<div class="form-group row">
-			<label for="owner" class="col-2 col-form-label">Owner</label>
-			<div class="col-10">
-				<input class="form-control" type="text" value="" id="owner" name="owner">
-			</div>
-		</div>
-	{% endif %}
-	<div class="form-group row">
-		<div class="col-10 offset-2">
-			<button type="submit" class="btn btn-primary btn-block">Add Domain</button>
-		</div>
-	</div>
-</form>
+		{% block buttons %}
+			<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+			<button type="button" data-action="ok" class="btn btn-success">Ok</button>
+		{% endblock %}
+	{% endembed %}
 {% endif %}
 
 <script src="{{ url('/assets/admin_domains.js') }}"></script>

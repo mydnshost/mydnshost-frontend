@@ -79,28 +79,25 @@
 
 
 		{% if has_domain_owner %}
-			<!-- Modal -->
-			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="deleteModalLabel">Delete Domain</h5>
-						</div>
-						<div class="modal-body">
-							Are you sure you want to delete this domain?
-							<br><br>
-							This will delete all records and data associated with this domain and can not be undone.
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-							<form id="deletedomainform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/delete") }}">
-								<input type="hidden" name="confirm" value="true">
-								<button type="submit" class="btn btn-danger">Delete domain</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
+			{% embed 'blocks/modal_confirm.tpl' with {'id': 'deleteModal'} %}
+				{% block title %}
+					Delete Domain
+				{% endblock %}
+
+				{% block body %}
+					Are you sure you want to delete this domain?
+					<br><br>
+					This will delete all records and data associated with this domain and can not be undone.
+				{% endblock %}
+
+				{% block buttons %}
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+					<form id="deletedomainform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/delete") }}">
+						<input type="hidden" name="confirm" value="true">
+						<button type="submit" class="btn btn-danger">Delete domain</button>
+					</form>
+				{% endblock %}
+			{% endembed %}
 		{% endif %}
 	</div>
 </div>
