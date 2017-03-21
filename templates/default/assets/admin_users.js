@@ -1,3 +1,5 @@
+{% if hasPermission(['manage_users']) %}
+
 $('button[data-user-action]').click(function () {
 	var action = $(this).data('user-action');
 	var user = $(this).data('user');
@@ -56,9 +58,6 @@ $('button[data-action="deleteuser"]').click(function () {
 
 	$('#confirmDelete').modal({'backdrop': 'static'});
 });
-
-
-{% if hasPermission(['domains_create']) %}
 
 $("#adduser").validate({
 	highlight: function(element) {

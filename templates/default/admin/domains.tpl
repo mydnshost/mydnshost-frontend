@@ -2,7 +2,7 @@
 
 <input class="form-control" data-search-top="table#domainlist" value="" placeholder="Search..."><br>
 
-{% if hasPermission(['domains_create']) %}
+{% if hasPermission(['domains_create', 'manage_domains']) %}
 <div class="float-right">
 	<button type="button" data-action="addAdminDomain" class="btn btn-success">Add Domain</button>
 </div>
@@ -44,7 +44,7 @@
 	</tbody>
 </table>
 
-{% if hasPermission(['domains_create']) %}
+{% if hasPermission(['domains_create', 'manage_domains']) %}
 	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createAdminDomain', 'large': true} only %}
 		{% block title %}
 			Create Domain

@@ -1,4 +1,4 @@
-{% if hasPermission(['domains_create']) %}
+{% if hasPermission(['domains_create', 'manage_domains']) %}
 
 $("#adddomain").validate({
 	highlight: function(element) {

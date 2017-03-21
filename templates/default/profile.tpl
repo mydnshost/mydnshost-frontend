@@ -35,16 +35,6 @@
 			</th>
 			<td data-type="password" data-name="confirmpassword" data-value=""></td>
 		</tr>
-		{% if user.admin %}
-			<tr>
-				<th>Admin</th>
-				<td> {{ user.admin | yesno }}</td>
-			</tr>
-			<tr>
-				<th>Disabled</th>
-				<td> {{ user.disabled | yesno }}</td>
-			</tr>
-		{% endif %}
 		<tr>
 			<th>
 				Account Permissions
