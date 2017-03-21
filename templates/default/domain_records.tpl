@@ -5,6 +5,9 @@ This is where you can add/edit/remove records for the domain.
 <p>
 Please note that all record names will have '<code>.{{ domain.domain }}</code>' appended to them, and all content will be saved as-is without anything appended, so you do not need to add a trailing '<code>.</code>' to content.
 </p>
+<p>
+Domains require at least 1 NS record before they will be successfully served.
+</p>
 
 {% if has_domain_write %}
 <form method="post" id="recordsform">
