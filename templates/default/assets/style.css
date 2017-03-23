@@ -193,8 +193,8 @@ table#userlist th.realname, table#userlist td.realname {
 
 }
 
-table#userlist th.admin, table#userlist td.admin {
-  width: 150px;
+table#userlist th.permissions, table#userlist td.permissions {
+  width: 325px;
 }
 
 table#userlist th.state, table#userlist td.state {
@@ -203,4 +203,31 @@ table#userlist th.state, table#userlist td.state {
 
 table#userlist th.actions, table#userlist td.actions {
   width: 200px;
+}
+
+table#userlist td.permissions table {
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
+table#userlist td.permissions table tr {
+  background: none;
+}
+
+table#userlist td.permissions table td {
+  background: none;
+  border: none;
+}
+
+table#userlist td.permissions table td.name {
+  width: 180px;
+}
+
+table#userlist td.permissions table td.value {
+  width: 40px;
+}
+
+table#userlist td.permissions table td.actions {
+  width: 60px;
 }

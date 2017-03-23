@@ -1,5 +1,49 @@
 {% if hasPermission(['manage_users']) %}
 
+{% if hasPermission(['manage_permissions']) %}
+	$('button[data-permission]').click(function () {
+		var user = $(this).data('user');
+		var permission = $(this).data('permission');
+		var col = $(this).closest('td');
+		var row = col.closest('tr');
+		var valueSpan = row.find('span.value[data-permission=' + permission + ']');
+
+		// Toggle permissions.
+		var setPermissions = {'permissions': {}};
+		setPermissions['permissions'][permission] = (valueSpan.text().trim() == 'Yes' ? 'False' : 'True');
+
+		$.ajax({
+			url: "{{ url('/admin/users/action') }}/setPermission/" + user,
+			data: setPermissions,
+			method: "POST",
+		}).done(function(data) {
+			if (data['error'] !== undefined) {
+				alert('There was an error: ' + data['error']);
+			} else if (data['response'] !== undefined) {
+				var result = data['response']['permissions'][permission]
+				var newVal = (result === true || result == 'true') ? "Yes" : "No";
+				var classVal = valueSpan.data('class-' + newVal.toLowerCase().trim());
+				var classOldVal = valueSpan.data('class-' + valueSpan.text().toLowerCase().trim());
+
+				valueSpan.text(newVal);
+				valueSpan.removeClass(classOldVal);
+				valueSpan.addClass(classVal);
+
+				row.fadeOut(100).fadeIn(100);
+			}
+		});
+	});
+
+	$('button[data-action=editpermissions]').click(function () {
+		var col = $(this).closest('td');
+
+		col.find('div.permissionsText').hide();
+		col.find('table.permissionsTable').show();
+	});
+
+{% endif %}
+
+
 $('button[data-user-action]').click(function () {
 	var action = $(this).data('user-action');
 	var user = $(this).data('user');

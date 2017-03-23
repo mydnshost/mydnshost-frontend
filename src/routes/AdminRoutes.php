@@ -48,6 +48,8 @@
 						$data['disabled'] = 'true';
 					} else if ($action == 'unsuspend') {
 						$data['disabled'] = 'false';
+					} else if ($action == 'setPermission') {
+						$data['permissions'] = array_key_exists('permissions', $_POST) ? $_POST['permissions'] : [];
 					}
 
 					$result = $api->setUserInfo($data, $userid);
