@@ -247,7 +247,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains');
-			return isset($result['response']) ? $result['response'] : NULL;
+			return isset($result['response']) ? $result['response'] : [];
 		}
 
 		/**
@@ -316,7 +316,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/access');
-			return isset($result['response']['access']) ? $result['response']['access'] : NULL;
+			return isset($result['response']['access']) ? $result['response']['access'] : [];
 		}
 
 		/**
@@ -354,7 +354,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/export');
-			return isset($result['response']['zone']) ? $result['response']['zone'] : NULL;
+			return isset($result['response']['zone']) ? $result['response']['zone'] : [];
 		}
 
 		/**
@@ -381,7 +381,7 @@
 			if ($this->auth === FALSE) { return []; }
 
 			$result = $this->api(($this->domainAdminOverride ? '/admin' : '') . '/domains/' . $domain . '/records');
-			return isset($result['response']['records']) ? $result['response']['records'] : NULL;
+			return isset($result['response']['records']) ? $result['response']['records'] : [];
 		}
 
 		/**
