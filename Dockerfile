@@ -7,6 +7,7 @@ WORKDIR /var/www
 
 RUN \
   rm -Rfv /var/www/html && \
+  chown -Rfv www-data: /dnsfrontend/ /var/www/ && \
   ln -s /dnsfrontend/public /var/www/html && \
   a2enmod rewrite && \
   apt-get update && apt-get install -y git unzip libmcrypt-dev && \
@@ -17,7 +18,6 @@ RUN \
   docker-php-source delete && \
   curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir=/usr/bin --filename=composer && \
   cd /dnsfrontend/ && \
-  chown -Rfv www-data: /dnsfrontend && \
   su www-data --shell=/bin/bash -c "cd /dnsfrontend; /usr/bin/composer update"
 
 
