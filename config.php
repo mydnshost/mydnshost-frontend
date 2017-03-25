@@ -7,7 +7,7 @@
 
 	$config['api'] = getEnvOrDefault('API_URL', 'https://api.mydnshost.co.uk/');
 
-	$config['sitename'] = 'MyDNSHost';
+	$config['sitename'] = getEnvOrDefault('SITE_NAME', 'MyDNSHost');
 
 	if (file_exists(dirname(__FILE__) . '/config.local.php')) {
 		include(dirname(__FILE__) . '/config.local.php');
