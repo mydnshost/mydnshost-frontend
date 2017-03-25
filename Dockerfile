@@ -17,7 +17,8 @@ RUN \
   docker-php-source delete && \
   curl -sS https://getcomposer.org/installer | php -- --no-ansi --install-dir=/usr/bin --filename=composer && \
   cd /dnsfrontend/ && \
-  /usr/bin/composer update
+  chown -Rfv www-data: /dnsfrontend && \
+  su www-data --shell=/bin/bash -c "cd /dnsfrontend; /usr/bin/composer update"
 
 
 EXPOSE 80
