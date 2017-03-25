@@ -9,7 +9,7 @@ RUN \
   rm -Rfv /var/www/html && \
   ln -s /dnsfrontend/public /var/www/html && \
   a2enmod rewrite && \
-  apt-get update && apt-get install -y git libmcrypt-dev && \
+  apt-get update && apt-get install -y git unzip libmcrypt-dev && \
   docker-php-source extract && \
   docker-php-ext-install bcmath && \
   docker-php-ext-install mcrypt && \
