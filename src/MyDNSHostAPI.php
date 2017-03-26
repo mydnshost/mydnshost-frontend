@@ -16,6 +16,8 @@
 		private $impersonateType = FALSE;
 		/** Are we accessing domain functions with admin override? */
 		private $domainAdminOverride = FALSE;
+		/** Debug mode value. */
+		private $debug = FALSE;
 
 		/**
 		 * Create a new MyDNSHostAPI
@@ -27,13 +29,35 @@
 		}
 
 		/**
+		 * Enable/disable debug mode
+		 *
+		 * @param $value New debug value
+		 * @return $this for chaining.
+		 */
+		public function setDebug($value) {
+			$this->debug = $value;
+			return $this;
+		}
+
+		/**
+		 * Are we in debug mode?
+		 *
+		 * @return True/False if in debugging mode.
+		 */
+		public function isDebug() {
+			return $this->debug;
+		}
+
+		/**
 		 * Auth using a username and password.
 		 *
 		 * @param $user User to auth with
 		 * @param $pass Password to auth with
+		 * @return $this for chaining.
 		 */
 		public function setAuthUserPass($user, $pass) {
 			$this->auth = ['type' => 'userpass', 'user' => $user, 'pass' => $pass];
+			return $this;
 		}
 
 		/**
@@ -41,27 +65,33 @@
 		 *
 		 * @param $user User to auth with
 		 * @param $key Key to auth with
+		 * @return $this for chaining.
 		 */
 		public function setAuthUserKey($user, $key) {
 			$this->auth = ['type' => 'userkey', 'user' => $user, 'key' => $key];
+			return $this;
 		}
 
 		/**
 		 * Auth using a session ID.
 		 *
 		 * @param $sessionid ID to auth with
+		 * @return $this for chaining.
 		 */
 		public function setAuthSession($sessionid) {
 			$this->auth = ['type' => 'session', 'sessionid' => $sessionid];
+			return $this;
 		}
 
 		/**
 		 * Auth using a custom auth method.
 		 *
 		 * @param $auth Auth data.
+		 * @return $this for chaining.
 		 */
 		public function setAuth($auth) {
 			$this->auth = $auth;
+			return $this;
 		}
 
 		/**
@@ -69,6 +99,7 @@
 		 *
 		 * @param $user User to impersonate
 		 * @param $type (Default: email) Is $user an email or id?
+		 * @return $this for chaining.
 		 */
 		public function impersonate($user, $type = 'email') {
 			$this->impersonate = $user;
@@ -403,6 +434,7 @@
 		 * @param $apimethod API Method to poke
 		 * @param $method Request method to access the API with
 		 * @param $data (Default: []) Data to send if POST
+		 * @return Response from the API as an array.
 		 */
 		private function api($apimethod, $method = 'GET', $data = []) {
 			$headers = [];
@@ -436,7 +468,6 @@
 				} else if ($method == 'DELETE') {
 					$response = Requests::delete($url, $headers, $options);
 				}
-
 				$data = @json_decode($response->body, TRUE);
 			} catch (Requests_Exception $ex) {
 				$data = NULL;
@@ -444,6 +475,15 @@
 
 			if ($data == NULL) {
 				$data = ['error' => 'There was an unknown error.'];
+			}
+
+			if ($this->isDebug()) {
+				$debug = ['request' => '', 'response' => $response->body];
+				if ($method == 'POST') {
+					$debug['request'] = json_encode(['data' => $data]);
+				}
+
+				$data['__DEBUG'] = $debug;
 			}
 
 			return $data;

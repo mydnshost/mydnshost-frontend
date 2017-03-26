@@ -92,6 +92,8 @@
 						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $errorData);
 					} else {
 						$displayEngine->flash('success', '', 'New domain ' . $_POST['domainname'] . ' has been created');
+						header('Location: ' . $displayEngine->getURL($displayEngine->getVar('pathprepend') . '/domain/' . urlencode($_POST['domainname'])));
+						return;
 					}
 				}
 
