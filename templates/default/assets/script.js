@@ -25,7 +25,7 @@ function escapeRegExp(str) {
 
 {% if hasPermission(['domains_create']) %}
 
-$('button[data-action="addUserDomain"]').click(function () {
+$('a[data-action="addUserDomain"]').click(function () {
 	var okButton = $('#createUserDomain button[data-action="ok"]');
 	okButton.text("Create");
 
@@ -42,6 +42,7 @@ $('button[data-action="addUserDomain"]').click(function () {
 	});
 
 	$('#createUserDomain').modal({'backdrop': 'static'});
+	return false;
 });
 
 $("#createUserDomainForm").validate({

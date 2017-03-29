@@ -18,7 +18,7 @@ $("#adddomain").validate({
 	},
 });
 
-$('button[data-action="addAdminDomain"]').click(function () {
+$('a[data-action="addAdminDomain"]').click(function () {
 	var okButton = $('#createAdminDomain button[data-action="ok"]');
 	okButton.text("Create");
 
@@ -35,6 +35,8 @@ $('button[data-action="addAdminDomain"]').click(function () {
 	});
 
 	$('#createAdminDomain').modal({'backdrop': 'static'});
+
+	return false;
 });
 
 {% endif %}

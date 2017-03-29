@@ -4,7 +4,7 @@
 
 {% if hasPermission(['domains_create', 'manage_domains']) %}
 <div class="float-right">
-	<button type="button" data-action="addAdminDomain" class="btn btn-success">Add Domain</button>
+	<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>
 </div>
 <br><br>
 {% endif %}

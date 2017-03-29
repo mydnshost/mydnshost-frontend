@@ -20,6 +20,7 @@
 		}
 
 		public function setVars($displayEngine) {
+			$displayEngine->setVar('adminroute', true);
 			$displayEngine->setVar('pathprepend', '/admin');
 
 			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return true; }));
@@ -64,6 +65,12 @@
 				}
 				$displayEngine->setVar('domains', $allDomains);
 				$displayEngine->display('alldomains.tpl');
+			});
+
+			$router->get('/domains/create', function() use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+				$this->setPageID($displayEngine, '/admin/domains/')->setTitle('Add Domain');
+				$displayEngine->display('createdomain.tpl');
 			});
 
 			$router->post('/domains/create', function() use ($displayEngine, $api) {
