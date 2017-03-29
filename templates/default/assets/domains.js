@@ -31,7 +31,7 @@ function setSOAEditable() {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
 
-		field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + value + '">');
+		field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
 	});
 
 	$('table#soainfo td[data-radio]').each(function (index) {
@@ -195,7 +195,7 @@ function setEditAccess(row, who) {
 	if (who == undefined) {
 		var whoField = row.find('td.who');
 		var whoValue = (whoField.data('edited-value') == undefined || whoField.data('edited-value') == null) ? whoField.data('value') : whoField.data('edited-value');
-		whoField.html('<input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][who]" value="' + whoValue + '">');
+		whoField.html('<input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][who]" value="' + escapeHtml(whoValue) + '">');
 
 		whoField.find('input').rules("add", {
 			email: true,
@@ -208,7 +208,7 @@ function setEditAccess(row, who) {
 	var select = '';
 	select += '<select class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][level]">';
 	$.each(accessLevels, function(key, value) {
-		select += '	<option ' + (accessValue == value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>';
+		select += '	<option ' + (accessValue == value ? 'selected' : '') + ' value="' + escapeHtml(value) + '">' + value + '</option>';
 	});
 	select += '</select>';
 	access.html(select);

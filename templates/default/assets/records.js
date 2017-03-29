@@ -155,7 +155,7 @@ function setEditable(row, recordid) {
 	$.each(textFields, function(key, field) {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 
-		field.html('<input type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + value + '">');
+		field.html('<input type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
 	});
 
 	var typeValue = (type.data('edited-value') == undefined || type.data('edited-value') == null) ? type.data('value') : type.data('edited-value');

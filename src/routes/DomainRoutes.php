@@ -293,7 +293,9 @@
 						$zone = isset($_POST['zone']) ? $_POST['zone'] : '';
 						$result = $api->importZone($domain, $zone);
 
-						if (array_key_exists('error', $result)) {
+						if (array_key_exists('errorData', $result)) {
+							$displayEngine->flash('error', '', 'There was an error importing the zone: ' . $result['errorData']);
+						} else if (array_key_exists('error', $result)) {
 							$displayEngine->flash('error', '', 'There was an error importing the zone: ' . $result['error']);
 						} else {
 							$displayEngine->flash('success', '', 'The zone has been imported successfully.');

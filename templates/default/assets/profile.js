@@ -28,7 +28,7 @@ function setUserEditable() {
 		var key = field.data('name');
 		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
 
-		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" id="' + key + '" name="' + key + '" value="' + value + '">');
+		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" id="' + key + '" name="' + key + '" value="' + escapeHtml(value) + '">');
 	});
 	$('table#profileinfo tr[data-hidden]').show();
 
@@ -40,7 +40,7 @@ function cancelEditUser() {
 
 	$('table#profileinfo td[data-name]').each(function (index) {
 		var field = $(this);
-		field.html(field.data('value'));
+		field.text(field.data('value'));
 		field.data('edited-value', null);
 	});
 	$('table#profileinfo tr[data-hidden]').hide();
@@ -102,10 +102,10 @@ $('button[data-action="savekey"]').click(function () {
 	var saveform = row.find('form.editform');
 
 	$('input[type="text"]', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + $(this).val() + '">');
+		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
 	});
 	$('input[type="radio"]:checked', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + $(this).val() + '">');
+		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
 	});
 
 	// TODO: Do this with AJAX.
@@ -144,7 +144,7 @@ function setKeyEditable(row, recordid) {
 		var key = field.data('name');
 		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
 
-		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + value + '">');
+		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
 	});
 
 	editableYesNo(row, fieldName, recordid);
@@ -158,16 +158,16 @@ function cancelEditKey(row) {
 		var field = $(this);
 
 		if (field.data('value') == "Yes") {
-			field.html('<span class="badge badge-success">' + $('<div/>').text(field.data('value')).html() + '</span>');
+			field.html('<span class="badge badge-success">' + escapeHtml(field.data('value')) + '</span>');
 		} else {
-			field.html('<span class="badge badge-danger">' + $('<div/>').text(field.data('value')).html() + '</span>');
+			field.html('<span class="badge badge-danger">' + escapeHtml(field.data('value')) + '</span>');
 		}
 		field.data('edited-value', null);
 	});
 
 	$('td[data-text]', row).each(function (index) {
 		var field = $(this);
-		field.html(field.data('value'));
+		field.html(escapeHtml(field.data('value')));
 		field.data('edited-value', null);
 	});
 }
