@@ -6,7 +6,8 @@ var recordtypes = {
   "TXT": "Text",
   "NS": "Nameserver",
   "PTR": "PTR Record",
-  "SRV": "Service Record"
+  "SRV": "Service Record",
+  "CAA": "Certification Authority Authorization"
 };
 
 var newRecordCount = 0;
@@ -120,12 +121,14 @@ $('button[data-action="reset"]').click(function () {
 	return false;
 });
 
-$('tr[data-edited="true"]').each(function (index) {
-	$(this).find('button[data-action="edit"]').click();
-});
+$(function() {
+	$('tr[data-edited="true"]').each(function (index) {
+		$(this).find('button[data-action="edit"]').click();
+	});
 
-$('tr[data-deleted="true"]').each(function (index) {
-	$(this).find('button[data-action="delete"]').click();
+	$('tr[data-deleted="true"]').each(function (index) {
+		$(this).find('button[data-action="delete"]').click();
+	});
 });
 
 $('tr[data-error-data]').each(function (index) {

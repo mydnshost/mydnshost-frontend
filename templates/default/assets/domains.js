@@ -226,6 +226,8 @@ $("#editaccess").validate({
 	errorClass: 'form-control-feedback'
 });
 
-$('tr[data-edited="true"]').each(function (index) {
-	$(this).find('button[data-action="editaccess"]').click();
+$(function() {
+	$('tr[data-edited="true"]').each(function (index) {
+		$(this).find('button[data-action="editaccess"]').click();
+	});
 });
