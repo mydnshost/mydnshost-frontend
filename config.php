@@ -9,6 +9,8 @@
 
 	$config['sitename'] = getEnvOrDefault('SITE_NAME', 'MyDNSHost');
 
+	$config['memcached'] = getEnvOrDefault('MEMCACHED', '');
+
 	if (file_exists(dirname(__FILE__) . '/config.local.php')) {
 		include(dirname(__FILE__) . '/config.local.php');
 	}

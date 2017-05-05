@@ -158,4 +158,8 @@
 		}
 	}
 
+	if (isset($config['memcached']) && !empty($config['memcached'])) {
+		ini_set('session.save_handler', 'memcached');
+		ini_set('session.save_path', $config['memcached']);
+	}
 	session::init();
