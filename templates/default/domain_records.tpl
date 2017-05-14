@@ -110,3 +110,10 @@ Domains require at least 1 NS record before they will be successfully served.
 
 <script src="{{ url('/assets/records.js') }}"></script>
 {% endif %}
+
+<div class="row">
+	<div class="col">
+		<br><br>
+		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary btn-block" role="button">Back to zone</a>
+	</div>
+</div>
