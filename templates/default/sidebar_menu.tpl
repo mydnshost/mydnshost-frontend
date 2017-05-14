@@ -18,10 +18,15 @@
 			{% if item.link %}
 				{% if item.button %}
 					<div class="nav-link">
-					<a class="btn btn-block btn-{{ item.button }}" href="{{ item.link }}" {% if item.action %} data-action="{{ item.action }}"{% endif %}>
+					<a class="btn btn-block btn-{{ item.button }}"
 				{% else %}
-					<a class="nav-link{% if item.active %} active{% endif %}" href="{{ item.link }}" {% if item.action %} data-action="{{ item.action }}"{% endif %}>
+					<a class="nav-link{% if item.active %} active{% endif %}"
 				{% endif %}
+					href="{{ item.link }}"
+					{% if item.action %} data-action="{{ item.action }}"{% endif %}
+					{% if item.hover %} title="{{ item.hover }}"{% endif %}
+				>
+
 			{% elseif item.button %}
 				<div class="nav-link">
 				<button class="btn btn-block btn-{{ item.button }}" data-action="{{ item.action }}">
@@ -29,6 +34,7 @@
 				<div class="nav-link"><strong>
 			{% endif %}
 			{{ item.title }}
+			{% if item.subtitle %}<small class="subtitle">({{item.subtitle}})</small>{% endif %}
 			{% if item.active %}<span class="sr-only">(current)</span>{% endif %}
 			{% if item.link %}
 				</a>

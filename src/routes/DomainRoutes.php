@@ -29,6 +29,13 @@
 
 	class DomainRoutes {
 
+		public function setSubtitle($displayEngine, $domainData) {
+			$rdns = getARPA($domainData['domain']);
+			if ($rdns !== FALSE) {
+				$displayEngine->setVar('subtitle', $rdns);
+			}
+		}
+
 		public function setAccessVars($displayEngine, $domainData) {
 			if (!isset($domainData['access'])) { $domainData['access'] = 'none'; }
 			$displayEngine->setVar('has_domain_owner', in_array($domainData['access'], ['owner']));
@@ -170,6 +177,7 @@
 					}
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
+					$this->setSubtitle($displayEngine, $domainData);
 
 					$displayEngine->setVar('domainaccess', $api->getDomainAccess($domain));
 
@@ -258,6 +266,7 @@
 					}
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
+					$this->setSubtitle($displayEngine, $domainData);
 					$displayEngine->setVar('records', $records);
 
 					$displayEngine->display('domain_records.tpl');
@@ -271,6 +280,8 @@
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
+				$this->setAccessVars($displayEngine, $domainData);
+				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Export');
 
 				if ($domainData !== NULL) {
@@ -291,6 +302,8 @@
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
+				$this->setAccessVars($displayEngine, $domainData);
+				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Import');
 
 				if ($domainData !== NULL) {

@@ -1,4 +1,7 @@
-<H1>Domain :: {{ domain.domain }}</H1>
+<H1>
+	Domain :: {{ domain.domain }}
+	{% if subtitle %}<small class="subtitle">({{ subtitle }})</small>{% endif %}
+</H1>
 
 <form method="post" id="editsoaform">
 <input type="hidden" name="changetype" value="soa">

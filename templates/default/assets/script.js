@@ -10,7 +10,16 @@ $("input[data-search-top]").on('input', function() {
 		var match = new RegExp('^.*' + escapeRegExp(value) + '.*$', 'i');
 
 		$(searchTop).find("[data-searchable-value]").each(function() {
-			if ($(this).data('searchable-value').match(match)) {
+			var show = false;
+
+			for (val in $(this).data('searchable-value').split(" ")) {
+				if ($(this).data('searchable-value').match(match)) {
+					show = true;
+					break;
+				}
+			}
+
+			if (show) {
 				$(this).show();
 			} else {
 				$(this).hide();

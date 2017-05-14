@@ -50,3 +50,26 @@
 		$in = strtolower($input);
 		return ($in === true || $in == 'true' || $in == '1' || $in == 'on' || $in == 'yes');
 	}
+
+	function getARPA($domain) {
+		if (preg_match('/.*\.ip6\.arpa$/', $domain)) {
+			$mainptr = substr($domain, 0, strlen($domain) - 9);
+			$pieces = array_reverse(explode('.', $mainptr));
+			$hex = implode('', $pieces);
+			$repeat = 4 - (strlen($hex) % 4);
+			if ($repeat == '4') { $repeat = 0; }
+			$rdns = rtrim(chunk_split($hex, '4', ':'), ':') . str_repeat('0', $repeat) . '::/' . (count($pieces) * 4);
+
+			return $rdns;
+		} else if (preg_match('/.*\.in-addr\.arpa$/', $domain)) {
+			$mainptr = substr($domain, 0, strlen($domain) - 13);
+			$pieces = array_reverse(explode('.', $mainptr));
+			$dom = implode('.', $pieces);
+			$repeat = 4 - count($pieces);
+			$rdns = $dom . str_repeat('.0', $repeat) . '/' . (count($pieces) * 8);
+
+			return $rdns;
+		}
+
+		return FALSE;
+	}

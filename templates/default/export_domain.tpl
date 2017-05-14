@@ -1,4 +1,7 @@
-<H1>Domain :: {{ domain.domain }} :: Export</H1>
+<H1>
+	Domain :: {{ domain.domain }} :: Export
+	{% if subtitle %}<small class="subtitle">({{ subtitle }})</small>{% endif %}
+</H1>
 
 Below is the zone contents as a bind zone file.
 <div class="form-group">

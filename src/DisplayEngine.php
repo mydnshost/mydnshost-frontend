@@ -187,7 +187,23 @@
 
 					$domains = session::get('domains');
 					foreach ($domains as $domain => $access) {
-						$sections[$access][] = ['link' => $this->getURL('/domain/' . $domain), 'title' => $domain, 'dataValue' => $domain, 'active' => ($this->pageID == '/domain/' . $domain)];
+						$item = array();
+						$item['link'] = $this->getURL('/domain/' . $domain);
+						$item['title'] = $domain;
+						$item['active'] = ($this->pageID == '/domain/' . $domain);
+
+						$dataValue = [$domain];
+						$rdns = getARPA($domain);
+						if ($rdns !== FALSE) {
+							$dataValue[] = $rdns;
+							$dataValue[] = 'rdns';
+
+							$item['hover'] = 'RDNS: ' . $rdns;
+						}
+
+						$item['dataValue'] = implode(' ', $dataValue);
+
+						$sections[$access][] = $item;
 					}
 
 					foreach (['owner', 'admin', 'write', 'read'] as $section) {

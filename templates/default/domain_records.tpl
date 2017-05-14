@@ -1,4 +1,7 @@
-<H1>Domain :: {{ domain.domain }} :: Records</H1>
+<H1>
+	Domain :: {{ domain.domain }} :: Records
+	{% if subtitle %}<small class="subtitle">({{ subtitle }})</small>{% endif %}
+</H1>
 <p>
 This is where you can add/edit/remove records for the domain.
 </p>

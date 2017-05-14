@@ -1,4 +1,7 @@
-<H1>Domain :: {{ domain.domain }} :: Import</H1>
+<H1>
+	Domain :: {{ domain.domain }} :: Import
+	{% if subtitle %}<small class="subtitle">({{ subtitle }})</small>{% endif %}
+</H1>
 
 Import records from bind zone file.
 <br><br>
