@@ -288,12 +288,15 @@ $.validator.addMethod("validateContent", function(value, element) {
 	} else if ($.inArray(record_type, ['MX', 'CNAME', 'PTR']) != -1 && isIPAddress(record_content)) {
 		error = true;
 		errorReason = 'Record must point at a hostname not an IP addresses.';
-	} else if (record_type == 'CNAME' && record_content == '') {
+	} else if (record_type == 'CNAME' && record_name == '') {
 		error = true;
 		errorReason = 'You can not have a CNAME for the root record of the domain.';
 	} else if (record_type == 'SRV' && !record_content.match(/^[0-9]+ [0-9]+ .+$/)) {
 		error = true;
 		errorReason = 'SRV records should be formatted as \'[weight] [port] [address]\' eg \'1 443 somehost.com\'.';
+	} else if (record_type == 'CAA' && !record_content.match(/^[0-9]+ [a-z]+ "[^\s]+"$/)) {
+		error = true;
+		errorReason = 'CAA record content should have the format: <flag> <tag> "<value>"';
 	}
 
     $(element).data('validationErrorReason', errorReason);
