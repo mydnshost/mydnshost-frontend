@@ -12,6 +12,16 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 Domains require at least 1 NS record before they will be successfully served.
 </p>
 
+<div class="row">
+	<div class="col">
+		<div class="float-right">
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary" role="button">Back to zone details</a>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
 {% if has_domain_write %}
 <form method="post" id="recordsform">
 {% endif %}
@@ -113,10 +123,3 @@ Domains require at least 1 NS record before they will be successfully served.
 
 <script src="{{ url('/assets/records.js') }}"></script>
 {% endif %}
-
-<div class="row">
-	<div class="col">
-		<br><br>
-		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary btn-block" role="button">Back to zone</a>
-	</div>
-</div>
