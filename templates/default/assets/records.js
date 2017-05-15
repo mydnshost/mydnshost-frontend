@@ -252,12 +252,16 @@ function cancelEdit(row) {
 	return false;
 }
 
+
+// Regexs from https://github.com/kvz/locutus/blob/c57a814de23460dad15a1c0802396f97120e391d/workbench/filter/filter_var.js
 function isIPv4(input) {
-	return /^([0-9]+\.){3}[0-9]+$/.test(input);
+	var ipv4 = /^(25[0-5]|2[0-4]\d|[01]?\d?\d)\.(25[0-5]|2[0-4]\d|[01]?\d?\d)\.(25[0-5]|2[0-4]\d|[01]?\d?\d)\.(25[0-5]|2[0-4]\d|[01]?\d?\d)$/;
+	return ipv4.test(input);
 }
 
 function isIPv6(input) {
-	return /^[0-9a-f]*:+[0-9a-f]*$/i.test(input);
+	var ipv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/i;
+	return ipv6.test(input);
 }
 
 function isIPAddress(input) {
@@ -275,7 +279,10 @@ $.validator.addMethod("validateContent", function(value, element) {
 	var error = false;
 	var errorReason = '';
 
-	if ($.inArray(record_type, ['A', 'AAAA']) != -1 && !isIPAddress(record_content)) {
+	if ($.inArray(record_type, ['A']) != -1 && !isIPv4(record_content)) {
+		error = true;
+		errorReason = 'Record must point at an IP Address';
+	} else if ($.inArray(record_type, ['AAAA']) != -1 && !isIPv6(record_content)) {
 		error = true;
 		errorReason = 'Record must point at an IP Address';
 	} else if ($.inArray(record_type, ['MX', 'CNAME', 'PTR']) != -1 && isIPAddress(record_content)) {
@@ -306,7 +313,7 @@ $.validator.addMethod("validatePriority", function(value, element) {
 	var error = false;
 	var errorReason = '';
 
-	if ($.inArray(record_type, ['MX', 'PTR', 'SRV']) != -1 && record_priority == '') {
+	if ($.inArray(record_type, ['MX', 'SRV']) != -1 && record_priority == '') {
 		error = true;
 		errorReason = 'Priority is required for ' + record_type;
 	}
