@@ -326,7 +326,7 @@ $.validator.addMethod("validatePriority", function(value, element) {
 
 jQuery.validator.addClassRules('content', {
 	validateContent: true,
-	required: true,
+	/* required: true, */
 });
 
 jQuery.validator.addClassRules('priority', {
