@@ -43,6 +43,8 @@
 			$twig->addFunction(new Twig_Function('flash', function() { $this->displayFlash(); }));
 			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
+			$twig->addFunction(new Twig_Function('getARPA', function($domain) { return getARPA($domain); }));
+
 
 			$twig->addFilter(new Twig_Filter('gravatar', function($input, $size = 20, $default = '') {
 				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=' . $size . '&d=' . $default;
@@ -180,6 +182,7 @@
 					if ($this->hasPermission(['domains_create'])) {
 						$section = [];
 						$section[] = ['title' => 'Extra'];
+						$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
 						$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
 
 						$menu[] = $section;

@@ -22,6 +22,9 @@
 		<tr data-searchable-value="{{ name }}">
 			<td class="domain">
 				{{ name }}
+				{% if getARPA(name) %}
+					<small class="subtitle">(RDNS: {{ getARPA(name) }})</small>
+				{% endif %}
 			</td>
 			<td class="owner">
 				{% set foundowner = false %}

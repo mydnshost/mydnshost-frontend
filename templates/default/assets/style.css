@@ -105,6 +105,28 @@ table tr.deleted td.actions {
  * Domain Tables
  **********************************************************************/
 
+table#domainlist th.domain, table#domainlist td.domain {
+
+}
+
+table#domainlist th.access, table#domainlist td.access {
+  width: 200px;
+}
+
+table#domainlist th.owner, table#domainlist td.owner {
+  width: 400px;
+}
+
+table#domainlist th.actions, table#domainlist td.actions {
+  width: 200px;
+}
+
+
+table#domainlist td.domain small.subtitle {
+  color: #636c72;
+  margin-left: 50px;
+}
+
 .mono {
   font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
