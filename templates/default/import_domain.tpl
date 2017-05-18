@@ -9,6 +9,7 @@ Import records from bind zone file.
 	<strong>Warning:</strong> This will replace all existing records for this domain with the records provided in the zone file.
 </div>
 <form method="post">
+	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<div class="form-group">
 		<textarea rows="20" class="form-control mono" name="zone" id="zone">{{ zone | join("\n") }}</textarea>
 	</div>

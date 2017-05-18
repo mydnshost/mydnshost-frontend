@@ -2,6 +2,7 @@
 
 {% if hasPermission(['domains_create', 'manage_domains']) %}
 	<form id="adddomain" method="post" action="{{ url("#{pathprepend}/domains/create") }}">
+		<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 		<div class="form-group row">
 			<label for="domainname" class="col-3 col-form-label">Domain Name</label>
 			<div class="col-9">

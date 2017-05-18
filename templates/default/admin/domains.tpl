@@ -48,13 +48,14 @@
 </table>
 
 {% if hasPermission(['domains_create', 'manage_domains']) %}
-	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createAdminDomain', 'large': true} only %}
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createAdminDomain', 'large': true, 'csrftoken': csrftoken} only %}
 		{% block title %}
 			Create Domain
 		{% endblock %}
 
 		{% block body %}
 			<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
+				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 				<div class="form-group row">
 					<label for="domainname" class="col-3 col-form-label">Domain Name</label>
 					<div class="col-9">

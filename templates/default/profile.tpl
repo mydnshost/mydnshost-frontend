@@ -1,6 +1,7 @@
 <H1>User :: {{ user.realname }}</H1>
 
 <form method="post" id="editprofile">
+<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 <input type="hidden" name="changetype" value="profile">
 <table id="profileinfo" class="table table-striped table-bordered">
 	<tbody>
@@ -117,8 +118,12 @@
 				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
 
-				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/editkey/' ~ key) }}"></form>
-				<form class="d-inline form-inline deleteform" method="post" action="{{ url('/profile/deletekey/' ~ key) }}"></form>
+				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/editkey/' ~ key) }}">
+					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+				</form>
+				<form class="d-inline form-inline deleteform" method="post" action="{{ url('/profile/deletekey/' ~ key) }}">
+					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+				</form>
 			</td>
 		</tr>
 		{% endfor %}
@@ -126,6 +131,7 @@
 </table>
 
 <form method="post" action="{{ url('/profile/addkey') }}" class="form-inline form-group" id="addkeyform">
+	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
 	<button type="submit" class="btn btn-success" role="button">Add API Key</button>
 </form>

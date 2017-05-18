@@ -120,6 +120,7 @@
 				$user = session::getCurrentUser();
 				$this->setVar('user', $user['user']);
 				$this->setVar('useraccess', $user['access']);
+				$this->setVar('csrftoken', session::get('csrftoken'));
 			}
 		}
 

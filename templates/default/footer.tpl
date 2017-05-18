@@ -3,13 +3,14 @@
 		</div>
 
 		{% if hasPermission(['domains_create']) %}
-			{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUserDomain'} only %}
+			{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUserDomain', 'csrftoken': csrftoken} only %}
 				{% block title %}
 					Create Domain
 				{% endblock %}
 
 				{% block body %}
 					<form id="createUserDomainForm" method="post" action="{{ url('/domains/create') }}">
+						<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 						<div class="form-group row">
 							<label for="domainname" class="col-4 col-form-label">Domain Name</label>
 							<div class="col-8">

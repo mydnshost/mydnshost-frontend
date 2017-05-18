@@ -12,6 +12,8 @@
 		var setPermissions = {'permissions': {}};
 		setPermissions['permissions'][permission] = (valueSpan.text().trim() == 'Yes' ? 'False' : 'True');
 
+		setPermissions['csrftoken'] = $('#csrftoken').val();
+
 		$.ajax({
 			url: "{{ url('/admin/users/action') }}/setPermission/" + user,
 			data: setPermissions,
@@ -31,6 +33,8 @@
 
 				row.fadeOut(100).fadeIn(100);
 			}
+		}).fail(function(data) {
+			alert('There was an error: ' + data.responseText);
 		});
 	});
 
@@ -53,6 +57,7 @@ $('button[data-user-action]').click(function () {
 
 	$.ajax({
 		url: "{{ url('/admin/users/action') }}/" + action + "/" + user,
+		data: {'csrftoken': $('#csrftoken').val()},
 		method: "POST",
 	}).done(function(data) {
 		if (data['error'] !== undefined) {
@@ -76,6 +81,8 @@ $('button[data-user-action]').click(function () {
 
 			row.fadeOut(100).fadeIn(100);
 		}
+	}).fail(function(data) {
+		alert('There was an error: ' + data.responseText);
 	});
 });
 
@@ -90,6 +97,7 @@ $('button[data-action="deleteuser"]').click(function () {
 	okButton.off('click').click(function () {
 		$.ajax({
 			url: "{{ url('/admin/users/delete') }}/" + user,
+			data: {'csrftoken': $('#csrftoken').val()},
 			method: "POST",
 		}).done(function(data) {
 			if (data['error'] !== undefined) {
@@ -97,6 +105,8 @@ $('button[data-action="deleteuser"]').click(function () {
 			} else if (data['response'] !== undefined) {
 				row.fadeOut(500, function(){ $(this).remove(); });
 			}
+		}).fail(function(data) {
+			alert('There was an error: ' + data.responseText);
 		});
 	});
 

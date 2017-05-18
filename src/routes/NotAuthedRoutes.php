@@ -19,12 +19,14 @@
 					$displayEngine->flash('success', 'Success!', 'You are now logged in.');
 
 					session::set('logindata', ['type' => 'session', 'sessionid' => $sessionID]);
+					session::set('csrftoken', genUUID());
 					header('Location: ' . $displayEngine->getURL('/'));
 					return;
 				} else {
 					$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided.');
 
 					session::setCurrentUser(null);
+					session::clear();
 					header('Location: ' . $displayEngine->getURL('/login'));
 					return;
 				}

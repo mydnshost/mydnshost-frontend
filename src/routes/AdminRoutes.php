@@ -123,7 +123,7 @@
 							header('Location: ' . $displayEngine->getURL('/admin/users'));
 							return;
 						} else {
-							session::clear(['logindata', 'DisplayEngine::Flash']);
+							session::clear(['logindata', 'DisplayEngine::Flash', 'csrftoken']);
 							session::set('impersonate', $impersonate);
 
 							$displayEngine->flash('info', '', 'Impersonating: ' . $result['user']['realname'] . ' (' . $result['user']['email'] . ')');

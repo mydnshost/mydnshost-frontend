@@ -1,5 +1,6 @@
 <H1>User List</H1>
 
+<input type="hidden" id="csrftoken" value="{{csrftoken}}">
 <input class="form-control" data-search-top="table#userlist" value="" placeholder="Search..."><br>
 
 {% if hasPermission(['manage_users']) %}
@@ -8,7 +9,6 @@
 </div>
 <br><br>
 {% endif %}
-
 
 <table id="userlist" class="table table-striped table-bordered">
 	<thead>
@@ -103,13 +103,14 @@
 
 
 {% if hasPermission(['manage_users']) %}
-	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUser', 'large': true} only %}
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUser', 'large': true, 'csrftoken': csrftoken} only %}
 		{% block title %}
 			Create Domain
 		{% endblock %}
 
 		{% block body %}
 			<form id="adduser" method="post" action="{{ url('/admin/users/create') }}">
+				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 				<div class="form-group row">
 					<label for="email" class="col-3 col-form-label">Email Address</label>
 					<div class="col-9">

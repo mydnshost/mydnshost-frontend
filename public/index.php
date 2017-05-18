@@ -51,5 +51,17 @@
 		(new NotAuthedRoutes())->addRoutes($router, $displayEngine, $api);
 	}
 
+	// Check CSRF Tokens.
+
+	$router->before('POST', '.*', function() {
+		// Pre-Login, we don't have a CSRF Token assigned.
+		if (!session::exists('csrftoken')) { return; }
+
+		if (!array_key_exists('csrftoken', $_POST) || empty($_POST['csrftoken']) || $_POST['csrftoken'] != session::get('csrftoken')) {
+			header('HTTP/1.1 403 Forbidden');
+			die('Invalid CSRF Token');
+		}
+	});
+
 	// Begin!
 	$router->run();

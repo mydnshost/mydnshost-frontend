@@ -24,6 +24,7 @@ Domains require at least 1 NS record before they will be successfully served.
 
 {% if has_domain_write %}
 <form method="post" id="recordsform">
+<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 {% endif %}
 <table id="soainfo" class="table table-striped table-bordered form-group">
 	<tbody>

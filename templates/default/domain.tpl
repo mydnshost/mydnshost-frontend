@@ -4,6 +4,7 @@
 </H1>
 
 <form method="post" id="editsoaform">
+<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 <input type="hidden" name="changetype" value="soa">
 <table id="soainfo" class="table table-striped table-bordered">
 	<tbody>
@@ -94,6 +95,7 @@
 				{% block buttons %}
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
 					<form id="deletedomainform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/delete") }}">
+						<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 						<input type="hidden" name="confirm" value="true">
 						<button type="submit" class="btn btn-danger">Delete domain</button>
 					</form>
@@ -108,6 +110,7 @@
 <H2>Domain Access</H2>
 
 <form method="post" id="editaccess">
+<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 <input type="hidden" name="changetype" value="access">
 <table id="accessinfo" class="table table-striped table-bordered">
 	<thead>
