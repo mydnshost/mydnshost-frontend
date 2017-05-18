@@ -79,7 +79,7 @@
 		{% for key,keydata in apikeys %}
 		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} data-value="{{ key }}">
 			<td class="key">
-				{{ key }}
+				<span data-hiddenText="{{ key }}"><em>Hidden - click to view</em></span>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}

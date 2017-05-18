@@ -1,3 +1,7 @@
+$('span[data-hiddenText]').click(function () {
+	$(this).text($(this).attr('data-hiddenText'));
+});
+
 $('button[data-action="saveuser"]').click(function () {
 	$('#profileinfo').submit();
 });
