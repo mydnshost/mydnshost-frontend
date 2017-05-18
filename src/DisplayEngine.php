@@ -54,6 +54,15 @@
 				return parseBool($input) ? "Yes" : "No";
 			}));
 
+			$twig->addFilter(new Twig_Filter('date', function($input) {
+				return date('r', $input);
+			}));
+
+			$twig->addFilter(new Twig_Filter('get2FAQRCode', function($input) {
+				$ga = new PHPGangsta_GoogleAuthenticator();
+				return $ga->getQRCodeGoogleUrl($this->getVar('sitename'), $input);
+			}));
+
 			$this->vars = ['sitename' => '', 'pagetitle' => ''];
 
 			$this->twig = $twig;

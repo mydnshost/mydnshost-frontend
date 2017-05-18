@@ -11,8 +11,9 @@
 			$router->post('/login', function() use ($displayEngine, $api) {
 				$user = $_POST['user'];
 				$pass = $_POST['pass'];
+				$key = $_POST['2fakey'];
 
-				$api->setAuthUserPass($user, $pass);
+				$api->setAuthUserPass($user, $pass, $key);
 				$sessionID = $api->getSessionID();
 
 				if ($sessionID !== NULL) {
@@ -23,10 +24,16 @@
 					header('Location: ' . $displayEngine->getURL('/'));
 					return;
 				} else {
-					$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided.');
+					$lr = $api->getLastResponse();
+
+					if (isset($lr['errorData'])) {
+						$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided: ' . $lr['errorData']);
+					} else {
+						$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided.');
+					}
 
 					session::setCurrentUser(null);
-					session::clear();
+					session::clear(['DisplayEngine::Flash']);
 					header('Location: ' . $displayEngine->getURL('/login'));
 					return;
 				}

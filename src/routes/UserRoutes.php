@@ -40,6 +40,18 @@
 
 				$keys = $api->getAPIKeys();
 				$displayEngine->setVar('apikeys', $keys);
+
+				$keys = $api->get2FAKeys();
+
+				if (session::exists('new2fakey')) {
+					$newkey = session::get('new2fakey');
+					session::remove('new2fakey');
+
+					$keys[$newkey['id']] = $newkey;
+				}
+
+				$displayEngine->setVar('twofactorkeys', $keys);
+
 				$displayEngine->display('profile.tpl');
 			});
 
@@ -96,6 +108,89 @@
 
 			$router->post('/profile/deletekey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
 				$apiresult = $api->deleteAPIKey($key);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Key removed.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $displayEngine->getURL('/profile'));
+					return;
+				}
+			});
+
+			$router->post('/profile/add2fakey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
+				$apiresult = $api->create2FAKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New 2FA Key: ' . date('Y-m-d H:i:s'))]);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error adding the new 2FA Key: ' . $apiresult['errorData']];
+				} else {
+					$newkey = $apiresult['response'];
+					$result = ['success', 'New 2FA Key Added: ' . $newkey['description'], $newkey['key']];
+
+					if ($json === NULL) {
+						// Allow us to display this in the web ui one-time.
+						session::set('new2fakey', $newkey);
+					}
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					if (isset($result[2])) {
+						echo json_encode([$result[0] => [$result[1], $result[2]]]);
+					} else {
+						echo json_encode([$result[0] => $result[1]]);
+					}
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $displayEngine->getURL('/profile'));
+					return;
+				}
+			});
+
+			$router->post('/profile/edit2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				$data = isset($_POST['key'][$key]) ? $_POST['key'][$key] : [];
+				$apiresult = $api->update2FAKey($key, $data);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error editing the key: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Key edited.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $displayEngine->getURL('/profile'));
+					return;
+				}
+			});
+
+			$router->post('/profile/delete2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				$apiresult = $api->delete2FAKey($key);
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {

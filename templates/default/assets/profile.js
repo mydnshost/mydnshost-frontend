@@ -235,3 +235,117 @@ $("#addkeyform").validate({
 		}
 	},
 });
+
+
+
+$('button[data-action="edit2fakey"]').click(function () {
+	var row = $(this).parent('td').parent('tr');
+	var recordid = row.data('value');
+
+	if ($(this).data('action') == "edit2fakey") {
+		set2FAKeyEditable(row, recordid);
+
+		$(this).data('action', 'cancel');
+		$(this).html('Cancel');
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-warning');
+	} else if ($(this).data('action') == "cancel") {
+		cancelEdit2FAKey(row);
+
+		$(this).data('action', 'edit2fakey');
+		$(this).html('Edit');
+		$(this).addClass('btn-success');
+		$(this).removeClass('btn-warning');
+	}
+
+	return false;
+});
+
+$('button[data-action="save2fakey"]').click(function () {
+	var row = $(this).parent('td').parent('tr');
+	var saveform = row.find('form.editform');
+
+	$('input[type="text"]', row).each(function (index) {
+		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+	});
+	$('input[type="radio"]:checked', row).each(function (index) {
+		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+	});
+
+	// TODO: Do this with AJAX.
+	saveform.submit();
+});
+
+$('button[data-action="delete2fakey"]').click(function () {
+	var row = $(this).parent('td').parent('tr');
+	var deleteform = row.find('form.deleteform');
+
+	var okButton = $('#confirmDelete2FA button[data-action="ok"]');
+	okButton.removeClass("btn-success").addClass("btn-danger").text("Delete 2FA Key");
+
+	okButton.off('click').click(function () {
+		// TODO: Do this with AJAX.
+		deleteform.submit();
+	});
+
+	$('#confirmDelete2FA').modal({'backdrop': 'static'});
+});
+
+var new2FAKeyCount = 0;
+function set2FAKeyEditable(row, recordid) {
+	row.find('button[data-action="delete2fakey"]').hide();
+	row.find('button[data-action="save2fakey"]').show();
+
+	var fieldName = 'key';
+	if (recordid == undefined) {
+		var fieldName = 'newkey';
+		recordid = newAPIKeyCount++;
+	}
+
+	$('td[data-text]', row).each(function (index) {
+		var field = $(this);
+		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
+		var key = field.data('name');
+		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
+
+		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
+	});
+}
+
+function cancelEdit2FAKey(row) {
+	row.find('button[data-action="delete2fakey"]').show();
+	row.find('button[data-action="save2fakey"]').hide();
+
+	$('td[data-radio]', row).each(function (index) {
+		var field = $(this);
+
+		if (field.data('value') == "Yes") {
+			field.html('<span class="badge badge-success">' + escapeHtml(field.data('value')) + '</span>');
+		} else {
+			field.html('<span class="badge badge-danger">' + escapeHtml(field.data('value')) + '</span>');
+		}
+		field.data('edited-value', null);
+	});
+
+	$('td[data-text]', row).each(function (index) {
+		var field = $(this);
+		field.html(escapeHtml(field.data('value')));
+		field.data('edited-value', null);
+	});
+}
+
+$("#add2faform").validate({
+	highlight: function(element) {
+		$(element).closest('.form-group').addClass('has-danger');
+	},
+	unhighlight: function(element) {
+		$(element).closest('.form-group').removeClass('has-danger');
+	},
+	errorClass: 'form-control-feedback',
+	errorPlacement: function () { },
+	rules: {
+		description: {
+			required: true
+		}
+	},
+});

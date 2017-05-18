@@ -18,6 +18,8 @@
 		private $domainAdminOverride = FALSE;
 		/** Debug mode value. */
 		private $debug = FALSE;
+		/** Last API Response */
+		private $lastResponse = NULL;
 
 		/**
 		 * Create a new MyDNSHostAPI
@@ -53,10 +55,11 @@
 		 *
 		 * @param $user User to auth with
 		 * @param $pass Password to auth with
+		 * @param $key (Optional) 2FA Key for login.
 		 * @return $this for chaining.
 		 */
-		public function setAuthUserPass($user, $pass) {
-			$this->auth = ['type' => 'userpass', 'user' => $user, 'pass' => $pass];
+		public function setAuthUserPass($user, $pass, $key = NULL) {
+			$this->auth = ['type' => 'userpass', 'user' => $user, 'pass' => $pass, '2fa' => $key];
 			return $this;
 		}
 
@@ -246,6 +249,55 @@
 		}
 
 		/**
+		 * Get 2FA Keys for the current user
+		 *
+		 * @return Array of 2FA keys.
+		 */
+		public function get2FAKeys() {
+			if ($this->auth === FALSE) { return NULL; }
+
+			$result = $this->api('/users/self/2fa');
+			return isset($result['response']) ? $result['response'] : NULL;
+		}
+
+		/**
+		 * Create a new 2FA Key.
+		 *
+		 * @param $data Data to use for the create
+		 * @return Result of create operation.
+		 */
+		public function create2FAKey($data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/2fa', 'POST', $data);
+		}
+
+		/**
+		 * Create a new 2FA Key.
+		 *
+		 * @param $key Key to update
+		 * @param $data Data to use for the update
+		 * @return Result of update operation.
+		 */
+		public function update2FAKey($key, $data) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/2fa/' . $key, 'POST', $data);
+		}
+
+		/**
+		 * Delete a new 2FA Key.
+		 *
+		 * @param $key Key to delete
+		 * @return Result of delete operation.
+		 */
+		public function delete2FAKey($key) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/2fa/' . $key, 'DELETE');
+		}
+
+		/**
 		 * Get a session ID from the backend
 		 *
 		 * @return Backend session ID or null if we are not authed.
@@ -429,6 +481,15 @@
 		}
 
 		/**
+		 * Get the last response from the API
+		 *
+		 * @return Last API Response.
+		 */
+		public function getLastResponse() {
+			return $this->lastResponse;
+		}
+
+		/**
 		 * Poke the API.
 		 *
 		 * @param $apimethod API Method to poke
@@ -447,6 +508,9 @@
 					$headers['X-API-KEY'] = $this->auth['key'];
 				} else if ($this->auth['type'] == 'userpass') {
 					$options['auth'] = [$this->auth['user'], $this->auth['pass']];
+					if (isset($this->auth['2fa'])) {
+						$headers['X-2FA-KEY'] = $this->auth['2fa'];
+					}
 				}
 			}
 
@@ -486,6 +550,7 @@
 				$data['__DEBUG'] = $debug;
 			}
 
+			$this->lastResponse = $data;
 			return $data;
 		}
 	}

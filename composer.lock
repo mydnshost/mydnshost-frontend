@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "caea289826b5ff597903228a4b7cf352",
-    "content-hash": "27e57788a70d3ddb46d86bb1070afab8",
+    "hash": "ea52530cdb66ae73902a61de57be75e9",
+    "content-hash": "ef56a3b7d7a6383fdd9d81473d874594",
     "packages": [
         {
             "name": "bramus/router",
@@ -52,6 +52,49 @@
                 "routing"
             ],
             "time": "2016-05-26 19:40:20"
+        },
+        {
+            "name": "phpgangsta/googleauthenticator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPGangsta/GoogleAuthenticator.git",
+                "reference": "3baa997f399d4afd5d6a81d42244ec9cc3eeb080"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPGangsta/GoogleAuthenticator/zipball/3baa997f399d4afd5d6a81d42244ec9cc3eeb080",
+                "reference": "3baa997f399d4afd5d6a81d42244ec9cc3eeb080",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "PHPGangsta/GoogleAuthenticator.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Kliewe",
+                    "email": "info@phpgangsta.de",
+                    "homepage": "http://www.phpgangsta.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Google Authenticator 2-factor authentication",
+            "keywords": [
+                "googleauthenticator",
+                "rfc6238",
+                "totp"
+            ],
+            "time": "2016-10-08 16:35:34"
         },
         {
             "name": "rmccue/requests",
@@ -228,7 +271,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phpgangsta/googleauthenticator": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
