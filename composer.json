@@ -19,12 +19,8 @@
     },
     "autoload": {
         "classmap": [
-            "src/"
+            "src/",
+            "mydnshost-php-api/src/"
         ]
-    },
-    "require-dev": {
-    },
-	"scripts": {
-        "start": "php -S 0.0.0.0:8008 -t public public/index.php"
-	}
+    }
 }

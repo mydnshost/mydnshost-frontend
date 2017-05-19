@@ -1,0 +1,3 @@
+[submodule "mydnshost-php-api"]
+	path = mydnshost-php-api
+	url = https://github.com/mydnshost/mydnshost-php-api
