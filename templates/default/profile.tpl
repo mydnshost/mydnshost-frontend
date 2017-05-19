@@ -153,11 +153,11 @@
 
 <H2>2FA Keys</H2>
 
-Here you can see what 2FA Keys have been added to your account. If you have a 2FA key assigned, you will need to provide the code from at least one of the keys when ever you log in with a username and password.
+Here you can see what 2FA Keys have been added to your account. If you have an active 2FA key assigned, you will need to provide the code from at least one of the active keys when ever you log in with a username and password.
 <br><br>
-You will only be able to see the key and associated QR code for any keys that have not yet been used to log in.
-
-<table id="2fakeys" class="table table-striped table-bordered">
+You will only be able to see the key and associated QR code for any keys that have not yet been activated.
+<br><br>
+<table id="twofactorkeys" class="table table-striped table-bordered">
 	<thead>
 		<tr>
 			<th class="key">Key</th>
@@ -171,11 +171,25 @@ You will only be able to see the key and associated QR code for any keys that ha
 		<tr data-value="{{ key }}">
 			<td class="key">
 				{% if keydata.key %}
-					<strong>{{ keydata.key }}</strong>
-					<br>
-					<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
+					<div class="inactive">
+						<div class="key">
+							<strong>{{ keydata.key }}</strong>
+							<br>
+							<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
+						</div>
+						<div class="verifykey">
+							<em>This key is not yet active, please activate the key by submitting a valid code from it</em>
+							<br><br>
+							<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
+								<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+								<input type="text" name="code" placeholder="000000">
+								<br><br>
+								<button type="submit" class="btn btn-sm btn-success" role="button">Activate Key</button>
+							</form>
+						</div>
+					</div>
 				{% else %}
-					<em>Hidden</em>
+					<em>Hidden - key is active</em>
 				{% endif %}
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">

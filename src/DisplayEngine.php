@@ -60,7 +60,8 @@
 
 			$twig->addFilter(new Twig_Filter('get2FAQRCode', function($input) {
 				$ga = new PHPGangsta_GoogleAuthenticator();
-				return $ga->getQRCodeGoogleUrl($this->getVar('sitename'), $input);
+				$user = session::getCurrentUser();
+				return $ga->getQRCodeGoogleUrl($this->getVar('sitename') . ' ' . $user['user']['email'], $input);
 			}));
 
 			$this->vars = ['sitename' => '', 'pagetitle' => ''];

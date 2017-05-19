@@ -273,7 +273,7 @@
 		}
 
 		/**
-		 * Create a new 2FA Key.
+		 * Update a new 2FA Key.
 		 *
 		 * @param $key Key to update
 		 * @param $data Data to use for the update
@@ -283,6 +283,19 @@
 			if ($this->auth === FALSE) { return []; }
 
 			return $this->api('/users/self/2fa/' . $key, 'POST', $data);
+		}
+
+		/**
+		 * Verify a new 2FA Key.
+		 *
+		 * @param $key Key to verify
+		 * @param $code Code to verify with
+		 * @return Result of update operation.
+		 */
+		public function verify2FAKey($key, $code) {
+			if ($this->auth === FALSE) { return []; }
+
+			return $this->api('/users/self/2fa/' . $key . '/verify', 'POST', ['code' => $code]);
 		}
 
 		/**

@@ -141,12 +141,7 @@
 					$result = ['error', 'There was an error adding the new 2FA Key: ' . $apiresult['errorData']];
 				} else {
 					$newkey = $apiresult['response'];
-					$result = ['success', 'New 2FA Key Added: ' . $newkey['description'], $newkey['key']];
-
-					if ($json === NULL) {
-						// Allow us to display this in the web ui one-time.
-						session::set('new2fakey', $newkey);
-					}
+					$result = ['success', 'New 2FA Key Added: ' . $newkey['description'] . ' - key must be verified before use.'];
 				}
 
 				if ($json !== NULL) {
@@ -212,5 +207,29 @@
 					return;
 				}
 			});
+
+
+			$router->post('/profile/verify2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				$code = isset($_POST['code']) ? $_POST['code'] : null;
+				$apiresult = $api->verify2FAKey($key, $code);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					$result = ['error', 'There was an error verifying the key: ' . $apiresult['error']];
+				} else {
+					$result = ['success', 'Key verified.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $displayEngine->getURL('/profile'));
+					return;
+				}
+			});
+
 		}
 	}

@@ -208,6 +208,34 @@ table#apikeys th.actions, table#apikeys td.actions {
 }
 
 
+
+
+table#twofactorkeys th.key, table#twofactorkeys td.key {
+  width: 460px;
+}
+
+table#twofactorkeys td.key div.inactive {
+  display: flex;
+}
+
+table#twofactorkeys td.key div.key, table#twofactorkeys td.key div.verifykey {
+  width: 225px;
+  display: block;
+}
+
+table#twofactorkeys th.description, table#twofactorkeys td.description {
+
+}
+
+table#twofactorkeys th.lastused, table#twofactorkeys td.lastused {
+  width: 300px;
+}
+
+table#twofactorkeys th.actions, table#twofactorkeys td.actions {
+  width: 200px;
+}
+
+
 /**********************************************************************
  * User
  **********************************************************************/
