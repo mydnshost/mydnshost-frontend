@@ -9,6 +9,13 @@
 	$displayEngine = new DisplayEngine($config['templates']);
 	$displayEngine->setSiteName($config['sitename']);
 
+	// Session storage
+	if (isset($config['memcached']) && !empty($config['memcached'])) {
+		ini_set('session.save_handler', 'memcached');
+		ini_set('session.save_path', $config['memcached']);
+	}
+	session::init();
+
 	// API to interact with backend
 	$api = new MyDNSHostAPI($config['api']);
 	if (session::exists('logindata')) {
