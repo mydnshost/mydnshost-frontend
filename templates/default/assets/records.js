@@ -103,6 +103,10 @@ $('button[data-action="add"]').click(function () {
 
 	setEditable(row, undefined);
 
+	$('html,body').animate({
+		scrollTop: row.offset().top
+	});
+
 	row.find('button[data-action="delete"]').click(function () {
 		var row = $(this).parent('td').parent('tr');
 		row.remove();

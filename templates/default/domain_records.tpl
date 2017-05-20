@@ -112,7 +112,8 @@ Domains require at least 1 NS record before they will be successfully served.
 </table>
 
 {% if has_domain_write %}
-<div class="row">
+<div id="actionbuttonsfiller" class="row"></div>
+<div id="actionbuttons" class="row">
 	<div class="col">
 		<button type="button" class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
 		<br><br>
