@@ -14,7 +14,7 @@ $('button[data-action="editsoa"]').click(function () {
 		cancelEditSOA();
 
 		$(this).data('action', 'editsoa');
-		$(this).html('Edit SOA');
+		$(this).html('Edit Domain Info');
 		$(this).addClass('btn-primary');
 		$(this).removeClass('btn-warning');
 	}
@@ -30,8 +30,13 @@ function setSOAEditable() {
 		var field = $(this);
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
+		var isSOA = field.data('soa') !== undefined;
 
-		field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
+		if (isSOA) {
+			field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
+		} else {
+			field.html('<input type="text" class="form-control form-control-sm" name="' + key + '" value="' + escapeHtml(value) + '">');
+		}
 	});
 
 	$('table#soainfo td[data-radio]').each(function (index) {

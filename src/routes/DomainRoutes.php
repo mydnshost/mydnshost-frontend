@@ -129,6 +129,9 @@
 						if (isset($_POST['disabled'])) {
 							$data['disabled'] = $_POST['disabled'];
 						}
+						if (isset($_POST['defaultttl'])) {
+							$data['defaultttl'] = $_POST['defaultttl'];
+						}
 						if (isset($_POST['soa'])) {
 							$data['SOA'] = $_POST['soa'];
 						}
