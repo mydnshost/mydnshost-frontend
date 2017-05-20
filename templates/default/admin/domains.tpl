@@ -30,6 +30,7 @@
 				{% set foundowner = false %}
 				{% for user,access in domain.users if not break %}
 					{% if access == "owner" %}
+						{% if foundowner %}<br>{% endif %}
 						<img src="{{ user | gravatar }}" alt="{{ user }}" class="minigravatar" />&nbsp;
 						{{ user }}
 						{% set foundowner = true %}
