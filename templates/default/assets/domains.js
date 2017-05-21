@@ -1,26 +1,107 @@
-$('button[data-action="savesoa"]').click(function () {
-	$('#editsoaform').submit();
+$(function() {
+	$('button[data-action="savesoa"]').click(function () {
+		$('#editsoaform').submit();
+	});
+
+	$('button[data-action="editsoa"]').click(function () {
+		if ($(this).data('action') == "editsoa") {
+			setSOAEditable();
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			$(this).removeClass('btn-primary');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEditSOA();
+
+			$(this).data('action', 'editsoa');
+			$(this).html('Edit Domain Info');
+			$(this).addClass('btn-primary');
+			$(this).removeClass('btn-warning');
+		}
+
+		return false;
+	});
+
+	$('button[data-action="editaccess"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var person = row.find('td.who').data('value');
+
+		if ($(this).data('action') == "editaccess") {
+			setEditAccess(row, person);
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			$(this).removeClass('btn-success');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEditAccess(row);
+
+			$(this).data('action', 'editaccess');
+			$(this).html('Edit');
+			$(this).addClass('btn-success');
+			$(this).removeClass('btn-warning');
+		}
+
+		// If this is a hacky edit button, remove it.
+		if (row.hasClass("new")) {
+			$(this).remove();
+		}
+		return false;
+	});
+
+	$('button[data-action="deleteaccess"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		row.remove();
+		// Don't submit the form.
+		return false;
+	});
+
+	$('button[data-action="addaccess"]').click(function () {
+		var table = $('table#accessinfo');
+
+		var row = '';
+		row += '<tr class="new">';
+		row += '	<td class="who" data-value=""></td>';
+		row += '	<td class="access" data-value="read"></td>';
+		row += '	<td class="actions" data-value="">';
+		row += '		<button type="button" class="btn btn-sm btn-warning" data-action="deleteaccess" role="button">Cancel</button>';
+		row += '	</td>';
+		row += '</tr>';
+
+		row = $(row);
+		table.append(row);
+
+		setEditAccess(row, undefined);
+
+		row.find('button[data-action="deleteaccess"]').click(function () {
+			var row = $(this).parent('td').parent('tr');
+			row.remove();
+			// Don't submit the form.
+			return false;
+		});
+
+		// Don't submit the form.
+		return false;
+	});
+
+	$("#editaccess").validate({
+		highlight: function(element) {
+			$(element).closest('td').addClass('has-danger');
+		},
+		unhighlight: function(element) {
+			$(element).closest('td').removeClass('has-danger');
+		},
+		errorClass: 'form-control-feedback'
+	});
+
+
+	$('tr[data-edited="true"]').each(function (index) {
+		$(this).find('button[data-action="editaccess"]').click();
+	});
 });
 
-$('button[data-action="editsoa"]').click(function () {
-	if ($(this).data('action') == "editsoa") {
-		setSOAEditable();
 
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-		$(this).removeClass('btn-primary');
-		$(this).addClass('btn-warning');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEditSOA();
-
-		$(this).data('action', 'editsoa');
-		$(this).html('Edit Domain Info');
-		$(this).addClass('btn-primary');
-		$(this).removeClass('btn-warning');
-	}
-
-	return false;
-});
 
 function setSOAEditable() {
 	$('#domaincontrols a').addClass('hidden');
@@ -82,8 +163,6 @@ function setSOAEditable() {
 			}
 		});
 	});
-
-
 }
 
 function cancelEditSOA() {
@@ -113,68 +192,6 @@ function cancelEditSOA() {
 
 var accessLevels = ["owner", "admin", "write", "read", "none"];
 var newAccessCount = 0;
-
-$('button[data-action="editaccess"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var person = row.find('td.who').data('value');
-
-	if ($(this).data('action') == "editaccess") {
-		setEditAccess(row, person);
-
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-		$(this).removeClass('btn-success');
-		$(this).addClass('btn-warning');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEditAccess(row);
-
-		$(this).data('action', 'editaccess');
-		$(this).html('Edit');
-		$(this).addClass('btn-success');
-		$(this).removeClass('btn-warning');
-	}
-
-	// If this is a hacky edit button, remove it.
-	if (row.hasClass("new")) {
-		$(this).remove();
-	}
-	return false;
-});
-
-$('button[data-action="deleteaccess"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	row.remove();
-	// Don't submit the form.
-	return false;
-});
-
-$('button[data-action="addaccess"]').click(function () {
-	var table = $('table#accessinfo');
-
-	var row = '';
-	row += '<tr class="new">';
-	row += '	<td class="who" data-value=""></td>';
-	row += '	<td class="access" data-value="read"></td>';
-	row += '	<td class="actions" data-value="">';
-	row += '		<button type="button" class="btn btn-sm btn-warning" data-action="deleteaccess" role="button">Cancel</button>';
-	row += '	</td>';
-	row += '</tr>';
-
-	row = $(row);
-	table.append(row);
-
-	setEditAccess(row, undefined);
-
-	row.find('button[data-action="deleteaccess"]').click(function () {
-		var row = $(this).parent('td').parent('tr');
-		row.remove();
-		// Don't submit the form.
-		return false;
-	});
-
-	// Don't submit the form.
-	return false;
-});
 
 function cancelEditAccess(row) {
 	var fields = {"access": row.find('td.access')
@@ -220,19 +237,3 @@ function setEditAccess(row, who) {
 
 	row.addClass('form-group');
 }
-
-$("#editaccess").validate({
-	highlight: function(element) {
-		$(element).closest('td').addClass('has-danger');
-	},
-	unhighlight: function(element) {
-		$(element).closest('td').removeClass('has-danger');
-	},
-	errorClass: 'form-control-feedback'
-});
-
-$(function() {
-	$('tr[data-edited="true"]').each(function (index) {
-		$(this).find('button[data-action="editaccess"]').click();
-	});
-});

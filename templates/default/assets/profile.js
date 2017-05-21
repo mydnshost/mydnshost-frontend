@@ -13,11 +13,15 @@ $(function() {
 
 			$(this).data('action', 'cancel');
 			$(this).html('Cancel');
+			$(this).removeClass('btn-primary');
+			$(this).addClass('btn-warning');
 		} else if ($(this).data('action') == "cancel") {
 			cancelEditUser();
 
 			$(this).data('action', 'edituser');
 			$(this).html('Edit user details');
+			$(this).addClass('btn-primary');
+			$(this).removeClass('btn-warning');
 		}
 
 		return false;
