@@ -5,7 +5,7 @@
 
 			$router->get('/login', function() use ($displayEngine) {
 				$displayEngine->setPageID('login');
-				$displayEngine->displayRaw('login.tpl');
+				$displayEngine->display('login.tpl');
 			});
 
 			$router->post('/login', function() use ($displayEngine, $api) {
