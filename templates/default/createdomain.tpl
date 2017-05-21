@@ -1,6 +1,6 @@
 <H1>Add Domain</H1>
 
-{% if hasPermission(['domains_create', 'manage_domains']) %}
+{% if hasPermission(['domains_create']) %}
 	<form id="adddomain" method="post" action="{{ url("#{pathprepend}/domains/create") }}">
 		<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 		<div class="form-group row">
