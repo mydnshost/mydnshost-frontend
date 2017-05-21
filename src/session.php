@@ -54,6 +54,8 @@
 
 			self::$user = isset($_SESSION['session::user']) ? unserialize($_SESSION['session::user']) : '';
 			self::$storedVars = isset($_SESSION['session::storedVars']) ? unserialize($_SESSION['session::storedVars']) : array();
+
+			session_write_close();
 		}
 
 		/**
@@ -155,7 +157,11 @@
 		 * otherwise they may be lost.
 		 */
 		static function save() {
+			session_start();
+
 			$_SESSION['session::user'] = serialize(self::$user);
 			$_SESSION['session::storedVars'] = serialize(self::$storedVars);
+
+			session_write_close();
 		}
 	}
