@@ -1,4 +1,5 @@
 <div class="container">
+  {% block contenttop %}{% endblock %}
   <div class="row jumbotron">
     <div class="col">
       <h1>Welcome!</h1>

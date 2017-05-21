@@ -1,3 +1,5 @@
+<div class="container">
+{% block contenttop %}{% endblock %}
 <form class="form-signin small" method="post">
   <h1 class="form-signin-heading">Please sign in</h1>
   <label for="inputEmail" class="sr-only">Email address</label>
@@ -9,3 +11,4 @@
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
+</div>
