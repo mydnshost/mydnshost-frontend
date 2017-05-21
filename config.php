@@ -11,6 +11,8 @@
 
 	$config['memcached'] = getEnvOrDefault('MEMCACHED', '');
 
+	$config['securecookies'] = getEnvOrDefault('SECURE_COOKIES', false);
+
 	if (file_exists(dirname(__FILE__) . '/config.local.php')) {
 		include(dirname(__FILE__) . '/config.local.php');
 	}

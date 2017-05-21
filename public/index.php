@@ -9,6 +9,11 @@
 	$displayEngine = new DisplayEngine($config);
 	$displayEngine->setSiteName($config['sitename']);
 
+	if ($config['securecookies']) {
+		ini_set('session.cookie_secure', True);
+	}
+	ini_set('session.cookie_httponly', True);
+
 	// Session storage
 	if (isset($config['memcached']) && !empty($config['memcached'])) {
 		ini_set('session.save_handler', 'memcached');

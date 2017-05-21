@@ -47,8 +47,6 @@
 			if (self::$hasInit) { return; }
 			self::$hasInit = true;
 
-			ini_set('session.cookie_secure', True);
-			ini_set('session.cookie_httponly', True);
 			session_name($name === NULL ? MD5(__DIR__) : $name);
 			session_start();
 
