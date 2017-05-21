@@ -4,6 +4,8 @@
 		public function addRoutes($router, $displayEngine, $api) {
 
 			$router->match('GET|POST', '/profile', function() use ($router, $displayEngine, $api) {
+				$displayEngine->setPageID('/profile')->setTitle('Profile');
+
 				if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'profile') {
 					$canUpdate = true;
 					if (isset($_POST['password']) || isset($_POST['confirmpassword'])) {

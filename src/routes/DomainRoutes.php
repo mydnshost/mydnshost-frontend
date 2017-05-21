@@ -64,6 +64,7 @@
 
 			$router->get('/domains', function() use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);
+				$this->setPageID($displayEngine, '/domains/')->setTitle('Domains');
 
 				$domains = $api->getDomains();
 				$allDomains = [];
