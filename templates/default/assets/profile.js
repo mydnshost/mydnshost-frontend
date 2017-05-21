@@ -1,25 +1,193 @@
-$('span[data-hiddenText]').click(function () {
-	$(this).text($(this).attr('data-hiddenText'));
-});
+$(function() {
+	$('span[data-hiddenText]').click(function () {
+		$(this).text($(this).attr('data-hiddenText'));
+	});
 
-$('button[data-action="saveuser"]').click(function () {
-	$('#profileinfo').submit();
-});
+	$('button[data-action="saveuser"]').click(function () {
+		$('#profileinfo').submit();
+	});
 
-$('button[data-action="edituser"]').click(function () {
-	if ($(this).data('action') == "edituser") {
-		setUserEditable();
+	$('button[data-action="edituser"]').click(function () {
+		if ($(this).data('action') == "edituser") {
+			setUserEditable();
 
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEditUser();
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEditUser();
 
-		$(this).data('action', 'edituser');
-		$(this).html('Edit user details');
-	}
+			$(this).data('action', 'edituser');
+			$(this).html('Edit user details');
+		}
 
-	return false;
+		return false;
+	});
+
+	$('button[data-action="saveuser"]').click(function () {
+		$('#editprofile').submit();
+	});
+
+	$("#editprofile").validate({
+		highlight: function(element) {
+			$(element).closest('tr').addClass('has-danger');
+			$(element).closest('tr').find('th').addClass('col-form-label');
+		},
+		unhighlight: function(element) {
+			$(element).closest('tr').removeClass('has-danger');
+			$(element).closest('tr').find('th').removeClass('col-form-label');
+		},
+		errorClass: 'form-control-feedback',
+		rules: {
+			password: {
+				minlength: 6,
+			},
+			confirmpassword: {
+				equalTo: "#password",
+			},
+			email: {
+				email: true
+			}
+		},
+	});
+
+
+	$('button[data-action="editkey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var recordid = row.data('value');
+
+		if ($(this).data('action') == "editkey") {
+			setKeyEditable(row, recordid);
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			$(this).removeClass('btn-success');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEditKey(row);
+
+			$(this).data('action', 'editkey');
+			$(this).html('Edit');
+			$(this).addClass('btn-success');
+			$(this).removeClass('btn-warning');
+		}
+
+		return false;
+	});
+
+	$('button[data-action="savekey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var saveform = row.find('form.editform');
+
+		$('input[type="text"]', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+		$('input[type="radio"]:checked', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+
+		// TODO: Do this with AJAX.
+		saveform.submit();
+	});
+
+	$('button[data-action="deletekey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var deleteform = row.find('form.deleteform');
+
+		var okButton = $('#confirmDelete button[data-action="ok"]');
+		okButton.removeClass("btn-success").addClass("btn-danger").text("Delete API Key");
+
+		okButton.off('click').click(function () {
+			// TODO: Do this with AJAX.
+			deleteform.submit();
+		});
+
+		$('#confirmDelete').modal({'backdrop': 'static'});
+	});
+
+	$("#addkeyform").validate({
+		highlight: function(element) {
+			$(element).closest('.form-group').addClass('has-danger');
+		},
+		unhighlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-danger');
+		},
+		errorClass: 'form-control-feedback',
+		errorPlacement: function () { },
+		rules: {
+			description: {
+				required: true
+			}
+		},
+	});
+
+	$('button[data-action="edit2fakey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var recordid = row.data('value');
+
+		if ($(this).data('action') == "edit2fakey") {
+			set2FAKeyEditable(row, recordid);
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			$(this).removeClass('btn-success');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEdit2FAKey(row);
+
+			$(this).data('action', 'edit2fakey');
+			$(this).html('Edit');
+			$(this).addClass('btn-success');
+			$(this).removeClass('btn-warning');
+		}
+
+		return false;
+	});
+
+	$('button[data-action="save2fakey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var saveform = row.find('form.editform');
+
+		$('input[type="text"]', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+		$('input[type="radio"]:checked', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+
+		// TODO: Do this with AJAX.
+		saveform.submit();
+	});
+
+	$('button[data-action="delete2fakey"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var deleteform = row.find('form.deleteform');
+
+		var okButton = $('#confirmDelete2FA button[data-action="ok"]');
+		okButton.removeClass("btn-success").addClass("btn-danger").text("Delete 2FA Key");
+
+		okButton.off('click').click(function () {
+			// TODO: Do this with AJAX.
+			deleteform.submit();
+		});
+
+		$('#confirmDelete2FA').modal({'backdrop': 'static'});
+	});
+
+	$("#add2faform").validate({
+		highlight: function(element) {
+			$(element).closest('.form-group').addClass('has-danger');
+		},
+		unhighlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-danger');
+		},
+		errorClass: 'form-control-feedback',
+		errorPlacement: function () { },
+		rules: {
+			description: {
+				required: true
+			}
+		},
+	});
 });
 
 function setUserEditable() {
@@ -49,87 +217,6 @@ function cancelEditUser() {
 	});
 	$('table#profileinfo tr[data-hidden]').hide();
 }
-
-$('button[data-action="saveuser"]').click(function () {
-	$('#editprofile').submit();
-});
-
-$("#editprofile").validate({
-	highlight: function(element) {
-		$(element).closest('tr').addClass('has-danger');
-		$(element).closest('tr').find('th').addClass('col-form-label');
-	},
-	unhighlight: function(element) {
-		$(element).closest('tr').removeClass('has-danger');
-		$(element).closest('tr').find('th').removeClass('col-form-label');
-	},
-	errorClass: 'form-control-feedback',
-	rules: {
-		password: {
-			minlength: 6,
-		},
-		confirmpassword: {
-			equalTo: "#password",
-		},
-		email: {
-			email: true
-		}
-	},
-});
-
-
-$('button[data-action="editkey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var recordid = row.data('value');
-
-	if ($(this).data('action') == "editkey") {
-		setKeyEditable(row, recordid);
-
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-		$(this).removeClass('btn-success');
-		$(this).addClass('btn-warning');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEditKey(row);
-
-		$(this).data('action', 'editkey');
-		$(this).html('Edit');
-		$(this).addClass('btn-success');
-		$(this).removeClass('btn-warning');
-	}
-
-	return false;
-});
-
-$('button[data-action="savekey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var saveform = row.find('form.editform');
-
-	$('input[type="text"]', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
-	});
-	$('input[type="radio"]:checked', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
-	});
-
-	// TODO: Do this with AJAX.
-	saveform.submit();
-});
-
-$('button[data-action="deletekey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var deleteform = row.find('form.deleteform');
-
-	var okButton = $('#confirmDelete button[data-action="ok"]');
-	okButton.removeClass("btn-success").addClass("btn-danger").text("Delete API Key");
-
-	okButton.off('click').click(function () {
-		// TODO: Do this with AJAX.
-		deleteform.submit();
-	});
-
-	$('#confirmDelete').modal({'backdrop': 'static'});
-});
 
 var newAPIKeyCount = 0;
 function setKeyEditable(row, recordid) {
@@ -223,78 +310,6 @@ function editableYesNo(row, fieldName, recordid) {
 
 }
 
-
-$("#addkeyform").validate({
-	highlight: function(element) {
-		$(element).closest('.form-group').addClass('has-danger');
-	},
-	unhighlight: function(element) {
-		$(element).closest('.form-group').removeClass('has-danger');
-	},
-	errorClass: 'form-control-feedback',
-	errorPlacement: function () { },
-	rules: {
-		description: {
-			required: true
-		}
-	},
-});
-
-
-
-$('button[data-action="edit2fakey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var recordid = row.data('value');
-
-	if ($(this).data('action') == "edit2fakey") {
-		set2FAKeyEditable(row, recordid);
-
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-		$(this).removeClass('btn-success');
-		$(this).addClass('btn-warning');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEdit2FAKey(row);
-
-		$(this).data('action', 'edit2fakey');
-		$(this).html('Edit');
-		$(this).addClass('btn-success');
-		$(this).removeClass('btn-warning');
-	}
-
-	return false;
-});
-
-$('button[data-action="save2fakey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var saveform = row.find('form.editform');
-
-	$('input[type="text"]', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
-	});
-	$('input[type="radio"]:checked', row).each(function (index) {
-		saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
-	});
-
-	// TODO: Do this with AJAX.
-	saveform.submit();
-});
-
-$('button[data-action="delete2fakey"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var deleteform = row.find('form.deleteform');
-
-	var okButton = $('#confirmDelete2FA button[data-action="ok"]');
-	okButton.removeClass("btn-success").addClass("btn-danger").text("Delete 2FA Key");
-
-	okButton.off('click').click(function () {
-		// TODO: Do this with AJAX.
-		deleteform.submit();
-	});
-
-	$('#confirmDelete2FA').modal({'backdrop': 'static'});
-});
-
 var new2FAKeyCount = 0;
 function set2FAKeyEditable(row, recordid) {
 	row.find('button[data-action="delete2fakey"]').hide();
@@ -337,19 +352,3 @@ function cancelEdit2FAKey(row) {
 		field.data('edited-value', null);
 	});
 }
-
-$("#add2faform").validate({
-	highlight: function(element) {
-		$(element).closest('.form-group').addClass('has-danger');
-	},
-	unhighlight: function(element) {
-		$(element).closest('.form-group').removeClass('has-danger');
-	},
-	errorClass: 'form-control-feedback',
-	errorPlacement: function () { },
-	rules: {
-		description: {
-			required: true
-		}
-	},
-});

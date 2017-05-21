@@ -1,42 +1,40 @@
-{% if hasPermission(['domains_create', 'manage_domains']) %}
-
-$("#adddomain").validate({
-	highlight: function(element) {
-		$(element).closest('.form-group').addClass('has-danger');
-	},
-	unhighlight: function(element) {
-		$(element).closest('.form-group').removeClass('has-danger');
-	},
-	errorClass: 'form-control-feedback',
-	rules: {
-		domainname: {
-			required: true
+$(function() {
+	$("#adddomain").validate({
+		highlight: function(element) {
+			$(element).closest('.form-group').addClass('has-danger');
 		},
-		owner: {
-			email: true
-		}
-	},
-});
-
-$('a[data-action="addAdminDomain"]').click(function () {
-	var okButton = $('#createAdminDomain button[data-action="ok"]');
-	okButton.text("Create");
-
-	okButton.off('click').click(function () {
-		if ($("#adddomain").valid()) {
-			$("#adddomain").submit();
-			$('#createAdminDomain').modal('hide');
-		}
+		unhighlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-danger');
+		},
+		errorClass: 'form-control-feedback',
+		rules: {
+			domainname: {
+				required: true
+			},
+			owner: {
+				email: true
+			}
+		},
 	});
 
-	var cancelButton = $('#createAdminDomain button[data-action="cancel"]');
-	cancelButton.off('click').click(function () {
-		$("#adddomain").validate().resetForm();
+	$('a[data-action="addAdminDomain"]').click(function () {
+		var okButton = $('#createAdminDomain button[data-action="ok"]');
+		okButton.text("Create");
+
+		okButton.off('click').click(function () {
+			if ($("#adddomain").valid()) {
+				$("#adddomain").submit();
+				$('#createAdminDomain').modal('hide');
+			}
+		});
+
+		var cancelButton = $('#createAdminDomain button[data-action="cancel"]');
+		cancelButton.off('click').click(function () {
+			$("#adddomain").validate().resetForm();
+		});
+
+		$('#createAdminDomain').modal({'backdrop': 'static'});
+
+		return false;
 	});
-
-	$('#createAdminDomain').modal({'backdrop': 'static'});
-
-	return false;
 });
-
-{% endif %}

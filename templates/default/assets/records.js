@@ -12,120 +12,121 @@ var recordtypes = {
 
 var newRecordCount = 0;
 
-$('button[data-action="edit"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var recordid = row.data('id');
-
-	if ($(this).data('action') == "edit") {
-		setEditable(row, recordid);
-
-		$(this).data('action', 'cancel');
-		$(this).html('Cancel');
-		row.addClass('edited');
-		$(this).removeClass('btn-success');
-		$(this).addClass('btn-warning');
-	} else if ($(this).data('action') == "cancel") {
-		cancelEdit(row);
-
-		$(this).data('action', 'edit');
-		$(this).html('Edit');
-		row.removeClass('edited');
-		$(this).addClass('btn-success');
-		$(this).removeClass('btn-warning');
-	}
-
-	// If this is a hacky edit button, remove it.
-	if (row.hasClass("new")) {
-		$(this).remove();
-	}
-
-	// Don't submit the form.
-	return false;
-});
-
-$('button[data-action="delete"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	var recordid = row.data('id');
-
-	cancelEdit(row);
-	row.find('button[data-action="edit"]').data('action', 'edit');
-	row.find('button[data-action="edit"]').html('Edit');
-	row.find('button[data-action="edit"]').addClass('btn-success');
-	row.find('button[data-action="edit"]').removeClass('btn-warning');
-
-	if ($(this).data('action') == "delete") {
-		row.find('button[data-action="edit"]').hide();
-
-		row.addClass('deleted');
-		$(this).data('action', 'undelete');
-		$(this).html('Undelete');
-		$(row).find('td.actions').append('<input type="hidden" data-marker="delete" name="record[' + recordid + '][delete]" value="true">');
-	} else if ($(this).data('action') == "undelete") {
-		row.find('button[data-action="edit"]').show();
-		row.removeClass('deleted');
-		row.find('td.actions').find('input[data-marker="delete"]').remove();
-
-		$(this).data('action', 'delete');
-		$(this).html('Delete');
-	}
-
-	// Don't submit the form.
-	return false;
-});
-
-$('button[data-action="deletenew"]').click(function () {
-	var row = $(this).parent('td').parent('tr');
-	row.remove();
-
-	// Don't submit the form.
-	return false;
-});
-
-$('button[data-action="add"]').click(function () {
-
-	var table = $('table#records');
-
-	var row = '';
-	row += '<tr class="new">';
-	row += '	<td class="name" data-value=""></td>';
-	row += '	<td class="type" data-value=""></td>';
-	row += '	<td class="priority" data-value=""></td>';
-	row += '	<td class="content" data-value=""></td>';
-	row += '	<td class="ttl" data-value=""></td>';
-	row += '	<td class="state" data-value="No"></td>';
-	row += '	<td class="actions" data-value="">';
-	row += '		<button type="button" class="btn btn-sm btn-warning" data-action="delete" role="button">Cancel</button>';
-	row += '	</td>';
-	row += '</tr>';
-
-	row = $(row);
-	table.append(row);
-
-	setEditable(row, undefined);
-
-	$('html,body').animate({
-		scrollTop: row.offset().top
-	});
-
-	row.find('button[data-action="delete"]').click(function () {
+$(function() {
+	$('button[data-action="edit"]').click(function () {
 		var row = $(this).parent('td').parent('tr');
-		row.remove();
+		var recordid = row.data('id');
+
+		if ($(this).data('action') == "edit") {
+			setEditable(row, recordid);
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			row.addClass('edited');
+			$(this).removeClass('btn-success');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEdit(row);
+
+			$(this).data('action', 'edit');
+			$(this).html('Edit');
+			row.removeClass('edited');
+			$(this).addClass('btn-success');
+			$(this).removeClass('btn-warning');
+		}
+
+		// If this is a hacky edit button, remove it.
+		if (row.hasClass("new")) {
+			$(this).remove();
+		}
+
 		// Don't submit the form.
 		return false;
 	});
 
-	// Don't submit the form.
-	return false;
-});
+	$('button[data-action="delete"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var recordid = row.data('id');
 
-$('button[data-action="reset"]').click(function () {
-	$('tr.new').remove();
-	$('tr.edited button[data-action="edit"]').click();
-	$('tr.deleted button[data-action="delete"]').click();
-	return false;
-});
+		cancelEdit(row);
+		row.find('button[data-action="edit"]').data('action', 'edit');
+		row.find('button[data-action="edit"]').html('Edit');
+		row.find('button[data-action="edit"]').addClass('btn-success');
+		row.find('button[data-action="edit"]').removeClass('btn-warning');
 
-$(function() {
+		if ($(this).data('action') == "delete") {
+			row.find('button[data-action="edit"]').hide();
+
+			row.addClass('deleted');
+			$(this).data('action', 'undelete');
+			$(this).html('Undelete');
+			$(row).find('td.actions').append('<input type="hidden" data-marker="delete" name="record[' + recordid + '][delete]" value="true">');
+		} else if ($(this).data('action') == "undelete") {
+			row.find('button[data-action="edit"]').show();
+			row.removeClass('deleted');
+			row.find('td.actions').find('input[data-marker="delete"]').remove();
+
+			$(this).data('action', 'delete');
+			$(this).html('Delete');
+		}
+
+		// Don't submit the form.
+		return false;
+	});
+
+	$('button[data-action="deletenew"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		row.remove();
+
+		// Don't submit the form.
+		return false;
+	});
+
+	$('button[data-action="add"]').click(function () {
+
+		var table = $('table#records');
+
+		var row = '';
+		row += '<tr class="new">';
+		row += '	<td class="name" data-value=""></td>';
+		row += '	<td class="type" data-value=""></td>';
+		row += '	<td class="priority" data-value=""></td>';
+		row += '	<td class="content" data-value=""></td>';
+		row += '	<td class="ttl" data-value=""></td>';
+		row += '	<td class="state" data-value="No"></td>';
+		row += '	<td class="actions" data-value="">';
+		row += '		<button type="button" class="btn btn-sm btn-warning" data-action="delete" role="button">Cancel</button>';
+		row += '	</td>';
+		row += '</tr>';
+
+		row = $(row);
+		table.append(row);
+
+		setEditable(row, undefined);
+
+		$('html,body').animate({
+			scrollTop: row.offset().top
+		});
+
+		row.find('button[data-action="delete"]').click(function () {
+			var row = $(this).parent('td').parent('tr');
+			row.remove();
+			// Don't submit the form.
+			return false;
+		});
+
+		// Don't submit the form.
+		return false;
+	});
+
+	$('button[data-action="reset"]').click(function () {
+		$('tr.new').remove();
+		$('tr.edited button[data-action="edit"]').click();
+		$('tr.deleted button[data-action="delete"]').click();
+		return false;
+	});
+
+
 	$('tr[data-edited="true"]').each(function (index) {
 		$(this).find('button[data-action="edit"]').click();
 	});
@@ -133,13 +134,37 @@ $(function() {
 	$('tr[data-deleted="true"]').each(function (index) {
 		$(this).find('button[data-action="delete"]').click();
 	});
-});
 
-$('tr[data-error-data]').each(function (index) {
-	$(this).addClass("error");
-	$(this).addClass("has-danger");
+	$('tr[data-error-data]').each(function (index) {
+		$(this).addClass("error");
+		$(this).addClass("has-danger");
 
-	$(this).tooltip({'title': $(this).data('error-data')});
+		$(this).tooltip({'title': $(this).data('error-data')});
+	});
+
+	$("#recordsform").validate({
+		highlight: function(element) {
+			$(element).closest('td').addClass('has-danger');
+			$(element).closest('tr').addClass('error');
+		},
+		unhighlight: function(element) {
+			$(element).closest('td').removeClass('has-danger');
+			$(element).closest('td').tooltip('dispose');
+
+			if ($(element).closest('tr').find('.has-danger').length == 0) {
+				$(element).closest('tr').removeClass('error');
+			}
+		},
+		errorPlacement: function (error, element) {
+			$(element).closest('td').tooltip('dispose');
+			$(element).closest('td').tooltip({'title': error});
+		},
+		errorClass: 'form-control-feedback',
+	});
+
+	$('button[type="submit"]').click(function () {
+		return $("#recordsform").valid();
+	});
 });
 
 function setEditable(row, recordid) {
@@ -331,40 +356,16 @@ $.validator.addMethod("validatePriority", function(value, element) {
 	return $(element).data('validationErrorReason');
 });
 
-jQuery.validator.addClassRules('content', {
+$.validator.addClassRules('content', {
 	validateContent: true,
 	/* required: true, */
 });
 
-jQuery.validator.addClassRules('priority', {
+$.validator.addClassRules('priority', {
 	validatePriority: true,
 	digits: true,
 });
 
-jQuery.validator.addClassRules('ttl', {
+$.validator.addClassRules('ttl', {
 	digits: true,
-});
-
-$("#recordsform").validate({
-	highlight: function(element) {
-		$(element).closest('td').addClass('has-danger');
-		$(element).closest('tr').addClass('error');
-	},
-	unhighlight: function(element) {
-		$(element).closest('td').removeClass('has-danger');
-		$(element).closest('td').tooltip('dispose');
-
-		if ($(element).closest('tr').find('.has-danger').length == 0) {
-			$(element).closest('tr').removeClass('error');
-		}
-	},
-	errorPlacement: function (error, element) {
-		$(element).closest('td').tooltip('dispose');
-		$(element).closest('td').tooltip({'title': error});
-	},
-	errorClass: 'form-control-feedback',
-});
-
-$('button[type="submit"]').click(function () {
-	return $("#recordsform").valid();
 });
