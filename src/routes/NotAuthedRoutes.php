@@ -4,6 +4,7 @@
 		public function addRoutes($router, $displayEngine, $api) {
 
 			$router->get('/login', function() use ($displayEngine) {
+				$displayEngine->setTitle('login');
 				$displayEngine->setPageID('login');
 				$displayEngine->display('login.tpl');
 			});
