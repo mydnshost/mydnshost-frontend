@@ -4,10 +4,20 @@
 		public function addRoutes($router, $displayEngine, $api) {
 			$router->get('/', function() use ($displayEngine) {
 				if (!session::isLoggedIn()) {
-					header('Location: ' . $displayEngine->getURL('/login'));
+					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
 					return;
 				} else {
-					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
+					$displayEngine->setPageID('home')->setTitle('Home')->display('home.tpl');
+				}
+			});
+
+			$router->get('/register', function() use ($displayEngine) {
+				if (!session::isLoggedIn()) {
+					$displayEngine->setPageID('register')->setTitle('Register')->display('register.tpl');
+					return;
+				} else {
+					header('Location: ' . $displayEngine->getURL('/'));
+					return;
 				}
 			});
 

@@ -19,18 +19,6 @@ main {
  * Signin Form
  **********************************************************************/
 
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
 .form-signin .form-control {
   position: relative;
   height: auto;
@@ -47,6 +35,13 @@ main {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.form-signin.small {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
 
 /**********************************************************************
  * Headers

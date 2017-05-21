@@ -8,7 +8,9 @@
 		private $pageID = '';
 		private $customSidebar = FALSE;
 
-		public function __construct($config) {
+		public function __construct($siteconfig) {
+			$config = $siteconfig['templates'];
+
 			$loader = new Twig_Loader_Filesystem();
 			$themes = [];
 			if (isset($config['theme'])) {
@@ -37,6 +39,7 @@
 			$this->basepath = preg_replace('#^/+#', '/', $this->basepath);
 
 			$twig->addFunction(new Twig_Function('url', function ($path) { return $this->getURL($path); }));
+			$twig->addFunction(new Twig_Function('apiurl', function ($path) use ($siteconfig) { return sprintf('%s/%s', rtrim($siteconfig['api'], '/'), ltrim($path, '/')); }));
 			$twig->addFunction(new Twig_Function('getVar', function ($var) { return $this->getVar($var); }));
 			$twig->addFunction(new Twig_Function('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
 

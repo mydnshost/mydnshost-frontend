@@ -6,7 +6,7 @@
 	$router = new \Bramus\Router\Router();
 
 	// Templating engine
-	$displayEngine = new DisplayEngine($config['templates']);
+	$displayEngine = new DisplayEngine($config);
 	$displayEngine->setSiteName($config['sitename']);
 
 	// Session storage

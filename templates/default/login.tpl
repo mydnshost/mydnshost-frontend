@@ -1,4 +1,4 @@
-<form class="form-signin" method="post">
+<form class="form-signin small" method="post">
   <h1 class="form-signin-heading">Please sign in</h1>
   <label for="inputEmail" class="sr-only">Email address</label>
   <input type="email" name="user" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
