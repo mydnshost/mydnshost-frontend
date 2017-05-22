@@ -45,7 +45,13 @@
 					header('HTTP/1.1 404 Not Found');
 					$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
 				} else {
-					session::set('wantedPage', $_SERVER['REQUEST_URI']);
+					$wanted = $_SERVER['REQUEST_URI'];
+					$wanted = preg_replace('#^' . preg_quote($displayEngine->getBasePath()) . '#', '/', $wanted);
+					$wanted = preg_replace('#^/+#', '/', $wanted);
+
+					if (preg_match('#^/?(admin|domains?|user|profile|impersonate)/#', $wanted)) {
+						session::set('wantedPage', $wanted);
+					}
 
 					header('Location: ' . $displayEngine->getURL('/login'));
 					return;

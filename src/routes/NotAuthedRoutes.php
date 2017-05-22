@@ -24,7 +24,7 @@
 					session::set('csrftoken', genUUID());
 
 					if (session::exists('wantedPage')) {
-						header('Location: ' . session::get('wantedPage'));
+						header('Location: ' . $displayEngine->getURL(session::get('wantedPage')));
 						session::remove('wantedPage');
 					} else {
 						header('Location: ' . $displayEngine->getURL('/'));

@@ -105,8 +105,12 @@
 			return array_key_exists($var, $this->vars) ? $this->vars[$var] : '';
 		}
 
+		public function getBasePath() {
+			return rtrim($this->basepath, '/');
+		}
+
 		public function getURL($path) {
-			$path = sprintf('%s/%s', rtrim($this->basepath, '/'), ltrim($path, '/'));
+			$path = sprintf('%s/%s', $this->getBasePath(), ltrim($path, '/'));
 
 			return $path;
 		}
