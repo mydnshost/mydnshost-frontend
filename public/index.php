@@ -51,9 +51,10 @@
 		(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
 	} else {
 		$hadLoginDetails = session::exists('logindata');
-		session::clear(['DisplayEngine::Flash']);
+		session::clear(['DisplayEngine::Flash', 'wantedPage']);
 
 		if ($hadLoginDetails) {
+			session::set('wantedPage', $_SERVER['REQUEST_URI']);
 			$displayEngine->flash('info', 'Session timeout', 'Your login session has timed out. Please log in again.');
 
 			header('Location: ' . $displayEngine->getURL('/login'));

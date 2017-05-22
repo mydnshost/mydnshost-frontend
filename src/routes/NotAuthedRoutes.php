@@ -22,7 +22,13 @@
 
 					session::set('logindata', ['type' => 'session', 'sessionid' => $sessionID]);
 					session::set('csrftoken', genUUID());
-					header('Location: ' . $displayEngine->getURL('/'));
+
+					if (session::exists('wantedPage')) {
+						header('Location: ' . session::get('wantedPage'));
+						session::remove('wantedPage');
+					} else {
+						header('Location: ' . $displayEngine->getURL('/'));
+					}
 					return;
 				} else {
 					$lr = $api->getLastResponse();
@@ -34,7 +40,7 @@
 					}
 
 					session::setCurrentUser(null);
-					session::clear(['DisplayEngine::Flash']);
+					session::clear(['DisplayEngine::Flash', 'wantedPage']);
 					header('Location: ' . $displayEngine->getURL('/login'));
 					return;
 				}

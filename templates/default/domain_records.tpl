@@ -114,7 +114,19 @@ Domains require at least 1 NS record before they will be successfully served.
 {% if has_domain_write %}
 <div id="actionbuttonsfiller" class="row"></div>
 <div id="actionbuttons" class="row">
-	<div class="col-sm-9 col-md-10 pt-3">
+    {% if nosidebar is defined and nosidebar %}
+      {% set showsidebar = false %}
+    {% elseif user %}
+      {% set showsidebar = true %}
+    {% else %}
+      {% set showsidebar = false %}
+    {% endif %}
+
+	{% if showsidebar %}
+		<div class="col-sm-9 col-md-10 pt-3">
+	{% else %}
+		<div class="col-sm-12 pt-3">
+	{% endif %}
 		<button type="button" class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
 		<br><br>
 		<button type="button" class="btn btn-warning btn-block" data-action="reset" role="button">Reset Changes</button>
