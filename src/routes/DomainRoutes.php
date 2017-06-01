@@ -185,10 +185,87 @@
 
 					$displayEngine->setVar('domainaccess', $api->getDomainAccess($domain));
 
+					$displayEngine->setVar('domainkeys', $api->getDomainKeys($domain));
+
 					$displayEngine->display('domain.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
 					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
+			$router->post('/domain/([^/]+)/addkey(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$apiresult = $api->createDomainKey($domain, ['description' => (isset($_POST['description']) ? $_POST['description'] : 'New Domain Key: ' . date('Y-m-d H:i:s'))]);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error adding the new Domain Key: ' . $apiresult['errorData']];
+				} else {
+					$returnedkeys = array_keys($apiresult['response']);
+					$newkey = array_shift($returnedkeys);
+					$result = ['success', 'New Domain Key Added: ' . $newkey];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
+				}
+			});
+
+			$router->post('/domain/([^/]+)/editkey/([^/]+)(\.json)?', function($domain, $key, $json = NULL) use ($router, $displayEngine, $api) {
+				$data = isset($_POST['key'][$key]) ? $_POST['key'][$key] : [];
+				$apiresult = $api->updateDomainKey($domain, $key, $data);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error editing the key: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Key edited.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
+				}
+			});
+
+			$router->post('/domain/([^/]+)/deletekey/([^/]+)(\.json)?', function($domain, $key, $json = NULL) use ($router, $displayEngine, $api) {
+				$apiresult = $api->deleteDomainKey($domain, $key);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Key removed.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
 				}
 			});
 

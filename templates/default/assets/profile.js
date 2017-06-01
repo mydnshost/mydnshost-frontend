@@ -311,7 +311,6 @@ function editableYesNo(row, fieldName, recordid) {
 			}
 		});
 	});
-
 }
 
 var new2FAKeyCount = 0;

@@ -34,25 +34,25 @@
               <a href="{{ url('/impersonate/cancel') }}" class="btn btn-danger my-2 my-sm-0 mr-sm-2">Cancel Impersonation</a>
           {% endif %}
 
-          {% if user %}
+          {% if user or domainkey %}
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="minigravatar" />&nbsp;
-              {{ user.realname }}
+              {% if user %}
+                <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="minigravatar" />&nbsp;
+                {{ user.realname }}
+              {% elseif domainkey %}
+                DomainKey :: {{ domainkey.domain }} :: {{ domainkey.description }}
+              {% endif %}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url('/profile') }}">Profile</a>
-              <div class="dropdown-divider"></div>
+              {% if user %}
+                <a class="dropdown-item" href="{{ url('/profile') }}">Profile</a>
+                <div class="dropdown-divider"></div>
+              {% endif %}
               <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
             </div>
           </div>
           {% endif %}
-
-        	{# SEARCHBAR
-          <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form> #}
         </div>
       </div>
     </nav>
@@ -62,7 +62,7 @@
       <div class="row">
         {% if nosidebar is defined and nosidebar %}
           {% set showsidebar = false %}
-        {% elseif user %}
+        {% elseif user or domainkey %}
           {% set showsidebar = true %}
         {% else %}
           {% set showsidebar = false %}

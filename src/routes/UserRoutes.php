@@ -2,6 +2,8 @@
 	class UserRoutes {
 
 		public function addRoutes($router, $displayEngine, $api) {
+			$myUser = session::getCurrentUser();
+			if (!isset($myUser['user'])) { return; }
 
 			$router->match('GET|POST', '/profile', function() use ($router, $displayEngine, $api) {
 				$displayEngine->setPageID('/profile')->setTitle('Profile');

@@ -135,7 +135,12 @@
 		public function setExtraVars() {
 			if (session::isLoggedIn()) {
 				$user = session::getCurrentUser();
-				$this->setVar('user', $user['user']);
+				if (isset($user['user'])) {
+					$this->setVar('user', $user['user']);
+				}
+				if (isset($user['domainkey'])) {
+					$this->setVar('domainkey', $user['domainkey']);
+				}
 				$this->setVar('useraccess', $user['access']);
 				$this->setVar('csrftoken', session::get('csrftoken'));
 			}
