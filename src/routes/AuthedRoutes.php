@@ -35,5 +35,48 @@
 				header('Location: ' . $displayEngine->getURL('/admin/users'));
 				return;
 			});
+
+			$router->post('/checkauth', function() use ($router, $displayEngine, $api) {
+				$pass = $_POST['pass'];
+				$key = isset($_POST['key']) ? $_POST['key'] : NULL;
+
+				$user = session::getCurrentUser();
+				if (isset($user['user'])) {
+					$testApi = clone $api;
+					$testApi->setAuthUserPass($user['user']['email'], $pass, $key);
+					$result = $testApi->validAuth();
+
+					if (!$result && $key === NULL) {
+						$last = $testApi->getLastResponse();
+						if (isset($last['errorData']) && $last['errorData'] == '2FA key required.') {
+							$result = true;
+						}
+					}
+
+					if ($result) {
+						session::set('lastAuthTime', time());
+						$displayEngine->flash('success', '', 'You have successfully re-authenticated.');
+					} else {
+						session::remove('lastAuthTime');
+						$displayEngine->flash('error', 'Incorrect password', 'You provided the wrong password.');
+					}
+				} else {
+					session::remove('lastAuthTime');
+					$displayEngine->flash('error', 'Invalid session type.', 'You can not re-authenticate this session.');
+				}
+
+				$redirect = isset($_POST['redirect']) ? $_POST['redirect'] : '/';
+				header('Location: ' . $displayEngine->getURL($redirect));
+				return;
+			});
+
+			$router->post('/unauth', function() use ($router, $displayEngine, $api) {
+				session::remove('lastAuthTime');
+				$displayEngine->flash('success', '', 'You have now de-authenticated.');
+				$redirect = isset($_POST['redirect']) ? $_POST['redirect'] : '/';
+				header('Location: ' . $displayEngine->getURL($redirect));
+				return;
+			});
+
 		}
 	}

@@ -59,184 +59,37 @@
 	</div>
 </div>
 
-<br><br>
+{% if apikeys is not null %}
+	{% include 'profile/apikeys.tpl' %}
+	{% include 'profile/2fakeys.tpl' %}
 
-<H2>API Keys</H2>
+	<br><br>
 
-<table id="apikeys" class="table table-striped table-bordered">
-	<thead>
-		<tr>
-			<th class="key">Key</th>
-			<th class="description">Description</th>
-			<th class="domains_read">Domain Read</th>
-			<th class="domains_write">Domain Write</th>
-			<th class="user_read">User Read</th>
-			<th class="user_write">User Write</th>
-			<th class="actions">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key,keydata in apikeys %}
-		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} data-value="{{ key }}">
-			<td class="key">
-				<span class="pointer" data-hiddenText="{{ key }}"><em>Hidden - click to view</em></span>
-			</td>
-			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
-				{{ keydata.description }}
-			</td>
-			<td class="domains_read" data-radio data-name="domains_read" data-value="{{ keydata.domains_read | yesno }}">
-				{% if keydata.domains_read == 'true' %}
-					<span class="badge badge-success">Yes</span>
-				{% else %}
-					<span class="badge badge-danger">No</span>
-				{% endif %}
-			</td>
-			<td class="domains_write" data-radio data-name="domains_write" data-value="{{ keydata.domains_write | yesno }}">
-				{% if keydata.domains_write == 'true' %}
-					<span class="badge badge-success">Yes</span>
-				{% else %}
-					<span class="badge badge-danger">No</span>
-				{% endif %}
-			</td>
-			<td class="user_read" data-radio data-name="user_read" data-value="{{ keydata.user_read | yesno }}">
-				{% if keydata.user_read == 'true' %}
-					<span class="badge badge-success">Yes</span>
-				{% else %}
-					<span class="badge badge-danger">No</span>
-				{% endif %}
-			</td>
-			<td class="user_write" data-radio data-name="user_write" data-value="{{ keydata.user_write | yesno }}">
-				{% if keydata.user_write == 'true' %}
-					<span class="badge badge-success">Yes</span>
-				{% else %}
-					<span class="badge badge-danger">No</span>
-				{% endif %}
-			</td>
-			<td class="actions">
-				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
-				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
+	<H2>API/2FA Key Authentication</H2>
+	For security, once you are done making changes to your API/2FA keys, you can re-enable the authentication prompt by de-authenticating.
 
-				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/editkey/' ~ key) }}">
-					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				</form>
-				<form class="d-inline form-inline deleteform" method="post" action="{{ url('/profile/deletekey/' ~ key) }}">
-					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				</form>
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+	<div class="container">
+		<form class="form-signin small" method="post" action="{{ url('/unauth') }}">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+			<input type="hidden" name="redirect" value="/profile">
+			<button class="btn btn-lg btn-primary btn-block" type="submit">De-Authenticate</button>
+		</form>
+	</div>
+{% else %}
+	<br><br>
 
-<form method="post" action="{{ url('/profile/addkey') }}" class="form-inline form-group" id="addkeyform">
-	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	<button type="submit" class="btn btn-success" role="button">Add API Key</button>
-</form>
+	<H2>API/2FA Key Authentication</H2>
+	For security, you must re-authenticate to view API/2FA Keys.
 
-{% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete'} only %}
-	{% block title %}
-		Delete API Key
-	{% endblock %}
-
-	{% block body %}
-		Are you sure you want to delete this API Key?
-		<br><br>
-		Deleting this key will cause any applications using it to no longer have access to the api.
-		<br><br>
-		This can not be undone and any applications will need to be updated to use a new key.
-	{% endblock %}
-{% endembed %}
-
-<br><br>
-
-<H2>2FA Keys</H2>
-
-Here you can see what 2FA Keys have been added to your account. If you have an active 2FA key assigned, you will need to provide the code from at least one of the active keys when ever you log in with a username and password.
-<br><br>
-You will only be able to see the key and associated QR code for any keys that have not yet been activated.
-<br><br>
-<table id="twofactorkeys" class="table table-striped table-bordered">
-	<thead>
-		<tr>
-			<th class="key">Key</th>
-			<th class="description">Description</th>
-			<th class="lastused">Last Used</th>
-			<th class="actions">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key,keydata in twofactorkeys %}
-		<tr data-value="{{ key }}">
-			<td class="key">
-				{% if keydata.key %}
-					<div class="inactive">
-						<div class="key">
-							<strong>{{ keydata.key }}</strong>
-							<br>
-							<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
-						</div>
-						<div class="verifykey">
-							<em>This key is not yet active, please activate the key by submitting a valid code from it</em>
-							<br><br>
-							<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
-								<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-								<input type="text" name="code" placeholder="000000">
-								<br><br>
-								<button type="submit" class="btn btn-sm btn-success" role="button">Activate Key</button>
-							</form>
-						</div>
-					</div>
-				{% else %}
-					<em>Hidden - key is active</em>
-				{% endif %}
-			</td>
-			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
-				{{ keydata.description }}
-			</td>
-			<td class="lastused">
-				{% if keydata.lastused == 0 %}
-					<em>Never</em>
-				{% else %}
-					{{ keydata.lastused | date }}
-				{% endif %}
-			</td>
-			<td class="actions">
-				<button type="button" data-action="edit2fakey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="save2fakey" class="hidden btn btn-sm btn-success" role="button">Save</button>
-				<button type="button" data-action="delete2fakey" class="btn btn-sm btn-danger" role="button">Delete</button>
-
-				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/edit2fakey/' ~ key) }}">
-					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				</form>
-				<form class="d-inline form-inline deleteform" method="post" action="{{ url('/profile/delete2fakey/' ~ key) }}">
-					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				</form>
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-
-<form method="post" action="{{ url('/profile/add2fakey') }}" class="form-inline form-group" id="add2faform">
-	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
-</form>
-
-{% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete2FA'} only %}
-	{% block title %}
-		Delete 2FA Key
-	{% endblock %}
-
-	{% block body %}
-		Are you sure you want to delete this 2FA Key?
-		<br><br>
-		Deleting this key will prevent logins using this device.
-		<br><br>
-		This can not be undone and you will need to re-enroll your device again.
-	{% endblock %}
-{% endembed %}
+	<div class="container">
+		<form class="form-signin small" method="post" action="{{ url('/checkauth') }}">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+			<input type="hidden" name="redirect" value="/profile">
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" name="pass" id="inputPassword" class="form-control" placeholder="Password" required>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Authenticate</button>
+		</form>
+	</div>
+{% endif %}
 
 <script src="{{ url('/assets/profile.js') }}"></script>

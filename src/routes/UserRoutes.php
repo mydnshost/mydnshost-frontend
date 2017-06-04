@@ -42,8 +42,16 @@
 					}
 				}
 
-				$keys = $api->getAPIKeys();
-				$displayEngine->setVar('apikeys', $keys);
+				if (session::exists('impersonate')) {
+					$lastAuthTime = time();
+				} else {
+					$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
+				}
+
+				if (time() - 900 <= $lastAuthTime) {
+					$keys = $api->getAPIKeys();
+					$displayEngine->setVar('apikeys', $keys);
+				}
 
 				$keys = $api->get2FAKeys();
 
