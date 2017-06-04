@@ -3,7 +3,7 @@
 
 		public function checkAuthTime($seconds = 900) {
 			if (session::exists('impersonate')) {
-				$lastAuthTime = time();
+				return true;
 			} else {
 				$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
 			}
