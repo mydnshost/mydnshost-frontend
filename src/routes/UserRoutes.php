@@ -1,6 +1,30 @@
 <?php
 	class UserRoutes {
 
+		public function checkAuthTime($seconds = 900) {
+			if (session::exists('impersonate')) {
+				$lastAuthTime = time();
+			} else {
+				$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
+			}
+
+			return (time() - $seconds <= $lastAuthTime);
+		}
+
+		public function checkAuthTimeOrError($displayEngine, $json = NULL, $seconds = 900) {
+			if ($this->checkAuthTime($seconds)) { return TRUE; }
+
+			if ($json !== NULL) {
+				header('Content-Type: application/json');
+				echo json_encode(['error' => 'You must reauthenticate to make changes to keys.']);
+			} else {
+				$displayEngine->flash('error', '', 'You must reauthenticate to make changes to keys.');
+				header('Location: ' . $displayEngine->getURL('/profile'));
+			}
+
+			return;
+		}
+
 		public function addRoutes($router, $displayEngine, $api) {
 			$myUser = session::getCurrentUser();
 			if (!isset($myUser['user'])) { return; }
@@ -42,32 +66,28 @@
 					}
 				}
 
-				if (session::exists('impersonate')) {
-					$lastAuthTime = time();
-				} else {
-					$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
-				}
-
-				if (time() - 900 <= $lastAuthTime) {
+				if ($this->checkAuthTime()) {
 					$keys = $api->getAPIKeys();
 					$displayEngine->setVar('apikeys', $keys);
+
+					$keys = $api->get2FAKeys();
+
+					if (session::exists('new2fakey')) {
+						$newkey = session::get('new2fakey');
+						session::remove('new2fakey');
+
+						$keys[$newkey['id']] = $newkey;
+					}
+
+					$displayEngine->setVar('twofactorkeys', $keys);
 				}
-
-				$keys = $api->get2FAKeys();
-
-				if (session::exists('new2fakey')) {
-					$newkey = session::get('new2fakey');
-					session::remove('new2fakey');
-
-					$keys[$newkey['id']] = $newkey;
-				}
-
-				$displayEngine->setVar('twofactorkeys', $keys);
 
 				$displayEngine->display('profile.tpl');
 			});
 
 			$router->post('/profile/addkey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$apiresult = $api->createAPIKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New API Key: ' . date('Y-m-d H:i:s'))]);
 				$result = ['unknown', 'unknown'];
 
@@ -94,6 +114,8 @@
 			});
 
 			$router->post('/profile/editkey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$data = isset($_POST['key'][$key]) ? $_POST['key'][$key] : [];
 				$apiresult = $api->updateAPIKey($key, $data);
 				$result = ['unknown', 'unknown'];
@@ -119,6 +141,8 @@
 			});
 
 			$router->post('/profile/deletekey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$apiresult = $api->deleteAPIKey($key);
 				$result = ['unknown', 'unknown'];
 
@@ -143,6 +167,8 @@
 			});
 
 			$router->post('/profile/add2fakey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$apiresult = $api->create2FAKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New 2FA Key: ' . date('Y-m-d H:i:s'))]);
 				$result = ['unknown', 'unknown'];
 
@@ -172,6 +198,8 @@
 			});
 
 			$router->post('/profile/edit2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$data = isset($_POST['key'][$key]) ? $_POST['key'][$key] : [];
 				$apiresult = $api->update2FAKey($key, $data);
 				$result = ['unknown', 'unknown'];
@@ -197,6 +225,8 @@
 			});
 
 			$router->post('/profile/delete2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$apiresult = $api->delete2FAKey($key);
 				$result = ['unknown', 'unknown'];
 
@@ -222,6 +252,8 @@
 
 
 			$router->post('/profile/verify2fakey/([^/]+)(\.json)?', function($key, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
 				$code = isset($_POST['code']) ? $_POST['code'] : null;
 				$apiresult = $api->verify2FAKey($key, $code);
 				$result = ['unknown', 'unknown'];
