@@ -177,6 +177,15 @@ table#profileinfo th {
   width: 20%;
 }
 
+table#records {
+  max-width: 100%;
+}
+
+table#records td {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
 table#records th.name, table#records td.name {
   width: 20%;
 }
@@ -190,7 +199,7 @@ table#records th.priority, table#records td.priority {
 }
 
 table#records th.content, table#records td.content {
-  swidth: 70%;
+
 }
 
 table#records th.ttl, table#records td.ttl {
