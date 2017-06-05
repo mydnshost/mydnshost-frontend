@@ -49,32 +49,60 @@ $(function() {
 		var col = $(this).closest('td');
 		var row = col.closest('tr');
 		var value = col.find('span.value');
+		var extra = $(this).data('extra') ? $(this).data('extra') : '';
+
+		if ($(this).data('extra-prompt')) {
+			var extra = prompt($(this).data('extra-prompt'));
+		}
 
 		$.ajax({
 			url: "{{ url('/admin/users/action') }}/" + action + "/" + user,
-			data: {'csrftoken': $('#csrftoken').val()},
+			data: {'csrftoken': $('#csrftoken').val(), 'extra': extra},
 			method: "POST",
 		}).done(function(data) {
 			if (data['error'] !== undefined) {
 				alert('There was an error: ' + data['error']);
 			} else if (data['response'] !== undefined) {
-				var newVal = data['response'][value.data('field')] == 'true' ? "Yes" : "No";
-				var classVal = value.data('class-' + newVal.toLowerCase().trim());
-				var classOldVal = value.data('class-' + value.text().toLowerCase().trim());
-
-				value.text(newVal);
-				value.removeClass(classOldVal);
-				value.addClass(classVal);
-
-				col.find('span.action[data-value]').each(function() {
-					if ($(this).data('value') == newVal) {
-						$(this).show();
+				if (data['response']['success'] !== undefined) {
+					alert(data['response']['success']);
+				} else {
+					if (value.data('raw')) {
+						var newVal = data['response'][value.data('field')];
+						value.text(newVal);
 					} else {
-						$(this).hide();
-					}
-				});
+						var newVal = data['response'][value.data('field')] == 'true' ? "Yes" : "No";
+						var classVal = value.data('class-' + newVal.toLowerCase().trim());
+						var classOldVal = value.data('class-' + value.text().toLowerCase().trim());
 
-				row.fadeOut(100).fadeIn(100);
+						value.text(newVal);
+						value.removeClass(classOldVal);
+						value.addClass(classVal);
+					}
+
+					if (action == "suspend" || action == "unsuspend") {
+						var reasonfield = row.find('span.value[data-field=disabledreason]');
+						reasonfield.text(data['response'][reasonfield.data('field')]);
+
+						row.find('span[data-showsuspend]').each(function() {
+							if ($(this).data('showsuspend') == newVal) {
+								$(this).show();
+							} else {
+								$(this).hide();
+							}
+						});
+					}
+
+					if (action == "suspend" || action == "unsuspend" || action == "suspendreason") {
+						var disabledreason = data['response']["disabledreason"];
+						if (disabledreason == "" || disabledreason == undefined || disabledreason == null) {
+							row.find('span.value[data-field=disabledreason]').parent('span').parent('span').hide();
+						} else {
+							row.find('span.value[data-field=disabledreason]').parent('span').parent('span').show();
+						}
+					}
+
+					row.fadeOut(100).fadeIn(100);
+				};
 			}
 		}).fail(function(data) {
 			alert('There was an error: ' + data.responseText);
@@ -118,11 +146,15 @@ $(function() {
 		errorClass: 'form-control-feedback',
 		rules: {
 			password: {
-				required: true,
+				required: function(element) {
+					return $('input:radio[name=registerUser]:checked').val() == "registerUserManual";
+				},
 				minlength: 6,
 			},
 			confirmpassword: {
-				required: true,
+				required: function(element) {
+					return $('input:radio[name=registerUser]:checked').val() == "registerUserManual";
+				},
 				equalTo: "#password",
 			},
 			email: {
@@ -135,6 +167,18 @@ $(function() {
 		},
 	});
 
+	$('input:radio[name=registerUser]').change(function () {
+		var inputs = $('div.registerUserManual input[type=password]');
+		if ($('input:radio[name=registerUser]:checked').val() == "registerUserManual") {
+			inputs.prop("disabled", false);
+		} else {
+			inputs.prop("disabled", true);
+			inputs.val("");
+			inputs.closest('.form-group').removeClass('has-danger');
+			inputs.closest('.form-group').find('.form-control-feedback').remove();
+		}
+	});
+
 	$('button[data-action="addNewUser"]').click(function () {
 		var okButton = $('#createUser button[data-action="ok"]');
 		okButton.text("Create");
@@ -145,6 +189,9 @@ $(function() {
 				$('#createUser').modal('hide');
 			}
 		});
+
+		$('div.registerUserManual input[type=password]').prop("disabled", true);
+		$("#adduser")[0].reset();
 
 		var cancelButton = $('#createUser button[data-action="cancel"]');
 		cancelButton.off('click').click(function () {

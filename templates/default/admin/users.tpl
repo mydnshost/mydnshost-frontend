@@ -33,6 +33,17 @@
 			</td>
 			<td class="realname">
 				{{ userinfo.realname }}
+				<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
+					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-right">Set Suspend Reason</button>
+				</span>
+				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}hidden{% endif %}" data-showsuspend="Yes">
+					<br>
+					<span class="small muted">(<strong>Disabled:</strong> <span class="value" data-raw="yes" data-field="disabledreason">{{ userinfo.disabledreason }}</span>)</span>
+				</span>
+				{% if userinfo.unverified %}
+					<br>
+					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary">Resend Welcome Email</a>
+				{% endif %}
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
@@ -67,10 +78,10 @@
 					{{ userinfo.disabled | yesno }}
 				</span>
 				{% if userinfo.email != user.email and hasPermission(['manage_users']) %}
-					<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-value="Yes">
+					<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
 						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-right">Unsuspend</button>
 					</span>
-					<span class="action {% if userinfo.disabled == 'true' %}hidden{% endif %}" data-value="No">
+					<span class="action {% if userinfo.disabled == 'true' %}hidden{% endif %}" data-showsuspend="No">
 						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-right">Suspend</button>
 					</span>
 				{% endif %}
@@ -105,7 +116,7 @@
 {% if hasPermission(['manage_users']) %}
 	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createUser', 'large': true, 'csrftoken': csrftoken} only %}
 		{% block title %}
-			Create Domain
+			Add User
 		{% endblock %}
 
 		{% block body %}
@@ -124,16 +135,31 @@
 					</div>
 				</div>
 
-				<div class="form-group row">
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="radio" class="form-check-input" name="registerUser" id="registerUserAuto" value="registerUserAuto" checked>
+						Send user a registration email to let them pick their own password.
+					</label>
+				</div>
+
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="radio" class="form-check-input" name="registerUser" id="registerUserManual" value="registerUserManual">
+						Choose a password for the new user and do not send them a welcome email.
+					</label>
+				</div>
+
+				<div class="form-group row registerUserManual">
 					<label for="password" class="col-3 col-form-label">Password</label>
 					<div class="col-9">
-						<input class="form-control" type="password" value="" id="password" name="password">
+						<input class="form-control" type="password" value="" id="password" name="password" disabled>
 					</div>
 				</div>
-				<div class="form-group row">
+
+				<div class="form-group row registerUserManual">
 					<label for="confirmpassword" class="col-3 col-form-label">Confirm Password</label>
 					<div class="col-9">
-						<input class="form-control" type="password" value="" id="confirmpassword" name="confirmpassword">
+						<input class="form-control" type="password" value="" id="confirmpassword" name="confirmpassword" disabled>
 					</div>
 				</div>
 			</form>

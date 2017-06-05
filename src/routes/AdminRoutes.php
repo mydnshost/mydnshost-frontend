@@ -38,21 +38,28 @@
 				});
 
 				$router->post('/admin/users/action/(.*)/(.*)', function($action, $userid) use ($displayEngine, $api) {
-					$data = [];
+					$setUserData = [];
+					$result = NULL;
 
 					if ($action == 'promote') {
-						$data['admin'] = 'true';
+						$setUserData['admin'] = 'true';
 					} else if ($action == 'demote') {
-						$data['admin'] = 'false';
+						$setUserData['admin'] = 'false';
+					} else if ($action == 'suspendreason') {
+						$setUserData['disabledreason'] = array_key_exists('extra', $_POST) ? $_POST['extra'] : '';
 					} else if ($action == 'suspend') {
-						$data['disabled'] = 'true';
+						$setUserData['disabled'] = 'true';
 					} else if ($action == 'unsuspend') {
-						$data['disabled'] = 'false';
+						$setUserData['disabled'] = 'false';
 					} else if ($action == 'setPermission') {
-						$data['permissions'] = array_key_exists('permissions', $_POST) ? $_POST['permissions'] : [];
+						$setUserData['permissions'] = array_key_exists('permissions', $_POST) ? $_POST['permissions'] : [];
+					} else if ($action == 'resendwelcome') {
+						$result = $api->resendWelcome($userid);
 					}
 
-					$result = $api->setUserInfo($data, $userid);
+					if ($result === NULL && !empty($setUserData)) {
+						$result = $api->setUserInfo($setUserData, $userid);
+					}
 
 					header('Content-Type: application/json');
 					echo json_encode($result);
@@ -68,11 +75,17 @@
 				$router->post('/admin/users/create', function() use ($displayEngine, $api) {
 					$canUpdate = true;
 
+					$manualPassword = !isset($_POST['registerUser']) || $_POST['registerUser'] != 'registerUserAuto';
+					unset($_POST['registerUser']);
+
 					$fields = ['email' => 'You must specify an email address for the user',
 					           'realname' => 'You must specify a name for the user',
-					           'password' => 'You must specify a password for the user',
-					           'confirmpassword' => 'You must confirm the password for the user'
 					          ];
+
+					if ($manualPassword) {
+						$fields['password'] = 'You must specify a password for the user';
+						$fields['confirmpassword'] = 'You must confirm the password for the user';
+					}
 
 					foreach ($fields as $field => $error) {
 						if (!array_key_exists($field, $_POST) || empty($_POST[$field])) {
@@ -82,16 +95,21 @@
 						}
 					}
 
-					$pass = isset($_POST['password']) ? $_POST['password'] : NULL;
-					$confirmpass = isset($_POST['confirmpassword']) ? $_POST['confirmpassword'] : NULL;
+					if ($manualPassword) {
+						$pass = isset($_POST['password']) ? $_POST['password'] : NULL;
+						$confirmpass = isset($_POST['confirmpassword']) ? $_POST['confirmpassword'] : NULL;
 
-					if ($canUpdate && $pass != $confirmpass) {
-						$canUpdate = false;
-						$displayEngine->flash('error', '', 'There was an error creating the user: Passwords do not match.');
-						return;
+						if ($canUpdate && $pass != $confirmpass) {
+							$canUpdate = false;
+							$displayEngine->flash('error', '', 'There was an error creating the user: Passwords do not match.');
+							return;
+						}
 					}
 
 					if ($canUpdate) {
+						if (!$manualPassword) {
+							$_POST['sendWelcome'] = true;
+						}
 						$result = $api->createUser($_POST);
 
 						if (array_key_exists('error', $result)) {

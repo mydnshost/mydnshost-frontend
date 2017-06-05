@@ -168,4 +168,21 @@
 
 			session_write_close();
 		}
+
+		/**
+		 * Check that this user recently re-authenticated their session within
+		 * a certain time period.
+		 *
+		 * @param $seconds Time period to check
+		 * @return true/false if reauthentication occured within the time period
+		 */
+		static function checkAuthTime($seconds = 900) {
+			if (session::exists('impersonate')) {
+				return true;
+			} else {
+				$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
+			}
+
+			return (time() - $seconds <= $lastAuthTime);
+		}
 	}

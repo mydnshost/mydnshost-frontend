@@ -10,5 +10,11 @@
   <input type="text" name="2fakey" id="input2FAKey" class="form-control" placeholder="2FA Code (If required)">
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+      <div class="float-left">
+        <a href="{{ url('/forgotpassword') }}" class="">Forgot Password</a>
+         -
+        <a href="{{ url('/register') }}" class="">Register</a>
+      </div>
 </form>
 </div>

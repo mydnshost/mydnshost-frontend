@@ -1,18 +1,8 @@
 <?php
 	class UserRoutes {
 
-		public function checkAuthTime($seconds = 900) {
-			if (session::exists('impersonate')) {
-				return true;
-			} else {
-				$lastAuthTime = session::exists('lastAuthTime') ? session::get('lastAuthTime') : 0;
-			}
-
-			return (time() - $seconds <= $lastAuthTime);
-		}
-
 		public function checkAuthTimeOrError($displayEngine, $json = NULL, $seconds = 900) {
-			if ($this->checkAuthTime($seconds)) { return TRUE; }
+			if (session::checkAuthTime($seconds)) { return TRUE; }
 
 			if ($json !== NULL) {
 				header('Content-Type: application/json');
@@ -66,7 +56,7 @@
 					}
 				}
 
-				if ($this->checkAuthTime()) {
+				if (session::checkAuthTime()) {
 					$keys = $api->getAPIKeys();
 					$displayEngine->setVar('apikeys', $keys);
 
