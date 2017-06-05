@@ -8,7 +8,7 @@ RUN \
   chown -Rfv www-data: /dnsfrontend/ /var/www/ && \
   ln -s /dnsfrontend/public /var/www/html && \
   cd /dnsfrontend/ && \
-  su www-data --shell=/bin/bash -c "cd /dnsfrontend; /usr/bin/composer update"
+  su www-data --shell=/bin/bash -c "cd /dnsfrontend; /usr/bin/composer install"
 
 
 EXPOSE 80
