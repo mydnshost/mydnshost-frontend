@@ -16,7 +16,10 @@
 		<input type="text" name="inputName" id="inputName" class="form-control" placeholder="Your Name" required{% if posted.inputEmail %} value="{{ posted.inputName }}"{% endif %}>
 	</div>
 
+	<div id='recaptcha' class="hidden g-recaptcha" data-sitekey="{{ recaptcha }}" data-callback="registerSubmit" data-size="invisible" data-badge="inline"></div>
+
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
 </form>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="{{ url('/assets/register.js') }}"></script>

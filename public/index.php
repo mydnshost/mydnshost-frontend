@@ -21,6 +21,9 @@
 	}
 	session::init();
 
+	// Storage array
+	$storage = [];
+
 	// API to interact with backend
 	$api = new MyDNSHostAPI($config['api']);
 	if (session::exists('logindata')) {
@@ -35,7 +38,6 @@
 
 	// Routes that exist all the time.
 	(new SiteRoutes())->addRoutes($router, $displayEngine, $api);
-
 
 	// If we have valid auth details then present a useful session, otherwise
 	// present a login-only session.
@@ -65,7 +67,6 @@
 	}
 
 	// Check CSRF Tokens.
-
 	$router->before('POST', '.*', function() {
 		// Pre-Login, we don't have a CSRF Token assigned.
 		if (!session::exists('csrftoken')) { return; }
@@ -75,6 +76,26 @@
 			die('Invalid CSRF Token');
 		}
 	});
+
+	// Check recaptcha.
+	$router->before('POST', '.*', function() use ($config, $storage) {
+		storage::set('recaptcha_state', 'notchecked');
+
+		if (array_key_exists('g-recaptcha-response', $_POST) && !empty($_POST['g-recaptcha-response'])) {
+			$recaptcha = new \ReCaptcha\ReCaptcha($config['recaptcha']['secret']);
+			$resp = $recaptcha->verify($_POST['g-recaptcha-response']);
+			unset($_POST['g-recaptcha-response']);
+
+			if (!$resp->isSuccess()) {
+				storage::set('recaptcha_state', 'failed');
+			} else {
+				storage::set('recaptcha_state', 'passed');
+			}
+		}
+	});
+
+	// Expose some settings
+	$displayEngine->setVar('recaptcha', $config['recaptcha']['site']);
 
 	// Begin!
 	$router->run();

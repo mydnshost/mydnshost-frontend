@@ -22,6 +22,14 @@ $(function() {
 	});
 
 	$('button[type="submit"]').click(function () {
-		return $("#registerform").valid();
+		if ($("#registerform").valid()) {
+			grecaptcha.execute();
+		}
+
+		return false;
 	});
 });
+
+function registerSubmit(token) {
+	document.getElementById("registerform").submit();
+}

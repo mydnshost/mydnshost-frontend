@@ -13,6 +13,9 @@
 
 	$config['securecookies'] = getEnvOrDefault('SECURE_COOKIES', false);
 
+	$config['recaptcha']['site'] = getEnvOrDefault('RECAPTCHA_SITE', '');
+	$config['recaptcha']['secret'] = getEnvOrDefault('RECAPTCHA_SECRET', '');
+
 	if (file_exists(dirname(__FILE__) . '/config.local.php')) {
 		include(dirname(__FILE__) . '/config.local.php');
 	}

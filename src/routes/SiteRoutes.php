@@ -21,7 +21,9 @@
 				if ($router->getRequestMethod() == "POST") {
 					$displayEngine->setVar('posted', $_POST);
 
-					if (!isset($_POST['inputEmail'])) {
+					if (storage::get('recaptcha_state', 'unknown') !== 'passed') {
+						$displayEngine->flash('error', '', 'Recaptcha failed.');
+					} else if (!isset($_POST['inputEmail'])) {
 						$displayEngine->flash('error', '', 'There was an error with the registration data: You must enter an email address.');
 					} else if (!isset($_POST['inputEmail2'])) {
 						$displayEngine->flash('error', '', 'There was an error with the registration data: You must confirm your email address.');
