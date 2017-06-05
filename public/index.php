@@ -78,7 +78,7 @@
 	});
 
 	// Check recaptcha.
-	$router->before('POST', '.*', function() use ($config, $storage) {
+	$router->before('POST', '.*', function() use ($config) {
 		storage::set('recaptcha_state', 'notchecked');
 
 		if (array_key_exists('g-recaptcha-response', $_POST) && !empty($_POST['g-recaptcha-response'])) {
