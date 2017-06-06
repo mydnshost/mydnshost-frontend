@@ -163,7 +163,16 @@ $(function() {
 	});
 
 	$('button[type="submit"]').click(function () {
-		return $("#recordsform").valid();
+		$("#actionbuttons button").prop('disabled', true);
+
+		var valid = $("#recordsform").valid();
+		if (valid) {
+			$("#recordsform").submit();
+		} else {
+			$("#actionbuttons button").prop('disabled', false);
+		}
+
+		return false;
 	});
 });
 
