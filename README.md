@@ -10,7 +10,7 @@ The code can be run either with Docker or directly on a server, though for the m
 
 TODO...
 
-(Generally: check out the code, `git submodule update --init`, `composer install`, edit config.local.php, run `php admin/init.php` to update the database.)
+(Generally: check out the code, `git submodule update --init`, `composer install`, edit config.local.php)
 
 ## Comments, Questions, Bugs, Feature Requests etc.
 
