@@ -39,7 +39,7 @@
 			$this->basepath = preg_replace('#^/+#', '/', $this->basepath);
 
 			$twig->addFunction(new Twig_Function('url', function ($path) { return $this->getURL($path); }));
-			$twig->addFunction(new Twig_Function('apiurl', function ($path) use ($siteconfig) { return sprintf('%s/%s', rtrim($siteconfig['api'], '/'), ltrim($path, '/')); }));
+			$twig->addFunction(new Twig_Function('apiurl', function ($path) use ($siteconfig) { return sprintf('%s/%s', rtrim($siteconfig['api_public'], '/'), ltrim($path, '/')); }));
 			$twig->addFunction(new Twig_Function('getVar', function ($var) { return $this->getVar($var); }));
 			$twig->addFunction(new Twig_Function('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
 

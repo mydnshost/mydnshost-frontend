@@ -6,6 +6,7 @@
 	$config['templates']['cache'] = getEnvOrDefault('TEMPLATE_CACHE', __DIR__ . '/templates_c');
 
 	$config['api'] = getEnvOrDefault('API_URL', 'https://api.mydnshost.co.uk/');
+	$config['api_public'] = getEnvOrDefault('API_PUBLICURL', $config['api']);
 
 	$config['sitename'] = getEnvOrDefault('SITE_NAME', 'MyDNSHost');
 
