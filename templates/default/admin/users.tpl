@@ -44,6 +44,10 @@
 					<br>
 					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary">Resend Welcome Email</a>
 				{% endif %}
+				{% if userinfo.pendingreset %}
+					<br>
+					<span class="small muted">(Password reset pending)</span>
+				{% endif %}
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
