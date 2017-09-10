@@ -8,7 +8,7 @@ function loadChartData() {
 	var domain = $('#chart').data('domain');
 	var pathprepend = $('#chart').data('pathprepend');
 
-	$.getJSON("{{ url('/') }}" + pathprepend + "/domain/" + domain + "/stats.json", function (data) {
+	$.getJSON("{{ url('/') }}" + (pathprepend + "/domain/").replace(/^\/+/,"") + domain + "/stats.json", function (data) {
 		drawChart(data);
 	});
 }
@@ -33,7 +33,6 @@ function drawChart(statsData) {
 				timedata[time][0] = new Date(time * 1000);
 			}
 
-			console.log(time);
 			timedata[time][keys.indexOf(rrtype) + 1] = value;
 		});
 	});
