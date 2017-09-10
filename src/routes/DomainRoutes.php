@@ -378,6 +378,31 @@
 				}
 			});
 
+			$router->match('GET', '/domain/([^/]+)/stats(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+
+				$domainData = $api->getDomainData($domain);
+				$this->setAccessVars($displayEngine, $domainData);
+				$this->setSubtitle($displayEngine, $domainData);
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Statistics');
+
+				if ($domainData !== NULL) {
+					$displayEngine->setVar('domain', $domainData);
+
+					if ($json !== NULL) {
+						header('Content-Type: application/json');
+						$stats = $api->getDomainStats($domain, 'derivative');
+						echo json_encode(['stats' => $stats]);
+						return;
+					} else {
+						$displayEngine->display('domain_stats.tpl');
+					}
+				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
+					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
 
 			$router->match('GET|POST', '/domain/([^/]+)/import', function($domain) use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);

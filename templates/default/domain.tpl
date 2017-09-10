@@ -73,6 +73,10 @@
 
 		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 
+		{% if hasPermission(['domains_stats']) %}
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/stats") }}" class="btn btn-primary" role="button">Domain Statistics</a>
+		{% endif %}
+
 		<div class="float-right">
 			{% if has_domain_write %}
 				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Resync Zone</a>
