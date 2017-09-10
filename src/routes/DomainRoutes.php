@@ -391,7 +391,7 @@
 
 					if ($json !== NULL) {
 						header('Content-Type: application/json');
-						$stats = $api->getDomainStats($domain, 'derivative');
+						$stats = $api->getDomainStats($domain, ['type' => 'derivative']);
 						echo json_encode(['stats' => $stats]);
 						return;
 					} else {
