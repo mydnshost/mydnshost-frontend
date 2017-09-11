@@ -31,6 +31,8 @@
 
 					$users = $api->getUsers();
 
+					$validPermissions = $displayEngine->setVar('validPermissions', $api->getSystemDataValue('validPermissions'));
+
 					if (isset($users['response'])) {
 						$displayEngine->setVar('users', $users['response']);
 					}

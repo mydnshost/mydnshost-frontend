@@ -58,7 +58,7 @@
 					{% endif %}
 				</div>
 				<table class="permissionsTable table table-sm hidden">
-				{% for permission in ['domains_stats', 'manage_domains', 'domains_create', 'manage_users', 'manage_permissions', 'impersonate_users'] %}
+				{% for permission in validPermissions %}
 					<tr>
 						<td class="name">
 							{{ permission }}
