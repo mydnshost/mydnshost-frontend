@@ -391,8 +391,17 @@
 
 					if ($json !== NULL) {
 						header('Content-Type: application/json');
+
+						// TODO: Reformat into data-table array.
 						$stats = $api->getDomainStats($domain, ['type' => 'derivative']);
-						echo json_encode(['stats' => $stats]);
+
+						$options = ['title' => 'Domain Queries-per-rrtype',
+						            'hAxis' => ['title' => 'Time', 'titleTextStyle' => ['color' => '#333']],
+						            'vAxis' => ['title' => 'Queries', 'minValue' => 0],
+						            'isStacked' => false,
+						           ];
+
+						echo json_encode(['stats' => $stats, 'options' => $options, 'graphType' => 'area']);
 						return;
 					} else {
 						$displayEngine->display('domain_stats.tpl');

@@ -5,17 +5,20 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(loadChartData);
 
 function loadChartData() {
-	var domain = $('#chart').data('domain');
-	var pathprepend = $('#chart').data('pathprepend');
+	$('div[data-graph]').each(function() {
+		var element = this;
+		var dataSource = $(element).data('graph');
 
-	$.getJSON("{{ url('/') }}" + (pathprepend + "/domain/").replace(/^\/+/,"") + domain + "/stats.json", function (data) {
-		drawChart(data);
+		$.getJSON(dataSource, function (data) {
+			drawChart(element, data);
+		});
 	});
 }
 
-function drawChart(statsData) {
+function drawChart(element, statsData) {
 	var keys = $.map(statsData["stats"], function(element,index) {return index});
 
+	// TODO: Datatable should come from stats.
 	var data = new google.visualization.DataTable();
 	data.addColumn('datetime', 'Time');
 	$.each(keys, function(key, value) {
@@ -37,17 +40,18 @@ function drawChart(statsData) {
 		});
 	});
 
-	$.each(timedata, function(k, v) {
-		data.addRow(v);
-	});
+	$.each(timedata, function(k, v) { data.addRow(v); });
 
 	// Instantiate and draw our chart, passing in some options.
-	var chart = new google.visualization.AreaChart(document.getElementById('chart'));
+	var chart = undefined;
+	var options = statsData["options"];
 
-	var options = {
-		title: 'Domain Queries-per-rrtype',
-		hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
-		vAxis: {title: 'Queries',  minValue: 0},
-	};
-	chart.draw(data, options);
+	if (statsData['graphType'] == 'area') {
+		chart = new google.visualization.AreaChart(element);
+		options["isStacked"] = true;
+	}
+
+	if (chart !== undefined) {
+		chart.draw(data, options);
+	}
 }
