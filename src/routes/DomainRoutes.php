@@ -176,8 +176,8 @@
 					}
 
 					$domains = session::get('domains');
-					if (isset($domains[$domain])) {
-						$domainData['access'] = $domains[$domain];
+					if (isset($domains[$domainData['domain']])) {
+						$domainData['access'] = $domains[$domainData['domain']];
 					}
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
@@ -342,8 +342,8 @@
 					}
 
 					$domains = session::get('domains');
-					if (isset($domains[$domain])) {
-						$domainData['access'] = $domains[$domain];
+					if (isset($domains[$domainData['domain']])) {
+						$domainData['access'] = $domains[$domainData['domain']];
 					}
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
