@@ -132,6 +132,28 @@
 				});
 			}
 
+			if ($displayEngine->hasPermission(['system_stats'])) {
+				$router->get('/admin/stats$', function() use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/stats')->setTitle('Admin :: Statistics');
+					$displayEngine->display('admin/stats.tpl');
+				});
+
+				$router->get('/admin/stats/(.*).json', function($stat) use ($displayEngine, $api) {
+					header('Content-Type: application/json');
+
+					// TODO: Reformat into data-table array.
+					$stats = $api->getSystemStats($stat, ['type' => 'derivative']);
+
+					$options = [
+					            'hAxis' => ['title' => 'Time', 'titleTextStyle' => ['color' => '#333']],
+					            'vAxis' => ['title' => 'Queries', 'minValue' => 0],
+					            'isStacked' => true,
+					           ];
+
+					echo json_encode(['stats' => $stats, 'options' => $options, 'graphType' => 'area']);
+				});
+			}
+
 			if ($displayEngine->hasPermission(['impersonate_users'])) {
 				$router->get('/impersonate/user/(.*)', function($impersonate) use ($displayEngine, $api) {
 					$api->impersonate($impersonate, 'id');

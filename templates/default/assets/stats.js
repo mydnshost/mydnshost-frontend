@@ -48,7 +48,11 @@ function drawChart(element, statsData) {
 
 	if (statsData['graphType'] == 'area') {
 		chart = new google.visualization.AreaChart(element);
-		options["isStacked"] = true;
+	}
+
+	var graphTitle = $(element).data('title');
+	if (graphTitle != undefined) {
+		options['title'] = graphTitle;
 	}
 
 	if (chart !== undefined) {

@@ -254,6 +254,9 @@
 			if ($this->hasPermission(['manage_domains'])) {
 				$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
 			}
+			if ($this->hasPermission(['system_stats'])) {
+				$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
+			}
 
 			if (count($menu) > 0) {
 				$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
