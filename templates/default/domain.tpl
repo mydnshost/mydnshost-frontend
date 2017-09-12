@@ -58,6 +58,14 @@
 			<th>Access level</th>
 			<td class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
 		</tr>
+		{% if domain.DNSSEC.DS %}
+		<tr>
+			<th>DNSSEC DS Keys</th>
+			<td class="mono">
+				{{ domain.DNSSEC.DS | join("\n") | nl2br }}
+			</td>
+		</tr>
+		{% endif %}
 	</tbody>
 </table>
 </form>
