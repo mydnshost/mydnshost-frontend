@@ -370,3 +370,7 @@ table#userlist td.permissions table td.value {
 table#userlist td.permissions table td.actions {
   width: 60px;
 }
+
+.tooltip-inner {
+  max-width: 500px !important;
+}
