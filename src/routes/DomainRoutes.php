@@ -127,6 +127,7 @@
 			});
 
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
@@ -205,6 +206,7 @@
 			});
 
 			$router->post('/domain/([^/]+)/addkey(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$apiresult = $api->createDomainKey($domain, ['description' => (isset($_POST['description']) ? $_POST['description'] : 'New Domain Key: ' . date('Y-m-d H:i:s'))]);
 				$result = ['unknown', 'unknown'];
 
@@ -231,6 +233,7 @@
 			});
 
 			$router->post('/domain/([^/]+)/editkey/([^/]+)(\.json)?', function($domain, $key, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$data = isset($_POST['key'][$key]) ? $_POST['key'][$key] : [];
 				$apiresult = $api->updateDomainKey($domain, $key, $data);
 				$result = ['unknown', 'unknown'];
@@ -256,6 +259,7 @@
 			});
 
 			$router->post('/domain/([^/]+)/deletekey/([^/]+)(\.json)?', function($domain, $key, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$apiresult = $api->deleteDomainKey($domain, $key);
 				$result = ['unknown', 'unknown'];
 
@@ -280,6 +284,7 @@
 			});
 
 			$router->match('GET|POST', '/domain/([^/]+)/records', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
@@ -368,6 +373,7 @@
 			});
 
 			$router->match('GET', '/domain/([^/]+)/export', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
@@ -389,6 +395,7 @@
 			});
 
 			$router->match('GET', '/domain/([^/]+)/stats(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
@@ -424,6 +431,7 @@
 
 
 			$router->match('GET|POST', '/domain/([^/]+)/import', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				$domainData = $api->getDomainData($domain);
@@ -460,6 +468,7 @@
 
 
 			$router->match('POST', '/domain/([^/]+)/delete', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
 
 				if (isset($_POST['confirm']) && parseBool($_POST['confirm'])) {
@@ -482,6 +491,7 @@
 
 
 			$router->match('GET', '/domain/([^/]+)/sync', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
 				$api->syncDomain($domain);
 				$displayEngine->flash('success', '', 'Domain ' . $domain . ' has been synced.');
 				header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
