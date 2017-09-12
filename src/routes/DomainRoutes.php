@@ -33,6 +33,8 @@
 			$rdns = getARPA($domainData['domain']);
 			if ($rdns !== FALSE) {
 				$displayEngine->setVar('subtitle', $rdns);
+			} else if (idn_to_ascii($domainData['domain']) != $domainData['domain']) {
+				$displayEngine->setVar('subtitle', idn_to_ascii($domainData['domain']));
 			}
 		}
 

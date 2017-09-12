@@ -15,6 +15,15 @@
 					$domains = $api->domainAdmin()->getDomains();
 
 					if (isset($domains)) {
+						array_walk($domains, function (&$domainData, $domain) {
+							$rdns = getARPA($domain);
+							if ($rdns !== FALSE) {
+								$domainData['subtitle'] = 'RDNS: '. $rdns;
+							} else if (idn_to_ascii($domain) != $domain) {
+								$domainData['subtitle'] = idn_to_ascii($domain);
+							}
+						});
+
 						$displayEngine->setVar('domains', $domains);
 					}
 					$displayEngine->display('admin/domains.tpl');

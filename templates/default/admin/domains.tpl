@@ -22,8 +22,8 @@
 		<tr data-searchable-value="{{ name }}">
 			<td class="domain">
 				{{ name }}
-				{% if getARPA(name) %}
-					<small class="subtitle">(RDNS: {{ getARPA(name) }})</small>
+				{% if domain.subtitle %}
+					<small class="subtitle">({{ domain.subtitle }})</small>
 				{% endif %}
 			</td>
 			<td class="owner">

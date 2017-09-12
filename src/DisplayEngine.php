@@ -219,12 +219,16 @@
 						$item['active'] = ($this->pageID == '/domain/' . $domain);
 
 						$dataValue = [$domain];
+
 						$rdns = getARPA($domain);
 						if ($rdns !== FALSE) {
 							$dataValue[] = $rdns;
 							$dataValue[] = 'rdns';
 
 							$item['hover'] = 'RDNS: ' . $rdns;
+						} else if (idn_to_ascii($domain) != $domain) {
+							$dataValue[] = idn_to_ascii($domain);
+							$item['hover'] = idn_to_ascii($domain);
 						}
 
 						$item['dataValue'] = implode(' ', $dataValue);
