@@ -71,7 +71,15 @@
 				$domains = $api->getDomains();
 				$allDomains = [];
 				foreach ($domains as $domain => $access) {
-					$allDomains[] = ['domain' => $domain, 'access' => $access];
+					$domainData = ['domain' => $domain, 'access' => $access];
+					$rdns = getARPA($domain);
+					if ($rdns !== FALSE) {
+						$domainData['subtitle'] = 'RDNS: '. $rdns;
+					} else if (idn_to_ascii($domain) != $domain) {
+						$domainData['subtitle'] = idn_to_ascii($domain);
+					}
+
+					$allDomains[] = $domainData;
 				}
 				$displayEngine->setVar('domains', $allDomains);
 				$displayEngine->display('alldomains.tpl');

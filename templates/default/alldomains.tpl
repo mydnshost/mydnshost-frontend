@@ -13,8 +13,8 @@
 		<tr>
 			<td class="domain">
 				{{ domain.domain }}
-				{% if getARPA(domain.domain) %}
-					<small class="subtitle">(RDNS: {{ getARPA(domain.domain) }})</small>
+				{% if domain.subtitle %}
+					<small class="subtitle">({{ domain.subtitle }})</small>
 				{% endif %}
 			</td>
 			<td class="access">
