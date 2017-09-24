@@ -10,6 +10,7 @@ var recordtypes = {
   "CAA": "Certification Authority Authorization (CAA)",
   "DS": "Delegation Signer (DS)"
   "SSHFP": "SSH Fingerprint (SSHFP)",
+  "TLSA": "TLSA Record",
 };
 
 var newRecordCount = 0;
@@ -340,6 +341,9 @@ $.validator.addMethod("validateContent", function(value, element) {
 	} else if (record_type == 'SSHFP' && !record_content.match(/^[0-9]+ [0-9]+ [0-9A-F]+$/i)) {
 		error = true;
 		errorReason = 'SSHFP record content should have the format: <algorithm> <fingerprint type> <fingerprint>';
+	} else if (record_type == 'TLSA' && !record_content.match(/^[0-9]+ [0-9]+ [0-9]+ [0-9A-F]+$/i)) {
+		error = true;
+		errorReason = 'TLSA record content should have the format: <usage> <selector> <matching type> <fingerprint>';
 	} else if (record_type == 'DS' && !record_content.match(/^[0-9]+ [0-9]+ [0-9]+ [0-9A-F]+$/i)) {
 		error = true;
 		errorReason = 'DS record content should have the format: <keytag> <algorithm> <digesttype> <digest>';
