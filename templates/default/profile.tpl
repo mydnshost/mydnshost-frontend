@@ -64,6 +64,9 @@
 	<div class="col">
 		<button type="button" data-action="edituser" class="btn btn-primary" role="button">Edit user details</button>
 		<button type="button" data-action="saveuser" class="btn btn-success hidden" role="button">Save</button>
+		{% if hasPermission(['domains_stats']) %}
+			<a href="{{ url("/profile/stats") }}" class="btn btn-primary" role="button">Profile Statistics</a>
+		{% endif %}
 	</div>
 </div>
 

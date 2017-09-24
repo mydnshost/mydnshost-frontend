@@ -81,6 +81,29 @@
 				$displayEngine->display('profile.tpl');
 			});
 
+			$router->match('GET', '/profile/stats(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
+				$displayEngine->setPageID('/profile')->setTitle('Profile :: Statistics');
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+
+					// TODO: Reformat into data-table array.
+					$stats = $api->getUserStats('domains', ['type' => 'derivative']);
+
+					$options = ['title' => 'Queries-per-domain',
+					            'hAxis' => ['title' => 'Time', 'titleTextStyle' => ['color' => '#333']],
+					            'vAxis' => ['title' => 'Queries', 'minValue' => 0],
+					            'isStacked' => false,
+					           ];
+
+					echo json_encode(['stats' => $stats, 'options' => $options, 'graphType' => 'area']);
+					return;
+				} else {
+					$displayEngine->display('profile_stats.tpl');
+				}
+			});
+
+
 			$router->post('/profile/addkey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
 				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
 
@@ -270,6 +293,5 @@
 					return;
 				}
 			});
-
 		}
 	}
