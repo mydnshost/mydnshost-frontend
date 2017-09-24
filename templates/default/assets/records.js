@@ -10,7 +10,7 @@ var recordtypes = {
   "CAA": "Certification Authority Authorization (CAA)",
   "DS": "Delegation Signer (DS)"
   "SSHFP": "SSH Fingerprint (SSHFP)",
-  "TLSA": "TLSA Record",
+  "TLSA": "TLSA Record"
 };
 
 var newRecordCount = 0;
