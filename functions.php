@@ -77,3 +77,13 @@
 	function genUUID() {
 		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
+
+	function setWantedPage($displayEngine, $page) {
+		$wanted = $page;
+		$wanted = preg_replace('#^' . preg_quote($displayEngine->getBasePath()) . '#', '/', $wanted);
+		$wanted = preg_replace('#^/+#', '/', $wanted);
+
+		if (preg_match('#^/?(admin|domains?|user|profile|impersonate)/#', $wanted)) {
+			session::set('wantedPage', $wanted);
+		}
+	}
