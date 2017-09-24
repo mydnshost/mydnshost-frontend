@@ -41,7 +41,11 @@
 				{% endif %}
 			</td>
 			<td class="actions">
-				<a href="{{ url('/admin/domain/' ~ name) }}" class="btn btn-success btn-sm">Manage</a>
+				{% if domain_defaultpage == 'records' %}
+					<a href="{{ url('/admin/domain/' ~ name ~ '/records') }}" class="btn btn-success btn-sm">Manage</a>
+				{% else %}
+					<a href="{{ url('/admin/domain/' ~ name) }}" class="btn btn-success btn-sm">Manage</a>
+				{% endif %}
 			</td>
 		</tr>
 		{% endfor %}

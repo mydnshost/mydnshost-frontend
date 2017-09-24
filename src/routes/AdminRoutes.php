@@ -26,6 +26,7 @@
 
 						$displayEngine->setVar('domains', $domains);
 					}
+					$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 					$displayEngine->display('admin/domains.tpl');
 				});
 

@@ -82,6 +82,7 @@
 					$allDomains[] = $domainData;
 				}
 				$displayEngine->setVar('domains', $allDomains);
+				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('alldomains.tpl');
 			});
 

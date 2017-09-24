@@ -21,7 +21,11 @@
 				{{ domain.access }}
 			</td>
 			<td class="actions">
-				<a href="{{ url('/domain/' ~ domain.domain) }}" class="btn btn-success">View</a>
+				{% if domain_defaultpage == 'records' %}
+					<a href="{{ url('/domain/' ~ domain.domain ~ '/records') }}" class="btn btn-success">View</a>
+				{% else %}
+					<a href="{{ url('/domain/' ~ domain.domain) }}" class="btn btn-success">View</a>
+				{% endif %}
 			</td>
 		</tr>
 		{% endfor %}
