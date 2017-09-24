@@ -8,7 +8,7 @@ var recordtypes = {
   "PTR": "PTR Record",
   "SRV": "Service Record (SRV)",
   "CAA": "Certification Authority Authorization (CAA)",
-  "DS": "Delegation Signer (DS)"
+  "DS": "Delegation Signer (DS)",
   "SSHFP": "SSH Fingerprint (SSHFP)",
   "TLSA": "TLSA Record"
 };
