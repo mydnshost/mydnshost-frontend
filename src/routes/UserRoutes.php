@@ -48,6 +48,11 @@
 							}
 							$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . $result['errorData']);
 						} else {
+							if (in_array($_POST['domain_defaultpage'], ['records', 'details'])) {
+								$api->setCustomData('uk.co.mydnshost.www/domain/defaultpage', $_POST['domain_defaultpage']);
+								session::set('domain/defaultpage', $_POST['domain_defaultpage']);
+							}
+
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
 							header('Location: ' . $displayEngine->getURL('/profile'));
@@ -72,6 +77,7 @@
 					$displayEngine->setVar('twofactorkeys', $keys);
 				}
 
+				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('profile.tpl');
 			});
 

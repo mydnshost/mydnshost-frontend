@@ -15,7 +15,7 @@ Domains require at least 1 NS record before they will be successfully served.
 <div class="row">
 	<div class="col">
 		<div class="float-right">
-			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary" role="button">Back to zone details</a>
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary" role="button">Zone details</a>
 			<br>
 			<br>
 		</div>

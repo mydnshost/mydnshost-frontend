@@ -215,6 +215,9 @@
 					foreach ($domains as $domain => $access) {
 						$item = array();
 						$item['link'] = $this->getURL('/domain/' . $domain);
+						if (session::get('domain/defaultpage') == 'records') {
+							$item['link'] .= '/records';
+						}
 						$item['title'] = $domain;
 						$item['active'] = ($this->pageID == '/domain/' . $domain);
 

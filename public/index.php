@@ -46,6 +46,7 @@
 		session::setCurrentUser($userdata);
 
 		session::set('domains', $api->getDomains());
+		session::set('domain/defaultpage', $api->getCustomData('uk.co.mydnshost.www/domain/defaultpage'));
 
 		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
 		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);

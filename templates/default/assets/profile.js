@@ -194,6 +194,13 @@ $(function() {
 	});
 });
 
+var optionsValues = {};
+
+optionsValues['domain_defaultpage'] = {
+  "details": "Domain Details",
+  "records": "Domain Records"
+};
+
 function setUserEditable() {
 	$('#usercontrols a').addClass('hidden');
 	$('#usercontrols button[data-action="saveuser"]').removeClass('hidden');
@@ -204,7 +211,17 @@ function setUserEditable() {
 		var key = field.data('name');
 		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
 
-		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" id="' + key + '" name="' + key + '" value="' + escapeHtml(value) + '">');
+		if (fieldType == 'option') {
+			var select = '';
+			select += '<select class="form-control form-control-sm" name="' + key + '">';
+			$.each(optionsValues[key], function(optionkey, optionvalue) {
+				select += '	<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
+			});
+			select += '</select>';
+			field.html(select);
+		} else {
+			field.html('<input type="' + fieldType + '" class="form-control form-control-sm" id="' + key + '" name="' + key + '" value="' + escapeHtml(value) + '">');
+		}
 	});
 	$('table#profileinfo tr[data-hidden]').show();
 

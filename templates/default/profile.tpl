@@ -36,6 +36,14 @@
 			</th>
 			<td data-type="password" data-name="confirmpassword" data-value=""></td>
 		</tr>
+
+		<tr>
+			<th>Default domain page</th>
+			<td data-type="option" data-name="domain_defaultpage" data-value="{{ domain_defaultpage }}">
+			{{ domain_defaultpage }}
+			</td>
+		</tr>
+
 		<tr>
 			<th>
 				Account Permissions
