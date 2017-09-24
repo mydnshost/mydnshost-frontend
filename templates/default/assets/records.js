@@ -9,6 +9,7 @@ var recordtypes = {
   "SRV": "Service Record (SRV)",
   "CAA": "Certification Authority Authorization (CAA)",
   "DS": "Delegation Signer (DS)"
+  "SSHFP": "SSH Fingerprint (SSHFP)",
 };
 
 var newRecordCount = 0;
@@ -333,9 +334,12 @@ $.validator.addMethod("validateContent", function(value, element) {
 	} else if (record_type == 'SRV' && !record_content.match(/^[0-9]+ [0-9]+ .+$/)) {
 		error = true;
 		errorReason = 'SRV records should be formatted as \'<weight> <port> <address>\' eg \'1 443 somehost.com\'.';
-	} else if (record_type == 'CAA' && !record_content.match(/^[0-9]+ [a-z]+ "[^\s]+"$/)) {
+	} else if (record_type == 'CAA' && !record_content.match(/^[0-9]+ [a-z]+ "[^\s]+"$/i)) {
 		error = true;
 		errorReason = 'CAA record content should have the format: <flag> <tag> "<value>"';
+	} else if (record_type == 'SSHFP' && !record_content.match(/^[0-9]+ [0-9]+ [0-9A-F]+$/i)) {
+		error = true;
+		errorReason = 'SSHFP record content should have the format: <algorithm> <fingerprint type> <fingerprint>';
 	} else if (record_type == 'DS' && !record_content.match(/^[0-9]+ [0-9]+ [0-9]+ [0-9A-F]+$/i)) {
 		error = true;
 		errorReason = 'DS record content should have the format: <keytag> <algorithm> <digesttype> <digest>';
