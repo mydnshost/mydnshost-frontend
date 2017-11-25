@@ -199,6 +199,8 @@
 
 					$displayEngine->setVar('domainkeys', $api->getDomainKeys($domain));
 
+					$displayEngine->setVar('domainhooks', $api->getDomainHooks($domain));
+
 					$displayEngine->display('domain.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
@@ -271,6 +273,84 @@
 					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
 				} else {
 					$result = ['success', 'Key removed.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
+				}
+			});
+
+			$router->post('/domain/([^/]+)/addhook(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
+				$apiresult = $api->createDomainHook($domain, $_POST);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error adding the new Domain Hook: ' . $apiresult['errorData']];
+				} else {
+					$returnedhooks = array_keys($apiresult['response']);
+					$newhook = array_shift($returnedhooks);
+					$result = ['success', 'New Domain Hook Added: ' . $apiresult['response'][$newhook]['url']];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
+				}
+			});
+
+			$router->post('/domain/([^/]+)/edithook/([^/]+)(\.json)?', function($domain, $hookid, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
+				$data = isset($_POST['hook'][$hookid]) ? $_POST['hook'][$hookid] : [];
+				$apiresult = $api->updateDomainHook($domain, $hookid, $data);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error editing the hook: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Hook edited.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+					return;
+				}
+			});
+
+			$router->post('/domain/([^/]+)/deletehook/([^/]+)(\.json)?', function($domain, $hookid, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
+				$apiresult = $api->deleteDomainHook($domain, $hookid);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error removing the hook: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Hook removed.'];
 				}
 
 				if ($json !== NULL) {

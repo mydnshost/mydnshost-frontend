@@ -149,7 +149,7 @@
 				{{ access }}
 			</td>
 			{% if has_domain_admin %}
-				<td>
+				<td class="actions">
 					{% if canChangeAccess(email) %}
 						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
 					{% endif %}
@@ -193,7 +193,7 @@
 	</thead>
 	<tbody>
 		{% for key,keydata in domainkeys %}
-		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} data-value="{{ key }}">
+		<tr data-value="{{ key }}">
 			<td class="key">
 				<span class="pointer" data-hiddenText="{{ key }}"><em>Hidden - click to view</em></span>
 			</td>
@@ -245,5 +245,72 @@
 {% endembed %}
 
 {% endif %}
+
+<br><br>
+
+<H2>Domain Web Hooks</H2>
+
+<table id="domainhooks" class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th class="url">Url</th>
+			<th class="password">Password</th>
+			<th class="disabled">Disabled</th>
+			<th class="actions">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for hookdata in domainhooks %}
+		<tr data-value="{{ hookdata.id }}">
+			<td class="url" data-text data-name="url" data-value="{{ hookdata.url }}">
+				{{ hookdata.url }}
+			</td>
+			<td class="password" data-text data-name="password" data-value="{{ hookdata.password }}">
+				{{ hookdata.password }}
+			</td>
+			<td class="disabled" data-radio data-name="disabled" data-value="{{ hookdata.disabled | yesno }}">
+				{% if hookdata.disabled == 'true' %}
+					<span class="badge badge-danger">Yes</span>
+				{% else %}
+					<span class="badge badge-success">No</span>
+				{% endif %}
+			</td>
+			<td class="actions">
+				<button type="button" data-action="edithook" class="btn btn-sm btn-success" role="button">Edit</button>
+				<button type="button" data-action="savehook" class="hidden btn btn-sm btn-success" role="button">Save</button>
+				<button type="button" data-action="deletehook" class="btn btn-sm btn-danger" role="button">Delete</button>
+
+				<form class="d-inline form-inline edithookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/edithook/" ~ hookdata.id) }}">
+					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+				</form>
+				<form class="d-inline form-inline deletehookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/deletehook/" ~ hookdata.id) }}">
+					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+				</form>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addhook") }}" class="form-inline form-group" id="addhookform">
+	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="url" value="" placeholder="Hook URL...">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="password" value="" placeholder="Hook Password">
+	<button type="submit" class="btn btn-success" role="button">Add Domain Hook</button>
+</form>
+
+{% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDeleteHook'} only %}
+	{% block title %}
+		Delete Domain Hook
+	{% endblock %}
+
+	{% block body %}
+		Are you sure you want to delete this Domain Hook?
+		<br><br>
+		Deleting this hook will cause it to no longer be triggered when changes are made to this domain.
+		<br><br>
+		This can not be undone
+	{% endblock %}
+{% endembed %}
 
 <script src="{{ url('/assets/domains.js') }}"></script>

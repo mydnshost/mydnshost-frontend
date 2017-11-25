@@ -180,6 +180,37 @@ table#domainlist th.actions, table#domainlist td.actions {
 }
 
 
+table#accessinfo th.who, table#accessinfo td.who {
+
+}
+
+table#accessinfo th.access, table#accessinfo td.access {
+  width: 400px;
+}
+
+table#accessinfo th.actions, table#accessinfo td.actions {
+  width: 200px;
+}
+
+
+table#domainhooks th.url, table#domainhooks td.url {
+
+}
+
+table#domainhooks th.password, table#domainhooks td.password {
+  width: 400px;
+}
+
+table#domainhooks th.disabled, table#domainhooks td.disabled {
+  width: 200px;
+}
+
+table#domainhooks th.actions, table#domainhooks td.actions {
+  width: 200px;
+}
+
+
+
 table#domainlist td.domain small.subtitle {
   color: #636c72;
   margin-left: 50px;

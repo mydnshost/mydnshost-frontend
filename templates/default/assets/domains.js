@@ -172,6 +172,75 @@ $(function() {
 			}
 		},
 	});
+
+	$('button[data-action="edithook"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var recordid = row.data('value');
+
+		if ($(this).data('action') == "edithook") {
+			setHookEditable(row, recordid);
+
+			$(this).data('action', 'cancel');
+			$(this).html('Cancel');
+			$(this).removeClass('btn-success');
+			$(this).addClass('btn-warning');
+		} else if ($(this).data('action') == "cancel") {
+			cancelEditHook(row);
+
+			$(this).data('action', 'edithook');
+			$(this).html('Edit');
+			$(this).addClass('btn-success');
+			$(this).removeClass('btn-warning');
+		}
+
+		return false;
+	});
+
+	$('button[data-action="savehook"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var saveform = row.find('form.edithookform');
+
+		$('input[type="text"]', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+		$('input[type="radio"]:checked', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+
+		// TODO: Do this with AJAX.
+		saveform.submit();
+	});
+
+	$('button[data-action="deletehook"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var deleteform = row.find('form.deletehookform');
+
+		var okButton = $('#confirmDeleteHook button[data-action="ok"]');
+		okButton.removeClass("btn-success").addClass("btn-danger").text("Delete Domain Hook");
+
+		okButton.off('click').click(function () {
+			// TODO: Do this with AJAX.
+			deleteform.submit();
+		});
+
+		$('#confirmDeleteHook').modal({'backdrop': 'static'});
+	});
+
+	$("#addhookform").validate({
+		highlight: function(element) {
+			$(element).closest('.form-group').addClass('has-danger');
+		},
+		unhighlight: function(element) {
+			$(element).closest('.form-group').removeClass('has-danger');
+		},
+		errorClass: 'form-control-feedback',
+		errorPlacement: function () { },
+		rules: {
+			url: {
+				required: true
+			}
+		},
+	});
 });
 
 function setSOAEditable() {
@@ -330,7 +399,7 @@ function setKeyEditable(row, recordid) {
 		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
 	});
 
-	editableYesNo(row, fieldName, recordid);
+	editableYesNo(row, fieldName, recordid, false);
 }
 
 function cancelEditKey(row) {
@@ -355,18 +424,21 @@ function cancelEditKey(row) {
 	});
 }
 
-function editableYesNo(row, fieldName, recordid) {
+function editableYesNo(row, fieldName, recordid, inverse) {
 	$('td[data-radio]', row).each(function (index) {
 		var field = $(this);
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
 
+		var yesState = inverse ? 'danger' : 'success';
+		var noState = inverse ? 'success' : 'danger';
+
 		var radioButtons = '';
 		radioButtons += '<div class="btn-group" data-toggle="buttons">';
-		radioButtons += '  <label class="btn btn-sm" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-' + yesState + '" data-inactive="btn-outline-' + yesState + '" data-toggle-class>';
 		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][' + key + ']" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
-		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
+		radioButtons += '  <label class="btn btn-sm" data-active="btn-' + noState + '" data-inactive="btn-outline-' + noState + '" data-toggle-class>';
 		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][' + key + ']" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
 		radioButtons += '  </label>';
 		radioButtons += '</div>';
@@ -398,5 +470,51 @@ function editableYesNo(row, fieldName, recordid) {
 				$(this).removeClass($(this).attr('data-inactive'));
 			}
 		});
+	});
+}
+
+
+var newHookCount = 0;
+function setHookEditable(row, recordid) {
+	row.find('button[data-action="deletehook"]').hide();
+	row.find('button[data-action="savehook"]').show();
+
+	var fieldName = 'hook';
+	if (recordid == undefined) {
+		var fieldName = 'newhook';
+		recordid = newHookCount++;
+	}
+
+	$('td[data-text]', row).each(function (index) {
+		var field = $(this);
+		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
+		var hook = field.data('name');
+		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
+
+		field.html('<input type="' + fieldType + '" class="form-control form-control-sm" name="' + fieldName + '[' + recordid + '][' + hook + ']" value="' + escapeHtml(value) + '">');
+	});
+
+	editableYesNo(row, fieldName, recordid, true);
+}
+
+function cancelEditHook(row) {
+	row.find('button[data-action="deletehook"]').show();
+	row.find('button[data-action="savehook"]').hide();
+
+	$('td[data-radio]', row).each(function (index) {
+		var field = $(this);
+
+		if (field.data('value') == "Yes") {
+			field.html('<span class="badge badge-danger">' + escapeHtml(field.data('value')) + '</span>');
+		} else {
+			field.html('<span class="badge badge-success">' + escapeHtml(field.data('value')) + '</span>');
+		}
+		field.data('edited-value', null);
+	});
+
+	$('td[data-text]', row).each(function (index) {
+		var field = $(this);
+		field.html(escapeHtml(field.data('value')));
+		field.data('edited-value', null);
 	});
 }
