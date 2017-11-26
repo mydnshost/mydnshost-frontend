@@ -48,6 +48,9 @@
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
 			$twig->addFunction(new Twig_Function('getARPA', function($domain) { return getARPA($domain); }));
 
+			$twig->addFilter(new Twig_Filter('getARPA', function($domain) {
+				return getARPA($domain);
+			}));
 
 			$twig->addFilter(new Twig_Filter('gravatar', function($input, $size = 20, $default = '') {
 				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=' . $size . '&d=' . $default;
