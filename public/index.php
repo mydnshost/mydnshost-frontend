@@ -55,7 +55,7 @@
 		(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
 	} else {
 		$hadLoginDetails = session::exists('logindata');
-		session::clear(['DisplayEngine::Flash', 'wantedPage']);
+		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin']);
 
 		if ($hadLoginDetails) {
 			setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
