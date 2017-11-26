@@ -77,6 +77,8 @@
 					$displayEngine->setVar('twofactorkeys', $keys);
 				}
 
+				$displayEngine->setVar('twofactordevices', $api->get2FADevices());
+
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('profile.tpl');
 			});
@@ -172,6 +174,32 @@
 					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
 				} else {
 					$result = ['success', 'Key removed.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode([$result[0] => $result[1]]);
+					return;
+				} else {
+					$displayEngine->flash($result[0], '', $result[1]);
+					header('Location: ' . $displayEngine->getURL('/profile'));
+					return;
+				}
+			});
+
+			$router->post('/profile/delete2fadevice/([^/]+)(\.json)?', function($device, $json = NULL) use ($router, $displayEngine, $api) {
+				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
+
+				$apiresult = $api->delete2FADevice($device);
+				$result = ['unknown', 'unknown'];
+
+				if (array_key_exists('error', $apiresult)) {
+					if (!array_key_exists('errorData', $apiresult)) {
+						$apiresult['errorData'] = 'Unspecified error.';
+					}
+					$result = ['error', 'There was an error removing the device: ' . $apiresult['errorData']];
+				} else {
+					$result = ['success', 'Device removed.'];
 				}
 
 				if ($json !== NULL) {

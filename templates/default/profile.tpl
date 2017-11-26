@@ -73,6 +73,7 @@
 {% if apikeys is not null %}
 	{% include 'profile/apikeys.tpl' %}
 	{% include 'profile/2fakeys.tpl' %}
+	{% include 'profile/2fadevices.tpl' %}
 
 	<br><br>
 

@@ -36,6 +36,16 @@
 		}
 	}
 
+	if (isset($_COOKIE['MYDNSHOST_2FA_SAVED_DEVICE'])) {
+		$deviceData = json_decode($_COOKIE['MYDNSHOST_2FA_SAVED_DEVICE'], true);
+		if (isset($deviceData['id'])) {
+			$api->setDeviceID($deviceData['id']);
+		}
+		if (isset($deviceData['name'])) {
+			$api->setDeviceName($deviceData['name']);
+		}
+	}
+
 	// Routes that exist all the time.
 	(new SiteRoutes())->addRoutes($router, $displayEngine, $api);
 

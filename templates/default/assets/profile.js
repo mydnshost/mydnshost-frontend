@@ -192,6 +192,21 @@ $(function() {
 			}
 		},
 	});
+
+	$('button[data-action="delete2fadevice"]').click(function () {
+		var row = $(this).parent('td').parent('tr');
+		var deleteform = row.find('form.deleteform');
+
+		var okButton = $('#confirmDelete2FADevice button[data-action="ok"]');
+		okButton.removeClass("btn-success").addClass("btn-danger").text("Delete Device");
+
+		okButton.off('click').click(function () {
+			// TODO: Do this with AJAX.
+			deleteform.submit();
+		});
+
+		$('#confirmDelete2FADevice').modal({'backdrop': 'static'});
+	});
 });
 
 var optionsValues = {};

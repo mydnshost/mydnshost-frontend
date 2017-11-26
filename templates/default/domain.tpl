@@ -260,8 +260,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for hookdata in domainhooks %}
-		<tr data-value="{{ hookdata.id }}">
+		{% for hookid,hookdata in domainhooks %}
+		<tr data-value="{{ hookid }}">
 			<td class="url" data-text data-name="url" data-value="{{ hookdata.url }}">
 				{{ hookdata.url }}
 			</td>
@@ -280,10 +280,10 @@
 				<button type="button" data-action="savehook" class="hidden btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletehook" class="btn btn-sm btn-danger" role="button">Delete</button>
 
-				<form class="d-inline form-inline edithookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/edithook/" ~ hookdata.id) }}">
+				<form class="d-inline form-inline edithookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/edithook/" ~ hookid) }}">
 					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 				</form>
-				<form class="d-inline form-inline deletehookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/deletehook/" ~ hookdata.id) }}">
+				<form class="d-inline form-inline deletehookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/deletehook/" ~ hookid) }}">
 					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 				</form>
 			</td>
