@@ -58,7 +58,11 @@ Domains require at least 1 NS record before they will be successfully served.
 			>
 
 			<td class="name mono" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}>
+				{% if record.name == '' %}
+				@
+				{% else %}
 				{{ record.name }}
+				{% endif %}
 			</td>
 			<td class="type mono" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
 				{{ record.type }}

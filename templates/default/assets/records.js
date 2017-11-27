@@ -273,7 +273,12 @@ function cancelEdit(row) {
 	             };
 
 	$.each(fields, function(key, field) {
-		field.text(field.data('value'));
+		if (key == "name" && field.data('value') == '') {
+			field.text('@');
+		} else {
+			field.text(field.data('value'));
+		}
+
 		field.data('edited-value', null);
 		field.tooltip('dispose');
 	});
