@@ -89,7 +89,7 @@
 
 			$router->get('/domains/create', function() use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);
-				$this->setPageID($displayEngine, '/admin/domains/')->setTitle('Add Domain');
+				$this->setPageID($displayEngine, '/domains/')->setTitle('Add Domain');
 				$displayEngine->display('createdomain.tpl');
 			});
 
