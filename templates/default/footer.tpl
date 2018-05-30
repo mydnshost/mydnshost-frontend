@@ -30,7 +30,9 @@
 		<footer class="footer">
 			<div class="container-fluid">
 				<hr>
-				<p class="text-muted"><small><a href="https://github.com/mydnshost">mydnshost</a> - &copy; Shane 'Dataforce' Mc Cormack</small></p>
+				<p class="text-muted">
+						<small>{% block footerdata %}<a href="https://github.com/mydnshost">mydnshost</a> - &copy; Shane 'Dataforce' Mc Cormack{% endblock %}</small>
+				</p>
 			</div>
 		</footer>
 
