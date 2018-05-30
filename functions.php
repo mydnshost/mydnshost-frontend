@@ -7,6 +7,10 @@
 
 	require_once(dirname(__FILE__) . '/config.php');
 
+	if (!function_exists('addConfigRoutes')) {
+		function addConfigRoutes($router, $displayEngine, $api, $userdata) { }
+	}
+
 	function recursiveFindFiles($dir) {
 		if (!file_exists($dir)) { return; }
 

@@ -78,6 +78,9 @@
 		(new NotAuthedRoutes())->addRoutes($router, $displayEngine, $api);
 	}
 
+	// Add config routes.
+	addConfigRoutes($router, $displayEngine, $api, $userdata);
+
 	// Check CSRF Tokens.
 	$router->before('POST', '.*', function() {
 		// Pre-Login, we don't have a CSRF Token assigned.
