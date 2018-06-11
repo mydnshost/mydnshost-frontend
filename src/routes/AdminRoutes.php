@@ -127,11 +127,11 @@
 						if (array_key_exists('error', $result)) {
 							$errorData = $result['error'];
 							if (array_key_exists('errorData', $result)) {
-								$errorData .= ' => ' . $result['errorData'];
+								$errorData .= ' => ' . implode($result['errorData'], ', ');
 							} else {
-								$result['errorData'] = 'Unspecified error. (Email address already in use?)';
+								$errorData .= 'Unspecified error.';
 							}
-							$displayEngine->flash('error', '', 'There was an error creating the user: ' . $result['errorData']);
+							$displayEngine->flash('error', '', 'There was an error creating the user: ' . $errorData);
 						} else {
 							$displayEngine->flash('success', '', 'New user has been created');
 						}
