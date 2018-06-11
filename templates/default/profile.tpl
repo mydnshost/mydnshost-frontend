@@ -67,6 +67,12 @@
 		{% if hasPermission(['domains_stats']) %}
 			<a href="{{ url("/profile/stats") }}" class="btn btn-primary" role="button">Profile Statistics</a>
 		{% endif %}
+
+		<div class="float-right">
+			{% if candelete %}
+				<a href="{{ url("/profile/delete") }}" class="btn btn-info btn-danger" role="button">Delete Account</a>
+			{% endif %}
+		</div>
 	</div>
 </div>
 

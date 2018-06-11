@@ -44,9 +44,9 @@
 
 						if (array_key_exists('error', $result)) {
 							if (!array_key_exists('errorData', $result)) {
-								$result['errorData'] = 'Unspecified error. (Email address already in use?)';
+								$result['errorData'] = ['Unspecified error. (Email address already in use?)'];
 							}
-							$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . $result['errorData']);
+							$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . implode($result['errorData'], ', '));
 						} else {
 							if (in_array($_POST['domain_defaultpage'], ['records', 'details'])) {
 								$api->setCustomData('uk.co.mydnshost.www/domain/defaultpage', $_POST['domain_defaultpage']);
@@ -78,6 +78,7 @@
 				}
 
 				$displayEngine->setVar('twofactordevices', $api->get2FADevices());
+				$displayEngine->setVar('candelete', $api->getSystemDataValue('selfDelete'));
 
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('profile.tpl');
@@ -104,6 +105,40 @@
 					$displayEngine->display('profile_stats.tpl');
 				}
 			});
+
+
+			$router->match('GET|POST', '/profile/delete', function() use ($router, $displayEngine, $api) {
+				$displayEngine->setPageID('/profile/delete')->setTitle('Profile :: Delete');
+
+				if ($router->getRequestMethod() == "POST" && isset($_POST['confirmCode'])) {
+					$confirmCode = $_POST['confirmCode'];
+					if (empty($confirmCode)) {
+						$displayEngine->flash('error', 'Error!', 'You need to provide the confirm code.');
+					} else {
+						$twoFactorCode = isset($_POST['2fakey']) ? $_POST['2fakey'] : '';
+						$deleteInfo = $api->deleteUserConfirm('self', $confirmCode, $twoFactorCode);
+
+						if (parseBool($deleteInfo['response']['deleted'])) {
+							session::clear();
+							session::setCurrentUser(null);
+							$displayEngine->flash('success', 'Success!', 'Your account has been deleted.');
+							header('Location: ' . $displayEngine->getURL('/'));
+							return;
+						} else if (isset($deleteInfo['error'])) {
+							$displayEngine->flash('error', 'Error!', 'There was an error deleting your account: ' . $deleteInfo['error']);
+						} else {
+							$displayEngine->flash('error', 'Error!', 'There was an unknown error deleting your account.');
+						}
+					}
+				}
+
+				$deleteInfo = $api->deleteUser('self')['response'];
+				$displayEngine->setVar('confirmCode', $deleteInfo['confirmCode']);
+				$displayEngine->setVar('twofactor', $deleteInfo['twofactor']);
+
+				$displayEngine->display('profile_delete.tpl');
+			});
+
 
 
 			$router->post('/profile/addkey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
