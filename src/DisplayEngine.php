@@ -7,6 +7,7 @@
 		private $vars = [];
 		private $pageID = '';
 		private $customSidebar = FALSE;
+		private $restrictedMode = FALSE;
 
 		public function __construct($siteconfig) {
 			$config = $siteconfig['templates'];
@@ -87,6 +88,15 @@
 		public function setSiteName($sitename) {
 			$this->vars['sitename'] = $sitename;
 			return $this;
+		}
+
+		public function setRestrictedMode($mode) {
+			$this->restrictedMode = $mode;
+			return $this;
+		}
+
+		public function getRestrictedMode() {
+			return $this->restrictedMode;
 		}
 
 		public function setTitle($title) {
@@ -195,61 +205,64 @@
 		public function showSidebar() {
 			$vars = [];
 
-			if ($this->customSidebar !== FALSE) {
-				$vars = $this->customSidebar;
-			} else {
-				$menu = [];
-				$sections = [];
+			if (!$this->getRestrictedMode()) {
 
-				if (session::exists('domains') && !startsWith($this->pageID, '/admin')) {
-					$vars['title'] = 'Domains List';
-					$vars['showsearch'] = true;
+				if ($this->customSidebar !== FALSE) {
+					$vars = $this->customSidebar;
+				} else {
+					$menu = [];
+					$sections = [];
 
-					if ($this->hasPermission(['domains_create'])) {
-						$section = [];
-						$section[] = ['title' => 'Extra'];
-						$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
-						$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
+					if (session::exists('domains') && !startsWith($this->pageID, '/admin')) {
+						$vars['title'] = 'Domains List';
+						$vars['showsearch'] = true;
 
-						$menu[] = $section;
-					}
+						if ($this->hasPermission(['domains_create'])) {
+							$section = [];
+							$section[] = ['title' => 'Extra'];
+							$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
+							$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
 
-					$domains = session::get('domains');
-					foreach ($domains as $domain => $access) {
-						$item = array();
-						$item['link'] = $this->getURL('/domain/' . $domain);
-						if (session::get('domain/defaultpage') == 'records') {
-							$item['link'] .= '/records';
-						}
-						$item['title'] = $domain;
-						$item['active'] = ($this->pageID == '/domain/' . $domain);
-
-						$dataValue = [$domain];
-
-						$rdns = getARPA($domain);
-						if ($rdns !== FALSE) {
-							$dataValue[] = $rdns;
-							$dataValue[] = 'rdns';
-
-							$item['hover'] = 'RDNS: ' . $rdns;
-						} else if (idn_to_ascii($domain) != $domain) {
-							$dataValue[] = idn_to_ascii($domain);
-							$item['hover'] = idn_to_ascii($domain);
+							$menu[] = $section;
 						}
 
-						$item['dataValue'] = implode(' ', $dataValue);
+						$domains = session::get('domains');
+						foreach ($domains as $domain => $access) {
+							$item = array();
+							$item['link'] = $this->getURL('/domain/' . $domain);
+							if (session::get('domain/defaultpage') == 'records') {
+								$item['link'] .= '/records';
+							}
+							$item['title'] = $domain;
+							$item['active'] = ($this->pageID == '/domain/' . $domain);
 
-						$sections[$access][] = $item;
-					}
+							$dataValue = [$domain];
 
-					foreach (['owner', 'admin', 'write', 'read'] as $section) {
-						if (array_key_exists($section, $sections)) {
-							$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+							$rdns = getARPA($domain);
+							if ($rdns !== FALSE) {
+								$dataValue[] = $rdns;
+								$dataValue[] = 'rdns';
+
+								$item['hover'] = 'RDNS: ' . $rdns;
+							} else if (idn_to_ascii($domain) != $domain) {
+								$dataValue[] = idn_to_ascii($domain);
+								$item['hover'] = idn_to_ascii($domain);
+							}
+
+							$item['dataValue'] = implode(' ', $dataValue);
+
+							$sections[$access][] = $item;
+						}
+
+						foreach (['owner', 'admin', 'write', 'read'] as $section) {
+							if (array_key_exists($section, $sections)) {
+								$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+							}
 						}
 					}
+
+					$vars['menu'] = $menu;
 				}
-
-				$vars['menu'] = $menu;
 			}
 
 			$this->twig->display('sidebar_menu.tpl', $vars);
@@ -258,19 +271,21 @@
 		public function showHeaderMenu() {
 			$menu = [];
 
-			if ($this->hasPermission(['manage_users'])) {
-				$menu[] = ['link' => $this->getURL('/admin/users'), 'title' => 'Manage Users', 'active' => ($this->pageID == '/admin/users')];
-			}
-			if ($this->hasPermission(['manage_domains'])) {
-				$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
-			}
-			if ($this->hasPermission(['system_stats'])) {
-				$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
-			}
+			if (!$this->getRestrictedMode()) {
+				if ($this->hasPermission(['manage_users'])) {
+					$menu[] = ['link' => $this->getURL('/admin/users'), 'title' => 'Manage Users', 'active' => ($this->pageID == '/admin/users')];
+				}
+				if ($this->hasPermission(['manage_domains'])) {
+					$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
+				}
+				if ($this->hasPermission(['system_stats'])) {
+					$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
+				}
 
-			if (count($menu) > 0) {
-				$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
-				array_unshift($menu, $public);
+				if (count($menu) > 0) {
+					$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];
+					array_unshift($menu, $public);
+				}
 			}
 
 			$this->twig->display('header_menu.tpl', ['menu' => $menu]);

@@ -25,7 +25,11 @@
 			<input type="text" name="2fakey" id="input2FAKey" class="form-control" placeholder="2FA Code">
 		{% endif %}
 
-		<button class="btn btn-lg btn-primary btn-block btn-danger" type="submit">Delete Account</button>
+		<button class="btn btn-lg btn-block btn-danger" type="submit">Delete Account</button>
+	</form>
+
+	<form class="form-signin small" method="get" action="{{ url('/profile') }}">
+		<button class="btn btn-lg btn-block btn-primary" type="submit">Do not delete account</button>
 	</form>
 </div>
 

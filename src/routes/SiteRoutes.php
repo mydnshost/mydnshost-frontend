@@ -6,6 +6,8 @@
 				if (!session::isLoggedIn()) {
 					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
 					return;
+				} else if ($displayEngine->getRestrictedMode()) {
+					header('Location: ' . $displayEngine->getURL('/profile/terms'));
 				} else {
 					$displayEngine->setPageID('home')->setTitle('Home')->display('home.tpl');
 				}
@@ -179,8 +181,14 @@
 
 			$router->set404(function() use ($displayEngine, $router) {
 				if (session::exists('logindata')) {
-					header('HTTP/1.1 404 Not Found');
-					$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
+					if ($displayEngine->getRestrictedMode()) {
+						setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
+
+						header('Location: ' . $displayEngine->getURL('/'));
+					} else {
+						header('HTTP/1.1 404 Not Found');
+						$displayEngine->setPageID('404')->setTitle('Error 404')->display('404.tpl');
+					}
 				} else {
 					setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
 

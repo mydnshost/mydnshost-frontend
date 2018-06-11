@@ -26,13 +26,15 @@
 
 	// API to interact with backend
 	$api = new MyDNSHostAPI($config['api']);
+	$impersonating = false;
 	if (session::exists('logindata')) {
 		$api->setAuth(session::get('logindata'));
 
 		if (session::exists('impersonate')) {
 			$api->impersonate(session::get('impersonate'), 'id');
 
-			$displayEngine->setVar('impersonating', true);
+			$impersonating = true;
+			$displayEngine->setVar('impersonating', $impersonating);
 		}
 	}
 
@@ -59,10 +61,26 @@
 		$defaultPage = $api->getCustomData('uk.co.mydnshost.www/domain/defaultpage');
 		session::set('domain/defaultpage', empty($defaultPage) ? 'details' : $defaultPage);
 
+		$requireTerms = false;
+		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {
+			if ($impersonating) {
+				$displayEngine->flash('warning', 'Terms of Service', 'This user has not accepted the terms of service.');
+			} else {
+				$requireTerms = true;
+			}
+		}
+
 		(new AuthedRoutes())->addRoutes($router, $displayEngine, $api);
-		(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
-		(new UserRoutes())->addRoutes($router, $displayEngine, $api);
-		(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
+		(new RestrictedUserRoutes())->addRoutes($router, $displayEngine, $api);
+
+		if ($requireTerms) {
+			$displayEngine->setRestrictedMode(true);
+			(new TermsRoutes())->addRoutes($router, $displayEngine, $api);
+		} else {
+			(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
+			(new UserRoutes())->addRoutes($router, $displayEngine, $api);
+			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
+		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
 		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin']);
