@@ -20,7 +20,7 @@
 	<div class="form-check form-group">
 		<label class="form-check-label">
 			<input type="checkbox" name="acceptTerms" id="acceptTerms" class="form-check-input" required{% if posted.acceptTerms %} checked{% endif %}>
-			{{ termsText }}
+			{{ termsText | raw }}
 		</label>
 	</div>
 	{% endif %}
