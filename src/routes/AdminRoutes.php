@@ -46,6 +46,7 @@
 					if (isset($users['response'])) {
 						$displayEngine->setVar('users', $users['response']);
 					}
+
 					$displayEngine->display('admin/users.tpl');
 				});
 

@@ -48,6 +48,10 @@
 					<br>
 					<span class="small muted">(Password reset pending)</span>
 				{% endif %}
+				{% if userinfo.acceptterms is defined and not userinfo.acceptterms %}
+					<br>
+					<span class="small muted text-danger">(<strong>User has not accepted terms.</strong>)</span>
+				{% endif %}
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
