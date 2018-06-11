@@ -64,7 +64,7 @@
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {
 			if ($impersonating) {
-				$displayEngine->flash('warning', 'Terms of Service', 'This user has not accepted the terms of service.');
+				$displayEngine->displayBanner('warning', 'Terms of Service', 'This user has not accepted the terms of service.');
 			} else {
 				$requireTerms = true;
 			}

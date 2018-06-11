@@ -8,6 +8,7 @@
 		private $pageID = '';
 		private $customSidebar = FALSE;
 		private $restrictedMode = FALSE;
+		private $banners = [];
 
 		public function __construct($siteconfig) {
 			$config = $siteconfig['templates'];
@@ -186,6 +187,12 @@
 			return FALSE;
 		}
 
+		public function displayBanner($type, $title, $message) {
+			if ($type == 'error') { $type = 'danger'; }
+
+			$this->banners[] = ['type' => $type, 'title' => $title, 'message' => $message];
+		}
+
 		public function flash($type, $title, $message) {
 			if ($type == 'error') { $type = 'danger'; }
 
@@ -199,6 +206,10 @@
 					$this->twig->display('flash_message.tpl', $flash);
 				}
 				session::remove('DisplayEngine::Flash');
+			}
+
+			foreach ($this->banners as $flash) {
+				$this->twig->display('flash_message.tpl', $flash);
 			}
 		}
 
