@@ -30,6 +30,7 @@
 				}
 
 				$displayEngine->setVar('termsText', systemGetTermsText());
+				$displayEngine->setVar('termstime', session::getCurrentUser()['user']['termstime']);
 				$displayEngine->display('accept_terms.tpl');
 			});
 

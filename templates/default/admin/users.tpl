@@ -42,15 +42,19 @@
 				</span>
 				{% if userinfo.unverified %}
 					<br>
-					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary">Resend Welcome Email</a>
+					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary">Resend Welcome Email</button>
 				{% endif %}
 				{% if userinfo.pendingreset %}
 					<br>
 					<span class="small muted">(Password reset pending)</span>
 				{% endif %}
-				{% if userinfo.acceptterms is defined and not userinfo.acceptterms %}
+				{% if userinfo.acceptterms is defined %}
 					<br>
-					<span class="small muted text-danger">(<strong>User has not accepted terms.</strong>)</span>
+					{% if not userinfo.acceptterms %}
+						<span class="small muted text-danger">(<strong>User has not accepted terms.</strong>)</span>
+					{% else %}
+						<span class="small muted text-success">(User accepted terms at {{ userinfo.termstime | date('r') }})</span>
+					{% endif %}
 				{% endif %}
 			</td>
 			<td class="permissions">

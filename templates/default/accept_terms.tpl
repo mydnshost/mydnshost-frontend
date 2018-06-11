@@ -5,7 +5,11 @@
 <div class="container">
 	{% block termsblurb %}
 	<p>
-		You must accept the terms of service in order to continue to use this service.
+		{% if termstime > 0 %}
+			There has been an update to our terms of service. Please review the changes and confirm your acceptance in order to continue to use this service.
+		{% else %}
+			You must accept the terms of service in order to continue to use this service.
+		{% endif %}
 	</p>
 	{% endblock %}
 
