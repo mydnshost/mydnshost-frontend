@@ -51,7 +51,11 @@
 				{% if userinfo.acceptterms is defined %}
 					<br>
 					{% if not userinfo.acceptterms %}
-						<span class="small muted text-danger">(<strong>User has not accepted terms.</strong>)</span>
+						{% if userinfo.termstime < 0 %}
+							<span class="small muted text-danger">(<strong>User has not accepted terms.</strong>)</span>
+						{% else %}
+							<span class="small muted text-warning">(User accepted older version of terms at {{ userinfo.termstime | date('r') }})</span>
+						{% endif %}
 					{% else %}
 						<span class="small muted text-success">(User accepted terms at {{ userinfo.termstime | date('r') }})</span>
 					{% endif %}
