@@ -18,6 +18,16 @@
 					return;
 				}
 
+				$registerOpen = $api->getSystemDataValue('registerEnabled');
+				if (!$registerOpen) {
+					$displayEngine->setPageID('register')->setTitle('Register')->display('register_closed.tpl');
+					return;
+				}
+
+				$requireTerms = $api->getSystemDataValue('registerRequireTerms');
+				$displayEngine->setVar('requireTerms', $requireTerms);
+				$displayEngine->setVar('termsText', systemGetTermsText());
+
 				if ($router->getRequestMethod() == "POST") {
 					$displayEngine->setVar('posted', $_POST);
 
@@ -29,10 +39,12 @@
 						$displayEngine->flash('error', '', 'There was an error with the registration data: You must confirm your email address.');
 					} else if (!isset($_POST['inputName'])) {
 						$displayEngine->flash('error', '', 'There was an error with the registration data: You must enter a real name.');
+					} else if ($requireTerms && !isset($_POST['acceptTerms'])) {
+						$displayEngine->flash('error', '', 'There was an error with the registration data: You must accept the terms of registration.');
 					} else if ($_POST['inputEmail'] != $_POST['inputEmail2']) {
 						$displayEngine->flash('error', '', 'There was an error with the registration data: The email addresses entered did not match.');
 					} else {
-						$result = $api->register($_POST['inputEmail'], $_POST['inputName']);
+						$result = $api->register($_POST['inputEmail'], $_POST['inputName'], isset($_POST['acceptTerms']));
 
 						if (array_key_exists('error', $result)) {
 							$displayEngine->flash('error', '', 'There was an error with the registration data: ' . $result['error']);

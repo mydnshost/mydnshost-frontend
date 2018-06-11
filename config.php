@@ -17,6 +17,8 @@
 	$config['recaptcha']['site'] = getEnvOrDefault('RECAPTCHA_SITE', '');
 	$config['recaptcha']['secret'] = getEnvOrDefault('RECAPTCHA_SECRET', '');
 
+	$config['register']['termsText'] = getEnvOrDefault('TERMS_TEXT', 'I agree to the terms of service.');
+
 	if (file_exists(dirname(__FILE__) . '/config.local.php')) {
 		include(dirname(__FILE__) . '/config.local.php');
 	}

@@ -17,7 +17,12 @@ $(function() {
 			},
 			inputName: {
 				required: true
-			}
+			},
+			acceptTerms: {
+				required: function(element) {
+					return $('#acceptTerms').length > 0;
+				},
+			},
 		},
 	});
 

@@ -16,6 +16,15 @@
 		<input type="text" name="inputName" id="inputName" class="form-control" placeholder="Your Name" required{% if posted.inputEmail %} value="{{ posted.inputName }}"{% endif %}>
 	</div>
 
+	{% if requireTerms %}
+	<div class="form-check form-group">
+		<label class="form-check-label">
+			<input type="checkbox" name="acceptTerms" id="acceptTerms" class="form-check-input" required{% if posted.acceptTerms %} checked{% endif %}>
+			{{ termsText }}
+		</label>
+	</div>
+	{% endif %}
+
 	<div id='recaptcha' class="hidden g-recaptcha" data-sitekey="{{ recaptcha }}" data-callback="registerSubmit" data-size="invisible" data-badge="inline"></div>
 
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>

@@ -91,3 +91,8 @@
 			session::set('wantedPage', $wanted);
 		}
 	}
+
+	function systemGetTermsText() {
+		global $config;
+		return $config['register']['termsText'];
+	}
