@@ -8,7 +8,7 @@
 					$displayEngine->setPageID('/system/services')->setTitle('System :: Services');
 
 					$services = $api->api('/system/service/list');
-					$displayEngine->setVar('services', $services);
+					$displayEngine->setVar('services', isset($services['response']) ? $services['response'] : []);
 
 					$displayEngine->display('system/service_list.tpl');
 				});
@@ -27,7 +27,7 @@
 					$displayEngine->setVar('service', $service);
 
 					$logs = $api->api('/system/service/' . $service . '/logs');
-					$displayEngine->setVar('logs', $logs);
+					$displayEngine->setVar('logs', isset($logs['response']) ? $logs['response'] : []);
 
 					$displayEngine->display('system/service_logs.tpl');
 				});

@@ -14,7 +14,7 @@
 				{{ service }}
 			</td>
 			<td class="actions">
-				<a href="{{ url('/system/services/' ~ name) }}" class="btn btn-success btn-sm">Manage</a>
+				<a href="{{ url('/system/services/' ~ service) }}" class="btn btn-success btn-sm">Manage</a>
 			</td>
 		</tr>
 		{% endfor %}
