@@ -1,4 +1,4 @@
-<H1>Domain :: {{ domain }} :: Logs</H1>
+<H1>Domain :: {{ domain.domain }} :: Logs</H1>
 
 <a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary btn-block" role="button">Back</a>
 <a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-primary btn-block" role="button">Refresh</a>

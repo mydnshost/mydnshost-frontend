@@ -522,7 +522,7 @@
 
 				if ($domainData !== NULL) {
 					$displayEngine->setVar('domain', $domainData);
-					$displayEngine->setVar('logs', $api->getDomainLogs($logs));
+					$displayEngine->setVar('logs', $api->getDomainLogs($domain));
 
 					$displayEngine->display('domain_logs.tpl');
 				} else {
