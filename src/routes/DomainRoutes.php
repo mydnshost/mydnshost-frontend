@@ -511,6 +511,26 @@
 				}
 			});
 
+			$router->match('GET', '/domain/([^/]+)/logs', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
+				$this->setVars($displayEngine);
+
+				$domainData = $api->getDomainData($domain);
+				$this->setAccessVars($displayEngine, $domainData);
+				$this->setSubtitle($displayEngine, $domainData);
+				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Logs');
+
+				if ($domainData !== NULL) {
+					$displayEngine->setVar('domain', $domainData);
+					$displayEngine->setVar('logs', $api->getDomainLogs($logs));
+
+					$displayEngine->display('domain_logs.tpl');
+				} else {
+					$displayEngine->setVar('unknowndomain', $domain);
+					$displayEngine->display('unknown_domain.tpl');
+				}
+			});
+
 
 			$router->match('GET|POST', '/domain/([^/]+)/import', function($domain) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
