@@ -292,6 +292,9 @@
 				if ($this->hasPermission(['system_stats'])) {
 					$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
 				}
+				if ($this->hasPermission(['system_service_mgmt'])) {
+					$menu[] = ['link' => $this->getURL('/system/services'), 'title' => 'System Services', 'active' => ($this->pageID == '/system/services')];
+				}
 
 				if (count($menu) > 0) {
 					$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];

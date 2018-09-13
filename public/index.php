@@ -80,6 +80,7 @@
 			(new DomainRoutes())->addRoutes($router, $displayEngine, $api);
 			(new UserRoutes())->addRoutes($router, $displayEngine, $api);
 			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
+			(new SystemServiceRoutes())->addRoutes($router, $displayEngine, $api);
 		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
