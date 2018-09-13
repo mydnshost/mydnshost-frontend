@@ -82,10 +82,10 @@
 		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 
 		{% if hasPermission(['domains_stats']) %}
-			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/stats") }}" class="btn btn-primary" role="button">Domain Statistics</a>
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/stats") }}" class="btn btn-primary" role="button">Stats</a>
 		{% endif %}
 		{% if hasPermission(['domains_logs']) %}
-			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-primary" role="button">Domain Logs</a>
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-primary" role="button">Logs</a>
 		{% endif %}
 
 		<div class="float-right">
