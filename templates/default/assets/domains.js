@@ -1,4 +1,14 @@
 $(function() {
+	$('button[data-action="dnssec-more"]').click(function () {
+		if ($('#dnssec-more').is(":visible")) {
+			$(this).text('More...');
+			$('#dnssec-more').hide();
+		} else {
+			$(this).text('Less...');
+			$('#dnssec-more').show();
+		}
+	});
+
 	$('button[data-action="savesoa"]').click(function () {
 		$('#editsoaform').submit();
 	});

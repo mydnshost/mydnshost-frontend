@@ -59,10 +59,30 @@
 			<td class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
 		</tr>
 		<tr>
-			<th>DNSSEC DS Keys</th>
+			<th>DNSSEC Keys</th>
 			{% if domain.DNSSEC.DS %}
-				<td class="mono">
-					{{ domain.DNSSEC.DS | join("\n") | nl2br }}
+				<td>
+					<span class="mono">{{ domain.DNSSEC.DS | join("\n") | nl2br }}</span>
+
+					<br><br>
+					<button type="button" data-action="dnssec-more" class="btn btn-primary btn-sm" role="button">More..</button>
+					<div id="dnssec-more" class="hidden">
+						<br><br>
+						{# {% for rrtype,rrdata in domain.DNSSEC %}
+							{% if rrtype != 'DS' and rrtype != 'parsed' %}
+								<span class="mono">{{ rrdata | join("\n") | nl2br }}</span>
+								<br><br>
+							{% endif %}
+						{% endfor %} #}
+						<table>
+							{% for dstype,dsdata in domain.DNSSEC.parsed %}
+							<tr>
+								<th>{{ dstype }}</th>
+								<td class="mono">{{ dsdata | nl2br }}</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
 				</td>
 			{% else %}
 				<td>
