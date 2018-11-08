@@ -74,20 +74,33 @@
 								<br><br>
 							{% endif %}
 						{% endfor %} #}
-						<table>
-							{% for dstype,dsdata in domain.DNSSEC.parsed %}
-							<tr>
-								<th>{{ dstype }}</th>
-								<td class="mono">{{ dsdata | nl2br }}</td>
-							</tr>
-							{% endfor %}
-						</table>
+
+						{% for keyid,keydata in domain.DNSSEC.parsed %}
+							<br>
+							<h4>Key ID: {{ keyid }}</h4>
+							<table>
+								{% for dstype,dsdata in keydata %}
+									{% if dstype != "Key ID" %}
+										<tr>
+											<th>{{ dstype }}</th>
+											<td class="mono">{{ dsdata | nl2br }}</td>
+										</tr>
+									{% endif %}
+								{% endfor %}
+							</table>
+						{% endfor %}
 					</div>
 				</td>
 			{% else %}
-				<td>
-					<em>Keys are currently being generated, please check back shortly...</em>
-				</td>
+				{% if domain.disabled == 'true' %}
+					<td>
+						<em>Keys are not available for disabled domains...</em>
+					</td>
+				{% else %}
+					<td>
+						<em>Keys are currently being generated, please check back shortly...</em>
+					</td>
+				{% endif %}
 			{% endif %}
 		</tr>
 	</tbody>
