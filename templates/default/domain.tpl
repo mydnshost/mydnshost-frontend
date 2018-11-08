@@ -67,16 +67,15 @@
 					<br><br>
 					<button type="button" data-action="dnssec-more" class="btn btn-primary btn-sm" role="button">More..</button>
 					<div id="dnssec-more" class="hidden">
-						<br><br>
 						{# {% for rrtype,rrdata in domain.DNSSEC %}
 							{% if rrtype != 'DS' and rrtype != 'parsed' %}
-								<span class="mono">{{ rrdata | join("\n") | nl2br }}</span>
 								<br><br>
+								<span class="mono">{{ rrdata | join("\n") | nl2br }}</span>
 							{% endif %}
 						{% endfor %} #}
 
 						{% for keyid,keydata in domain.DNSSEC.parsed %}
-							<br>
+							<br><br>
 							<h4>Key ID: {{ keyid }}</h4>
 							<table>
 								{% for dstype,dsdata in keydata %}
