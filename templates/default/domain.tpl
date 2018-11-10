@@ -91,15 +91,9 @@
 					</div>
 				</td>
 			{% else %}
-				{% if domain.disabled == 'true' %}
-					<td>
-						<em>Keys are not available for disabled domains...</em>
-					</td>
-				{% else %}
-					<td>
-						<em>Keys are currently being generated, please check back shortly...</em>
-					</td>
-				{% endif %}
+				<td>
+					<em>Keys have not yet been generated. Keys will be generated when the zone is next reloaded.</em>
+				</td>
 			{% endif %}
 		</tr>
 	</tbody>
