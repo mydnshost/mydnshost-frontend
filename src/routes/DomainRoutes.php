@@ -289,6 +289,10 @@
 
 			$router->post('/domain/([^/]+)/addhook(\.json)?', function($domain, $json = NULL) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
+
+				if (isset($_POST['hookurl'])) { $_POST['url'] = $_POST['hookurl']; unset($_POST['hookurl']); }
+				if (isset($_POST['hookpassword'])) { $_POST['password'] = $_POST['hookpassword']; unset($_POST['hookpassword']); }
+
 				$apiresult = $api->createDomainHook($domain, $_POST);
 				$result = ['unknown', 'unknown'];
 

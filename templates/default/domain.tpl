@@ -327,8 +327,8 @@
 
 <form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addhook") }}" class="form-inline form-group" id="addhookform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="url" value="" placeholder="Hook URL...">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="password" value="" placeholder="Hook Password">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="hookurl" value="" placeholder="Hook URL...">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="hookpassword" value="" placeholder="Hook Password">
 	<button type="submit" class="btn btn-success" role="button">Add Domain Hook</button>
 </form>
 
