@@ -23,22 +23,36 @@ You will only be able to see the key and associated QR code for any keys that ha
 					<div class="inactive">
 						<div class="key">
 							<strong>{{ keydata.key }}</strong>
-							<br>
-							<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
+							{% if keydata.type == 'rfc6238' %}
+								<br>
+								<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
+							{% endif %}
 						</div>
 						<div class="verifykey">
-							<em>This key is not yet active, please activate the key by submitting a valid code from it</em>
-							<br><br>
-							<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
-								<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-								<input type="text" name="code" placeholder="000000">
+							{% if keydata.type == 'rfc6238' %}
+								<em>This key is not yet active, please activate the key by submitting a valid code from it</em>
 								<br><br>
-								<button type="submit" class="btn btn-sm btn-success" role="button">Activate Key</button>
-							</form>
+								<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
+									<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+									<input type="text" name="code" placeholder="000000">
+									<br><br>
+									<button type="submit" class="btn btn-sm btn-success" role="button">Activate Key</button>
+								</form>
+							{% else %}
+								<em>This key is not yet active.</em>
+								<br><br>
+								<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
+									<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+									<input type="hidden" name="code" value="{{ keydata.key }}">
+									<button type="submit" class="btn btn-sm btn-success" role="button">Activate Key</button>
+								</form>
+							{% endif %}
 						</div>
 					</div>
+				{% elseif not keydata.usable %}
+					<em>Hidden. (Key has expired)</em>
 				{% else %}
-					<em>Hidden - key is active</em>
+					<em>Hidden. (Key is active)</em>
 				{% endif %}
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
@@ -71,6 +85,10 @@ You will only be able to see the key and associated QR code for any keys that ha
 <form method="post" action="{{ url('/profile/add2fakey') }}" class="form-inline form-group" id="add2faform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	Key Type:&nbsp;<select class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" name="type">
+		<option value="rfc6238" selected>TOTP (RFC 6238)</option>
+		<option value="onetime">One Time</option>
+	</select>
 	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
 </form>
 

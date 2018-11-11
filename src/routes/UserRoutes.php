@@ -217,7 +217,16 @@
 			$router->post('/profile/add2fakey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
 				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
 
-				$apiresult = $api->create2FAKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New 2FA Key: ' . date('Y-m-d H:i:s'))]);
+				$data = [];
+				$data['description'] = (isset($_POST['description']) ? $_POST['description'] : 'New 2FA Key: ' . date('Y-m-d H:i:s'));
+
+				$data['type'] = isset($_POST['type']) ? strtolower($_POST['type']) : 'rfc6238';
+				if ($data['type'] == 'onetime') {
+					$data['type'] = 'plain';
+					$data['onetime'] = true;
+				}
+
+				$apiresult = $api->create2FAKey($data);
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {
