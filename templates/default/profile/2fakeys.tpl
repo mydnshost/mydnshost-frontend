@@ -10,6 +10,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 	<thead>
 		<tr>
 			<th class="key">Key</th>
+			<th class="type">Type</th>
 			<th class="description">Description</th>
 			<th class="lastused">Last Used</th>
 			<th class="actions">Actions</th>
@@ -25,11 +26,11 @@ You will only be able to see the key and associated QR code for any keys that ha
 							<strong>{{ keydata.key }}</strong>
 							{% if keydata.type == 'rfc6238' %}
 								<br>
-								<img src="{{ keydata.key | get2FAQRCode }}" alt="{{ keydata.key }}">
+								<img src="{{ keydata.key | getRFC6238QRCode }}" alt="{{ keydata.key }}">
 							{% endif %}
 						</div>
 						<div class="verifykey">
-							{% if keydata.type == 'rfc6238' %}
+							{% if keydata.type == 'rfc6238' or keydata.type == 'yubikeyotp' %}
 								<em>This key is not yet active, please activate the key by submitting a valid code from it</em>
 								<br><br>
 								<form class="verifyform" method="post" action="{{ url('/profile/verify2fakey/' ~ key) }}">
@@ -54,6 +55,12 @@ You will only be able to see the key and associated QR code for any keys that ha
 				{% else %}
 					<em>Hidden. (Key is active)</em>
 				{% endif %}
+			</td>
+			<td class="type" data-text data-name="type" data-value="{{ keydata.type }}">
+				{% if keydata.onetime %}
+					One Time
+				{% endif %}
+				{{ keydata.type | capitalize }}
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
@@ -82,13 +89,18 @@ You will only be able to see the key and associated QR code for any keys that ha
 	</tbody>
 </table>
 
+
 <form method="post" action="{{ url('/profile/add2fakey') }}" class="form-inline form-group" id="add2faform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	Key Type:&nbsp;<select class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" name="type">
+	<select class="form-control col-2 mb-2 mr-sm-2 mb-sm-0" name="type">
 		<option value="rfc6238" selected>TOTP (RFC 6238)</option>
 		<option value="onetime">One Time</option>
+		{% if 'yubikeyotp' in twoFactorKeyTypes %}
+			<option value="yubikeyotp" data-needsecret>Yubikey OTP</option>
+		{% endif %}
 	</select>
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
 	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
 </form>
 

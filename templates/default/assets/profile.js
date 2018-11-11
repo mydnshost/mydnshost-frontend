@@ -177,6 +177,18 @@ $(function() {
 		$('#confirmDelete2FA').modal({'backdrop': 'static'});
 	});
 
+	$('#add2faform select[name="type"]').change(setSecretVisibility);
+	setSecretVisibility();
+
+	function setSecretVisibility() {
+		if ($('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-needsecret')) {
+			$('#add2faform input[name="secret"]').show();
+		} else {
+			$('#add2faform input[name="secret"]').val("");
+			$('#add2faform input[name="secret"]').hide();
+		}
+	};
+
 	$("#add2faform").validate({
 		highlight: function(element) {
 			$(element).closest('.form-group').addClass('has-danger');
@@ -189,6 +201,11 @@ $(function() {
 		rules: {
 			description: {
 				required: true
+			},
+			secret: {
+				required: function() {
+					return $('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-needsecret');
+				}
 			}
 		},
 	});

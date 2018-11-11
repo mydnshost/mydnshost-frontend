@@ -66,7 +66,7 @@
 				return date('r', $input);
 			}));
 
-			$twig->addFilter(new Twig_Filter('get2FAQRCode', function($input) {
+			$twig->addFilter(new Twig_Filter('getRFC6238QRCode', function($input) {
 				$ga = new PHPGangsta_GoogleAuthenticator();
 				$user = session::getCurrentUser();
 				return $ga->getQRCodeGoogleUrl($this->getVar('sitename') . ' ' . $user['user']['email'], $input);

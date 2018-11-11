@@ -80,6 +80,8 @@
 				$displayEngine->setVar('twofactordevices', $api->get2FADevices());
 				$displayEngine->setVar('candelete', $api->getSystemDataValue('selfDelete'));
 
+				$displayEngine->setVar('twoFactorKeyTypes', $api->getSystemDataValue('2faKeyTypes'));
+
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('profile.tpl');
 			});
@@ -226,12 +228,18 @@
 					$data['onetime'] = true;
 				}
 
+				if (isset($_POST['secret']) && !empty($_POST['secret'])) {
+					$data['secret'] = $_POST['secret'];
+				}
+
 				$apiresult = $api->create2FAKey($data);
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
 						$apiresult['errorData'] = 'Unspecified error.';
+					} else {
+						$apiresult['errorData'] = $apiresult['error'];
 					}
 					$result = ['error', 'There was an error adding the new 2FA Key: ' . $apiresult['errorData']];
 				} else {
