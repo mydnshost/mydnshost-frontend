@@ -87,7 +87,7 @@
 						header('Location: ' . $displayEngine->getURL('/2fa'));
 					} else {
 						if (isset($lr['errorData'])) {
-							$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided: ' . $lr['errorData']);
+							$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided: ' . $lr['errorData'][0]);
 						} else {
 							$displayEngine->flash('error', 'Login Error', 'There was an error with the details provided.');
 						}
