@@ -48,7 +48,9 @@
 
 					if (!$result && $key === NULL) {
 						$last = $testApi->getLastResponse();
-						if (isset($last['errorData']) && $last['errorData'] == '2FA key required.') {
+						$err = isset($last['errorData'][0]) ? $last['errorData'][0] : (isset($last['errorData']) ? $last['errorData']: '');
+
+						if ($err == '2FA key required.') {
 							$result = true;
 						}
 					}

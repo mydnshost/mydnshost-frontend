@@ -75,12 +75,12 @@
 					}
 
 					$displayEngine->setVar('twofactorkeys', $keys);
+
+					$displayEngine->setVar('twofactordevices', $api->get2FADevices());
+					$displayEngine->setVar('twoFactorKeyTypes', $api->getSystemDataValue('2faKeyTypes'));
 				}
 
-				$displayEngine->setVar('twofactordevices', $api->get2FADevices());
 				$displayEngine->setVar('candelete', $api->getSystemDataValue('selfDelete'));
-
-				$displayEngine->setVar('twoFactorKeyTypes', $api->getSystemDataValue('2faKeyTypes'));
 
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('profile.tpl');
