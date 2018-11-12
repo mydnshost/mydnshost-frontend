@@ -57,7 +57,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 				{% endif %}
 			</td>
 			<td class="type" data-text data-name="type" data-value="{{ keydata.type }}">
-				{% if keydata.onetime %}
+				{% if keydata.onetime == "true" %}
 					One Time
 				{% endif %}
 				{{ keydata.type | capitalize }}
