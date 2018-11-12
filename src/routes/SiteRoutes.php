@@ -2,13 +2,14 @@
 	class SiteRoutes {
 
 		public function addRoutes($router, $displayEngine, $api) {
-			$router->get('/', function() use ($displayEngine) {
+			$router->get('/', function() use ($displayEngine, $api) {
 				if (!session::isLoggedIn()) {
 					$displayEngine->setPageID('home')->setTitle('Home')->display('index.tpl');
 					return;
 				} else if ($displayEngine->getRestrictedMode()) {
 					header('Location: ' . $displayEngine->getURL('/profile/terms'));
 				} else {
+					$displayEngine->setVar('articles', $api->getArticles());
 					$displayEngine->setPageID('home')->setTitle('Home')->display('home.tpl');
 				}
 			});
