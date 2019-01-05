@@ -200,6 +200,7 @@ function setEditable(row, recordid) {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 
 		field.html('<input type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
+		$('input', field).on("paste", handlePaste);
 	});
 
 	var typeValue = (type.data('edited-value') == undefined || type.data('edited-value') == null) ? type.data('value') : type.data('edited-value');
@@ -395,3 +396,10 @@ $.validator.addClassRules('priority', {
 $.validator.addClassRules('ttl', {
 	digits: true,
 });
+
+
+function handlePaste(e) {
+	e.preventDefault();
+	var pastedText = e.originalEvent.clipboardData.getData('text');
+	this.value = pastedText.replace(/^\s*(.*)\s*$/, '$1');
+}
