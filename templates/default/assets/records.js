@@ -399,7 +399,12 @@ $.validator.addClassRules('ttl', {
 
 
 function handlePaste(e) {
-	e.preventDefault();
-	var pastedText = e.originalEvent.clipboardData.getData('text');
-	this.value = pastedText.replace(/^\s*(.*)\s*$/, '$1');
+	if (e.originalEvent.clipboardData.getData) {
+		var pastedText = e.originalEvent.clipboardData.getData('text');
+
+		if (pastedText != undefined) {
+			e.preventDefault();
+			this.value = pastedText.replace(/^\s+/, '').replace(/\s+$/, '');
+		}
+	}
 }
