@@ -35,7 +35,7 @@ Domains require at least 1 NS record before they will be successfully served.
 	</tbody>
 </table>
 
-<table id="records" class="table table-striped table-bordered">
+<table id="records" class="table table-striped table-bordered" data-default-rr="{% if rdns %}PTR{% else %}A{% endif %}">
 	<thead>
 		<tr>
 			<th class="name">Name</th>

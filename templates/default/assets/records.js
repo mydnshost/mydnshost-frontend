@@ -89,10 +89,12 @@ $(function() {
 
 		var table = $('table#records');
 
+		var defaultType = $('table#records').attr('data-default-rr');
+
 		var row = '';
 		row += '<tr class="new">';
 		row += '	<td class="name" data-value=""></td>';
-		row += '	<td class="type" data-value=""></td>';
+		row += '	<td class="type" data-value="' + defaultType + '"></td>';
 		row += '	<td class="priority" data-value=""></td>';
 		row += '	<td class="content" data-value=""></td>';
 		row += '	<td class="ttl" data-value=""></td>';
