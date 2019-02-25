@@ -401,12 +401,8 @@ $.validator.addClassRules('ttl', {
 
 
 function handlePaste(e) {
-	if (e.originalEvent.clipboardData.getData) {
-		var pastedText = e.originalEvent.clipboardData.getData('text');
-
-		if (pastedText != undefined) {
-			e.preventDefault();
-			this.value = pastedText.replace(/^\s+/, '').replace(/\s+$/, '');
-		}
-	}
+	var el = this;
+	setTimeout(function(){
+		el.value = el.value.replace(/^\s+/, '').replace(/\s+$/, '')
+	}, 0);
 }
