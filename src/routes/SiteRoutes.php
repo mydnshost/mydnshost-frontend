@@ -161,7 +161,7 @@
 				$displayEngine->setPageID('forgotpassword_verify')->setTitle('Forgot Password Verify')->display('forgotpassword_verify.tpl');
 			});
 
-			$router->get('/(assets/.*)', function ($asset) use ($displayEngine) {
+			$router->get('/(favicon.ico|assets/.*)', function ($asset) use ($displayEngine) {
 				$file = $displayEngine->getFile($asset);
 				if ($file !== FALSE) {
 					header('Content-Type: ' . get_mime_type($file));
