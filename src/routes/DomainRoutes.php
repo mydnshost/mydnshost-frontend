@@ -114,7 +114,7 @@
 					if (array_key_exists('error', $result)) {
 						$errorData = $result['error'];
 						if (array_key_exists('errorData', $result)) {
-							$errorData .= ' => ' . $result['errorData'];
+							$errorData .= ' => ' . is_array($result['errorData']) ? implode('<br>', $result['errorData']) : $result['errorData'];
 						}
 						$displayEngine->flash('error', '', 'There was an error creating the domain: ' . $errorData);
 					} else {
