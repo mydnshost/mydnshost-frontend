@@ -422,7 +422,8 @@
 							return;
 						}
 
-						$records = $api->getDomainRecords($domain);
+						$recordInfo = $api->getDomainRecords($domain);
+						$records = $recordInfo['records'];
 						foreach ($records as &$record) {
 							if (array_key_exists($record['id'], $submitted['edited'])) {
 								if (array_key_exists('delete', $submitted['edited'][$record['id']])) {
@@ -439,7 +440,8 @@
 
 						$displayEngine->setVar('newRecords', $submitted['new']);
 					} else {
-						$records = $api->getDomainRecords($domain);
+						$recordInfo = $api->getDomainRecords($domain);
+						$records = $recordInfo['records'];
 					}
 
 					$domains = session::get('domains');
@@ -450,6 +452,36 @@
 					$this->setAccessVars($displayEngine, $domainData);
 					$this->setSubtitle($displayEngine, $domainData);
 					$displayEngine->setVar('records', $records);
+
+					$hasNS = false;
+					if (isset($recordInfo['hasNS'])) {
+						$hasNS = $recordInfo['hasNS'];
+					} else {
+						// Find by hand if the API doesn't tell us.
+						foreach ($records as $r) {
+							if ($r['type'] == 'NS' && !parseBool($r['disabled']) && $r['name'] === '') {
+								$hasNS = true;
+								break;
+							}
+						}
+					}
+					$displayEngine->setVar('hasNS', $hasNS);
+
+					if (!$hasNS) {
+						$defaultNS = [];
+						$defaultRecords = $api->getSystemDataValue('defaultRecords');
+						if (is_array($defaultRecords)) {
+							foreach ($defaultRecords as $r) {
+								if ($r['type'] == 'NS' && $r['name'] === '') {
+									$defaultNS[] = $r['content'];
+								}
+							}
+
+							if (!empty($defaultNS)) {
+								$displayEngine->setVar('defaultNS', $defaultNS);
+							}
+						}
+					}
 
 					$displayEngine->display('domain_records.tpl');
 				} else {

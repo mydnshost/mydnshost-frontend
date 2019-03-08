@@ -1,3 +1,24 @@
+{% if not hasNS %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="alert-heading">Domain Error</h4>
+	<p>
+		This domain does not have any valid nameservers and will not currently be served. Please add at least 1 valid NS record.
+	</p>
+	{% if defaultNS %}
+	<p>
+		Our nameserver records are:
+		<ul>
+			{% for ns in defaultNS %}
+				<li>{{ ns }}</li>
+			{% endfor %}
+		</ul>
+	</p>
+	{% endif %}
+</div>
+{% endif %}
 <H1>
 	Domain :: {{ domain.domain }} :: Records
 	{% if subtitle %}<small class="subtitle">({{ subtitle }})</small>{% endif %}
@@ -7,9 +28,6 @@ This is where you can add/edit/remove records for the domain.
 </p>
 <p>
 Please note that all record names will have '<code>.{{ domain.domain }}</code>' appended to them, and all content will be saved as-is without anything appended, so you do not need to add a trailing '<code>.</code>' to content.
-</p>
-<p>
-Domains require at least 1 NS record before they will be successfully served.
 </p>
 
 <div class="row">
