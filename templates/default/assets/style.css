@@ -273,6 +273,10 @@ table#records tr.error td {
   background-color: #f2dede
 }
 
+table#records tr td.warning {
+  background-color: #fcf8e3
+}
+
 div#actionbuttonsfiller {
   height: 120px;
 }

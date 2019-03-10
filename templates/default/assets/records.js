@@ -147,6 +147,13 @@ $(function() {
 		$(this).tooltip({'title': $(this).data('error-data')});
 	});
 
+	$('td[data-warning-data]').each(function (index) {
+		$(this).addClass("warning");
+		$(this).addClass("has-warning");
+
+		$(this).tooltip({'title': $(this).data('warning-data')});
+	});
+
 	$("#recordsform").validate({
 		highlight: function(element) {
 			$(element).closest('td').addClass('has-danger');

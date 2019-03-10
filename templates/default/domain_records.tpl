@@ -75,11 +75,14 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 			{% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}
 			>
 
-			<td class="name mono" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}>
+			<td class="name mono" data-value="{{ record.name }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"{% endif %}
+				{% if endsWith(record.name, '.' ~ domain.domain) %}data-warning-data="You probably do not need to include '.{{domain.domain}}' here."{% endif %}
+				{% if record.name == domain.domain %}data-warning-data="You probably want to use '@' not '{{domain.domain}}' here."{% endif %}
+				>
 				{% if record.name == '' %}
-				@
+					@
 				{% else %}
-				{{ record.name }}
+					{{ record.name }}
 				{% endif %}
 			</td>
 			<td class="type mono" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
