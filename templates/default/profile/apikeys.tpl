@@ -1,7 +1,9 @@
 <br><br>
 
 <H2>API Keys</H2>
-
+<p>
+API Keys below are masked for safety, you can unmask them by clicking on them.
+</p>
 <table id="apikeys" class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -18,7 +20,13 @@
 		{% for key,keydata in apikeys %}
 		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} data-value="{{ key }}">
 			<td class="key">
-				<span class="pointer" data-hiddenText="{{ key }}"><em>Hidden - click to view</em></span>
+				<span class="pointer" data-hiddenText="{{ key }}">
+					{% if keydata.maskedkey %}
+						{{ keydata.maskedkey }}
+					{% else %}
+						<em>Hidden - click to view</em>
+					{% endif %}
+				</span>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
