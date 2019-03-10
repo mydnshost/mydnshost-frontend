@@ -59,7 +59,13 @@
 			}));
 
 			$twig->addFilter(new Twig_Filter('gravatar', function($input, $size = 20, $default = '') {
-				return '//www.gravatar.com/avatar/' . md5(strtolower($input)) . '.jpg?s=' . $size . '&d=' . $default;
+				if ($input != 'none') { $input = md5(strtolower($input)); }
+
+				if ($default == '') {
+					if ($input == 'none') { $default = 'mp'; }
+					else { $default = 'retro'; }
+				}
+				return '//www.gravatar.com/avatar/' . $input . '.jpg?s=' . $size . '&d=' . $default;
 			}));
 
 			$twig->addFilter(new Twig_Filter('yesno', function($input) {
