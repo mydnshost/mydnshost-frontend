@@ -228,7 +228,13 @@
 		{% for key,keydata in domainkeys %}
 		<tr data-value="{{ key }}">
 			<td class="key">
-				<span class="pointer" data-hiddenText="{{ key }}"><em>Hidden - click to view</em></span>
+				<span class="pointer" data-hiddenText="{{ key }}">
+					{% if keydata.maskedkey %}
+						{{ keydata.maskedkey }}
+					{% else %}
+						<em>Hidden - click to view</em>
+					{% endif %}
+				</span>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
