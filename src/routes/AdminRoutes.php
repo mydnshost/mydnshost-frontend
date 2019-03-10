@@ -85,6 +85,12 @@
 					echo json_encode($result);
 				});
 
+
+				$router->get('/admin/users/create', function() use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/users')->setTitle('Admin :: Users :: Add');
+					$displayEngine->display('admin/createuser.tpl');
+				});
+
 				$router->post('/admin/users/create', function() use ($displayEngine, $api) {
 					$canUpdate = true;
 

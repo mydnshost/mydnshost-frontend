@@ -179,7 +179,7 @@ $(function() {
 		}
 	});
 
-	$('button[data-action="addNewUser"]').click(function () {
+	$('a[data-action="addNewUser"]').click(function () {
 		var okButton = $('#createUser button[data-action="ok"]');
 		okButton.text("Create");
 
@@ -199,5 +199,7 @@ $(function() {
 		});
 
 		$('#createUser').modal({'backdrop': 'static'});
+
+		return false;
 	});
 });

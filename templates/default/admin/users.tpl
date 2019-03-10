@@ -5,7 +5,7 @@
 
 {% if hasPermission(['manage_users']) %}
 <div class="float-right">
-	<button type="button" data-action="addNewUser" class="btn btn-success">Add User</button>
+	<a class="btn btn-block btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
 </div>
 <br><br>
 {% endif %}
