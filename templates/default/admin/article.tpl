@@ -1,6 +1,11 @@
+{% if create %}
+<H1>Article :: Create</H1>
+<form action="{{ url('/admin/articles/create') }}" method="POST" id="articleform">
+{% else %}
 <H1>Article :: {{ article.id }}</H1>
-
-<input type="hidden" id="csrftoken" value="{{csrftoken}}">
+<form action="{{ url('/admin/articles/' ~ article.id) }}" method="POST" id="articleform">
+{% endif %}
+<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 
 <table id="article" class="table table-striped table-bordered">
 	<tbody>
@@ -14,19 +19,19 @@
 		{% endif %}
 		<tr>
 			<th>Title</th>
-			<td>
-				<input type="text" name="title" value="{{ article.title }}" class="form-control form-control-sm">
+			<td class="form-group">
+				<input type="text" id="title" name="title" value="{{ article.title }}" class="form-control form-control-sm">
 			</td>
 		</tr>
 		<tr>
 			<th>Content</th>
-			<td>
-				<textarea name="content" class="form-control form-control-sm">{{ article.content }}</textarea>
+			<td class="form-group">
+				<textarea id="content" name="content" class="form-control form-control-sm">{{ article.content }}</textarea>
 			</td>
 		</tr>
 		<tr>
 			<th>Full Content</th>
-			<td>
+			<td class="form-group">
 				<textarea name="contentfull" class="form-control form-control-sm">{{ article.contentfull }}</textarea>
 			</td>
 		</tr>
@@ -42,17 +47,25 @@
 		</tr>
 		<tr>
 			<th>Visible From</th>
-			<td>
-				<input type="text" name="visiblefrom" value="{{ article.visiblefrom }}" class="form-control form-control-sm">
+			<td class="form-group">
+				<input type="text" id="visiblefrom" name="visiblefrom" value="{{ article.visiblefrom }}" class="form-control form-control-sm">
 			</td>
 		</tr>
 		<tr>
 			<th>Visible Until</th>
+			<td class="form-group">
+				<input type="text" id="visibleuntil" name="visibleuntil" value="{{ article.visibleuntil }}" class="form-control form-control-sm">
+			</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
 			<td>
-				<input type="text" name="visibleuntil" value="{{ article.visibleuntil }}" class="form-control form-control-sm">
+				<a href="{{ url("/admin/articles") }}" class="btn btn-block btn-warning">Cancel</a>
+				<button type="submit" class="btn btn-block btn-success">{% if create %}Create{% else %}Edit{% endif %} Article</button>
 			</td>
 		</tr>
 	</tbody>
 </table>
+</form>
 
 <script src="{{ url('/assets/admin_article.js') }}"></script>

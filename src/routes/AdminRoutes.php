@@ -208,33 +208,84 @@
 					$displayEngine->display('admin/articles.tpl');
 				});
 
-				$router->get('/admin/articles/(.*)', function($articleid) use ($displayEngine, $api) {
-					$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: ' . $articleid);
+				$router->get('/admin/articles/(create|[0-9]+)', function($articleid) use ($displayEngine, $api) {
+					$error = false;
 
-					$article = $api->getArticle($articleid);
-					$displayEngine->setVar('article', $article);
+					if ($articleid == 'create') {
+						$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: Create');
+						$displayEngine->setVar('create', true);
+					} else {
+						$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: ' . $articleid);
+						$article = $api->getArticle($articleid);
+						if (isset($article['id'])) {
+							$displayEngine->setVar('article', $article);
+						} else {
+							$error = true;
+						}
+					}
+
 					$displayEngine->setVar('time', time());
 
-					$displayEngine->display('admin/article.tpl');
+					if ($error) {
+						$displayEngine->flash('error', '', 'No such article ID: ' . $articleid);
+						header('Location: ' . $displayEngine->getURL('/admin/articles'));
+					} else {
+						$displayEngine->display('admin/article.tpl');
+					}
 				});
 
-				$router->post('/admin/articles/(.*)', function($articleid) use ($displayEngine, $api) {
+				$router->post('/admin/articles/(create|[0-9]+)', function($articleid) use ($displayEngine, $api) {
+					$fields = ['title' => 'You must specify a title.',
+					           'content' => 'You must specify content.',
+					           'visiblefrom' => 'You must specify visible from.',
+					           'visibleuntil' => 'You must specify visible until.',
+					          ];
 
+					$canUpdate = true;
+
+					$create = ($articleid == 'create');
+
+					foreach ($fields as $field => $error) {
+						if (!array_key_exists($field, $_POST) || ($_POST[$field] != "0" && empty($_POST[$field]))) {
+							$canUpdate = false;
+							$displayEngine->flash('error', '', 'There was an error updating the article: ' . $error);
+							break;
+						}
+					}
+
+					if ($canUpdate) {
+						$result = ($create ? $api->createArticle($_POST) : $api->updateArticle($articleid, $_POST));
+
+						if (array_key_exists('error', $result)) {
+							$errorData = $result['error'];
+							if (array_key_exists('errorData', $result)) {
+								$errorData .= ' => ' . is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData'];
+							}
+							if ($create) {
+								$displayEngine->flash('error', '', 'There was an error creating the article: ' . $errorData);
+							} else {
+								$displayEngine->flash('error', '', 'There was an error updating the article: ' . $errorData);
+							}
+						} else {
+							if ($create) {
+								$displayEngine->flash('success', '', 'New article has been created');
+							} else {
+								$displayEngine->flash('success', '', 'Article has been updated');
+							}
+							header('Location: ' . $displayEngine->getURL('/admin/articles'));
+							return;
+						}
+					}
+
+					header('Location: ' . $displayEngine->getURL('/admin/articles'));
+					return;
 				});
 
-				$router->post('/admin/articles/(.*)/delete', function($articleid) use ($displayEngine, $api) {
+				$router->post('/admin/articles/([0-9]+)/delete', function($articleid) use ($displayEngine, $api) {
+					$result = $api->deleteArticle($articleid);
 
-				});
-
-				$router->get('/admin/articles/create', function() use ($displayEngine, $api) {
-					$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: Create');
-					$displayEngine->setVar('create', true);
-					$displayEngine->setVar('time', time());
-					$displayEngine->display('admin/article.tpl');
-				});
-
-				$router->post('/admin/articles/create', function() use ($displayEngine, $api) {
-
+					header('Content-Type: application/json');
+					echo json_encode($result);
 				});
 			}
 

@@ -107,7 +107,7 @@
 
 		if (!array_key_exists('csrftoken', $_POST) || empty($_POST['csrftoken']) || $_POST['csrftoken'] != session::get('csrftoken')) {
 			header('HTTP/1.1 403 Forbidden');
-			die('Invalid CSRF Token');
+			die('Invalid CSRF Token.');
 		}
 	});
 
