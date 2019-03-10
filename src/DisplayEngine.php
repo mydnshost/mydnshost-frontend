@@ -299,6 +299,9 @@
 				if ($this->hasPermission(['manage_domains'])) {
 					$menu[] = ['link' => $this->getURL('/admin/domains'), 'title' => 'Manage Domains', 'active' => ($this->pageID == '/admin/domains')];
 				}
+				if ($this->hasPermission(['manage_articles'])) {
+					$menu[] = ['link' => $this->getURL('/admin/articles'), 'title' => 'Manage Articles', 'active' => ($this->pageID == '/admin/aticles')];
+				}
 				if ($this->hasPermission(['system_stats'])) {
 					$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
 				}

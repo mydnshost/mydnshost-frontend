@@ -195,5 +195,49 @@
 					return;
 				});
 			}
+
+
+			if ($displayEngine->hasPermission(['manage_articles'])) {
+				$router->get('/admin/articles', function() use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles');
+
+					$articles = $api->getAllArticles();
+					$displayEngine->setVar('articles', $articles);
+					$displayEngine->setVar('time', time());
+
+					$displayEngine->display('admin/articles.tpl');
+				});
+
+				$router->get('/admin/articles/(.*)', function($articleid) use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: ' . $articleid);
+
+					$article = $api->getArticle($articleid);
+					$displayEngine->setVar('article', $article);
+					$displayEngine->setVar('time', time());
+
+					$displayEngine->display('admin/article.tpl');
+				});
+
+				$router->post('/admin/articles/(.*)', function($articleid) use ($displayEngine, $api) {
+
+				});
+
+				$router->post('/admin/articles/(.*)/delete', function($articleid) use ($displayEngine, $api) {
+
+				});
+
+				$router->get('/admin/articles/create', function() use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/articles')->setTitle('Admin :: Articles :: Create');
+					$displayEngine->setVar('create', true);
+					$displayEngine->setVar('time', time());
+					$displayEngine->display('admin/article.tpl');
+				});
+
+				$router->post('/admin/articles/create', function() use ($displayEngine, $api) {
+
+				});
+			}
+
+
 		}
 	}
