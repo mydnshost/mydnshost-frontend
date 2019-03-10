@@ -175,7 +175,14 @@
 		{% for email,access in domainaccess %}
 		<tr {% if editedaccess[email] %} data-edited="true"{% endif %}>
 			<td class="who" data-value="{{ email }}">
-				<img src="{{ email | gravatar }}" alt="{{ email }}" class="minigravatar" />&nbsp;
+				{% if userinfo[email].avatar == 'gravatar' %}
+					<img src="{{ email | gravatar }}" alt="{{ email }}" class="avatar miniavatar" />&nbsp;
+				{% elseif userinfo[email].avatar == 'none' %}
+					<img src="{{ 'none' | gravatar }}" alt="{{ email }}" class="avatar miniavatar" />&nbsp;
+				{% else %}
+					<img src="{{ userinfo[email].avatar }}" alt="{{ email }}" class="avatar miniavatar" />&nbsp;
+				{% endif %}
+
 				{{ email }}
 			</td>
 			<td class="access" data-value="{{ access }}" {% if editedaccess[email] %} data-edited-value="{{ editedaccess[email].level }}" {% endif %}>

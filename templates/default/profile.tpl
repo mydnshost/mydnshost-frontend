@@ -16,10 +16,20 @@
 		<tr>
 			<th>
 				Avatar<br>
-				<small class="form-text text-muted">(This can be changed at <a href="//gravatar.com/emails">Gravatar</a>)</small>
+				{% if user.avatar == 'gravatar' %}
+					<small class="form-text text-muted">(This can be changed at <a href="//gravatar.com/emails">Gravatar</a>)</small>
+				{% else %}
+					<small class="form-text text-muted">(This can be changed by enabling Gravatar)</small>
+				{% endif %}
 			</th>
-			<td>
-				<img src="{{ user.email | gravatar(200) }}" alt="{{ user.realname }}" class="minigravatar" />
+			<td data-type="option" data-name="avatar" data-value="{{ user.avatar }}" data-rich>
+				{% if user.avatar == 'gravatar' %}
+					<img src="{{ user.email | gravatar(200) }}" alt="{{ user.realname }}" class="avatar" />
+				{% elseif user.avatar == 'none' %}
+					<img src="{{ 'none' | gravatar(200) }}" alt="{{ user.realname }}" class="avatar" />
+				{% else %}
+					<img src="{{ user.avatar }}" alt="{{ user.realname }}" class="avatar" />
+				{% endif %}
 			</td>
 		</tr>
 		<tr data-hidden="true" class="hidden">

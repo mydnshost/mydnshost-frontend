@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com/; img-src 'self' www.gravatar.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com/ 'unsafe-inline'; img-src 'self' www.gravatar.com *;">
 
     <title>{{ sitename }} :: {{ pagetitle }}</title>
 
@@ -39,7 +39,13 @@
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {% if user %}
-                <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="minigravatar" />&nbsp;
+                {% if user.avatar == 'gravatar' %}
+                  <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                {% elseif user.avatar == 'none' %}
+                  <img src="{{ 'none' | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                {% else %}
+                  <img src="{{ user.avatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                {% endif %}
                 {{ user.realname }}
               {% elseif domainkey %}
                 DomainKey :: {{ domainkey.domain }} :: {{ domainkey.description }}

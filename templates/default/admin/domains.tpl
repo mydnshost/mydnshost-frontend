@@ -31,7 +31,14 @@
 				{% for user,access in domain.users if not break %}
 					{% if access == "owner" %}
 						{% if foundowner %}<br>{% endif %}
-						<img src="{{ user | gravatar }}" alt="{{ user }}" class="minigravatar" />&nbsp;
+
+						{% if domain.userinfo[user].avatar == 'gravatar' %}
+							<img src="{{ user | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
+						{% elseif domain.userinfo[user].avatar == 'none' %}
+							<img src="{{ 'none' | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
+						{% else %}
+							<img src="{{ domain.userinfo[user].avatar}}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
+						{% endif %}
 						{{ user }}
 						{% set foundowner = true %}
 					{% endif %}

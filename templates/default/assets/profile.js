@@ -233,6 +233,11 @@ optionsValues['domain_defaultpage'] = {
   "records": "Domain Records"
 };
 
+optionsValues['avatar'] = {
+  "gravatar": "Use Gravatar",
+  "none": "No Avatar"
+};
+
 function setUserEditable() {
 	$('#usercontrols a').addClass('hidden');
 	$('#usercontrols button[data-action="saveuser"]').removeClass('hidden');
@@ -242,6 +247,10 @@ function setUserEditable() {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
 		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
+
+		if (field.data('rich') != undefined) {
+			field.data('rich', field.html());
+		}
 
 		if (fieldType == 'option') {
 			var select = '';
@@ -265,7 +274,11 @@ function cancelEditUser() {
 
 	$('table#profileinfo td[data-name]').each(function (index) {
 		var field = $(this);
-		field.text(field.data('value'));
+		if (field.data('rich') != undefined) {
+			field.html(field.data('rich'));
+		} else {
+			field.text(field.data('value'));
+		}
 		field.data('edited-value', null);
 	});
 	$('table#profileinfo tr[data-hidden]').hide();

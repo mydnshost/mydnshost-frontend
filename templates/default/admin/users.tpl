@@ -28,7 +28,13 @@
 				{{ userinfo.id }}
 			</td>
 			<td class="email">
-				<img src="{{ userinfo.email | gravatar }}" alt="{{ userinfo.realname }}" class="minigravatar" />&nbsp;
+				{% if userinfo.avatar == 'gravatar' %}
+					<img src="{{ userinfo.email | gravatar }}" alt="{{ userinfo.realname }}" class="avatar miniavatar" />&nbsp;
+				{% elseif userinfo.avatar == 'none' %}
+					<img src="{{ 'none' | gravatar }}" alt="{{ userinfo.realname }}" class="avatar miniavatar" />&nbsp;
+				{% else %}
+					<img src="{{ userinfo.avatar }}" alt="{{ userinfo.realname }}" class="avatar miniavatar" />&nbsp;
+				{% endif %}
 				{{ userinfo.email }}
 			</td>
 			<td class="realname">

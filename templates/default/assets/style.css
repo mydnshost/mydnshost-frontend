@@ -129,9 +129,10 @@ h1 small.subtitle {
 
 
 /**********************************************************************
- * MiniGravatars
+ * Avatars
  **********************************************************************/
-.minigravatar {
+
+.avatar {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -140,8 +141,13 @@ h1 small.subtitle {
   border: 1px solid #AAA;
 }
 
-.minigravatar img {
+.avatar img {
   opacity: 0;
+}
+
+.miniavatar {
+  width: 22px;
+  height: 22px;
 }
 
 /**********************************************************************

@@ -196,7 +196,9 @@
 					$this->setAccessVars($displayEngine, $domainData);
 					$this->setSubtitle($displayEngine, $domainData);
 
-					$displayEngine->setVar('domainaccess', $api->getDomainAccess($domain));
+					$da = $api->getDomainAccess($domain);
+					$displayEngine->setVar('domainaccess', $da['access']);
+					$displayEngine->setVar('userinfo', $da['userinfo']);
 
 					$displayEngine->setVar('domainkeys', $api->getDomainKeys($domain));
 
