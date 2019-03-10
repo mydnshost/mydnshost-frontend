@@ -84,7 +84,7 @@
 		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
-		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin']);
+		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin', '2fa_push']);
 
 		if ($hadLoginDetails) {
 			setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);

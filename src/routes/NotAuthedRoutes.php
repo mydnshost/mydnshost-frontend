@@ -20,7 +20,30 @@
 					}
 				}
 
+				if (session::exists('2fa_push')) {
+					$displayEngine->setVar('twofactor_push', session::get('2fa_push'));
+				}
+
 				$displayEngine->display('2fa.tpl');
+			});
+
+			$router->get('/2fa_push.json', function() use ($displayEngine, $api) {
+				if (session::exists('lastlogin')) {
+					$lastAttempt = session::get('lastlogin');
+
+					$user = $lastAttempt['user'];
+					$pass = $lastAttempt['pass'];
+
+					$result = $api->doAuth2FAPush($user, $pass);
+
+					if (isset($result['pushcode'])) {
+						header('Content-Type: application/json');
+						echo json_encode(['pushcode' => $result['pushcode']]);
+						return TRUE;
+					}
+				}
+
+				return FALSE;
 			});
 
 			$router->post('/login', function() use ($displayEngine, $api) {
@@ -83,6 +106,12 @@
 
 					session::setCurrentUser(null);
 					if (isset($lr['login_error']) && $lr['login_error'] == '2fa_required' && isset($_POST['user']) && isset($_POST['pass'])) {
+						if (isset($lr['2fa_push'])) {
+							session::set('2fa_push', true);
+						} else {
+							session::remove('2fa_push');
+						}
+
 						session::set('lastlogin', $_POST);
 						header('Location: ' . $displayEngine->getURL('/2fa'));
 					} else {

@@ -325,6 +325,8 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					$result = ['error', 'There was an error verifying the key: ' . $apiresult['error']];
+				} else if (array_key_exists('info', $apiresult)) {
+					$result = ['info', $apiresult['info']];
 				} else {
 					$result = ['success', 'Key verified.'];
 				}
