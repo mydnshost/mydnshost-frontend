@@ -96,14 +96,18 @@ You will only be able to see the key and associated QR code for any keys that ha
 		<option value="rfc6238" selected>TOTP (RFC 6238)</option>
 		<option value="onetime">One Time</option>
 		{% if 'yubikeyotp' in twoFactorKeyTypes %}
-			<option value="yubikeyotp" data-needsecret>Yubikey OTP</option>
+			<option value="yubikeyotp" data-need="secret">Yubikey OTP</option>
 		{% endif %}
 		{% if 'authy' in twoFactorKeyTypes %}
-			<option value="authy" data-needsecret>Authy Push</option>
+			<option value="authy" data-need="phone">Authy Push</option>
 		{% endif %}
 	</select>
 	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
+
+	<input data-provide="secret" class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
+	<input data-provide="phone" class="form-control col-1 mb-2 mr-sm-2 mb-sm-0" type="text" name="countrycode" value="" placeholder="Country Code">
+	<input data-provide="phone" class="form-control col-2 mb-2 mr-sm-2 mb-sm-0" type="text" name="phone" value="" placeholder="Phone Number">
+
 	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
 </form>
 

@@ -181,11 +181,15 @@ $(function() {
 	setSecretVisibility();
 
 	function setSecretVisibility() {
-		if ($('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-needsecret')) {
-			$('#add2faform input[name="secret"]').show();
+		if ($('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-need')) {
+			var need = $('#add2faform select[name="type"]').find(':selected')[0].getAttribute('data-need');
+			$('#add2faform input[data-provide="' + need + '"]').show();
+
+			$('#add2faform input[data-provide][data-provide!="' + need + '"]').val("");
+			$('#add2faform input[data-provide][data-provide!="' + need + '"]').hide();
 		} else {
-			$('#add2faform input[name="secret"]').val("");
-			$('#add2faform input[name="secret"]').hide();
+			$('#add2faform input[data-provide]').val("");
+			$('#add2faform input[data-provide]').hide();
 		}
 	};
 
@@ -204,7 +208,20 @@ $(function() {
 			},
 			secret: {
 				required: function() {
-					return $('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-needsecret');
+					var e = $('#add2faform select[name="type"]').find(':selected')[0];
+					return e.hasAttribute('data-need') && e.getAttribute('data-need') == 'secret';
+				}
+			},
+			countrycode: {
+				required: function() {
+					var e = $('#add2faform select[name="type"]').find(':selected')[0];
+					return e.hasAttribute('data-need') && e.getAttribute('data-need') == 'phone';
+				}
+			},
+			phone: {
+				required: function() {
+					var e = $('#add2faform select[name="type"]').find(':selected')[0];
+					return e.hasAttribute('data-need') && e.getAttribute('data-need') == 'phone';
 				}
 			}
 		},

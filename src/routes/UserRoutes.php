@@ -228,8 +228,10 @@
 					$data['onetime'] = true;
 				}
 
-				if (isset($_POST['secret']) && !empty($_POST['secret'])) {
-					$data['secret'] = $_POST['secret'];
+				foreach (['secret', 'countrycode', 'phone'] as $extra) {
+					if (isset($_POST[$extra]) && !empty($_POST[$extra])) {
+						$data[$extra] = $_POST[$extra];
+					}
 				}
 
 				$apiresult = $api->create2FAKey($data);
@@ -237,8 +239,6 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
-					} else {
 						$apiresult['errorData'] = $apiresult['error'];
 					}
 					$result = ['error', 'There was an error adding the new 2FA Key: ' . $apiresult['errorData']];
