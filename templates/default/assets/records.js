@@ -208,7 +208,7 @@ function setEditable(row, recordid) {
 	$.each(textFields, function(key, field) {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 
-		if (key == 'name' && value == '') { value = '@'; }
+		if (key == 'name' && value == '' && !row.hasClass('new')) { value = '@'; }
 
 		field.html('<input type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][' + key + ']" value="' + escapeHtml(value) + '">');
 		$('input', field).on("paste", handlePaste);
