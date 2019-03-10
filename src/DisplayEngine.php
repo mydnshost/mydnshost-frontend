@@ -45,6 +45,10 @@
 			$twig->addFunction(new Twig_Function('getVar', function ($var) { return $this->getVar($var); }));
 			$twig->addFunction(new Twig_Function('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
 
+			$twig->addFunction(new Twig_Function('startsWith', function($haystack, $needle) { return startsWith($haystack, $needle); }));
+			$twig->addFunction(new Twig_Function('endsWith', function($haystack, $needle) { return endsWith($haystack, $needle); }));
+			$twig->addFunction(new Twig_Function('parseBool', function($input) { return parseBool($input); }));
+
 			$twig->addFunction(new Twig_Function('flash', function() { $this->displayFlash(); }));
 			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
