@@ -36,10 +36,12 @@
 			<th>Negative TTL</th>
 			<td class="mono" data-name="minttl" data-soa data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
 		</tr>
-		<tr>
-			<th>Default TTL for new records</th>
-			<td class="mono" data-name="defaultttl" data-value="{{ domain.defaultttl }}">{{ domain.defaultttl }}</td>
-		</tr>
+		{% if not domain.aliasof %}
+			<tr>
+				<th>Default TTL for new records</th>
+				<td class="mono" data-name="defaultttl" data-value="{{ domain.defaultttl }}">{{ domain.defaultttl }}</td>
+			</tr>
+		{% endif %}
 		<tr>
 			<th>Disabled</th>
 			<td class="state" data-radio="disabled" data-value="{{ domain.disabled | yesno }}">
@@ -54,6 +56,26 @@
 			{% endif %}
 			</td>
 		</tr>
+		<tr>
+			<th>Alias of</th>
+			<td class="mono">
+				{% if domain.aliasof %}
+					<a href="{{ url("#{pathprepend}/domain/#{domain.aliasname}") }}">{{ domain.aliasname }}</a>
+				{% else %}
+					None
+				{% endif %}
+			</td>
+		</tr>
+		{% if domain.aliases %}
+		<tr>
+			<th>Aliases</th>
+			<td class="mono">
+				{% for aliasname in domain.aliases %}
+					<a href="{{ url("#{pathprepend}/domain/#{aliasname}") }}">{{ aliasname }}</a><br>
+				{% endfor %}
+			</td>
+		</tr>
+		{% endif %}
 		<tr>
 			<th>Access level</th>
 			<td class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
@@ -102,14 +124,18 @@
 
 <div class="row" id="domaincontrols">
 	<div class="col">
-		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
+		{% if not domain.aliasof %}
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
+		{% endif %}
 
 		{% if has_domain_write %}
 			<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit Domain Info</button>
 			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 		{% endif %}
 
-		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
+		{% if not domain.aliasof %} {# Remove this in future. #}
+			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
+		{% endif %}
 
 		{% if hasPermission(['domains_stats']) %}
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/stats") }}" class="btn btn-primary" role="button">Stats</a>
@@ -117,11 +143,12 @@
 		{% if hasPermission(['domains_logs']) %}
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-primary" role="button">Logs</a>
 		{% endif %}
-
 		<div class="float-right">
 			{% if has_domain_write %}
 				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Resync Zone</a>
-				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/import") }}" class="btn btn-danger" role="button">Import Zone</a>
+				{% if not domain.aliasof %}
+					<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/import") }}" class="btn btn-danger" role="button">Import Zone</a>
+				{% endif %}
 			{% endif %}
 			{% if has_domain_owner %}
 				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
@@ -292,6 +319,7 @@
 
 {% endif %}
 
+{% if has_domain_write and domainhooks is not null %}
 <br><br>
 
 <H2>Domain Web Hooks</H2>
@@ -358,5 +386,6 @@
 		This can not be undone
 	{% endblock %}
 {% endembed %}
+{% endif %}
 
 <script src="{{ url('/assets/domains.js') }}"></script>
