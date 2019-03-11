@@ -99,7 +99,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 			<option value="yubikeyotp" data-need="secret">Yubikey OTP</option>
 		{% endif %}
 		{% if 'authy' in twoFactorKeyTypes %}
-			<option value="authy" data-need="phone">Authy Push</option>
+			<option value="authy" data-need="phone">Authy</option>
 		{% endif %}
 	</select>
 	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
