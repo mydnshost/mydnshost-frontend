@@ -8,34 +8,36 @@
 <input type="hidden" name="changetype" value="soa">
 <table id="soainfo" class="table table-striped table-bordered">
 	<tbody>
-		<tr>
-			<th>Primary Nameserver</th>
-			<td class="mono" data-name="primaryNS" data-soa data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
-		</tr>
-		<tr>
-			<th>Admin Email Address</th>
-			<td class="mono" data-name="adminAddress" data-soa data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
-		</tr>
-		<tr>
-			<th>Serial Number</th>
-			<td class="mono" data-name="serial" data-soa data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
-		</tr>
-		<tr>
-			<th>Refresh Time</th>
-			<td class="mono" data-name="refresh" data-soa data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
-		</tr>
-		<tr>
-			<th>Retry Time</th>
-			<td class="mono" data-name="retry" data-soa data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
-		</tr>
-		<tr>
-			<th>Expire Time</th>
-			<td class="mono" data-name="expire" data-soa data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
-		</tr>
-		<tr>
-			<th>Negative TTL</th>
-			<td class="mono" data-name="minttl" data-soa data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
-		</tr>
+		{% if domain.SOA %}
+			<tr>
+				<th>Primary Nameserver</th>
+				<td class="mono" data-name="primaryNS" data-soa data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
+			</tr>
+			<tr>
+				<th>Admin Email Address</th>
+				<td class="mono" data-name="adminAddress" data-soa data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
+			</tr>
+			<tr>
+				<th>Serial Number</th>
+				<td class="mono" data-name="serial" data-soa data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
+			</tr>
+			<tr>
+				<th>Refresh Time</th>
+				<td class="mono" data-name="refresh" data-soa data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
+			</tr>
+			<tr>
+				<th>Retry Time</th>
+				<td class="mono" data-name="retry" data-soa data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
+			</tr>
+			<tr>
+				<th>Expire Time</th>
+				<td class="mono" data-name="expire" data-soa data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
+			</tr>
+			<tr>
+				<th>Negative TTL</th>
+				<td class="mono" data-name="minttl" data-soa data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
+			</tr>
+		{% endif %}
 		{% if not domain.aliasof %}
 			<tr>
 				<th>Default TTL for new records</th>
