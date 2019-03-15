@@ -139,7 +139,7 @@
 					// Change SOA Stuff.
 					if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'soa') {
 
-						$data = ['disabled' => false, 'SOA' => []];
+						$data = ['disabled' => false, 'SOA' => [], 'aliasof' => ''];
 						if (isset($_POST['disabled'])) {
 							$data['disabled'] = $_POST['disabled'];
 						}
@@ -149,11 +149,14 @@
 						if (isset($_POST['soa'])) {
 							$data['SOA'] = $_POST['soa'];
 						}
+						if (isset($_POST['aliasof'])) {
+							$data['aliasof'] = $_POST['aliasof'];
+						}
 
 						$result = $api->setDomainData($domain, $data);
 
 						if (array_key_exists('error', $result)) {
-							$displayEngine->flash('error', '', 'There was an error with the soa data provided.');
+							$displayEngine->flash('error', '', 'There was an error with the data provided: ' . $result['error']);
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 

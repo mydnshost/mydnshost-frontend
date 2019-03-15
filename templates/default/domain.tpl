@@ -56,25 +56,40 @@
 			{% endif %}
 			</td>
 		</tr>
-		<tr>
-			<th>Alias of</th>
-			<td class="mono">
-				{% if domain.aliasof %}
-					<a href="{{ url("#{pathprepend}/domain/#{domain.aliasname}") }}">{{ domain.aliasname }}</a>
-				{% else %}
-					None
-				{% endif %}
-			</td>
-		</tr>
-		{% if domain.aliases %}
-		<tr>
-			<th>Aliases</th>
-			<td class="mono">
-				{% for aliasname in domain.aliases %}
-					<a href="{{ url("#{pathprepend}/domain/#{aliasname}") }}">{{ aliasname }}</a><br>
-				{% endfor %}
-			</td>
-		</tr>
+		{% if has_domain_owner or domain.aliasof %}
+			<tr>
+				<th>Alias of</th>
+				<td class="mono" data-rich data-type="option" data-include-current data-name="aliasof" data-value="{{ domain.aliasof }}">
+					{% if domain.aliasof %}
+						<a href="{{ url("#{pathprepend}/domain/#{domain.aliasof}") }}">{{ domain.aliasof }}</a>
+						{% if domain.superalias %}
+							(=> <a href="{{ url("#{pathprepend}/domain/#{domain.superalias}") }}">{{ domain.superalias }}</a>)
+						{% endif %}
+					{% else %}
+						None
+					{% endif %}
+				</td>
+			</tr>
+		{% endif %}
+		{% if domain.aliases.direct %}
+			<tr>
+				<th>Direct Aliases</th>
+				<td class="mono">
+					{% for aliasname in domain.aliases.direct %}
+						<a href="{{ url("#{pathprepend}/domain/#{aliasname}") }}">{{ aliasname }}</a><br>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endif %}
+		{% if domain.aliases.indirect %}
+			<tr>
+				<th>Indirect Aliases</th>
+				<td class="mono">
+					{% for aliasname in domain.aliases.indirect %}
+						<a href="{{ url("#{pathprepend}/domain/#{aliasname}") }}">{{ aliasname }}</a><br>
+					{% endfor %}
+				</td>
+			</tr>
 		{% endif %}
 		<tr>
 			<th>Access level</th>

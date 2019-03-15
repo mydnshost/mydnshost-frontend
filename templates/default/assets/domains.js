@@ -253,6 +253,18 @@ $(function() {
 	});
 });
 
+var optionsValues = {};
+
+// TODO: This should come via an ajax call or something, not as part of this js file.
+optionsValues['aliasof'] = {
+  "": "None",
+  {% for domain,access in userdomains %}
+    {% if access == "owner" %}
+      "{{ domain }}": "{{ domain }}",
+    {% endif %}
+  {% endfor %}
+};
+
 function setSOAEditable() {
 	$('#domaincontrols a').addClass('hidden');
 	$('#domaincontrols button[data-action="savesoa"]').removeClass('hidden');
@@ -262,11 +274,32 @@ function setSOAEditable() {
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
 		var isSOA = field.data('soa') !== undefined;
+		var includeCurrent = field.data('include-current') !== undefined;
+		var fieldType = field.data('type') == undefined ? 'text' : field.data('type');
 
-		if (isSOA) {
-			field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
+		if (field.data('rich') != undefined) {
+			field.data('rich', field.html());
+		}
+
+		if (fieldType == 'option') {
+			var select = '';
+			select += '<select class="form-control form-control-sm" name="' + key + '">';
+			foundValue = false;
+			$.each(optionsValues[key], function(optionkey, optionvalue) {
+				foundValue |= (value == optionkey);
+				select += '	<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
+			});
+			if (includeCurrent && !foundValue) {
+				select += '	<option selected value="' + value + '">' + value + '</option>';
+			}
+			select += '</select>';
+			field.html(select);
 		} else {
-			field.html('<input type="text" class="form-control form-control-sm" name="' + key + '" value="' + escapeHtml(value) + '">');
+			if (isSOA) {
+				field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
+			} else {
+				field.html('<input type="text" class="form-control form-control-sm" name="' + key + '" value="' + escapeHtml(value) + '">');
+			}
 		}
 	});
 
@@ -321,7 +354,11 @@ function cancelEditSOA() {
 
 	$('table#soainfo td[data-name]').each(function (index) {
 		var field = $(this);
-		field.html(field.data('value'));
+		if (field.data('rich') != undefined) {
+			field.html(field.data('rich'));
+		} else {
+			field.text(field.data('value'));
+		}
 		field.data('edited-value', null);
 	});
 

@@ -166,6 +166,7 @@
 					$this->setVar('domainkey', $user['domainkey']);
 				}
 				$this->setVar('useraccess', $user['access']);
+				$this->setVar('userdomains', session::get('domains'));
 				$this->setVar('csrftoken', session::get('csrftoken'));
 			}
 		}
