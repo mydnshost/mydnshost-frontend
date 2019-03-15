@@ -148,9 +148,7 @@
 			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 		{% endif %}
 
-		{% if not domain.aliasof %} {# Remove this in future. #}
-			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
-		{% endif %}
+		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 
 		{% if hasPermission(['domains_stats']) %}
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/stats") }}" class="btn btn-primary" role="button">Stats</a>
