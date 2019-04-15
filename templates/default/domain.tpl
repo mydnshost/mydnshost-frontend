@@ -10,51 +10,51 @@
 	<tbody>
 		<tr>
 			<th>User-Specific Label</th>
-			<td class="mono" data-name="custom_label" data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}</td>
+			<td class="mono" data-name="custom_label" data-editable data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}</td>
 		</tr>
 		<tr>
 			<th>User-Specific Notes</th>
-			<td class="mono pre" data-name="custom_notes" data-type="textarea" data-rich data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}</td>
+			<td class="mono pre" data-name="custom_notes" data-editable data-type="textarea" data-rich data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}</td>
 		</tr>
 		{% if domain.SOA %}
 			<tr>
 				<th>Primary Nameserver</th>
-				<td class="mono" data-name="primaryNS" data-soa data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
+				<td class="mono" data-name="primaryNS" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.primaryNS }}">{{ domain.SOA.primaryNS }}</td>
 			</tr>
 			<tr>
 				<th>Admin Email Address</th>
-				<td class="mono" data-name="adminAddress" data-soa data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
+				<td class="mono" data-name="adminAddress" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.adminAddress }}">{{ domain.SOA.adminAddress }}</td>
 			</tr>
 			<tr>
 				<th>Serial Number</th>
-				<td class="mono" data-name="serial" data-soa data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
+				<td class="mono" data-name="serial" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.serial }}">{{ domain.SOA.serial }}</td>
 			</tr>
 			<tr>
 				<th>Refresh Time</th>
-				<td class="mono" data-name="refresh" data-soa data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
+				<td class="mono" data-name="refresh" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.refresh }}">{{ domain.SOA.refresh }}</td>
 			</tr>
 			<tr>
 				<th>Retry Time</th>
-				<td class="mono" data-name="retry" data-soa data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
+				<td class="mono" data-name="retry" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.retry }}">{{ domain.SOA.retry }}</td>
 			</tr>
 			<tr>
 				<th>Expire Time</th>
-				<td class="mono" data-name="expire" data-soa data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
+				<td class="mono" data-name="expire" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.expire }}">{{ domain.SOA.expire }}</td>
 			</tr>
 			<tr>
 				<th>Negative TTL</th>
-				<td class="mono" data-name="minttl" data-soa data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
+				<td class="mono" data-name="minttl" {% if has_domain_write %}data-editable{% endif %} data-soa data-value="{{ domain.SOA.minttl }}">{{ domain.SOA.minttl }}</td>
 			</tr>
 		{% endif %}
 		{% if not domain.aliasof %}
 			<tr>
 				<th>Default TTL for new records</th>
-				<td class="mono" data-name="defaultttl" data-value="{{ domain.defaultttl }}">{{ domain.defaultttl }}</td>
+				<td class="mono" data-name="defaultttl" {% if has_domain_write %}data-editable{% endif %} data-value="{{ domain.defaultttl }}">{{ domain.defaultttl }}</td>
 			</tr>
 		{% endif %}
 		<tr>
 			<th>Disabled</th>
-			<td class="state" data-radio="disabled" data-value="{{ domain.disabled | yesno }}">
+			<td class="state" data-radio="disabled" {% if has_domain_write %}data-editable{% endif %} data-value="{{ domain.disabled | yesno }}">
 			{% if domain.disabled == 'true' %}
 				<span class="badge badge-danger">
 					Yes
@@ -69,7 +69,7 @@
 		{% if has_domain_owner or domain.aliasof %}
 			<tr>
 				<th>Alias of</th>
-				<td class="mono" data-rich data-type="option" data-include-current data-name="aliasof" data-value="{{ domain.aliasof }}">
+				<td class="mono" data-rich data-type="option" data-include-current data-name="aliasof" {% if has_domain_write %}data-editable{% endif %} data-value="{{ domain.aliasof }}">
 					{% if domain.aliasof %}
 						<a href="{{ url("#{pathprepend}/domain/#{domain.aliasof}") }}">{{ domain.aliasof }}</a>
 						{% if domain.superalias %}
@@ -153,10 +153,8 @@
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
 		{% endif %}
 
-		{% if has_domain_write %}
-			<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit Domain Info</button>
-			<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
-		{% endif %}
+		<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit Domain Info</button>
+		<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
 
 		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 

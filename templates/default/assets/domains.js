@@ -269,7 +269,7 @@ function setSOAEditable() {
 	$('#domaincontrols a').addClass('hidden');
 	$('#domaincontrols button[data-action="savesoa"]').removeClass('hidden');
 
-	$('table#soainfo td[data-name]').each(function (index) {
+	$('table#soainfo td[data-name][data-editable]').each(function (index) {
 		var field = $(this);
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('name');
@@ -305,7 +305,7 @@ function setSOAEditable() {
 		}
 	});
 
-	$('table#soainfo td[data-radio]').each(function (index) {
+	$('table#soainfo td[data-radio][data-editable]').each(function (index) {
 		var field = $(this);
 		var value = (field.data('edited-value') == undefined || field.data('edited-value') == null) ? field.data('value') : field.data('edited-value');
 		var key = field.data('radio');
