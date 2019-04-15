@@ -8,6 +8,14 @@
 <input type="hidden" name="changetype" value="soa">
 <table id="soainfo" class="table table-striped table-bordered">
 	<tbody>
+		<tr>
+			<th>User-Specific Label</th>
+			<td class="mono" data-name="custom_label" data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}</td>
+		</tr>
+		<tr>
+			<th>User-Specific Notes</th>
+			<td class="mono pre" data-name="custom_notes" data-type="textarea" data-rich data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/notes"] }}</td>
+		</tr>
 		{% if domain.SOA %}
 			<tr>
 				<th>Primary Nameserver</th>

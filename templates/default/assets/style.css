@@ -226,6 +226,10 @@ table#domainlist td.domain small.subtitle {
   font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
 
+.mono.pre {
+  white-space: pre;
+}
+
 table#soainfo th {
   width: 20%;
 }

@@ -153,6 +153,14 @@
 							$data['aliasof'] = $_POST['aliasof'];
 						}
 
+						if (isset($_POST['custom_label'])) {
+							$data['userdata']['uk.co.mydnshost.www/domain/label'] = $_POST['custom_label'];
+						}
+
+						if (isset($_POST['custom_notes'])) {
+							$data['userdata']['uk.co.mydnshost.www/domain/notes'] = $_POST['custom_notes'];
+						}
+
 						$result = $api->setDomainData($domain, $data);
 
 						if (array_key_exists('error', $result)) {

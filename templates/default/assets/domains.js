@@ -294,6 +294,8 @@ function setSOAEditable() {
 			}
 			select += '</select>';
 			field.html(select);
+		} else if (fieldType == 'textarea') {
+			field.html('<textarea class="form-control form-control-sm" name="' + key + '">' + escapeHtml(value) + '</textarea>');
 		} else {
 			if (isSOA) {
 				field.html('<input type="text" class="form-control form-control-sm" name="soa[' + key + ']" value="' + escapeHtml(value) + '">');
