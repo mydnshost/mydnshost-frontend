@@ -57,12 +57,19 @@
 	if ($userdata !== NULL) {
 		session::setCurrentUser($userdata);
 
-		session::set('domains', $api->getDomains());
 		$defaultPage = isset($userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage'] : '';
 		session::set('domain/defaultpage', empty($defaultPage) ? 'details' : $defaultPage);
 
 		$sidebarLayout = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout'] : '';
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
+
+		$domains = [];
+		if ($sidebarLayout == 'labels') {
+			$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label']);
+		} else {
+			$domains = $api->getDomains(['type' => 'access']);
+		}
+		session::set('domains', $domains);
 
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {

@@ -249,7 +249,7 @@
 						}
 
 						$domains = session::get('domains');
-						foreach ($domains as $domain => $access) {
+						foreach ($domains as $domain => $label) {
 							$item = array();
 							$item['link'] = $this->getURL('/domain/' . $domain);
 							if (session::get('domain/defaultpage') == 'records') {
@@ -273,12 +273,20 @@
 
 							$item['dataValue'] = implode(' ', $dataValue);
 
-							$sections[$access][] = $item;
+							$sections[$label][] = $item;
 						}
 
-						foreach (['owner', 'admin', 'write', 'read'] as $section) {
-							if (array_key_exists($section, $sections)) {
-								$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+						if (session::get('sidebar/layout') == 'labels') {
+							$labels = array_keys($sections);
+							sort($labels);
+							foreach ($labels as $label) {
+								$menu[] = array_merge([['title' => empty($label) ? 'none' : $label]], $sections[$label]);
+							}
+						} else {
+							foreach (['owner', 'admin', 'write', 'read'] as $section) {
+								if (array_key_exists($section, $sections)) {
+									$menu[] = array_merge([['title' => 'Access level: ' . ucfirst($section)]], $sections[$section]);
+								}
 							}
 						}
 					}
