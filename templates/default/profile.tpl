@@ -55,6 +55,13 @@
 		</tr>
 
 		<tr>
+			<th>Sidebar style</th>
+			<td data-type="option" data-name="sidebar_layout" data-value="{{ sidebar_layout }}">
+			{{ sidebar_layout }}
+			</td>
+		</tr>
+
+		<tr>
 			<th>
 				Account Permissions
 			</th>

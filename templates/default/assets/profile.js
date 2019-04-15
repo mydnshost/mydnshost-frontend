@@ -250,6 +250,11 @@ optionsValues['domain_defaultpage'] = {
   "records": "Domain Records"
 };
 
+optionsValues['sidebar_layout'] = {
+  "access": "Access Level",
+  "labels": "Label View"
+};
+
 optionsValues['avatar'] = {
   "gravatar": "Use Gravatar",
   "none": "No Avatar"

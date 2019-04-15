@@ -61,6 +61,9 @@
 		$defaultPage = isset($userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage'] : '';
 		session::set('domain/defaultpage', empty($defaultPage) ? 'details' : $defaultPage);
 
+		$sidebarLayout = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout'] : '';
+		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
+
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {
 			if ($impersonating) {

@@ -46,6 +46,10 @@
 							$_POST['customdata']['uk.co.mydnshost.www/domain/defaultpage'] = $_POST['domain_defaultpage'];
 						}
 
+						if (isset($_POST['sidebar_layout']) && in_array($_POST['sidebar_layout'], ['access', 'labels'])) {
+							$_POST['customdata']['uk.co.mydnshost.www/sidebar/layout'] = $_POST['sidebar_layout'];
+						}
+
 						$result = $api->setUserInfo($_POST);
 
 						if (array_key_exists('error', $result)) {
@@ -84,6 +88,7 @@
 				$displayEngine->setVar('candelete', $api->getSystemDataValue('selfDelete'));
 
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
+				$displayEngine->setVar('sidebar_layout', session::get('sidebar/layout'));
 				$displayEngine->display('profile.tpl');
 			});
 
