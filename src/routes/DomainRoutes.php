@@ -3,6 +3,8 @@
 		public function setAccessVars($displayEngine, $domainData) {
 			parent::setAccessVars($displayEngine, $domainData);
 
+			$displayEngine->setVar('has_admin_override', true);
+
 			$displayEngine->setVar('has_domain_owner', true);
 			$displayEngine->setVar('has_domain_admin', true);
 			$displayEngine->setVar('has_domain_write', true);
@@ -24,6 +26,7 @@
 			$displayEngine->setVar('pathprepend', '/admin');
 
 			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return true; }));
+			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccessLevel', function($level) { return true; }));
 		}
 	}
 
@@ -61,6 +64,21 @@
 			$displayEngine->setVar('pathprepend', '');
 
 			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return $email != session::getCurrentUser()['user']['email']; }));
+
+			$displayEngine->getTwig()->addFunction(new Twig_Function('hasHigherAccess', function($level) use ($displayEngine) {
+				$myAccess = $displayEngine->getVar('domain_access_level');
+				if ($myAccess == 'owner') {
+					return ($level == 'admin' || $level == 'write' || $level == 'read' || $level == 'none');
+				} else if ($myAccess == 'admin') {
+					return ($level == 'write' || $level == 'read' || $level == 'none');
+				} else if ($myAccess == 'write') {
+					return ($level == 'read' || $level == 'none');
+				} else if ($myAccess == 'read') {
+					return ($level == 'none');
+				}
+
+				return false;
+			}));
 		}
 
 		public function addRoutes($router, $displayEngine, $api) {

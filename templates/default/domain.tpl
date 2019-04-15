@@ -238,7 +238,7 @@
 			</td>
 			{% if has_domain_admin %}
 				<td class="actions">
-					{% if canChangeAccess(email) %}
+					{% if hasHigherAccess(access) and canChangeAccess(email) %}
 						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
 					{% endif %}
 				</td>
