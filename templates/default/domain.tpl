@@ -103,7 +103,7 @@
 		{% endif %}
 		<tr>
 			<th>Access level</th>
-			<td class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
+			<td id="myaccess" class="mono" data-myaccess="{{ domain_access_level }}">{{ domain_access_level | capitalize }}</td>
 		</tr>
 		<tr>
 			<th>DNSSEC Keys</th>
@@ -221,7 +221,7 @@
 	</thead>
 	<tbody>
 		{% for email,access in domainaccess %}
-		<tr {% if editedaccess[email] %} data-edited="true"{% endif %}>
+		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} {% if email == user.email %} data-self {% endif %}>
 			<td class="who" data-value="{{ email }}">
 				{% if userinfo[email].avatar == 'gravatar' %}
 					<img src="{{ email | gravatar }}" alt="{{ email }}" class="avatar miniavatar" />&nbsp;
@@ -238,7 +238,7 @@
 			</td>
 			{% if has_domain_admin %}
 				<td class="actions">
-					{% if hasHigherAccess(access) and canChangeAccess(email) %}
+					{% if hasHigherAccess(access) or email == user.email %}
 						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
 					{% endif %}
 				</td>

@@ -25,8 +25,7 @@
 			$displayEngine->setVar('adminroute', true);
 			$displayEngine->setVar('pathprepend', '/admin');
 
-			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return true; }));
-			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccessLevel', function($level) { return true; }));
+			$displayEngine->getTwig()->addFunction(new Twig_Function('hasHigherAccess', function($level) { return true; }));
 		}
 	}
 
@@ -62,8 +61,6 @@
 
 		public function setVars($displayEngine) {
 			$displayEngine->setVar('pathprepend', '');
-
-			$displayEngine->getTwig()->addFunction(new Twig_Function('canChangeAccess', function($email) { return $email != session::getCurrentUser()['user']['email']; }));
 
 			$displayEngine->getTwig()->addFunction(new Twig_Function('hasHigherAccess', function($level) use ($displayEngine) {
 				$myAccess = $displayEngine->getVar('domain_access_level');

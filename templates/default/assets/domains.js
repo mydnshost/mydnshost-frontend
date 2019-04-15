@@ -398,10 +398,14 @@ function cancelEditAccess(row) {
 }
 
 function setEditAccess(row, who) {
+	var myAccess = $('#myaccess').data('myaccess');
+
 	var access = row.find('td.access');
 	var fieldName = (who == undefined) ? 'newAccess' : 'access';
 
 	var fieldID = (who == undefined) ? newAccessCount++ : who;
+
+	var isSelf = row.data('self') != undefined;
 
 	if (who == undefined) {
 		var whoField = row.find('td.who');
@@ -418,8 +422,14 @@ function setEditAccess(row, who) {
 
 	var select = '';
 	select += '<select class="form-control form-control-sm" name="' + fieldName + '[' + fieldID + '][level]">';
+	var skipLevel = myAccess != 'Owner (override)';
 	$.each(accessLevels, function(key, value) {
-		select += '	<option ' + (accessValue == value ? 'selected' : '') + ' value="' + escapeHtml(value) + '">' + value + '</option>';
+		if (skipLevel && !isSelf && value == myAccess) { skipLevel = false; return; }
+		if (!isSelf && skipLevel) { return; }
+
+		if (!isSelf || (accessValue == value || value == 'none')) {
+			select += '	<option ' + (accessValue == value ? 'selected' : '') + ' value="' + escapeHtml(value) + '">' + value + '</option>';
+		}
 	});
 	select += '</select>';
 	access.html(select);
