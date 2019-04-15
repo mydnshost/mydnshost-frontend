@@ -40,6 +40,12 @@
 					}
 
 					if ($canUpdate) {
+						unset($_POST['customdata']);
+
+						if (isset($_POST['domain_defaultpage']) && in_array($_POST['domain_defaultpage'], ['records', 'details'])) {
+							$_POST['customdata']['uk.co.mydnshost.www/domain/defaultpage'] = $_POST['domain_defaultpage'];
+						}
+
 						$result = $api->setUserInfo($_POST);
 
 						if (array_key_exists('error', $result)) {
@@ -48,11 +54,6 @@
 							}
 							$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . implode($result['errorData'], ', '));
 						} else {
-							if (in_array($_POST['domain_defaultpage'], ['records', 'details'])) {
-								$api->setCustomData('uk.co.mydnshost.www/domain/defaultpage', $_POST['domain_defaultpage']);
-								session::set('domain/defaultpage', $_POST['domain_defaultpage']);
-							}
-
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
 							header('Location: ' . $displayEngine->getURL('/profile'));

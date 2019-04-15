@@ -58,7 +58,7 @@
 		session::setCurrentUser($userdata);
 
 		session::set('domains', $api->getDomains());
-		$defaultPage = $api->getCustomData('uk.co.mydnshost.www/domain/defaultpage');
+		$defaultPage = isset($userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/domain/defaultpage'] : '';
 		session::set('domain/defaultpage', empty($defaultPage) ? 'details' : $defaultPage);
 
 		$requireTerms = false;
