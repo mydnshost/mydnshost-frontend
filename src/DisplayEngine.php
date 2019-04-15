@@ -248,6 +248,8 @@
 							$menu[] = $section;
 						}
 
+						$labelNames = ['' => 'Unlabelled'];
+
 						$domains = session::get('domains');
 						foreach ($domains as $domain => $label) {
 							$item = array();
@@ -273,14 +275,15 @@
 
 							$item['dataValue'] = implode(' ', $dataValue);
 
-							$sections[$label][] = $item;
+							if (!isset($labelNames[strtolower($label)])) { $labelNames[strtolower($label)] = $label; }
+							$sections[strtolower($label)][] = $item;
 						}
 
 						if (session::get('sidebar/layout') == 'labels') {
 							$labels = array_keys($sections);
 							sort($labels);
 							foreach ($labels as $label) {
-								$menu[] = array_merge([['title' => empty($label) ? 'none' : $label]], $sections[$label]);
+								$menu[] = array_merge([['title' => $labelNames[strtolower($label)]]], $sections[$label]);
 							}
 						} else {
 							foreach (['owner', 'admin', 'write', 'read'] as $section) {
