@@ -468,10 +468,6 @@
 						$records = $recordInfo['records'];
 					}
 
-					$domains = session::get('domains');
-					if (isset($domains[$domainData['domain']])) {
-						$domainData['access'] = $domains[$domainData['domain']];
-					}
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
 					$this->setSubtitle($displayEngine, $domainData);
