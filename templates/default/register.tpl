@@ -28,6 +28,10 @@
 	<div id='recaptcha' class="hidden g-recaptcha" data-sitekey="{{ recaptcha }}" data-callback="registerSubmit" data-size="invisible" data-badge="inline"></div>
 
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+        <div class="recaptchaterms small text-muted form-group">
+                This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+        </div>
 </form>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
