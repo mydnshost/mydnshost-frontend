@@ -25,7 +25,7 @@
 	</div>
 	{% endif %}
 
-	<div id='recaptcha' class="hidden g-recaptcha" data-sitekey="{{ recaptcha }}" data-callback="registerSubmit" data-size="invisible" data-badge="inline"></div>
+	<div id='recaptcha' class="g-recaptcha" data-sitekey="{{ recaptcha }}" data-callback="registerSubmit" data-size="invisible" data-badge=""></div>
 
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
 

@@ -35,6 +35,10 @@ main {
   display: none;
 }
 
+#recaptcha {
+  visibility: hidden;
+}
+
 .nav-pills .nav-link.active {
   cursor: pointer;
   cursor: hand;
