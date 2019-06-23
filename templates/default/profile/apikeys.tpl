@@ -26,7 +26,8 @@ API Keys below are masked for safety, you can unmask them by clicking on them.
 					{% else %}
 						<em>Hidden - click to view</em>
 					{% endif %}
-				</span>
+				</span><br>
+				<small><strong>Last Used:</strong> {% if keydata.lastused == 0 %}Never{% else %}{{ keydata.lastused | date }}{% endif %}</small>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
