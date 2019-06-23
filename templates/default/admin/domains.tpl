@@ -28,24 +28,21 @@
 			</td>
 			<td class="owner">
 				{% set foundowner = false %}
-				{% for user,access in domain.users if not break %}
-					{% if access == "owner" %}
-						{% if foundowner %}<br>{% endif %}
+				{% for user,access in domain.users | filter(a => a == "owner") -%}
+					{% if foundowner %}<br>{% endif %}
 
-						{% if domain.userinfo[user].avatar == 'gravatar' %}
-							<img src="{{ user | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
-						{% elseif domain.userinfo[user].avatar == 'none' %}
-							<img src="{{ 'none' | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
-						{% else %}
-							<img src="{{ domain.userinfo[user].avatar}}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
-						{% endif %}
-						{{ user }}
-						{% set foundowner = true %}
+					{% if domain.userinfo[user].avatar == 'gravatar' %}
+						<img src="{{ user | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
+					{% elseif domain.userinfo[user].avatar == 'none' %}
+						<img src="{{ 'none' | gravatar }}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
+					{% else %}
+						<img src="{{ domain.userinfo[user].avatar}}" alt="{{ user }}" class="avatar miniavatar" />&nbsp;
 					{% endif %}
-				{% endfor %}
-				{% if not foundowner %}
+					{{ user }}
+					{% set foundowner = true %}
+				{% else %}
 					<span class="text-muted">Unowned</span>
-				{% endif %}
+				{% endfor %}
 			</td>
 			<td class="actions">
 				{% if domain_defaultpage == 'records' %}
