@@ -28,7 +28,20 @@
 	$api = new MyDNSHostAPI($config['api']);
 	$impersonating = false;
 	if (session::exists('logindata')) {
-		$api->setAuth(session::get('logindata'));
+		$logindata = session::get('logindata');
+		$api->setAuth($logindata);
+
+		if ($logindata['type'] == 'jwt') {
+			// If our token expires within the next 15 minutes, then get a
+			// new one.
+			$expired = (time() + 15 * 60) >= $logindata['expires'];
+
+			if ($expired) {
+				$jwttoken = $api->getJWTToken();
+				$tokenData = parseJWT($jwttoken);
+				session::set('logindata', ['type' => 'jwt', 'token' => $jwttoken, 'expires' => $tokenData['exp']]);
+			}
+		}
 
 		if (session::exists('impersonate')) {
 			$api->impersonate(session::get('impersonate'), 'id');

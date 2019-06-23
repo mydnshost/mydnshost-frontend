@@ -75,9 +75,9 @@
 				}
 
 				$api->setAuthUserPass($user, $pass, $key);
-				$sessionID = $api->getSessionID();
+				$jwttoken = $api->getJWTToken();
 
-				if ($sessionID !== NULL) {
+				if ($jwttoken !== NULL) {
 					$lr = $api->getLastResponse();
 
 					if (isset($lr['device_id']) || isset($lr['device_name'])) {
@@ -91,7 +91,9 @@
 
 					$displayEngine->flash('success', 'Success!', 'You are now logged in.');
 
-					session::set('logindata', ['type' => 'session', 'sessionid' => $sessionID]);
+					$tokenData = parseJWT($jwttoken);
+
+					session::set('logindata', ['type' => 'jwt', 'token' => $jwttoken, 'expires' => $tokenData['exp']]);
 					session::set('csrftoken', genUUID());
 
 					if (session::exists('wantedPage')) {

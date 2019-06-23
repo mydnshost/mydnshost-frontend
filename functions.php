@@ -1,5 +1,10 @@
 <?php
 
+	use ReallySimpleJWT\Parse as JWTParse;
+	use ReallySimpleJWT\Jwt as JWTToken;
+	use ReallySimpleJWT\Validate as JWTValidate;
+	use ReallySimpleJWT\Encode as JWTEncode;
+
 	function getEnvOrDefault($var, $default) {
 		$result = getEnv($var);
 		return $result === FALSE ? $default : $result;
@@ -95,4 +100,22 @@
 	function systemGetTermsText() {
 		global $config;
 		return $config['register']['termsText'];
+	}
+
+	function parseJWT($token, $secret = '') {
+		try {
+			$token = new JWTToken($token, $secret);
+			$parse = new JWTParse($token, new JWTValidate(), new JWTEncode());
+
+			if (!empty($secret)) {
+				$parse = $parse->validate();
+			}
+
+			$parsed = $parse->parse();
+			if ($parsed != null) {
+				return $parsed->getPayload();
+			}
+		} catch (Exception $ex) { }
+
+		return [];
 	}
