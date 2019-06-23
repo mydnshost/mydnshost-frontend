@@ -206,6 +206,8 @@
 
 <H2>Domain Access</H2>
 
+<p>Control which users have access to view/edit this domain.</p>
+
 <form method="post" id="editaccess">
 <input type="hidden" name="csrftoken" value="{{csrftoken}}">
 <input type="hidden" name="changetype" value="access">
@@ -268,7 +270,9 @@
 {% if has_domain_write and domainkeys is not null %}
 <br><br>
 
-<H2>Domain Keys</H2>
+<H2>Domain API Keys</H2>
+
+<p>Domain API Keys are special API Keys used to allow access to only a single-domain rather than a whole account.</p>
 
 <table id="apikeys" class="table table-striped table-bordered">
 	<thead>
@@ -345,6 +349,8 @@
 <br><br>
 
 <H2>Domain Web Hooks</H2>
+
+<p>Web Hooks will be called when changes are made to the domain.</p>
 
 <table id="domainhooks" class="table table-striped table-bordered">
 	<thead>

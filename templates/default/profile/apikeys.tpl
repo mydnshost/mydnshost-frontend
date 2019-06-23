@@ -1,9 +1,8 @@
 <br><br>
 
 <H2>API Keys</H2>
-<p>
-API Keys below are masked for safety, you can unmask them by clicking on them.
-</p>
+<p>API Keys are used to allow programmatic access to certain account data without needing to provide the account username/password. Different keys can have different levels of access.</p>
+<p>API Keys below are masked for safety, you can unmask them by clicking on them.</p>
 <table id="apikeys" class="table table-striped table-bordered">
 	<thead>
 		<tr>

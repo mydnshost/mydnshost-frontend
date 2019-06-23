@@ -1,11 +1,11 @@
 <br><br>
 
 <H2>2FA Keys</H2>
-
+<p>
 Here you can see what 2FA Keys have been added to your account. If you have an active 2FA key assigned, you will need to provide the code from at least one of the active keys when ever you log in with a username and password.
-<br><br>
+</p><p>
 You will only be able to see the key and associated QR code for any keys that have not yet been activated.
-<br><br>
+</p>
 <table id="twofactorkeys" class="table table-striped table-bordered">
 	<thead>
 		<tr>

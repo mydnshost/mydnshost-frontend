@@ -1,9 +1,9 @@
 <br><br>
 
 <H2>Known Devices</H2>
-
+<p>
 Here you can see what devices have been saved to allow logging in without 2FA.
-<br><br>
+</p>
 <table id="twofactordevices" class="table table-striped table-bordered">
 	<thead>
 		<tr>
