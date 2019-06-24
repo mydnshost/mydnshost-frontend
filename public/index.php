@@ -107,11 +107,12 @@
 		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
-		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin', '2fa_push']);
+		$wanted = getWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
+		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin', '2fa_push', 'logindata']);
 
-		if ($hadLoginDetails) {
+		if ($hadLoginDetails && $wanted !== FALSE) {
 			setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
-			$displayEngine->flash('info', 'Session timeout', 'Your login session has timed out. Please log in again.');
+			$displayEngine->flash('info', 'Session timeout', 'Your login session has timed out, or there was a problem with the API. Please try logging in again.');
 
 			header('Location: ' . $displayEngine->getURL('/login'));
 			die();
