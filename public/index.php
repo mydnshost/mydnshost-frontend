@@ -108,7 +108,7 @@
 	} else {
 		$hadLoginDetails = session::exists('logindata');
 		$wanted = getWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
-		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin', '2fa_push', 'logindata']);
+		session::clear(['DisplayEngine::Flash', 'wantedPage', 'lastlogin', '2fa_push', 'logindata', 'csrftoken']);
 
 		if ($hadLoginDetails && $wanted !== FALSE) {
 			setWantedPage($displayEngine, $_SERVER['REQUEST_URI']);
