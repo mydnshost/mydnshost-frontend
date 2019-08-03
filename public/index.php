@@ -17,7 +17,7 @@
 	// Session storage
 	if (isset($config['redis']) && !empty($config['redis'])) {
 		ini_set('session.save_handler', 'redis');
-		ini_set('session.save_path', 'tcp://' . $config['redis'] . ':' . $config['redisPort'] . '/?prefix=' . urlencode($config['redisSessionPrefix'] . ':'))
+		ini_set('session.save_path', 'tcp://' . $config['redis'] . ':' . $config['redisPort'] . '/?prefix=' . urlencode($config['redisSessionPrefix'] . ':'));
 	}
 	session::init();
 
