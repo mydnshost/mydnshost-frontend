@@ -10,6 +10,13 @@
 
 	$config['sitename'] = getEnvOrDefault('SITE_NAME', 'MyDNSHost');
 
+	// Config for redis.
+	//
+	// This will be used for sessions instead of memcached if defined
+	$config['redis'] = getEnvOrDefault('REDIS_HOST', '');
+	$config['redisPort'] = getEnvOrDefault('REDIS_PORT', 6379);
+	$config['redisSessionPrefix'] = getEnvOrDefault('REDIS_SESSION_PREFIX', 'MyDNSHost-Web-Session');
+
 	$config['memcached'] = getEnvOrDefault('MEMCACHED', '');
 
 	$config['securecookies'] = getEnvOrDefault('SECURE_COOKIES', false);
