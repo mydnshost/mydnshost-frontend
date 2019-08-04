@@ -14,7 +14,13 @@
 			<th class="name">Details</th>
 			<td class="name">
 				<strong>Name:</strong> {{ job.name }} <br>
-				<strong>Payload:</strong> <span class="mono">{{ job.data }}</span>
+				<strong>Payload:</strong> <span class="mono">{{ job.data }}</span> <br>
+				{% if job.dependsOn %}
+					<strong>Depends On:</strong> {{ job.dependsOn | join(', ') }} <br>
+				{% endif %}
+				{% if job.dependants %}
+					<strong>Dependants:</strong> {{ job.dependants | join(', ') }} <br>
+				{% endif %}
 			</td>
 		</tr>
 		<tr>

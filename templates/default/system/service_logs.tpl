@@ -13,10 +13,14 @@
 	</thead>
 	<tbody>
 		{% for log in logs %}
-		<tr data-searchable-value="{{ log[2] }}" class="logtype_{{ log[0] }}">
-			<td class="timestamp">{{ log[1] }}</td>
-			<td class="log mono">{{ log[2] }}</td>
-		</tr>
+			<tr data-searchable-value="{{ log[2] }}" class="logtype_{{ log[0] }}">
+				<td class="timestamp">{{ log[1] }}</td>
+				<td class="log mono">{{ log[2] }}</td>
+			</tr>
+		{% else %}
+			<tr class="logtype_line">
+				<td colspan="2">There are no logs to show.</td>
+			</tr>
 		{% endfor %}
 	</tbody>
 </table>

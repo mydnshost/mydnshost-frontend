@@ -14,10 +14,14 @@
 	</thead>
 	<tbody>
 		{% for log in logs %}
-		<tr data-searchable-value="{{ log.data }}" class="logtype_line">
-			<td class="timestamp">{{ log.time | date }}</td>
-			<td class="log mono">{{ log.data }}</td>
-		</tr>
+			<tr data-searchable-value="{{ log.data }}" class="logtype_line">
+				<td class="timestamp">{{ log.time | date }}</td>
+				<td class="log mono">{{ log.data }}</td>
+			</tr>
+		{% else %}
+			<tr class="logtype_line">
+				<td colspan="2">There are no logs to show. Either the job didn't produce any output, or the JobLogger service is not running.</td>
+			</tr>
 		{% endfor %}
 	</tbody>
 </table>
