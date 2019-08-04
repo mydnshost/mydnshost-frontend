@@ -17,7 +17,7 @@
 			<td class="id">{{ job.id }}</td>
 			<td class="name">
 				<strong>Name:</strong> {{ job.name }} <br>
-				<strong>Payload:</strong> <span class="mono">{{ job.data }}</span>
+				<strong>Payload:</strong> <span class="mono breakable">{{ job.data }}</span>
 			</td>
 			<td class="times">
 				<strong>Created:</strong> {{ job.created | date }} <br>

@@ -226,6 +226,11 @@ table#domainlist td.domain small.subtitle {
   margin-left: 50px;
 }
 
+.breakable {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
 .mono {
   font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
