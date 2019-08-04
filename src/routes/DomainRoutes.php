@@ -36,8 +36,8 @@
 			if ($rdns !== FALSE) {
 				$displayEngine->setVar('subtitle', $rdns);
 				$displayEngine->setVar('rdns', 'true');
-			} else if (idn_to_ascii($domainData['domain']) != $domainData['domain']) {
-				$displayEngine->setVar('subtitle', idn_to_ascii($domainData['domain']));
+			} else if (do_idn_to_ascii($domainData['domain']) != $domainData['domain']) {
+				$displayEngine->setVar('subtitle', do_idn_to_ascii($domainData['domain']));
 			}
 		}
 
@@ -91,8 +91,8 @@
 					$rdns = getARPA($domain);
 					if ($rdns !== FALSE) {
 						$domainData['subtitle'] = 'RDNS: '. $rdns;
-					} else if (idn_to_ascii($domain) != $domain) {
-						$domainData['subtitle'] = idn_to_ascii($domain);
+					} else if (do_idn_to_ascii($domain) != $domain) {
+						$domainData['subtitle'] = do_idn_to_ascii($domain);
 					}
 
 					$allDomains[] = $domainData;

@@ -268,9 +268,9 @@
 								$dataValue[] = 'rdns';
 
 								$item['hover'] = 'RDNS: ' . $rdns;
-							} else if (idn_to_ascii($domain) != $domain) {
-								$dataValue[] = idn_to_ascii($domain);
-								$item['hover'] = idn_to_ascii($domain);
+							} else if (do_idn_to_ascii($domain) != $domain) {
+								$dataValue[] = do_idn_to_ascii($domain);
+								$item['hover'] = do_idn_to_ascii($domain);
 							}
 
 							$item['dataValue'] = implode(' ', $dataValue);

@@ -19,8 +19,8 @@
 							$rdns = getARPA($domain);
 							if ($rdns !== FALSE) {
 								$domainData['subtitle'] = 'RDNS: '. $rdns;
-							} else if (idn_to_ascii($domain) != $domain) {
-								$domainData['subtitle'] = idn_to_ascii($domain);
+							} else if (do_idn_to_ascii($domain) != $domain) {
+								$domainData['subtitle'] = do_idn_to_ascii($domain);
 							}
 						});
 
