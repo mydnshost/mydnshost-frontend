@@ -28,6 +28,7 @@
 			<td class="result">{{ job.result }}</td>
 			<td class="actions">
 				<a href="{{ url('/system/jobs/' ~ job.id ~ '/logs') }}" class="btn btn-success btn-sm">Logs</a>
+				<a href="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}" class="btn btn-warning btn-sm">Repeat</a>
 			</td>
 		</tr>
 		{% endfor %}

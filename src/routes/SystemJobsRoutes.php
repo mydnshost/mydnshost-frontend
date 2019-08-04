@@ -35,6 +35,17 @@
 					$displayEngine->display('system/job_logs.tpl');
 				});
 
+				$router->get('/system/jobs/([0-9]+)/repeat', function($job) use ($displayEngine, $api) {
+					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs :: ' . $job . ' :: Repeat');
+
+					$result = $api->api('/system/jobs/' . $job . '/repeat');
+
+					$displayEngine->setVar('result', isset($result['response']) ? $result['response'] : []);
+					$displayEngine->setVar('error', isset($result['error']) ? $result['error'] : []);
+
+					$displayEngine->display('system/job_repeat.tpl');
+				});
+
 			}
 
 		}
