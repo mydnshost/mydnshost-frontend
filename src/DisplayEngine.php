@@ -320,6 +320,9 @@
 				if ($this->hasPermission(['system_service_mgmt'])) {
 					$menu[] = ['link' => $this->getURL('/system/services'), 'title' => 'System Services', 'active' => ($this->pageID == '/system/services')];
 				}
+				if ($this->hasPermission(['system_job_mgmt'])) {
+					$menu[] = ['link' => $this->getURL('/system/jobs'), 'title' => 'Job Status', 'active' => ($this->pageID == '/system/jobs')];
+				}
 
 				if (count($menu) > 0) {
 					$public = ['link' => $this->getURL('/'), 'title' => 'Public', 'active' => (!startsWith($this->pageID, '/admin'))];

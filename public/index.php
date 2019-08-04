@@ -104,6 +104,7 @@
 			(new UserRoutes())->addRoutes($router, $displayEngine, $api);
 			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
 			(new SystemServiceRoutes())->addRoutes($router, $displayEngine, $api);
+			(new SystemJobsRoutes())->addRoutes($router, $displayEngine, $api);
 		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
@@ -125,7 +126,11 @@
 	addConfigRoutes($router, $displayEngine, $api, $userdata);
 
 	// Check CSRF Tokens.
-	$router->before('POST', '.*', function() {
+	$router->before('POST', '(.*)', function($page) {
+		// If we are trying to login, don't care about a CSRF Token that we may
+		// think we still have.
+		if ($page == 'login') { return; }
+
 		// Pre-Login, we don't have a CSRF Token assigned.
 		if (!session::exists('csrftoken')) { return; }
 

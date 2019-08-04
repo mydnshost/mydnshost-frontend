@@ -423,3 +423,60 @@ table#userlist td.permissions table td.actions {
 .tooltip-inner {
   max-width: 500px !important;
 }
+
+
+
+/**********************************************************************
+ * Jobs
+ **********************************************************************/
+table#joblogs th.timestamp, table#joblogs td.timestamp {
+  width: 300px;
+}
+
+table#jobinfo th {
+  width: 100px;
+}
+
+table#joblist th.id, table#joblist td.id {
+  width: 100px;
+}
+
+table#joblist th.name, table#joblist td.name {
+}
+
+table#joblist th.times, table#joblist td.times {
+    width: 350px;
+}
+
+table#joblist th.state, table#joblist td.state {
+      width: 100px;
+}
+
+table#joblist th.result, table#joblist td.result {
+    width: 100px;
+}
+
+table#joblist th.actions, table#joblist td.actions {
+    width: 100px;
+}
+
+
+
+/**********************************************************************
+ * Services
+ **********************************************************************/
+table#servicelogs th.timestamp, table#servicelogs td.timestamp {
+  width: 300px;
+}
+
+table#serviceinfo th {
+  width: 100px;
+}
+
+table#servicelist th.service, table#servicelist td.service {
+    width: 100px;
+}
+
+table#servicelist th.actions, table#servicelist td.actions {
+    width: 100px;
+}

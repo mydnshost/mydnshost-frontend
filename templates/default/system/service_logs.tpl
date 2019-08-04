@@ -15,7 +15,7 @@
 		{% for log in logs %}
 		<tr data-searchable-value="{{ log[2] }}" class="logtype_{{ log[0] }}">
 			<td class="timestamp">{{ log[1] }}</td>
-			<td class="log">{{ log[2] }}</td>
+			<td class="log mono">{{ log[2] }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
