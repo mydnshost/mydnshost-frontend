@@ -1,6 +1,7 @@
 <H1>Job :: {{ jobid }} :: Logs</H1>
 
-<a href="{{ url('/system/jobs/' ~ jobid ) }}" class="btn btn-primary">Back</a>
+<!-- <a href="{{ url('/system/jobs/' ~ jobid ) }}" class="btn btn-primary">Back</a> -->
+<a href="{{ url('/system/jobs' ) }}" class="btn btn-primary">Back</a>
 <a href="{{ url('/system/jobs/' ~ jobid ~ '/logs') }}" class="btn btn-success">Refresh</a>
 <br><br>
 
