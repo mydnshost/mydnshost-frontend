@@ -10,7 +10,7 @@
 			<th class="name">Details</th>
 			<td class="name">
 				<strong>Name:</strong> {{ job.name }} <br>
-				<strong>Payload:</strong> <pre>{{ job.data }}</pre>
+				<strong>Payload:</strong> <span class="mono">{{ job.data }}</span>
 			</td>
 		</tr>
 		<tr>
