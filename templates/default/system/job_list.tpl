@@ -13,7 +13,7 @@
 	</thead>
 	<tbody>
 		{% for job in jobs %}
-		<tr data-searchable-value="{{ job }}">
+		<tr data-searchable-value="{{ job.name }} {{ job.id }}">
 			<td class="id">{{ job.id }}</td>
 			<td class="name">
 				<strong>Name:</strong> {{ job.name }} <br>
