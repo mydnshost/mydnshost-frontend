@@ -27,11 +27,11 @@
 			<th class="times">Times</th>
 			<td class="times">
 				<strong>Created:</strong> {{ job.created | date }} <br>
-				<strong>Started:</strong> {{ job.started | date }} <br>
-				<strong>Finished:</strong> {{ job.finished | date }} <br>
+				<strong>Started:</strong> {% if job.started > 0 %}{{ job.started | date }}{% else %}Not started.{% endif %} <br>
+				<strong>Finished:</strong> {% if job.finished > 0 %}{{ job.finished | date }}{% else %}Not finished.{% endif %} <br>
 			</td>
 		</tr>
-		<tr>
+		<tr class="state-{{ job.state }}">
 			<th class="state">State</th>
 			<td class="state">{{ job.state }}</td>
 		</tr>

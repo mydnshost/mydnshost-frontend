@@ -465,7 +465,17 @@ table#joblist th.actions, table#joblist td.actions {
     width: 100px;
 }
 
+table#joblist tr.state-created, table#jobinfo tr.state-created {
+    background-color: #cce5ff;
+}
 
+table#joblist tr.state-started, table#jobinfo tr.state-started {
+    background-color: #fff3cd;
+}
+
+table#joblist tr.state-error, table#jobinfo tr.state-error {
+    background-color: #f8d7da;
+}
 
 /**********************************************************************
  * Services

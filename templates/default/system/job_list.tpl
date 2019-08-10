@@ -13,7 +13,7 @@
 	</thead>
 	<tbody>
 		{% for job in jobs %}
-		<tr data-searchable-value="{{ job.name }} {{ job.id }}">
+		<tr data-searchable-value="{{ job.name }} {{ job.id }}" class="state-{{ job.state }}">
 			<td class="id">{{ job.id }}</td>
 			<td class="name">
 				<strong>Name:</strong> {{ job.name }} <br>
@@ -27,8 +27,8 @@
 			</td>
 			<td class="times">
 				<strong>Created:</strong> {{ job.created | date }} <br>
-				<strong>Started:</strong> {{ job.started | date }} <br>
-				<strong>Finished:</strong> {{ job.finished | date }} <br>
+				<strong>Started:</strong> {% if job.started > 0 %}{{ job.started | date }}{% else %}Not started.{% endif %} <br>
+				<strong>Finished:</strong> {% if job.finished > 0 %}{{ job.finished | date }}{% else %}Not finished.{% endif %} <br>
 			</td>
 			<td class="state">{{ job.state }}</td>
 			<td class="result">{{ job.result }}</td>
