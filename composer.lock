@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "54c16d4c603f7f88ad3adf4dc58f443e",
@@ -130,9 +130,9 @@
             "authors": [
                 {
                     "name": "Michael Kliewe",
+                    "role": "Developer",
                     "email": "info@phpgangsta.de",
-                    "homepage": "http://www.phpgangsta.de/",
-                    "role": "Developer"
+                    "homepage": "http://www.phpgangsta.de/"
                 }
             ],
             "description": "Google Authenticator 2-factor authentication",
@@ -145,16 +145,16 @@
         },
         {
             "name": "rbdwllr/reallysimplejwt",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobDWaller/ReallySimpleJWT.git",
-                "reference": "6427616cd5899ea5df10353faac2053bf2b66c03"
+                "reference": "145c55fbd70ab2295059228e098e86bf4070eabc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobDWaller/ReallySimpleJWT/zipball/6427616cd5899ea5df10353faac2053bf2b66c03",
-                "reference": "6427616cd5899ea5df10353faac2053bf2b66c03",
+                "url": "https://api.github.com/repos/RobDWaller/ReallySimpleJWT/zipball/145c55fbd70ab2295059228e098e86bf4070eabc",
+                "reference": "145c55fbd70ab2295059228e098e86bf4070eabc",
                 "shasum": ""
             },
             "require": {
@@ -166,6 +166,7 @@
                 "phpmd/phpmd": "2.6.*",
                 "phpstan/phpstan": "^0.10",
                 "phpunit/phpunit": "^7.0",
+                "sebastian/phpcpd": "^4.0",
                 "squizlabs/php_codesniffer": "^3.0"
             },
             "type": "library",
@@ -194,7 +195,7 @@
                 "php",
                 "tokens"
             ],
-            "time": "2019-05-22T08:39:24+00:00"
+            "time": "2019-08-13T15:31:13+00:00"
         },
         {
             "name": "rmccue/requests",
@@ -407,19 +408,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
+                    "role": "Lead Developer",
                     "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "homepage": "http://fabien.potencier.org"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com",
-                    "role": "Project Founder"
+                    "role": "Project Founder",
+                    "email": "armin.ronacher@active-4.com"
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
-                    "role": "Contributors"
+                    "role": "Contributors",
+                    "homepage": "https://twig.symfony.com/contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
