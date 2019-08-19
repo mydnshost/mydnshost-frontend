@@ -481,8 +481,13 @@ table#joblist tr.state-error, table#jobinfo tr.state-error {
  * Services
  **********************************************************************/
 table#servicelogs th.timestamp, table#servicelogs td.timestamp {
+  width: 240px;
+}
+
+table#servicelogs th.stream, table#servicelogs td.stream {
   width: 300px;
 }
+
 
 table#serviceinfo th {
   width: 100px;
