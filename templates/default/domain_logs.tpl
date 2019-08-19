@@ -12,8 +12,8 @@
 	</thead>
 	<tbody>
 		{% for log in logs %}
-		<tr data-searchable-value="{{ log }}">
-			<td class="log">{{ log }}</td>
+		<tr data-searchable-value="{{ log['message'] }}">
+			<td class="log">{{ log['message'] }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
