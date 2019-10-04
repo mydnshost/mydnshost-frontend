@@ -164,6 +164,9 @@
 		{% if hasPermission(['domains_logs']) %}
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-primary" role="button">Logs</a>
 		{% endif %}
+		{% if hasPermission(['system_job_mgmt']) %}
+			<a href="{{ url("#{pathprepend}/system/jobs?filter[data][domain]=#{domain.domain}") }}" class="btn btn-primary" role="button">Jobs</a>
+		{% endif %}
 		<div class="float-right">
 			{% if has_domain_write %}
 				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Resync Zone</a>
