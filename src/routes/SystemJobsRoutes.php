@@ -7,7 +7,9 @@
 				$router->get('/system/jobs', function() use ($displayEngine, $api) {
 					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs');
 
-					$jobs = $api->api('/system/jobs/list');
+					$filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : [];
+
+					$jobs = $api->api('/system/jobs/list?' . http_build_query(['filter' => $filter]));
 					$displayEngine->setVar('jobs', isset($jobs['response']) ? $jobs['response'] : []);
 
 					$displayEngine->display('system/job_list.tpl');
