@@ -519,11 +519,21 @@
 				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Export');
 
+				$displayEngine->setVar('exportTypes', $api->getSystemDataValue('exportTypes'));
+
 				if ($domainData !== NULL) {
-					$zone = $api->exportZone($domain);
+					$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : NULL;
+					$zone = $api->exportZone($domain, $type);
 
 					$displayEngine->setVar('domain', $domainData);
-					$displayEngine->setVar('zone', $zone);
+					if (empty($zone)) {
+						$lr = $api->getLastResponse();
+						if (isset($lr['error'])) {
+							$displayEngine->flash('error', '', 'There was an error exporting the zone: ' . $lr['error']);
+						}
+					} else {
+						$displayEngine->setVar('zone', $zone);
+					}
 
 					$displayEngine->display('export_domain.tpl');
 				} else {
@@ -597,12 +607,15 @@
 				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Import');
 
+				$displayEngine->setVar('importTypes', $api->getSystemDataValue('importTypes'));
+
 				if ($domainData !== NULL) {
 					$displayEngine->setVar('domain', $domainData);
 					$zone = '';
 					if ($router->getRequestMethod() == "POST") {
 						$zone = isset($_POST['zone']) ? $_POST['zone'] : '';
-						$result = $api->importZone($domain, $zone);
+						$type = isset($_POST['type']) ? $_POST['type'] : NULL;
+						$result = $api->importZone($domain, $zone, $type);
 
 						if (array_key_exists('errorData', $result)) {
 							$displayEngine->flash('error', '', 'There was an error importing the zone: ' . $result['errorData']);
@@ -617,6 +630,7 @@
 					}
 
 					$displayEngine->setVar('zone', $zone);
+					$displayEngine->setVar('type', $type);
 					$displayEngine->display('import_domain.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
