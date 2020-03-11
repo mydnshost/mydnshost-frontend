@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<th>Email Address</th>
-			<td data-name="email" data-value="{{ user.email }}">{{ user.email }}</td>
+			<td {% if not hasPermission(['admin_managed_user']) %}data-name="email" data-value="{{ user.email }}"{% endif %}>{{ user.email }}</td>
 		</tr>
 		<tr>
 			<th>
@@ -32,6 +32,7 @@
 				{% endif %}
 			</td>
 		</tr>
+		{% if not hasPermission(['admin_managed_user']) %}
 		<tr data-hidden="true" class="hidden">
 			<th>
 				New Password<br>
@@ -46,6 +47,7 @@
 			</th>
 			<td data-type="password" data-name="confirmpassword" data-value=""></td>
 		</tr>
+		{% endif %}
 
 		<tr>
 			<th>Default domain page</th>
