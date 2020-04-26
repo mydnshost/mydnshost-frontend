@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54c16d4c603f7f88ad3adf4dc58f443e",
+    "content-hash": "e9f3c37599486f476d71eb6e92bddb84",
     "packages": [
         {
             "name": "bramus/router",
-            "version": "1.4.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bramus/router.git",
-                "reference": "60926db086b797c77081ea1165d1f590464adf13"
+                "url": "https://github.com/ShaneMcC/bramus-router.git",
+                "reference": "40105ae77448c3ba3bb339c6cd2b4e17fd4c2767"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bramus/router/zipball/60926db086b797c77081ea1165d1f590464adf13",
-                "reference": "60926db086b797c77081ea1165d1f590464adf13",
+                "url": "https://api.github.com/repos/ShaneMcC/bramus-router/zipball/40105ae77448c3ba3bb339c6cd2b4e17fd4c2767",
+                "reference": "40105ae77448c3ba3bb339c6cd2b4e17fd4c2767",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,17 @@
                     "Bramus": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit --colors=always"
+                ],
+                "lint": [
+                    "php-cs-fixer fix --diff --dry-run"
+                ],
+                "fix": [
+                    "php-cs-fixer fix"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -51,7 +61,10 @@
                 "router",
                 "routing"
             ],
-            "time": "2019-02-27T10:21:04+00:00"
+            "support": {
+                "source": "https://github.com/ShaneMcC/bramus-router/tree/master"
+            },
+            "time": "2020-04-26T00:52:14+00:00"
         },
         {
             "name": "google/recaptcha",
@@ -248,16 +261,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.13.1",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
                 "shasum": ""
             },
             "require": {
@@ -269,7 +282,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -302,20 +315,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-11-27T13:56:44+00:00"
+            "time": "2020-02-27T09:26:54+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.13.1",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f"
+                "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7b4aab9743c30be783b73de055d24a39cf4b954f",
-                "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
+                "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
                 "shasum": ""
             },
             "require": {
@@ -327,7 +340,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -361,7 +374,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-11-27T14:18:11+00:00"
+            "time": "2020-03-09T19:04:49+00:00"
         },
         {
             "name": "twig/twig",
@@ -433,6 +446,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "bramus/router": 20,
         "phpgangsta/googleauthenticator": 20
     },
     "prefer-stable": false,
