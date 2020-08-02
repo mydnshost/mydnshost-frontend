@@ -233,7 +233,7 @@ function setEditable(row, recordid) {
 		var key = field.data('radio');
 
 		var radioButtons = '';
-		radioButtons += '<div class="btn-group" data-toggle="buttons">';
+		radioButtons += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
 		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
