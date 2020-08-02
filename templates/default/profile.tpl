@@ -89,7 +89,7 @@
 
 		<div class="float-right">
 			{% if candelete %}
-				<a href="{{ url("/profile/delete") }}" class="btn btn-info btn-danger" role="button">Delete Account</a>
+				<a href="{{ url("/profile/delete") }}" class="btn btn-danger" role="button">Delete Account</a>
 			{% endif %}
 		</div>
 	</div>
