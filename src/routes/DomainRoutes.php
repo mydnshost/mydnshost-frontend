@@ -478,6 +478,9 @@
 						$hasNS = $recordInfo['hasNS'];
 					} else {
 						// Find by hand if the API doesn't tell us.
+						// This won't resolve RRCLONE records, but this shouldn't
+						// matter as an API that supports RRCLONE will return
+						// a hasNS result.
 						foreach ($records as $r) {
 							if ($r['type'] == 'NS' && !parseBool($r['disabled']) && $r['name'] === '') {
 								$hasNS = true;
