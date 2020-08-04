@@ -17,7 +17,9 @@ Import records from zone file.
 		<div class="form-group">
 			Zone Format: <select name="type" class="form-control">
 				{% for importType in importTypes %}
-					<option value="{{ importType }}" {% if importType == type %}selected{% endif %}>{{ importType }}</option>
+					<option value="{{ importType }}" {% if importType == type %}selected{% endif %}>
+						{{ importType }}{% if descriptions[importType] %} - {{ descriptions[importType] }}{% endif %}
+					</option>
 				{% endfor %}
 			</select>
 		</div>

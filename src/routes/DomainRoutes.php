@@ -522,7 +522,9 @@
 				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Export');
 
-				$displayEngine->setVar('exportTypes', $api->getSystemDataValue('exportTypes'));
+				$et = $api->getSystemDataValue('exportTypes', true);
+				$displayEngine->setVar('exportTypes', $et['exportTypes']);
+				$displayEngine->setVar('descriptions', $et['descriptions']);
 
 				if ($domainData !== NULL) {
 					$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : NULL;
@@ -610,7 +612,9 @@
 				$this->setSubtitle($displayEngine, $domainData);
 				$this->setPageID($displayEngine, '/domain/' . $domain)->setTitle('Domain :: ' . $domain . ' :: Import');
 
-				$displayEngine->setVar('importTypes', $api->getSystemDataValue('importTypes'));
+				$it = $api->getSystemDataValue('importTypes', true);
+				$displayEngine->setVar('importTypes', $it['importTypes']);
+				$displayEngine->setVar('descriptions', $it['descriptions']);
 
 				if ($domainData !== NULL) {
 					$displayEngine->setVar('domain', $domainData);

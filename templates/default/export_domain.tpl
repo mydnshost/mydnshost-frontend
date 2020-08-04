@@ -16,7 +16,7 @@ Below is the zone contents as a zone file.
 		Show as:
 		<ul>
 			{% for type in exportTypes %}
-				<li> <a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export?type=#{type}") }}">{{ type }}</a>
+				<li> <a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export?type=#{type}") }}">{{ type }}{% if descriptions[type] %} - {{ descriptions[type] }}{% endif %}</a>
 			{% endfor %}
 		</ul>
 	</div>
