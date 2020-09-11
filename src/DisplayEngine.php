@@ -235,7 +235,7 @@
 					$menu = [];
 					$sections = [];
 
-					if (session::exists('domains') && !startsWith($this->pageID, '/admin')) {
+					if (session::exists('sidebarDomains') && !startsWith($this->pageID, '/admin')) {
 						$vars['title'] = 'Domains List';
 						$vars['showsearch'] = true;
 
@@ -250,7 +250,7 @@
 
 						$labelNames = ['' => 'Unlabelled'];
 
-						$domains = session::get('domains');
+						$domains = session::get('sidebarDomains');
 						foreach ($domains as $domain => $label) {
 							$item = array();
 							$item['link'] = $this->getURL('/domain/' . $domain);

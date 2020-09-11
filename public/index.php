@@ -77,12 +77,12 @@
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
 		$domains = [];
+		$sidebarDomains = $domains = $api->getDomains(['type' => 'access']);
 		if ($sidebarLayout == 'labels') {
-			$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label']);
-		} else {
-			$domains = $api->getDomains(['type' => 'access']);
+			$sidebarDomains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label']);
 		}
 		session::set('domains', $domains);
+		session::set('sidebarDomains', $sidebarDomains);
 
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {
