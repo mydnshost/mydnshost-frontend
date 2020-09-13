@@ -38,8 +38,12 @@
 
 			if ($expired) {
 				$jwttoken = $api->getJWTToken();
-				$tokenData = parseJWT($jwttoken);
-				session::set('logindata', ['type' => 'jwt', 'token' => $jwttoken, 'expires' => $tokenData['exp']]);
+				if ($jwttoken == NULL) {
+					// Token has very very expired, abort.
+				} else {
+					$tokenData = parseJWT($jwttoken);
+					session::set('logindata', ['type' => 'jwt', 'token' => $jwttoken, 'expires' => $tokenData['exp']]);
+				}
 			}
 		}
 

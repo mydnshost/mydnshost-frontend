@@ -426,6 +426,7 @@
 						$result = $api->setDomainRecords($domain, $data);
 
 						if (array_key_exists('errorData', $result)) {
+							$otherErrors = [];
 							foreach ($result['errorData'] as $id => $error) {
 								if (array_key_exists($id, $errorMap)) {
 									list($rtype, $rid) = $errorMap[$id];
@@ -436,11 +437,27 @@
 									}
 
 									$submitted[$rtype][$rid]['errorData'] = $error;
+								} else {
+									$otherErrors[$id] = $error;
 								}
 							}
 							$displayEngine->flash('error', '', 'There was some errors with some of the submitted records. None of the changes have been saved. Please fix the problems and then try again.');
+
+							if (!empty($otherErrors)) {
+								foreach ($otherErrors as $type => $data) {
+									array_unshift($data, $type . ' failure:');
+									$displayEngine->flash('error', '', $data);
+								}
+							}
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
+
+							if (array_key_exists('zonecheck', $result['response'])) {
+								$zonecheck = $result['response']['zonecheck'];
+								if (!empty($zonecheck)) {
+									$displayEngine->flash('info', '', $zonecheck);
+								}
+							}
 
 							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain . '/records'));
 							return;
