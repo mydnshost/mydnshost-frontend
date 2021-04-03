@@ -16,6 +16,7 @@
 			<th class="id">ID</th>
 			<th class="email">Email</th>
 			<th class="realname">Realname</th>
+			<th class="access">Access</th>
 			<th class="permissions">Permissions</th>
 			<th class="state">Disabled</th>
 			<th class="actions">Actions</th>
@@ -66,6 +67,17 @@
 						<span class="small muted text-success">(User accepted terms at {{ userinfo.termstime | date('r') }})</span>
 					{% endif %}
 				{% endif %}
+			</td>
+			<td class="access">
+				<ul>
+					{% if userinfo.accesscount is empty %}
+						<li> None
+					{% else %}
+						{% for access,count in userinfo.accesscount %}
+							<li> <strong>{{ access }}</strong> {{ count }}
+						{% endfor %}
+					{% endif %}
+				</ul>
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
