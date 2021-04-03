@@ -192,7 +192,7 @@
 
 						if (isset($_POST['removeselfaccess']) && parseBool($_POST['removeselfaccess'])) {
 							$user = session::getCurrentUser();
-							$data['access'][$user['email']] = 'none';
+							$data['access'][$user['user']['email']] = 'none';
 						} else {
 							$edited = isset($_POST['access']) ? $_POST['access'] : [];
 							$new = isset($_POST['newAccess']) ? $_POST['newAccess'] : [];

@@ -290,5 +290,98 @@
 			}
 
 
+			if ($displayEngine->hasPermission(['manage_blocks'])) {
+				$router->get('/admin/blockregexes', function() use ($displayEngine, $api) {
+					$displayEngine->setPageID('/admin/blockregexes')->setTitle('Admin :: BlockRegexes');
+
+					$blockregexes = $api->getAllBlockRegexes();
+					$displayEngine->setVar('blockregexes', $blockregexes);
+					$displayEngine->setVar('time', time());
+
+					$displayEngine->display('admin/blockregexes.tpl');
+				});
+
+				$router->get('/admin/blockregexes/(create|[0-9]+)', function($blockregexid) use ($displayEngine, $api) {
+					$error = false;
+
+					if ($blockregexid == 'create') {
+						$displayEngine->setPageID('/admin/blockregexes')->setTitle('Admin :: BlockRegexes :: Create');
+						$displayEngine->setVar('create', true);
+					} else {
+						$displayEngine->setPageID('/admin/blockregexes')->setTitle('Admin :: BlockRegexes :: ' . $blockregexid);
+						$blockregex = $api->getBlockRegex($blockregexid);
+						if (isset($blockregex['id'])) {
+							$displayEngine->setVar('blockregex', $blockregex);
+						} else {
+							$error = true;
+						}
+					}
+
+					$displayEngine->setVar('time', time());
+
+					if ($error) {
+						$displayEngine->flash('error', '', 'No such blockregex ID: ' . $blockregexid);
+						header('Location: ' . $displayEngine->getURL('/admin/blockregexes'));
+					} else {
+						$displayEngine->display('admin/blockregex.tpl');
+					}
+				});
+
+				$router->post('/admin/blockregexes/(create|[0-9]+)', function($blockregexid) use ($displayEngine, $api) {
+					$fields = ['title' => 'You must specify a title.',
+					           'content' => 'You must specify content.',
+					           'visiblefrom' => 'You must specify visible from.',
+					           'visibleuntil' => 'You must specify visible until.',
+					          ];
+
+					$canUpdate = true;
+
+					$create = ($blockregexid == 'create');
+
+					foreach ($fields as $field => $error) {
+						if (!array_key_exists($field, $_POST) || ($_POST[$field] != "0" && empty($_POST[$field]))) {
+							$canUpdate = false;
+							$displayEngine->flash('error', '', 'There was an error updating the blockregex: ' . $error);
+							break;
+						}
+					}
+
+					if ($canUpdate) {
+						$result = ($create ? $api->createBlockRegex($_POST) : $api->updateBlockRegex($blockregexid, $_POST));
+
+						if (array_key_exists('error', $result)) {
+							$errorData = $result['error'];
+							if (array_key_exists('errorData', $result)) {
+								$errorData .= ' => ' . is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData'];
+							}
+							if ($create) {
+								$displayEngine->flash('error', '', 'There was an error creating the blockregex: ' . $errorData);
+							} else {
+								$displayEngine->flash('error', '', 'There was an error updating the blockregex: ' . $errorData);
+							}
+						} else {
+							if ($create) {
+								$displayEngine->flash('success', '', 'New blockregex has been created');
+							} else {
+								$displayEngine->flash('success', '', 'BlockRegex has been updated');
+							}
+							header('Location: ' . $displayEngine->getURL('/admin/blockregexes'));
+							return;
+						}
+					}
+
+					header('Location: ' . $displayEngine->getURL('/admin/blockregexes'));
+					return;
+				});
+
+				$router->post('/admin/blockregexes/([0-9]+)/delete', function($blockregexid) use ($displayEngine, $api) {
+					$result = $api->deleteBlockRegex($blockregexid);
+
+					header('Content-Type: application/json');
+					echo json_encode($result);
+				});
+			}
+
+
 		}
 	}

@@ -38,10 +38,8 @@
 				</span>
 			</td>
 			<td class="actions">
-				{% if userinfo.email != user.email %}
-					<a href="{{ url('/admin/articles/' ~ article.id) }}" class="btn btn-sm btn-success">View/Edit</a>
-					<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</a>
-				{% endif %}
+				<a href="{{ url('/admin/articles/' ~ article.id) }}" class="btn btn-sm btn-success">View/Edit</a>
+				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</a>
 			</td>
 		</tr>
 		{% endfor %}
