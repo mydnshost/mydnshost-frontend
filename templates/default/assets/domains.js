@@ -405,7 +405,7 @@ function setEditAccess(row, who) {
 
 	var fieldID = (who == undefined) ? newAccessCount++ : who;
 
-	var isSelf = row.data('self') != undefined;
+	var isSelf = row.data('self') != undefined && (myAccess != 'Owner (override)');
 
 	if (who == undefined) {
 		var whoField = row.find('td.who');
