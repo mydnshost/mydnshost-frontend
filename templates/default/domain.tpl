@@ -240,6 +240,10 @@
 			</td>
 			<td class="access" data-value="{{ access }}" {% if editedaccess[email] %} data-edited-value="{{ editedaccess[email].level }}" {% endif %}>
 				{{ access }}
+				{% if not has_domain_admin and email == user.email %}
+				    {# TODO: Prompt for this? #}
+					<button type="submit" name="removeselfaccess" value="true" class="btn btn-sm btn-danger" data-action="removeselfaccess" role="button">Leave Domain</button>
+				{% endif %}
 			</td>
 			{% if has_domain_admin %}
 				<td class="actions">

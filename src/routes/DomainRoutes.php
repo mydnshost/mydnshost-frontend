@@ -187,16 +187,22 @@
 							return;
 						}
 					} else if ($router->getRequestMethod() == "POST" && isset($_POST['changetype']) && $_POST['changetype'] == 'access') {
-						$edited = isset($_POST['access']) ? $_POST['access'] : [];
-						$new = isset($_POST['newAccess']) ? $_POST['newAccess'] : [];
-
 						// Try to submit, to see if we have any errors.
 						$data = ['access' => []];
-						foreach ($edited as $id => $access) {
-							$data['access'][$id] = $access['level'];
-						}
-						foreach ($new as $access) {
-							$data['access'][$access['who']] = $access['level'];
+
+						if (isset($_POST['removeselfaccess']) && parseBool($_POST['removeselfaccess'])) {
+							$user = session::getCurrentUser();
+							$data['access'][$user['email']] = 'none';
+						} else {
+							$edited = isset($_POST['access']) ? $_POST['access'] : [];
+							$new = isset($_POST['newAccess']) ? $_POST['newAccess'] : [];
+
+							foreach ($edited as $id => $access) {
+								$data['access'][$id] = $access['level'];
+							}
+							foreach ($new as $access) {
+								$data['access'][$access['who']] = $access['level'];
+							}
 						}
 
 						$result = $api->setDomainAccess($domain, $data);
