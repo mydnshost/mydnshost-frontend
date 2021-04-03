@@ -314,6 +314,9 @@
 				if ($this->hasPermission(['manage_articles'])) {
 					$menu[] = ['link' => $this->getURL('/admin/articles'), 'title' => 'Manage Articles', 'active' => ($this->pageID == '/admin/aticles')];
 				}
+				if ($this->hasPermission(['manage_blocks'])) {
+					$menu[] = ['link' => $this->getURL('/admin/blockregexes'), 'title' => 'Manage Blocks', 'active' => ($this->pageID == '/admin/blockregexes')];
+				}
 				if ($this->hasPermission(['system_stats'])) {
 					$menu[] = ['link' => $this->getURL('/admin/stats'), 'title' => 'System Statistics', 'active' => ($this->pageID == '/admin/stats')];
 				}

@@ -328,10 +328,7 @@
 				});
 
 				$router->post('/admin/blockregexes/(create|[0-9]+)', function($blockregexid) use ($displayEngine, $api) {
-					$fields = ['title' => 'You must specify a title.',
-					           'content' => 'You must specify content.',
-					           'visiblefrom' => 'You must specify visible from.',
-					           'visibleuntil' => 'You must specify visible until.',
+					$fields = ['regex' => 'You must specify a regex.',
 					          ];
 
 					$canUpdate = true;

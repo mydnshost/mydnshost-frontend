@@ -27,7 +27,7 @@
 				{{ blockregex.id }}
 			</td>
 			<td class="regex">
-				{{ blockregex.regex }}
+				<pre>{{ blockregex.regex }}</pre>
 			</td>
 			<td class="comment">
 				{{ blockregex.comment }}

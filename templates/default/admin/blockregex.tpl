@@ -42,19 +42,19 @@
 		<tr>
 			<th>Signup Name</th>
 			<td class="form-group">
-				<input type="checkbox" name="signup_name" id="signup_name" {%if blockregex.signup_name %}checked{% endif %} class="form-check-input">
+				<input type="checkbox" name="signup_name" id="signup_name" {%if blockregex.signup_name %}checked{% endif %} class="">
 			</td>
 		</tr>
 		<tr>
 			<th>Signup Email</th>
 			<td class="form-group">
-				<input type="checkbox" name="signup_email" id="signup_email" {%if blockregex.signup_email %}checked{% endif %} class="form-check-input">
+				<input type="checkbox" name="signup_email" id="signup_email" {%if blockregex.signup_email %}checked{% endif %} class="">
 			</td>
 		</tr>
 		<tr>
 			<th>Domain Name</th>
 			<td class="form-group">
-				<input type="checkbox" name="domain_name" id="domain_name" {%if blockregex.domain_name %}checked{% endif %} class="form-check-input">
+				<input type="checkbox" name="domain_name" id="domain_name" {%if blockregex.domain_name %}checked{% endif %} class="">
 			</td>
 		</tr>
 		<tr>
