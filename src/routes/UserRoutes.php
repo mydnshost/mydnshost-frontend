@@ -54,9 +54,11 @@
 
 						if (array_key_exists('error', $result)) {
 							if (!array_key_exists('errorData', $result)) {
+								$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . $result['error']);
+							} else {
 								$result['errorData'] = ['Unspecified error. (Email address already in use?)'];
+								$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . implode(', ', $result['errorData']));
 							}
-							$displayEngine->flash('error', '', 'There was an error updating your profile data: ' . implode($result['errorData'], ', '));
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
@@ -247,7 +249,7 @@
 					if (!array_key_exists('errorData', $apiresult)) {
 						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error adding the new 2FA Key: ' . (is_array($apiresult['errorData']) ? implode($apiresult['errorData'], ' // ') : $apiresult['errorData'])];
+					$result = ['error', 'There was an error adding the new 2FA Key: ' . (is_array($apiresult['errorData']) ? implode(' // ', $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$newkey = $apiresult['response'];
 					$result = ['success', 'New 2FA Key Added: ' . $newkey['description'] . ' - key must be verified before use.'];
