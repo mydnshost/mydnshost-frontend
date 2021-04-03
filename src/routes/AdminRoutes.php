@@ -335,6 +335,15 @@
 
 					$create = ($blockregexid == 'create');
 
+					// Boolean fields are not send if not ticked.
+					foreach (['signup_email', 'signup_name', 'domain_name'] as $field) {
+						if (!array_key_exists($field, $_POST) || empty($_POST[$field])) {
+							$_POST[$field] = false;
+						} else {
+							$_POST[$field] = true;
+						}
+					}
+
 					foreach ($fields as $field => $error) {
 						if (!array_key_exists($field, $_POST) || ($_POST[$field] != "0" && empty($_POST[$field]))) {
 							$canUpdate = false;
