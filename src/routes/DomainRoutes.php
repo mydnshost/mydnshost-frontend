@@ -64,7 +64,7 @@
 		public function setVars($displayEngine) {
 			$displayEngine->setVar('pathprepend', '');
 
-			$displayEngine->getTwig()->addFunction(new Twig_Function('hasHigherAccess', function($level) use ($displayEngine) {
+			$displayEngine->getTwig()->addFunction(new TwigFunction('hasHigherAccess', function($level) use ($displayEngine) {
 				$myAccess = $displayEngine->getVar('domain_access_level');
 				if ($myAccess == 'owner') {
 					return ($level == 'admin' || $level == 'write' || $level == 'read' || $level == 'none');
