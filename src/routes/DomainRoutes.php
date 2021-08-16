@@ -1,4 +1,6 @@
 <?php
+	use Twig\TwigFunction as Twig_Function;
+
 	class AdminDomainRoutes extends DomainRoutes {
 		public function setAccessVars($displayEngine, $domainData) {
 			parent::setAccessVars($displayEngine, $domainData);
