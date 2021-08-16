@@ -1,5 +1,5 @@
 <?php
-	use Twig\TwigFunction as Twig_Function;
+	use Twig\TwigFunction;
 
 	class AdminDomainRoutes extends DomainRoutes {
 		public function setAccessVars($displayEngine, $domainData) {
@@ -27,7 +27,7 @@
 			$displayEngine->setVar('adminroute', true);
 			$displayEngine->setVar('pathprepend', '/admin');
 
-			$displayEngine->getTwig()->addFunction(new Twig_Function('hasHigherAccess', function($level) { return true; }));
+			$displayEngine->getTwig()->addFunction(new TwigFunction('hasHigherAccess', function($level) { return true; }));
 		}
 	}
 

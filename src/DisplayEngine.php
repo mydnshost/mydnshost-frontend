@@ -1,10 +1,10 @@
 <?php
 
-	use Twig\Loader\FilesystemLoader as Twig_Loader_Filesystem;
-	use Twig\Environment as Twig_Environment;
-	use Twig\Extension\DebugExtension as Twig_Extension_Debug;
-	use Twig\TwigFunction as Twig_Function;
-	use Twig\TwigFilter as Twig_Filter;
+	use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
+	use Twig\Environment as TwigEnvironment;
+	use Twig\Extension\DebugExtension as TwigDebugExtension;
+	use Twig\TwigFunction;
+	use Twig\TwigFilter;
 
 	class DisplayEngine {
 		private $twig;
@@ -19,7 +19,7 @@
 		public function __construct($siteconfig) {
 			$config = $siteconfig['templates'];
 
-			$loader = new Twig_Loader_Filesystem();
+			$loader = new TwigFilesystemLoader();
 			$themes = [];
 			if (isset($config['theme'])) {
 				$themes = is_array($config['theme']) ? $config['theme'] : [$config['theme']];
@@ -33,38 +33,38 @@
 				}
 			}
 
-			$twig = new Twig_Environment($loader, array(
+			$twig = new TwigEnvironment($loader, array(
 				'cache' => $config['cache'],
 				'auto_reload' => true,
 				'debug' => true,
 				'autoescape' => 'html',
 			));
 
-			$twig->addExtension(new Twig_Extension_Debug());
+			$twig->addExtension(new TwigDebugExtension());
 
 			$this->basepath = dirname($_SERVER['SCRIPT_FILENAME']) . '/';
 			$this->basepath = preg_replace('#^' . preg_quote($_SERVER['DOCUMENT_ROOT']) . '#', '/', $this->basepath);
 			$this->basepath = preg_replace('#^/+#', '/', $this->basepath);
 
-			$twig->addFunction(new Twig_Function('url', function ($path) { return $this->getURL($path); }));
-			$twig->addFunction(new Twig_Function('apiurl', function ($path) use ($siteconfig) { return sprintf('%s/%s', rtrim($siteconfig['api_public'], '/'), ltrim($path, '/')); }));
-			$twig->addFunction(new Twig_Function('getVar', function ($var) { return $this->getVar($var); }));
-			$twig->addFunction(new Twig_Function('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
+			$twig->addFunction(new TwigFunction('url', function ($path) { return $this->getURL($path); }));
+			$twig->addFunction(new TwigFunction('apiurl', function ($path) use ($siteconfig) { return sprintf('%s/%s', rtrim($siteconfig['api_public'], '/'), ltrim($path, '/')); }));
+			$twig->addFunction(new TwigFunction('getVar', function ($var) { return $this->getVar($var); }));
+			$twig->addFunction(new TwigFunction('hasPermission', function($permissions) { return $this->hasPermission($permissions); }));
 
-			$twig->addFunction(new Twig_Function('startsWith', function($haystack, $needle) { return startsWith($haystack, $needle); }));
-			$twig->addFunction(new Twig_Function('endsWith', function($haystack, $needle) { return endsWith($haystack, $needle); }));
-			$twig->addFunction(new Twig_Function('parseBool', function($input) { return parseBool($input); }));
+			$twig->addFunction(new TwigFunction('startsWith', function($haystack, $needle) { return startsWith($haystack, $needle); }));
+			$twig->addFunction(new TwigFunction('endsWith', function($haystack, $needle) { return endsWith($haystack, $needle); }));
+			$twig->addFunction(new TwigFunction('parseBool', function($input) { return parseBool($input); }));
 
-			$twig->addFunction(new Twig_Function('flash', function() { $this->displayFlash(); }));
-			$twig->addFunction(new Twig_Function('showSidebar', function() { $this->showSidebar(); }));
-			$twig->addFunction(new Twig_Function('showHeaderMenu', function() { $this->showHeaderMenu(); }));
-			$twig->addFunction(new Twig_Function('getARPA', function($domain) { return getARPA($domain); }));
+			$twig->addFunction(new TwigFunction('flash', function() { $this->displayFlash(); }));
+			$twig->addFunction(new TwigFunction('showSidebar', function() { $this->showSidebar(); }));
+			$twig->addFunction(new TwigFunction('showHeaderMenu', function() { $this->showHeaderMenu(); }));
+			$twig->addFunction(new TwigFunction('getARPA', function($domain) { return getARPA($domain); }));
 
-			$twig->addFilter(new Twig_Filter('getARPA', function($domain) {
+			$twig->addFilter(new TwigFilter('getARPA', function($domain) {
 				return getARPA($domain);
 			}));
 
-			$twig->addFilter(new Twig_Filter('gravatar', function($input, $size = 20, $default = '') {
+			$twig->addFilter(new TwigFilter('gravatar', function($input, $size = 20, $default = '') {
 				if ($input != 'none') { $input = md5(strtolower($input)); }
 
 				if ($default == '') {
@@ -74,15 +74,15 @@
 				return '//www.gravatar.com/avatar/' . $input . '.jpg?s=' . $size . '&d=' . $default;
 			}));
 
-			$twig->addFilter(new Twig_Filter('yesno', function($input) {
+			$twig->addFilter(new TwigFilter('yesno', function($input) {
 				return parseBool($input) ? "Yes" : "No";
 			}));
 
-			$twig->addFilter(new Twig_Filter('date', function($input) {
+			$twig->addFilter(new TwigFilter('date', function($input) {
 				return date('r', $input);
 			}));
 
-			$twig->addFilter(new Twig_Filter('getRFC6238QRCode', function($input) {
+			$twig->addFilter(new TwigFilter('getRFC6238QRCode', function($input) {
 				$ga = new PHPGangsta_GoogleAuthenticator();
 				$user = session::getCurrentUser();
 				return $ga->getQRCodeGoogleUrl($this->getVar('sitename') . ' ' . $user['user']['email'], $input);
