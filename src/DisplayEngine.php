@@ -249,6 +249,7 @@
 							$section = [];
 							$section[] = ['title' => 'Extra'];
 							$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
+							$section[] = ['title' => 'Find Records', 'link' => $this->getURL('domains/findRecords'),];
 							$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
 
 							$menu[] = $section;

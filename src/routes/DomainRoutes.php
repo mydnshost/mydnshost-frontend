@@ -145,6 +145,37 @@
 				return;
 			});
 
+			$router->get('/domains/findRecords', function() use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+				$this->setPageID($displayEngine, '/domains/')->setTitle('Domains :: Find Records');
+
+				$displayEngine->display('domains_findrecords.tpl');
+			});
+
+			$router->post('/domains/findRecords', function() use ($router, $displayEngine, $api) {
+				$recordContent = $_POST['recordContent'];
+
+				$domains = $api->getDomains(['search' => true, 'content' => $recordContent]);
+
+				$allDomains = [];
+				foreach ($domains as $domain => $data) {
+					$domainData = ['domain' => $domain, 'records' => $data['records']];
+					$rdns = getARPA($domain);
+					if ($rdns !== FALSE) {
+						$domainData['subtitle'] = 'RDNS: '. $rdns;
+					} else if (do_idn_to_ascii($domain) != $domain) {
+						$domainData['subtitle'] = do_idn_to_ascii($domain);
+					}
+
+					$allDomains[] = $domainData;
+				}
+
+				$displayEngine->setVar('domains', $allDomains);
+				$displayEngine->setVar('recordContent', $recordContent);
+				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
+				$displayEngine->display('domains_findrecords.tpl');
+			});
+
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
 				$this->setVars($displayEngine);
