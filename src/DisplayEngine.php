@@ -245,15 +245,14 @@
 						$vars['title'] = 'Domains List';
 						$vars['showsearch'] = true;
 
+						$section = [];
+						$section[] = ['title' => 'Extra'];
+						$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
+						$section[] = ['title' => 'Find Records', 'link' => $this->getURL('domains/findRecords'),];
 						if ($this->hasPermission(['domains_create'])) {
-							$section = [];
-							$section[] = ['title' => 'Extra'];
-							$section[] = ['title' => 'My Domains', 'link' => $this->getURL('/domains'),];
-							$section[] = ['title' => 'Find Records', 'link' => $this->getURL('domains/findRecords'),];
 							$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
-
-							$menu[] = $section;
 						}
+						$menu[] = $section;
 
 						$labelNames = ['' => 'Unlabelled'];
 

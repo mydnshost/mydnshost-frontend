@@ -153,6 +153,9 @@
 			});
 
 			$router->post('/domains/findRecords', function() use ($router, $displayEngine, $api) {
+				$this->setVars($displayEngine);
+				$this->setPageID($displayEngine, '/domains/')->setTitle('Domains :: Find Records');
+
 				$recordContent = $_POST['recordContent'];
 
 				$domains = $api->getDomains(['search' => true, 'content' => $recordContent]);

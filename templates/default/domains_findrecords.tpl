@@ -19,7 +19,8 @@
 		{% if domain.subtitle %}
 			<small class="subtitle">({{ domain.subtitle }})</small>
 		{% endif %}
-		<a href="{{ url('/domain/' ~ domain.domain ~ '/records') }}" class="btn btn-sm btn-success">Edit Records</a><br><br>
+		<a href="{{ url(pathprepend ~ '/domain/' ~ domain.domain) }}" class="btn btn-sm btn-primary">View Domain</a>
+		<a href="{{ url(pathprepend ~ '/domain/' ~ domain.domain ~ '/records') }}" class="btn btn-sm btn-success">Edit Records</a><br><br>
 	</h2>
 	<h4>Matching Records</h4>
 	<table class="table table-striped table-bordered">

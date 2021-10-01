@@ -2,12 +2,14 @@
 
 <input class="form-control" data-search-top="table#domainlist" value="" placeholder="Search..."><br>
 
-{% if hasPermission(['domains_create', 'manage_domains']) %}
 <div class="float-right">
-	<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>
+	<a href="{{ url('/admin/domains/findRecords') }}" class="btn btn-success">Find Records</a>
+	{% if hasPermission(['domains_create', 'manage_domains']) %}
+		<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>
+	{% endif %}
 </div>
 <br><br>
-{% endif %}
+
 
 <table id="domainlist" class="table table-striped table-bordered">
 	<thead>
