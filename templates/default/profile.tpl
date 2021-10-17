@@ -81,17 +81,21 @@
 
 <div class="row" id="usercontrols">
 	<div class="col">
-		<button type="button" data-action="edituser" class="btn btn-primary" role="button">Edit user details</button>
-		<button type="button" data-action="saveuser" class="btn btn-success hidden" role="button">Save</button>
+		{% if hasPermission(['user_write']) %}
+			<button type="button" data-action="edituser" class="btn btn-primary" role="button">Edit user details</button>
+			<button type="button" data-action="saveuser" class="btn btn-success hidden" role="button">Save</button>
+		{% endif %}
 		{% if hasPermission(['domains_stats']) %}
 			<a href="{{ url("/profile/stats") }}" class="btn btn-primary" role="button">Profile Statistics</a>
 		{% endif %}
 
-		<div class="float-right">
-			{% if candelete %}
-				<a href="{{ url("/profile/delete") }}" class="btn btn-danger" role="button">Delete Account</a>
-			{% endif %}
-		</div>
+		{% if hasPermission(['user_write']) %}
+			<div class="float-right">
+				{% if candelete %}
+					<a href="{{ url("/profile/delete") }}" class="btn btn-danger" role="button">Delete Account</a>
+				{% endif %}
+			</div>
+		{% endif %}
 	</div>
 </div>
 
@@ -112,7 +116,7 @@
 			<button class="btn btn-lg btn-primary btn-block" type="submit">De-Authenticate</button>
 		</form>
 	</div>
-{% else %}
+{% elseif (hasPermission(['user_write']) or hasPermission(['user_read'])) %}
 	<br><br>
 
 	<H2>API/2FA Key Authentication</H2>
