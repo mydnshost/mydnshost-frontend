@@ -1,4 +1,4 @@
-FROM shanemcc/docker-apache-php-base:latest
+FROM registry.shanemcc.net/public/docker-apache-php-base:latest
 MAINTAINER Shane Mc Cormack <dataforce@dataforce.org.uk>
 
 COPY . /dnsfrontend
