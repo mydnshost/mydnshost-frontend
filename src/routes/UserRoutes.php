@@ -125,9 +125,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error adding the new API Key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error adding the new API Key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$returnedkeys = array_keys($apiresult['response']);
 					$newkey = array_shift($returnedkeys);
@@ -154,7 +154,7 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
 					$result = ['error', 'There was an error editing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
@@ -180,9 +180,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error removing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Key removed.'];
 				}
@@ -206,9 +206,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error removing the device: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error removing the device: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Device removed.'];
 				}
@@ -279,7 +279,7 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
 					$result = ['error', 'There was an error editing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
@@ -305,9 +305,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error removing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Key removed.'];
 				}
@@ -332,7 +332,7 @@
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {
-					$result = ['error', 'There was an error verifying the key: ' . $apiresult['error']];
+					$result = ['error', 'There was an error verifying the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else if (array_key_exists('info', $apiresult)) {
 					$result = ['info', $apiresult['info']];
 				} else {

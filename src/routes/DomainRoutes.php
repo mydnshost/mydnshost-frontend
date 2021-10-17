@@ -282,9 +282,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error adding the new Domain Key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error adding the new Domain Key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$returnedkeys = array_keys($apiresult['response']);
 					$newkey = array_shift($returnedkeys);
@@ -310,7 +310,7 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
 					$result = ['error', 'There was an error editing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
@@ -335,9 +335,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error removing the key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error removing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Key removed.'];
 				}
@@ -364,9 +364,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error adding the new Domain Hook: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error adding the new Domain Hook: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$returnedhooks = array_keys($apiresult['response']);
 					$newhook = array_shift($returnedhooks);
@@ -392,9 +392,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error editing the hook: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error editing the hook: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Hook edited.'];
 				}
@@ -417,9 +417,9 @@
 
 				if (array_key_exists('error', $apiresult)) {
 					if (!array_key_exists('errorData', $apiresult)) {
-						$apiresult['errorData'] = 'Unspecified error.';
+						$apiresult['errorData'] = $apiresult['error'];
 					}
-					$result = ['error', 'There was an error removing the hook: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error removing the hook: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Hook removed.'];
 				}
