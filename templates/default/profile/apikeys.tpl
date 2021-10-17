@@ -12,6 +12,7 @@
 			<th class="domains_write">Domain Write</th>
 			<th class="user_read">User Read</th>
 			<th class="user_write">User Write</th>
+			<th class="admin_features">Admin Features</th>
 			<th class="actions">Actions</th>
 		</tr>
 	</thead>
