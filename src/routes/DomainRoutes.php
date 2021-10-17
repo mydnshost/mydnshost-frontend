@@ -491,6 +491,8 @@
 									$displayEngine->flash('error', '', $data);
 								}
 							}
+						} else if (array_key_exists('error', $result)) {
+							$displayEngine->flash('error', '', 'There was an error: ' . $result['error']);
 						} else {
 							$displayEngine->flash('success', '', 'Your changes have been saved.');
 
