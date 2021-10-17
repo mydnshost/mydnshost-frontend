@@ -156,7 +156,7 @@
 					if (!array_key_exists('errorData', $apiresult)) {
 						$apiresult['errorData'] = 'Unspecified error.';
 					}
-					$result = ['error', 'There was an error editing the key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error editing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Key edited.'];
 				}
@@ -281,7 +281,7 @@
 					if (!array_key_exists('errorData', $apiresult)) {
 						$apiresult['errorData'] = 'Unspecified error.';
 					}
-					$result = ['error', 'There was an error editing the key: ' . $apiresult['errorData']];
+					$result = ['error', 'There was an error editing the key: ' . (is_array($apiresult['errorData']) ? implode("\n", $apiresult['errorData']) : $apiresult['errorData'])];
 				} else {
 					$result = ['success', 'Key edited.'];
 				}
