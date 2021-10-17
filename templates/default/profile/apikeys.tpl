@@ -59,6 +59,13 @@
 					<span class="badge badge-danger">No</span>
 				{% endif %}
 			</td>
+			<td class="admin_features" data-radio data-name="admin_features" data-value="{{ keydata.admin_features | yesno }}">
+				{% if keydata.admin_features == 'true' %}
+					<span class="badge badge-success">Yes</span>
+				{% else %}
+					<span class="badge badge-danger">No</span>
+				{% endif %}
+			</td>
 			<td class="actions" rowspan="2">
 				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
 				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
@@ -74,7 +81,7 @@
 		</tr>
 		<tr data-value="{{ key }}" class="{% if loop.index % 2 != 0 %}odd{% endif %}">
 			<th>Record Regex</th>
-			<td class="recordregex mono" data-text data-name="recordregex" data-value="{{ keydata.recordregex }}" colspan=3>
+			<td class="recordregex mono" data-text data-name="recordregex" data-value="{{ keydata.recordregex }}" colspan=4>
 				{{ keydata.recordregex }}
 			</td>
 		<tr>
