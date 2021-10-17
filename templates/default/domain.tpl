@@ -286,6 +286,7 @@
 		<tr>
 			<th class="key">Key</th>
 			<th class="description">Description</th>
+			<th class="recordregex">Record Regex</th>
 			<th class="domains_write">Domain Write</th>
 			<th class="actions">Actions</th>
 		</tr>
@@ -305,6 +306,9 @@
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
+			</td>
+			<td class="recordregex" data-text data-name="recordregex" data-value="{{ keydata.recordregex }}">
+				{{ keydata.recordregex }}
 			</td>
 			<td class="domains_write" data-radio data-name="domains_write" data-value="{{ keydata.domains_write | yesno }}">
 				{% if keydata.domains_write == 'true' %}
