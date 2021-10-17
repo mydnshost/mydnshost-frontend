@@ -3,7 +3,7 @@
 <H2>API Keys</H2>
 <p>API Keys are used to allow programmatic access to certain account data without needing to provide the account username/password. Different keys can have different levels of access.</p>
 <p>API Keys below are masked for safety, you can unmask them by clicking on them.</p>
-<table id="apikeys" class="table table-striped table-bordered">
+<table id="apikeys" class="table table-bordered">
 	<thead>
 		<tr>
 			<th class="key">Key</th>
@@ -17,8 +17,8 @@
 	</thead>
 	<tbody>
 		{% for key,keydata in apikeys %}
-		<tr {% if editedaccess[email] %} data-edited="true"{% endif %} data-value="{{ key }}">
-			<td class="key">
+		<tr data-value="{{ key }}" class="{% if loop.index % 2 != 0 %}odd{% endif %}">
+			<td class="key" rowspan=2>
 				<span class="pointer" data-hiddenText="{{ key }}">
 					{% if keydata.maskedkey %}
 						{{ keydata.maskedkey }}
@@ -28,7 +28,7 @@
 				</span><br>
 				<small><strong>Last Used:</strong> {% if keydata.lastused == 0 %}Never{% else %}{{ keydata.lastused | date }}{% endif %}</small>
 			</td>
-			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
+			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}" rowspan=2>
 				{{ keydata.description }}
 			</td>
 			<td class="domains_read" data-radio data-name="domains_read" data-value="{{ keydata.domains_read | yesno }}">
@@ -59,7 +59,7 @@
 					<span class="badge badge-danger">No</span>
 				{% endif %}
 			</td>
-			<td class="actions">
+			<td class="actions" rowspan="2">
 				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
 				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
@@ -72,6 +72,12 @@
 				</form>
 			</td>
 		</tr>
+		<tr data-value="{{ key }}" class="{% if loop.index % 2 != 0 %}odd{% endif %}">
+			<th>Record Regex</th>
+			<td class="recordregex mono" data-text data-name="recordregex" data-value="{{ keydata.recordregex }}" colspan=3>
+				{{ keydata.recordregex }}
+			</td>
+		<tr>
 		{% endfor %}
 	</tbody>
 </table>

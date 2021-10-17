@@ -57,10 +57,12 @@ $(function() {
 
 	$('button[data-action="editkey"]').click(function () {
 		var row = $(this).parent('td').parent('tr');
+		var nextRow = row.next();
 		var recordid = row.data('value');
 
 		if ($(this).data('action') == "editkey") {
 			setKeyEditable(row, recordid);
+			setKeyEditable(nextRow, recordid);
 
 			$(this).data('action', 'cancel');
 			$(this).html('Cancel');
@@ -68,6 +70,7 @@ $(function() {
 			$(this).addClass('btn-warning');
 		} else if ($(this).data('action') == "cancel") {
 			cancelEditKey(row);
+			cancelEditKey(nextRow);
 
 			$(this).data('action', 'editkey');
 			$(this).html('Edit');
@@ -80,12 +83,17 @@ $(function() {
 
 	$('button[data-action="savekey"]').click(function () {
 		var row = $(this).parent('td').parent('tr');
+		var nextRow = row.next();
 		var saveform = row.find('form.editform');
 
 		$('input[type="text"]', row).each(function (index) {
 			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
 		});
 		$('input[type="radio"]:checked', row).each(function (index) {
+			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
+		});
+
+		$('input[type="text"]', nextRow).each(function (index) {
 			saveform.append('<input type="hidden" name="' + $(this).attr('name') + '" value="' + escapeHtml($(this).val()) + '">');
 		});
 

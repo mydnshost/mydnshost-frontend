@@ -568,6 +568,10 @@ table#apikeys th.key, table#apikeys td.key {
   width: 375px;
 }
 
+table#apikeys tr.odd {
+  background-color: rgba(0,0,0,.05);
+}
+
 table#apikeys th.description, table#apikeys td.description {
 
 }
