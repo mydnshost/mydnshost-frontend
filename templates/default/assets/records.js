@@ -12,7 +12,9 @@ var recordtypes = {
   "DS": "Delegation Signer (DS)",
   "SSHFP": "SSH Fingerprint (SSHFP)",
   "TLSA": "TLSA Record",
-  "RRCLONE": "RR Clone"
+  "RRCLONE": "RR Clone",
+  "SVCB": "SVCB (Service Binding) Record",
+  "HTTPS": "HTTPS Record"
 };
 
 var newRecordCount = 0;
@@ -354,6 +356,8 @@ $.validator.addMethod("validateContent", function(value, element) {
 	} else if (record_type == 'SRV' && !record_content.match(/^[0-9]+ [0-9]+ .+$/)) {
 		error = true;
 		errorReason = 'SRV records should be formatted as \'<weight> <port> <address>\' eg \'1 443 somehost.com\'.';
+	} else if (record_type == 'SVCB' || record_type == 'HTTPS') {
+		// TODO: Validation.
 	} else if (record_type == 'CAA' && !record_content.match(/^[0-9]+ [a-z]+ "[^\s]+"$/i)) {
 		error = true;
 		errorReason = 'CAA record content should have the format: <flag> <tag> "<value>"';
@@ -368,8 +372,8 @@ $.validator.addMethod("validateContent", function(value, element) {
 		errorReason = 'DS record content should have the format: <keytag> <algorithm> <digesttype> <digest>';
 	}
 
-    $(element).data('validationErrorReason', errorReason.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
-    return !error;
+  $(element).data('validationErrorReason', errorReason.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+  return !error;
 }, function (params, element) {
 	return $(element).data('validationErrorReason');
 });
@@ -385,7 +389,7 @@ $.validator.addMethod("validatePriority", function(value, element) {
 	var error = false;
 	var errorReason = '';
 
-	if ($.inArray(record_type, ['MX', 'SRV']) != -1 && record_priority == '') {
+	if ($.inArray(record_type, ['MX', 'SRV', 'SVCB', 'HTTPS']) != -1 && record_priority == '') {
 		error = true;
 		errorReason = 'Priority is required for ' + record_type;
 	}
