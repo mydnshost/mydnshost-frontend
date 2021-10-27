@@ -534,7 +534,7 @@ table#records th.actions, table#records td.actions {
   width: 200px;
 }
 
-table#records td input, table#records td select {
+table#records td > input, table#records td > select {
   width: 100%;
 }
 
