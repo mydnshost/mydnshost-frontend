@@ -295,9 +295,12 @@ function cancelEdit(row) {
 
 	$.each(fields, function(key, field) {
 		if (key == "name" && field.data('value') == '') {
-			field.text('@');
+			field.text(' @ ');
 		} else {
-			field.text(field.data('value'));
+			field.text(' ' + field.data('value') + ' ');
+		}
+		if (key == "name" && field.data('comment') != '') {
+			field.append($('<span class="badge badge-info">!</span>').attr('title', field.data('comment')).before(" "));
 		}
 
 		field.data('edited-value', null);

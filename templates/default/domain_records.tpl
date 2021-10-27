@@ -84,6 +84,9 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 				{% else %}
 					{{ record.name }}
 				{% endif %}
+				{% if record.comment != '' %}
+					<span class="badge badge-info" title="{{ record.comment }}">!</span>
+				{% endif %}
 			</td>
 			<td class="type mono" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
 				{{ record.type }}
