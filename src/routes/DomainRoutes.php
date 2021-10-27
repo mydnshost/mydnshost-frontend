@@ -529,6 +529,20 @@
 						$records = $recordInfo['records'];
 					}
 
+					// Set PTR info if applicable
+					$rdns = getARPA($domainData['domain']);
+					if ($rdns !== FALSE) {
+						// echo '<pre>';
+						foreach (array_keys($records) as $rid) {
+							if ($records[$rid]['name'] !== '') {
+								$rarpa = getFullARPAIP($records[$rid]['name'] . '.' . $domainData['domain']);
+								if ($rarpa !== FALSE) {
+									$records[$rid]['subtitle'] = $rarpa;
+								}
+							}
+						}
+					}
+
 					$displayEngine->setVar('domain', $domainData);
 					$this->setAccessVars($displayEngine, $domainData);
 					$this->setSubtitle($displayEngine, $domainData);

@@ -219,6 +219,13 @@ function setEditable(row, recordid) {
 			// Also show the comment.
 			var commentValue = (field.data('edited-comment') == undefined || field.data('edited-comment') == null) ? field.data('comment') : field.data('edited-comment');
 			field.append($('<div class="d-flex flex-row flex-nowrap"><strong class="align-self-center">Comment:</strong><input style="width: inherit; flex-grow: 1;" type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][comment]" value="' + escapeHtml(commentValue) + '"></div>'));
+
+			// And the subtitle
+			if (field.data('subtitle') != '') {
+				var subtitle = $('<small><em></em></small>');
+				$('em', subtitle).text(field.data('subtitle'));
+				field.append(subtitle);
+			}
 		}
 		$('input', field).on("paste", handlePaste);
 	});
@@ -299,8 +306,16 @@ function cancelEdit(row) {
 		} else {
 			field.text(' ' + field.data('value') + ' ');
 		}
-		if (key == "name" && field.data('comment') != '') {
-			field.append($('<span class="badge badge-info">!</span>').attr('title', field.data('comment')).before(" "));
+		if (key == "name") {
+			if (field.data('comment') != '') {
+				field.append($('<span class="badge badge-info">!</span>').attr('title', field.data('comment')).before(" "));
+			}
+
+			if (field.data('subtitle') != '') {
+				var subtitle = $('<br><small><em></em></small>');
+				$('em', subtitle).text(field.data('subtitle'));
+				field.append(subtitle);
+			}
 		}
 
 		field.data('edited-value', null);

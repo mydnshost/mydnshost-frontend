@@ -75,7 +75,7 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 			{% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}
 			>
 
-			<td class="name mono" data-value="{{ record.name }}" data-comment="{{ record.comment }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"  data-edited-comment="{{ record.edited.comment }}"{% endif %}
+			<td class="name mono" data-value="{{ record.name }}" data-comment="{{ record.comment }}" data-subtitle="{{ record.subtitle }}" {% if record.edited %}data-edited-value="{{ record.edited.name }}"  data-edited-comment="{{ record.edited.comment }}"{% endif %}
 				{% if endsWith(record.name, '.' ~ domain.domain) %}data-warning-data="You probably do not need to include '.{{domain.domain}}' here."{% endif %}
 				{% if record.name == domain.domain %}data-warning-data="You probably want to use '@' not '{{domain.domain}}' here."{% endif %}
 				>
@@ -86,6 +86,9 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 				{% endif %}
 				{% if record.comment != '' %}
 					<span class="badge badge-info" title="{{ record.comment }}">!</span>
+				{% endif %}
+				{% if record.subtitle != '' %}
+					<br><small><em>{{ record.subtitle }}</em></small>
 				{% endif %}
 			</td>
 			<td class="type mono" data-value="{{ record.type }}" {% if record.edited %}data-edited-value="{{ record.edited.type }}"{% endif %}>
