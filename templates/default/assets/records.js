@@ -97,7 +97,7 @@ $(function() {
 
 		var row = '';
 		row += '<tr class="new">';
-		row += '	<td class="name" data-value=""></td>';
+		row += '	<td class="name" data-value="" data-comment=""></td>';
 		row += '	<td class="type" data-value="' + defaultType + '"></td>';
 		row += '	<td class="priority" data-value=""></td>';
 		row += '	<td class="content" data-value=""></td>';
