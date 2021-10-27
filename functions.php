@@ -100,10 +100,10 @@
 		} else if (preg_match('/.*\.in-addr\.arpa$/', $domain)) {
 			$mainptr = substr($domain, 0, strlen($domain) - 13);
 			$pieces = array_reverse(explode('.', $mainptr));
-			$dom = implode('.', $pieces);
-			$repeat = 4 - count($pieces);
+			$dom = implode('.', array_slice($pieces, 0, 3));
+			$repeat = 3 - count($pieces);
 			if ($repeat < 0) { $repeat = 0; }
-			$rdns = $dom . str_repeat('.0', $repeat);
+			$rdns = $dom . str_repeat('.0', $repeat) . '.' . $pieces[count($pieces) - 1];
 
 			return $rdns;
 		}
