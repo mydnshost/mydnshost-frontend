@@ -107,7 +107,7 @@
 			$router->get('/domains/create', function() use ($router, $displayEngine, $api) {
 				$this->setVars($displayEngine);
 				$this->setPageID($displayEngine, '/domains/')->setTitle('Add Domain');
-				$displayEngine->display('createdomain.tpl');
+				$displayEngine->display('domain_create.tpl');
 			});
 
 			$router->post('/domains/create', function() use ($displayEngine, $api) {
@@ -271,7 +271,7 @@
 					$displayEngine->display('domain.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
@@ -584,7 +584,7 @@
 					$displayEngine->display('domain_records.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
@@ -615,10 +615,10 @@
 						$displayEngine->setVar('zone', $zone);
 					}
 
-					$displayEngine->display('export_domain.tpl');
+					$displayEngine->display('domain_export.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
@@ -653,7 +653,7 @@
 					}
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
@@ -673,7 +673,7 @@
 					$displayEngine->display('domain_logs.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
@@ -713,10 +713,10 @@
 
 					$displayEngine->setVar('zone', $zone);
 					$displayEngine->setVar('type', $type);
-					$displayEngine->display('import_domain.tpl');
+					$displayEngine->display('domain_import.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);
-					$displayEngine->display('unknown_domain.tpl');
+					$displayEngine->display('domain_unknown.tpl');
 				}
 			});
 
