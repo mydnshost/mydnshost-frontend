@@ -4,62 +4,66 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com/ https://www.gstatic.com/ 'unsafe-inline' https://www.google.com/recaptcha/; img-src 'self' www.gravatar.com *;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com/ https://www.gstatic.com/ 'unsafe-inline' https://www.google.com/recaptcha/; img-src data: 'self' www.gravatar.com *;">
 
     <title>{{ sitename }} :: {{ pagetitle }}</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha512-rO2SXEKBSICa/AfyhEK5ZqWFCOok1rcgPYfGOqtX35OyiraBg6Xa4NnBJwXgpIRoXeWjcAmcQniMhp22htDc6g==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="{{ url('assets/style.css') }}" rel="stylesheet">
 
-    <!-- Bootstrap core JavaScript -->
+    <!-- MyDNSHost core JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha512-hCP3piYGSBPqnXypdKxKPSOzBHF75oU8wQ81a6OiGXHFMeKs9/8ChbgYl7pUvwImXJb03N4bs1o1DzmbokeeFw==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha512-I5TkutApDjnWuX+smLIPZNhw+LhTd8WrQhdCKsxCFRSvhFx2km8ZfEpNIhF9nq04msHhOkE8BMOBj5QE07yhMA==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js" integrity="sha256-UOSXsAgYN43P/oVrmU+JlHtiDGYWN2iHnJuKY9WD+Jg=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
 
   <body>
     {% block navbar %}
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="{{ url('/') }}">{{ sitename }}</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url('/') }}">{{ sitename }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbar">
-      	{{ showHeaderMenu() }}
+        <div class="collapse navbar-collapse" id="navbar">
+        	{{ showHeaderMenu() }}
 
-        <div class="navbar-nav">
-          {% if impersonating %}
-              <a href="{{ url('/impersonate/cancel') }}" class="btn btn-danger my-2 my-sm-0 mr-sm-2">Cancel Impersonation</a>
-          {% endif %}
+          <div class="navbar-nav">
+            {% if impersonating %}
+                <a href="{{ url('/impersonate/cancel') }}" class="btn btn-danger my-2 my-sm-0 me-sm-2">Cancel Impersonation</a>
+            {% endif %}
 
-          {% if user or domainkey %}
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {% if user %}
-                {% if user.avatar == 'gravatar' %}
-                  <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
-                {% elseif user.avatar == 'none' %}
-                  <img src="{{ 'none' | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
-                {% else %}
-                  <img src="{{ user.avatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+            {% if user or domainkey %}
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if user %}
+                  {% if user.avatar == 'gravatar' %}
+                    <img src="{{ user.email | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                  {% elseif user.avatar == 'none' %}
+                    <img src="{{ 'none' | gravatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                  {% else %}
+                    <img src="{{ user.avatar }}" alt="{{ user.realname }}" class="avatar miniavatar" />&nbsp;
+                  {% endif %}
+                  {{ user.realname }}
+                {% elseif domainkey %}
+                  DomainKey :: {{ domainkey.domain }} :: {{ domainkey.description }}
                 {% endif %}
-                {{ user.realname }}
-              {% elseif domainkey %}
-                DomainKey :: {{ domainkey.domain }} :: {{ domainkey.description }}
-              {% endif %}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {% if user %}
-                <a class="dropdown-item" href="{{ url('/profile') }}">Profile</a>
-                <div class="dropdown-divider"></div>
-              {% endif %}
-              <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if user %}
+                  <a class="dropdown-item" href="{{ url('/profile') }}">Profile</a>
+                  <div class="dropdown-divider"></div>
+                {% endif %}
+                <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
+              </div>
             </div>
+            {% endif %}
           </div>
-          {% endif %}
         </div>
       </div>
     </nav>

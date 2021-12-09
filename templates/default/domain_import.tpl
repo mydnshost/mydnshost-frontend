@@ -25,8 +25,12 @@ Import records from zone file.
 		</div>
 	{% endif %}
 	<div class="form-group">
-		<button type="submit" class="btn btn-primary btn-block">Import Zone</button>
+		<div class="d-grid mt-2 gap-2">
+			<button type="submit" class="btn btn-primary">Import Zone</button>
+		</div>
 	</div>
 </form>
 
-<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-warning btn-block" role="button">Cancel</a>
+<div class="d-grid mt-2 gap-2">
+	<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-warning" role="button">Cancel</a>
+</div>

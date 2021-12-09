@@ -22,6 +22,6 @@ $(function() {
 			});
 		});
 
-		$('#confirmDelete').modal({'backdrop': 'static'});
+		$('#confirmDelete').modal({'backdrop': 'static'}).modal('show');
 	});
 });

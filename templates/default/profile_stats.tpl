@@ -5,7 +5,9 @@
 
 <div data-graph="{{ url("/profile/stats.json") }}" style="width: 100%; height: 700px"></div>
 
-<a href="{{ url("/profile") }}" class="btn btn-primary btn-block" role="button">Back</a>
+<div class="d-grid mt-2 gap-2">
+	<a href="{{ url("/profile") }}" class="btn btn-primary" role="button">Back</a>
+</div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{{ url('/assets/stats.js') }}"></script>

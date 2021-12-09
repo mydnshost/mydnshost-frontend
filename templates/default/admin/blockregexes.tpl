@@ -3,8 +3,10 @@
 <input type="hidden" id="csrftoken" value="{{csrftoken}}">
 <input class="form-control" data-search-top="table#blockregexlist" value="" placeholder="Search..."><br>
 
-<div class="float-right">
-	<a class="btn btn-block btn-success" href="{{ url('/admin/blockregexes/create') }}">Add Block Regex</a>
+<div class="float-end">
+	<div class="d-grid mt-2 gap-2">
+		<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}">Add Block Regex</a>
+	</div>
 </div>
 <br><br>
 
@@ -33,17 +35,17 @@
 				{{ blockregex.comment }}
 			</td>
 			<td class="signupname">
-				<span class="value badge {% if blockregex.signup_name %}badge-success{% else %}badge-danger{% endif %}">
+				<span class="value badge {% if blockregex.signup_name %}bg-success{% else %}bg-danger{% endif %}">
 					{{ blockregex.signup_name | yesno }}
 				</span>
 			</td>
 			<td class="signupemail">
-				<span class="value badge {% if blockregex.signup_email %}badge-success{% else %}badge-danger{% endif %}">
+				<span class="value badge {% if blockregex.signup_email %}bg-success{% else %}bg-danger{% endif %}">
 					{{ blockregex.signup_email | yesno }}
 				</span>
 			</td>
 			<td class="domainname">
-				<span class="value badge {% if blockregex.domain_name %}badge-success{% else %}badge-danger{% endif %}">
+				<span class="value badge {% if blockregex.domain_name %}bg-success{% else %}bg-danger{% endif %}">
 					{{ blockregex.domain_name | yesno }}
 				</span>
 			</td>

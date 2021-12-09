@@ -1,8 +1,6 @@
 {% if not hasNS %}
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	<h4 class="alert-heading">Domain Error</h4>
 	<p>
 		This domain does not have any valid nameservers and will not currently be served. Please add at least 1 valid NS record.
@@ -32,7 +30,7 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 
 <div class="row">
 	<div class="col">
-		<div class="float-right">
+		<div class="float-end">
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary" role="button">Zone details</a>
 			<br>
 			<br>
@@ -85,7 +83,7 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 					{{ record.name }}
 				{% endif %}
 				{% if record.comment != '' %}
-					<span class="badge badge-info" title="{{ record.comment }}">!</span>
+					<span class="badge bg-info" title="{{ record.comment }}">!</span>
 				{% endif %}
 				{% if record.subtitle != '' %}
 					<br><small><em>{{ record.subtitle }}</em></small>
@@ -105,9 +103,9 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 			</td>
 			<td class="state" data-value="{{ record.disabled | yesno }}" {% if record.edited %}data-edited-value="{{ record.edited.disabled | yesno }}"{% endif %}>
 				{% if record.disabled == 'true' or record.edited.disabled == 'true' %}
-					<span class="badge badge-danger">
+					<span class="badge bg-danger">
 				{% else %}
-					<span class="badge badge-success">
+					<span class="badge bg-success">
 				{% endif %}
 					{{ record.disabled | yesno }}
 				</span>
@@ -158,10 +156,12 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 	{% else %}
 		<div class="col-sm-12 pt-3">
 	{% endif %}
-		<button type="button" class="btn btn-primary btn-block" data-action="add" role="button">Add Record</button>
-		<br><br>
-		<button type="button" class="btn btn-warning btn-block" data-action="reset" role="button">Reset Changes</button>
-		<button type="submit" class="btn btn-success btn-block" role="button">Save Changes</a>
+		<div class="d-grid mt-2 gap-2">
+			<button type="button" class="btn btn-primary" data-action="add" role="button">Add Record</button>
+			<br>
+			<button type="button" class="btn btn-warning" data-action="reset" role="button">Reset Changes</button>
+			<button type="submit" class="btn btn-success" role="button">Save Changes</button>
+		</div>
 	</div>
 </div>
 </form>

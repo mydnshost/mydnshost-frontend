@@ -1,6 +1,6 @@
 <H1>All Domains</H1>
 
-<div class="float-right">
+<div class="float-end">
 	<a href="{{ url('/domains/findRecords') }}" class="btn btn-success">Find Records</a>
 	{% if hasPermission(['domains_create', 'manage_domains']) %}
 		<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>

@@ -45,8 +45,10 @@
 		</div>
 
 
-		<a href="{{ url("#{pathprepend}/admin/users") }}" class="btn btn-block btn-warning" data-dismiss="modal">Cancel</a>
-		<button type="submit" data-action="ok" class="btn btn-block btn-success">Add User</button>
+		<div class="d-grid mt-2 gap-2">
+			<a href="{{ url("#{pathprepend}/admin/users") }}" class="btn btn-warning" data-bs-dismiss="modal">Cancel</a>
+			<button type="submit" data-action="ok" class="btn btn-success">Add User</button>
+		</div>
 	</form>
 
 	<script src="{{ url('/assets/admin_users.js') }}"></script>

@@ -250,12 +250,12 @@ function setEditable(row, recordid) {
 		var key = field.data('radio');
 
 		var radioButtons = '';
-		radioButtons += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
+		radioButtons += '<div class="btn-group btn-group-toggle" data-bs-toggle="buttons">';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
+		radioButtons += '    <input class="btn-check" type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
+		radioButtons += '    <input class="btn-check" type="radio" name="' + fieldName + '[' + recordid + '][disabled]" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
 		radioButtons += '  </label>';
 		radioButtons += '</div>';
 		radioButtons = $(radioButtons);
@@ -309,7 +309,7 @@ function cancelEdit(row) {
 		}
 		if (key == "name") {
 			if (field.data('comment') != '') {
-				field.append($('<span class="badge badge-info">!</span>').attr('title', field.data('comment')).before(" "));
+				field.append($('<span class="badge bg-info">!</span>').attr('title', field.data('comment')).before(" "));
 			}
 
 			if (field.data('subtitle') != '') {
@@ -326,9 +326,9 @@ function cancelEdit(row) {
 	var state = row.find('td.state');
 
 	if (state.data('value') == "Yes") {
-		state.html('<span class="badge badge-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
+		state.html('<span class="badge bg-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
 	} else {
-		state.html('<span class="badge badge-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
+		state.html('<span class="badge bg-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
 	}
 	state.data('edited-value', null);
 

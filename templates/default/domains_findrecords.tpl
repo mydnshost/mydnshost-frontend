@@ -9,8 +9,10 @@
 		</div>
 	</div>
 
-	<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-block btn-warning" data-dismiss="modal">Cancel</a>
-	<button type="submit" data-action="ok" class="btn btn-block btn-success">Find Domains</button>
+	<div class="d-grid mt-2 gap-2">
+		<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-warning" data-bs-dismiss="modal">Cancel</a>
+		<button type="submit" data-action="ok" class="btn btn-success">Find Domains</button>
+	</div>
 </form>
 <br><br>
 {% for domain in domains %}
@@ -58,9 +60,9 @@
 				</td>
 				<td class="state">
 					{% if record.disabled == 'true' or record.edited.disabled == 'true' %}
-						<span class="badge badge-danger">
+						<span class="badge bg-danger">
 					{% else %}
-						<span class="badge badge-success">
+						<span class="badge bg-success">
 					{% endif %}
 						{{ record.disabled | yesno }}
 					</span>

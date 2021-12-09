@@ -18,8 +18,10 @@
 			</div>
 		{% endif %}
 
-		<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-block btn-warning" data-dismiss="modal">Cancel</a>
-		<button type="submit" data-action="ok" class="btn btn-block btn-success">Add Domain</button>
+		<div class="d-grid mt-2 gap-2">
+			<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-warning" data-bs-dismiss="modal">Cancel</a>
+			<button type="submit" data-action="ok" class="btn btn-success">Add Domain</button>
+		</div>
 	</form>
 {% else %}
 	<p>

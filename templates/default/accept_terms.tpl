@@ -23,7 +23,9 @@
 			</label>
 		</div>
 
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Accept</button>
+		<div class="d-grid mt-2 gap-2">
+			<button class="btn btn-lg btn-primary" type="submit">Accept</button>
+		</div>
 	</form>
 
 	<p>

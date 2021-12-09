@@ -34,37 +34,37 @@
 			</td>
 			<td class="domains_read" data-radio data-name="domains_read" data-value="{{ keydata.domains_read | yesno }}">
 				{% if keydata.domains_read == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="domains_write" data-radio data-name="domains_write" data-value="{{ keydata.domains_write | yesno }}">
 				{% if keydata.domains_write == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="user_read" data-radio data-name="user_read" data-value="{{ keydata.user_read | yesno }}">
 				{% if keydata.user_read == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="user_write" data-radio data-name="user_write" data-value="{{ keydata.user_write | yesno }}">
 				{% if keydata.user_write == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="admin_features" data-radio data-name="admin_features" data-value="{{ keydata.admin_features | yesno }}">
 				{% if keydata.admin_features == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="actions" rowspan="2">
@@ -92,7 +92,7 @@
 
 <form method="post" action="{{ url('/profile/addkey') }}" class="form-inline form-group" id="addkeyform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
 	<button type="submit" class="btn btn-success" role="button">Add API Key</button>
 </form>
 

@@ -17,19 +17,23 @@
 	<form class="form-signin small" method="post" action="{{ url('/profile/delete') }}">
 		<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 
-		<label for="inputConfirmCode" class="sr-only">Confirmation Code</label>
+		<label for="inputConfirmCode" class="visually-hidden">Confirmation Code</label>
 		<input type="text" name="confirmCode" id="inputConfirmCode" class="form-control" placeholder="Confirmation Code">
 
 		{% if twofactor %}
-			<label for="input2FAKey" class="sr-only">2FA Code</label>
+			<label for="input2FAKey" class="visually-hidden">2FA Code</label>
 			<input type="text" name="2fakey" id="input2FAKey" class="form-control" placeholder="2FA Code">
 		{% endif %}
 
-		<button class="btn btn-lg btn-block btn-danger" type="submit">Delete Account</button>
+		<div class="d-grid mt-2 gap-2">
+			<button class="btn btn-lg btn-danger" type="submit">Delete Account</button>
+		</div>
 	</form>
 
 	<form class="form-signin small" method="get" action="{{ url('/profile') }}">
-		<button class="btn btn-lg btn-block btn-primary" type="submit">Do not delete account</button>
+		<div class="d-grid mt-2 gap-2">
+			<button class="btn btn-lg btn-primary" type="submit">Do not delete account</button>
+		</div>
 	</form>
 </div>
 

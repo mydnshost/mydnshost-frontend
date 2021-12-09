@@ -15,7 +15,7 @@ $(function() {
 			$("#createUserDomainForm").validate().resetForm();
 		});
 
-		$('#createUserDomain').modal({'backdrop': 'static'});
+		$('#createUserDomain').modal({'backdrop': 'static'}).modal('show');
 		return false;
 	});
 

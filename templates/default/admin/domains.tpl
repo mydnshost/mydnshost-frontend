@@ -2,7 +2,7 @@
 
 <input class="form-control" data-search-top="table#domainlist" value="" placeholder="Search..."><br>
 
-<div class="float-right">
+<div class="float-end">
 	<a href="{{ url('/admin/domains/findRecords') }}" class="btn btn-success">Find Records</a>
 	{% if hasPermission(['domains_create', 'manage_domains']) %}
 		<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>
@@ -85,7 +85,7 @@
 		{% endblock %}
 
 		{% block buttons %}
-			<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+			<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
 			<button type="button" data-action="ok" class="btn btn-success">Ok</button>
 		{% endblock %}
 	{% endembed %}

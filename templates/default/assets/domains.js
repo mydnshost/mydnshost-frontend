@@ -164,7 +164,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDeleteKey').modal({'backdrop': 'static'});
+		$('#confirmDeleteKey').modal({'backdrop': 'static'}).modal('show');
 	});
 
 	$("#addkeyform").validate({
@@ -233,7 +233,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDeleteHook').modal({'backdrop': 'static'});
+		$('#confirmDeleteHook').modal({'backdrop': 'static'}).modal('show');
 	});
 
 	$("#addhookform").validate({
@@ -311,12 +311,12 @@ function setSOAEditable() {
 		var key = field.data('radio');
 
 		var radioButtons = '';
-		radioButtons += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
+		radioButtons += '<div class="btn-group btn-group-toggle" data-bs-toggle="buttons">';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + key + '" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
+		radioButtons += '    <input type="radio" class="btn-check" name="' + key + '" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-success" data-inactive="btn-outline-success" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + key + '" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
+		radioButtons += '    <input type="radio" class="btn-check" name="' + key + '" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
 		radioButtons += '  </label>';
 		radioButtons += '</div>';
 		radioButtons = $(radioButtons);
@@ -372,9 +372,9 @@ function cancelEditSOA() {
 
 	var state = $('table#soainfo td.state');
 	if (state.data('value') == "Yes") {
-		state.html('<span class="badge badge-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
+		state.html('<span class="badge bg-danger">' + $('<div/>').text(state.data('value')).html() + '</span>');
 	} else {
-		state.html('<span class="badge badge-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
+		state.html('<span class="badge bg-success">' + $('<div/>').text(state.data('value')).html() + '</span>');
 	}
 	state.data('edited-value', null);
 }
@@ -469,9 +469,9 @@ function cancelEditKey(row) {
 		var field = $(this);
 
 		if (field.data('value') == "Yes") {
-			field.html('<span class="badge badge-success">' + escapeHtml(field.data('value')) + '</span>');
+			field.html('<span class="badge bg-success">' + escapeHtml(field.data('value')) + '</span>');
 		} else {
-			field.html('<span class="badge badge-danger">' + escapeHtml(field.data('value')) + '</span>');
+			field.html('<span class="badge bg-danger">' + escapeHtml(field.data('value')) + '</span>');
 		}
 		field.data('edited-value', null);
 	});
@@ -493,12 +493,12 @@ function editableYesNo(row, fieldName, recordid, inverse) {
 		var noState = inverse ? 'success' : 'danger';
 
 		var radioButtons = '';
-		radioButtons += '<div class="btn-group" data-toggle="buttons">';
+		radioButtons += '<div class="btn-group" data-bs-toggle="buttons">';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-' + yesState + '" data-inactive="btn-outline-' + yesState + '" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][' + key + ']" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
+		radioButtons += '    <input type="radio" class="btn-check" name="' + fieldName + '[' + recordid + '][' + key + ']" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-' + noState + '" data-inactive="btn-outline-' + noState + '" data-toggle-class>';
-		radioButtons += '    <input type="radio" name="' + fieldName + '[' + recordid + '][' + key + ']" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
+		radioButtons += '    <input type="radio" class="btn-check" name="' + fieldName + '[' + recordid + '][' + key + ']" value="false" autocomplete="off" ' + (value == "No" ? 'checked' : '') + '>No';
 		radioButtons += '  </label>';
 		radioButtons += '</div>';
 		radioButtons = $(radioButtons);
@@ -564,9 +564,9 @@ function cancelEditHook(row) {
 		var field = $(this);
 
 		if (field.data('value') == "Yes") {
-			field.html('<span class="badge badge-danger">' + escapeHtml(field.data('value')) + '</span>');
+			field.html('<span class="badge bg-danger">' + escapeHtml(field.data('value')) + '</span>');
 		} else {
-			field.html('<span class="badge badge-success">' + escapeHtml(field.data('value')) + '</span>');
+			field.html('<span class="badge bg-success">' + escapeHtml(field.data('value')) + '</span>');
 		}
 		field.data('edited-value', null);
 	});

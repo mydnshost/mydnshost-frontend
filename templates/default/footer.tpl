@@ -21,7 +21,7 @@
 				{% endblock %}
 
 				{% block buttons %}
-					<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+					<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
 					<button type="button" data-action="ok" class="btn btn-success">Ok</button>
 				{% endblock %}
 			{% endembed %}

@@ -3,8 +3,10 @@
 <input type="hidden" id="csrftoken" value="{{csrftoken}}">
 <input class="form-control" data-search-top="table#articlelist" value="" placeholder="Search..."><br>
 
-<div class="float-right">
-	<a class="btn btn-block btn-success" href="{{ url('/admin/articles/create') }}">Add Article</a>
+<div class="float-end">
+	<div class="d-grid mt-2 gap-2">
+		<a class="btn btn-success" href="{{ url('/admin/articles/create') }}">Add Article</a>
+	</div>
 </div>
 <br><br>
 
@@ -33,7 +35,7 @@
 			<td class="visible">
 				{% set visible = article.visiblefrom < time and (article.visibleuntil == -1 or article.visibleuntil > time) %}
 
-				<span class="value badge {% if visible %}badge-success{% else %}badge-danger{% endif %}">
+				<span class="value badge {% if visible %}bg-success{% else %}bg-danger{% endif %}">
 					{{ visible | yesno }}
 				</span>
 			</td>

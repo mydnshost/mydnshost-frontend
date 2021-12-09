@@ -60,8 +60,10 @@
 		<tr>
 			<th>&nbsp;</th>
 			<td>
-				<a href="{{ url("/admin/blockregexes") }}" class="btn btn-block btn-warning">Cancel</a>
-				<button type="submit" class="btn btn-block btn-success">{% if create %}Create{% else %}Edit{% endif %} BlockRegex</button>
+				<div class="d-grid mt-2 gap-2">
+					<a href="{{ url("/admin/blockregexes") }}" class="btn btn-warning">Cancel</a>
+					<button type="submit" class="btn btn-success">{% if create %}Create{% else %}Edit{% endif %} BlockRegex</button>
+				</div>
 			</td>
 		</tr>
 	</tbody>

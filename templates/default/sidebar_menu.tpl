@@ -1,5 +1,5 @@
 {% if title or showsearch %}
-	<div class="nav-link">
+	<div class="nav-link text-black">
 		{% if title %}
 			<strong>
 				{{ title }}
@@ -18,7 +18,8 @@
 			{% if item.link %}
 				{% if item.button %}
 					<div class="nav-link">
-					<a class="btn btn-block btn-{{ item.button }}"
+						<div class="d-grid mt-2 gap-2">
+					<a class="btn btn-{{ item.button }}"
 				{% else %}
 					<a class="nav-link{% if item.active %} active{% endif %}"
 				{% endif %}
@@ -27,22 +28,25 @@
 					{% if item.hover %} title="{{ item.hover }}"{% endif %}
 				>
 
+
 			{% elseif item.button %}
 				<div class="nav-link">
-				<button class="btn btn-block btn-{{ item.button }}" data-action="{{ item.action }}">
+				<div class="d-grid mt-2 gap-2">
+				<button class="btn btn-{{ item.button }}" data-action="{{ item.action }}">
 			{% else %}
-				<div class="nav-link"><strong>
+				<div class="nav-link text-black"><strong>
 			{% endif %}
 			{{ item.title }}
 			{% if item.subtitle %}<small class="subtitle">({{item.subtitle}})</small>{% endif %}
-			{% if item.active %}<span class="sr-only">(current)</span>{% endif %}
+			{% if item.active %}<span class="visually-hidden">(current)</span>{% endif %}
 			{% if item.link %}
 				</a>
 				{% if item.button %}
 				</div>
+				</div>
 				{% endif %}
 			{% elseif item.button %}
-				</button></div>
+				</button></div></div>
 			{% else %}
 				</strong></div>
 			{% endif %}

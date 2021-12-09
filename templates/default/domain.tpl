@@ -56,11 +56,11 @@
 			<th>Disabled</th>
 			<td class="state" data-radio="disabled" {% if has_domain_write %}data-editable{% endif %} data-value="{{ domain.disabled | yesno }}">
 			{% if domain.disabled == 'true' %}
-				<span class="badge badge-danger">
+				<span class="badge bg-danger">
 					Yes
 				</span>
 			{% else %}
-				<span class="badge badge-success">
+				<span class="badge bg-success">
 					No
 				</span>
 			{% endif %}
@@ -167,7 +167,7 @@
 		{% if hasPermission(['system_job_mgmt']) %}
 			<a href="{{ url("#{pathprepend}/system/jobs?filter[data][domain]=#{domain.domain}") }}" class="btn btn-primary" role="button">Jobs</a>
 		{% endif %}
-		<div class="float-right">
+		<div class="float-end">
 			{% if has_domain_write %}
 				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Resync Zone</a>
 				{% if not domain.aliasof %}
@@ -175,7 +175,7 @@
 				{% endif %}
 			{% endif %}
 			{% if has_domain_owner %}
-				<button type="button" class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" data-backdrop="static">Delete Domain</button>
+				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-backdrop="static">Delete Domain</button>
 			{% endif %}
 		</div>
 
@@ -193,7 +193,7 @@
 				{% endblock %}
 
 				{% block buttons %}
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
 					<form id="deletedomainform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/delete") }}">
 						<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 						<input type="hidden" name="confirm" value="true">
@@ -312,9 +312,9 @@
 			</td>
 			<td class="domains_write" data-radio data-name="domains_write" data-value="{{ keydata.domains_write | yesno }}">
 				{% if keydata.domains_write == 'true' %}
-					<span class="badge badge-success">Yes</span>
+					<span class="badge bg-success">Yes</span>
 				{% else %}
-					<span class="badge badge-danger">No</span>
+					<span class="badge bg-danger">No</span>
 				{% endif %}
 			</td>
 			<td class="actions">
@@ -336,7 +336,7 @@
 
 <form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addkey") }}" class="form-inline form-group" id="addkeyform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
 	<button type="submit" class="btn btn-success" role="button">Add Domain Key</button>
 </form>
 
@@ -383,9 +383,9 @@
 			</td>
 			<td class="disabled" data-radio data-name="disabled" data-value="{{ hookdata.disabled | yesno }}">
 				{% if hookdata.disabled == 'true' %}
-					<span class="badge badge-danger">Yes</span>
+					<span class="badge bg-danger">Yes</span>
 				{% else %}
-					<span class="badge badge-success">No</span>
+					<span class="badge bg-success">No</span>
 				{% endif %}
 			</td>
 			<td class="actions">
@@ -407,8 +407,8 @@
 
 <form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addhook") }}" class="form-inline form-group" id="addhookform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="hookurl" value="" placeholder="Hook URL...">
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="hookpassword" value="" placeholder="Hook Password">
+	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookurl" value="" placeholder="Hook URL...">
+	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookpassword" value="" placeholder="Hook Password">
 	<button type="submit" class="btn btn-success" role="button">Add Domain Hook</button>
 </form>
 

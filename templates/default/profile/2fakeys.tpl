@@ -92,7 +92,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 
 <form method="post" action="{{ url('/profile/add2fakey') }}" class="form-inline form-group" id="add2faform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<select class="form-control col-2 mb-2 mr-sm-2 mb-sm-0" name="type">
+	<select class="form-control col-2 mb-2 me-sm-2 mb-sm-0" name="type">
 		<option value="rfc6238" selected>TOTP (RFC 6238)</option>
 		<option value="onetime">One Time</option>
 		{% if 'yubikeyotp' in twoFactorKeyTypes %}
@@ -102,11 +102,11 @@ You will only be able to see the key and associated QR code for any keys that ha
 			<option value="authy" data-need="phone">Authy</option>
 		{% endif %}
 	</select>
-	<input class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
 
-	<input data-provide="secret" class="form-control col-3 mb-2 mr-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
-	<input data-provide="phone" class="form-control col-1 mb-2 mr-sm-2 mb-sm-0" type="text" name="countrycode" value="" placeholder="Country Code">
-	<input data-provide="phone" class="form-control col-2 mb-2 mr-sm-2 mb-sm-0" type="text" name="phone" value="" placeholder="Phone Number">
+	<input data-provide="secret" class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
+	<input data-provide="phone" class="form-control col-1 mb-2 me-sm-2 mb-sm-0" type="text" name="countrycode" value="" placeholder="Country Code">
+	<input data-provide="phone" class="form-control col-2 mb-2 me-sm-2 mb-sm-0" type="text" name="phone" value="" placeholder="Phone Number">
 
 	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
 </form>

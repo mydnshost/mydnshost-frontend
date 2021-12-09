@@ -22,4 +22,6 @@ Below is the zone contents as a zone file.
 	</div>
 {% endif %}
 
-<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary btn-block" role="button">Back</a>
+<div class="d-grid mt-2 gap-2">
+	<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-primary" role="button">Back</a>
+</div>

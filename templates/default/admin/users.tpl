@@ -4,8 +4,10 @@
 <input class="form-control" data-search-top="table#userlist" value="" placeholder="Search..."><br>
 
 {% if hasPermission(['manage_users']) %}
-<div class="float-right">
-	<a class="btn btn-block btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
+<div class="float-end">
+	<div class="d-grid mt-2 gap-2">
+		<a class="btn btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
+	</div>
 </div>
 <br><br>
 {% endif %}
@@ -41,7 +43,7 @@
 			<td class="realname">
 				{{ userinfo.realname }}
 				<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
-					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-right">Set Suspend Reason</button>
+					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-end">Set Suspend Reason</button>
 				</span>
 				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}hidden{% endif %}" data-showsuspend="Yes">
 					<br>
@@ -94,7 +96,7 @@
 							{{ permission }}
 						</td>
 						<td class="value">
-							<span class="value badge {% if userinfo.permissions[permission] == 'true' %}badge-primary{% else %}badge-default{% endif %}" data-permission="{{ permission }}" data-class-yes="badge-primary" data-class-no="badge-default">
+							<span class="value badge {% if userinfo.permissions[permission] == 'true' %}bg-primary{% else %}bg-default{% endif %}" data-permission="{{ permission }}" data-class-yes="bg-primary" data-class-no="bg-default">
 								{{ userinfo.permissions[permission] | yesno }}
 							</span>
 						</td>
@@ -108,15 +110,15 @@
 				</table>
 			</td>
 			<td class="state">
-				<span class="value badge {% if userinfo.disabled == 'true' %}badge-success{% else %}badge-danger{% endif %}" data-field="disabled" data-class-yes="badge-success" data-class-no="badge-danger">
+				<span class="value badge {% if userinfo.disabled == 'true' %}bg-success{% else %}bg-danger{% endif %}" data-field="disabled" data-class-yes="bg-success" data-class-no="bg-danger">
 					{{ userinfo.disabled | yesno }}
 				</span>
 				{% if userinfo.email != user.email and hasPermission(['manage_users']) %}
 					<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
-						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-right">Unsuspend</button>
+						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-end">Unsuspend</button>
 					</span>
 					<span class="action {% if userinfo.disabled == 'true' %}hidden{% endif %}" data-showsuspend="No">
-						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-right">Suspend</button>
+						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-end">Suspend</button>
 					</span>
 				{% endif %}
 			</td>
@@ -200,7 +202,7 @@
 		{% endblock %}
 
 		{% block buttons %}
-			<button type="button" data-action="cancel" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+			<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
 			<button type="button" data-action="ok" class="btn btn-success">Ok</button>
 		{% endblock %}
 	{% endembed %}
