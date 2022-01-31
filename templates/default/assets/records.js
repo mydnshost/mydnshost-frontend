@@ -218,6 +218,7 @@ function setEditable(row, recordid) {
 		if (key == 'name') {
 			// Also show the comment.
 			var commentValue = (field.data('edited-comment') == undefined || field.data('edited-comment') == null) ? field.data('comment') : field.data('edited-comment');
+			if (commentValue == undefined || commentValue == null) { commentValue = ''; }
 			field.append($('<div class="d-flex flex-row flex-nowrap"><strong class="align-self-center">Comment:</strong><input style="width: inherit; flex-grow: 1;" type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][comment]" value="' + escapeHtml(commentValue) + '"></div>'));
 
 			// And the subtitle

@@ -125,7 +125,7 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 		{% if has_domain_write %}
 			{% for id,record in newRecords %}
 			<tr class="new form-group" data-edited="true" {% if record.errorData %}data-error-data="{{ record.errorData }}"{% endif %}>
-				<td class="name" data-edited-value="{{record.name }}"></td>
+				<td class="name" data-edited-value="{{record.name }}" data-edited-comment="{{ record.comment }}"></td>
 				<td class="type" data-edited-value="{{record.type }}"></td>
 				<td class="priority" data-edited-value="{{record.priority }}"></td>
 				<td class="content" data-edited-value="{{record.content }}"></td>
