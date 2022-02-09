@@ -188,7 +188,15 @@
 		public function displayRaw($template) {
 			$this->setExtraVars();
 
-			$this->twig->display($template, $this->vars);
+			$postProcessor = static::getPostProcessor($template, $this->getFile($template));
+
+			if ($postProcessor == FALSE) {
+				$this->twig->display($template, $this->vars);
+			} else {
+				$template = $this->twig->load($template);
+				$parsedTemplate = $template->render($this->vars);
+				echo call_user_func_array($postProcessor, [$parsedTemplate]);
+			}
 		}
 
 		public function getFile($file) {
@@ -340,5 +348,32 @@
 			}
 
 			$this->twig->display('header_menu.tpl', ['menu' => $menu]);
+		}
+
+		public static function getPostProcessor($template, $file = '') {
+			// TODO: This shouldn't really end up being used in production.
+			$postProcessor['scss'] = function ($raw) use ($template, $file) {
+				try {
+					$compiler = new \ScssPhp\ScssPhp\Compiler();
+					// $compiler->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
+
+					if ($file != '') {
+						$compiler->setImportPaths(dirname($file));
+						// Doesn't seem to work nicely :(
+						// $compiler->setSourceMap(\ScssPhp\ScssPhp\Compiler::SOURCE_MAP_INLINE);
+					}
+					return $compiler->compileString($raw)->getCss();
+				} catch (\Throwable $ex) {
+					return $raw;
+				}
+			};
+
+			$bits = explode('.', $template);
+			$ext = strtolower(array_pop($bits));
+			if (array_key_exists($ext, $postProcessor)) {
+				return $postProcessor[$ext];
+			} else {
+				return FALSE;
+			}
 		}
 	}

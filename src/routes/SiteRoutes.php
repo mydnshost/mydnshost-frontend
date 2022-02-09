@@ -163,6 +163,13 @@
 
 			$router->get('/(favicon.ico|assets/.*)', function ($asset) use ($displayEngine) {
 				$file = $displayEngine->getFile($asset);
+				
+				if ($file == FALSE && pathinfo($asset, PATHINFO_EXTENSION) == 'css') {
+					// Attempt SCSS instead.
+					$asset = preg_replace('#.css$#', '.scss', $asset);
+					$file = $displayEngine->getFile($asset);
+				}
+
 				if ($file !== FALSE) {
 					header('Content-Type: ' . get_mime_type($file));
 					$displayEngine->displayRaw($asset);

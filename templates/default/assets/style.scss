@@ -1,0 +1,917 @@
+/**********************************************************************
+ * Base
+ **********************************************************************/
+
+/* Bootstrap 5 tweak: do not underline links unless hovered over */
+a:not([class*="btn"]) {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
+
+    @media (min-width: 576px) {
+        padding: 4rem 2rem;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 50px;
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    hr {
+        margin-bottom: 2px;
+    }
+
+    p {
+        text-align: right;
+    }
+}
+
+main {
+    padding-bottom: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#recaptcha {
+    visibility: hidden;
+}
+
+.nav-pills .nav-link.active {
+    cursor: pointer;
+    cursor: hand;
+}
+
+span.pointer {
+    cursor: pointer;
+    cursor: hand;
+}
+
+/**********************************************************************
+ * Style Fixes between Bootstrap 4.0.0-alpha6 and 4.5.0
+ **********************************************************************/
+
+body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+code {
+    padding: 0.2rem 0.4rem;
+    background-color: #f7f7f9;
+    border-radius: 0.25rem;
+}
+
+.bg-dark {
+    background-color: #292b2c !important;
+}
+
+.nav-pills {
+    .nav-item.show .nav-link,
+    .nav-link.active {
+        background-color: #0275d8;
+    }
+}
+
+.btn {
+    white-space: nowrap;
+}
+
+.btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+
+    &:hover {
+        color: #fff;
+        background-color: #ec971f;
+        border-color: #eb9316;
+    }
+
+    &:focus,
+    &.focus {
+        color: #fff;
+        background-color: #ec971f;
+        border-color: #eb9316;
+        box-shadow: 0 0 0 2px rgba(240, 173, 78, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #f0ad4e;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(240, 173, 78, 0.5);
+        }
+    }
+}
+
+.show > .btn-warning.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(240, 173, 78, 0.5);
+}
+
+.btn-warning:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #ec971f;
+        background-image: none;
+        border-color: #eb9316;
+    }
+}
+
+.show > .btn-warning.dropdown-toggle {
+    color: #fff;
+    background-color: #ec971f;
+    background-image: none;
+    border-color: #eb9316;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+
+    &:hover {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #419641;
+    }
+
+    &:focus,
+    &.focus {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #419641;
+        box-shadow: 0 0 0 2px rgba(92, 184, 92, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(92, 184, 92, 0.5);
+        }
+    }
+}
+
+.show > .btn-success.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(92, 184, 92, 0.5);
+}
+
+.btn-success:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #449d44;
+        background-image: none;
+        border-color: #419641;
+    }
+}
+
+.show > .btn-success.dropdown-toggle {
+    color: #fff;
+    background-color: #449d44;
+    background-image: none;
+    border-color: #419641;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d9534f;
+
+    &:hover {
+        color: #fff;
+        background-color: #c9302c;
+        border-color: #c12e2a;
+    }
+
+    &:focus,
+    &.focus {
+        color: #fff;
+        background-color: #c9302c;
+        border-color: #c12e2a;
+        box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.5);
+        }
+    }
+}
+
+.show > .btn-danger.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.5);
+}
+
+.btn-danger:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #c9302c;
+        background-image: none;
+        border-color: #c12e2a;
+    }
+}
+
+.show > .btn-danger.dropdown-toggle {
+    color: #fff;
+    background-color: #c9302c;
+    background-image: none;
+    border-color: #c12e2a;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+
+    &:hover {
+        color: #fff;
+        background-color: #025aa5;
+        border-color: #01549b;
+    }
+
+    &:focus,
+    &.focus {
+        color: #fff;
+        background-color: #025aa5;
+        border-color: #01549b;
+        box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: #0275d8;
+        border-color: #0275d8;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.5);
+        }
+    }
+}
+
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.5);
+}
+
+.btn-primary:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #025aa5;
+        background-image: none;
+        border-color: #01549b;
+    }
+}
+
+.show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #025aa5;
+    background-image: none;
+    border-color: #01549b;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+
+    &:hover {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #2aabd2;
+    }
+
+    &:focus,
+    &.focus {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #2aabd2;
+        box-shadow: 0 0 0 2px rgba(91, 192, 222, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: #5bc0de;
+        border-color: #5bc0de;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(91, 192, 222, 0.5);
+        }
+    }
+}
+
+.show > .btn-info.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(91, 192, 222, 0.5);
+}
+
+.btn-info:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #31b0d5;
+        background-image: none;
+        border-color: #2aabd2;
+    }
+}
+
+.show > .btn-info.dropdown-toggle {
+    color: #fff;
+    background-color: #31b0d5;
+    background-image: none;
+    border-color: #2aabd2;
+}
+
+.btn-secondary {
+    color: #292b2c;
+    background-color: #fff;
+    border-color: #ccc;
+
+    &:hover {
+        color: #292b2c;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
+
+    &:focus,
+    &.focus {
+        color: #292b2c;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+        box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.5);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: #fff;
+        border-color: #ccc;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        &:active:focus,
+        &.active:focus {
+            box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.5);
+        }
+    }
+}
+
+.show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.5);
+}
+
+.btn-secondary:not(:disabled):not(.disabled) {
+    &:active,
+    &.active {
+        color: #292b2c;
+        background-color: #e6e6e6;
+        background-image: none;
+        border-color: #adadad;
+    }
+}
+
+.show > .btn-secondary.dropdown-toggle {
+    color: #292b2c;
+    background-color: #e6e6e6;
+    background-image: none;
+    border-color: #adadad;
+}
+
+/**********************************************************************
+ * Signin Form
+ **********************************************************************/
+
+.form-signin {
+    .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+
+        &:focus {
+            z-index: 2;
+        }
+    }
+
+    input {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    &.small {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+}
+
+/**********************************************************************
+ * Headers
+ **********************************************************************/
+
+h1 {
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+
+    small.subtitle {
+        color: #636c72;
+        font-size: 60%;
+        margin-left: 50px;
+    }
+}
+
+/**********************************************************************
+ * Sidebar
+ **********************************************************************/
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+    overflow-x: hidden;
+    /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
+    border-right: 1px solid #eee;
+    padding-left: 0;
+    padding-right: 0;
+
+    .nav {
+        margin-bottom: 20px;
+    }
+
+    .nav-item {
+        width: 100%;
+
+        + .nav-item {
+            margin-left: 0;
+        }
+    }
+
+    .nav-link {
+        border-radius: 0;
+    }
+}
+
+/**********************************************************************
+ * Avatars
+ **********************************************************************/
+
+.avatar {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid #aaa;
+
+    img {
+        opacity: 0;
+    }
+}
+
+.miniavatar {
+    width: 22px;
+    height: 22px;
+}
+
+/**********************************************************************
+ * Tables
+ **********************************************************************/
+
+table tr.deleted td {
+    /* background-color: #f2dede; */
+    background-color: #eee;
+    color: #ccc;
+    text-decoration: line-through;
+
+    &.actions {
+        text-decoration: none;
+    }
+}
+
+/**********************************************************************
+ * Domain Tables
+ **********************************************************************/
+
+table#domainlist {
+    th.domain,
+    td.domain {
+    }
+
+    th.access,
+    td.access {
+        width: 200px;
+    }
+
+    th.owner,
+    td.owner {
+        width: 400px;
+    }
+
+    th.actions,
+    td.actions {
+        width: 200px;
+    }
+}
+
+table#accessinfo {
+    th.who,
+    td.who {
+    }
+
+    th.access,
+    td.access {
+        width: 400px;
+    }
+
+    th.actions,
+    td.actions {
+        width: 200px;
+    }
+}
+
+table#domainhooks {
+    th.url,
+    td.url {
+    }
+
+    th.password,
+    td.password {
+        width: 400px;
+    }
+
+    th.disabled,
+    td.disabled,
+    th.actions,
+    td.actions {
+        width: 200px;
+    }
+}
+
+table#domainlist td.domain small.subtitle {
+    color: #636c72;
+    margin-left: 50px;
+}
+
+.breakable {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.mono {
+    font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    &.pre {
+        white-space: pre;
+    }
+}
+
+table#soainfo th,
+table#profileinfo th {
+    width: 20%;
+}
+
+table#records {
+    max-width: 100%;
+
+    td {
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+
+    th.name,
+    td.name {
+        width: 20%;
+    }
+
+    th.type,
+    td.type {
+        width: 200px;
+    }
+
+    th.priority,
+    td.priority {
+        width: 100px;
+    }
+
+    th.content,
+    td.content {
+    }
+
+    th.ttl,
+    td.ttl {
+        width: 100px;
+    }
+
+    th.state,
+    td.state {
+        width: 50px;
+    }
+
+    th.actions {
+        width: 200px;
+    }
+
+    td.actions {
+        width: 200px;
+    }
+
+    td > input,
+    td > select {
+        width: 100%;
+    }
+
+    tr.error td {
+        background-color: #f2dede;
+    }
+
+    tr td.warning {
+        background-color: #fcf8e3;
+    }
+}
+
+div#actionbuttonsfiller {
+    height: 120px;
+}
+
+div#actionbuttons {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    background: #f7f7f7;
+    border-top: 1px solid #eeeeee;
+    z-index: 1;
+}
+
+/**********************************************************************
+ * User Tables
+ **********************************************************************/
+
+table#apikeys {
+    th.key,
+    td.key {
+        width: 375px;
+    }
+
+    tr.odd {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    th.description,
+    td.description {
+    }
+
+    th.domains_read,
+    td.domains_read,
+    th.domains_write,
+    td.domains_write,
+    th.user_read,
+    td.user_read,
+    th.user_write,
+    td.user_write {
+        width: 150px;
+    }
+
+    th.actions,
+    td.actions {
+        width: 200px;
+    }
+}
+
+table#twofactorkeys {
+    th.key {
+        width: 460px;
+    }
+
+    td.key {
+        width: 460px;
+
+        div.inactive {
+            display: flex;
+        }
+
+        div.key,
+        div.verifykey {
+            width: 225px;
+            display: block;
+        }
+    }
+
+    th.description,
+    td.description {
+    }
+
+    th.lastused,
+    td.lastused {
+        width: 300px;
+    }
+
+    th.actions,
+    td.actions {
+        width: 200px;
+    }
+}
+
+/**********************************************************************
+ * User
+ **********************************************************************/
+table#userlist {
+    th.id,
+    td.id {
+        width: 50px;
+    }
+
+    th.email,
+    td.email {
+        width: 400px;
+    }
+
+    th.realname,
+    td.realname {
+    }
+
+    th.permissions,
+    td.permissions {
+        width: 325px;
+    }
+
+    th.state,
+    td.state {
+        width: 150px;
+    }
+
+    th.actions {
+        width: 200px;
+    }
+
+    td.actions {
+        width: 200px;
+    }
+
+    td.permissions table {
+        background: none;
+        margin: 0;
+        padding: 0;
+
+        tr {
+            background: none;
+        }
+
+        td {
+            background: none;
+            border: none;
+        }
+
+        td.name {
+            width: 180px;
+        }
+
+        td.value {
+            width: 40px;
+        }
+
+        td.actions {
+            width: 60px;
+        }
+    }
+}
+
+.tooltip-inner {
+    max-width: 500px !important;
+}
+
+/**********************************************************************
+ * Jobs
+ **********************************************************************/
+table#joblogs {
+    th.timestamp,
+    td.timestamp {
+        width: 300px;
+    }
+}
+
+table#jobinfo th {
+    width: 100px;
+}
+
+table#joblist {
+    th.id,
+    td.id {
+        width: 100px;
+    }
+
+    th.name,
+    td.name {
+    }
+
+    th.times,
+    td.times {
+        width: 350px;
+    }
+
+    th.state,
+    td.state,
+    th.result,
+    td.result,
+    th.actions,
+    td.actions {
+        width: 100px;
+    }
+
+    tr.state-created {
+        background-color: #cce5ff;
+    }
+}
+
+table#jobinfo tr.state-created {
+    background-color: #cce5ff;
+}
+
+table#joblist tr.state-started,
+table#jobinfo tr.state-started {
+    background-color: #fff3cd;
+}
+
+table#joblist tr.state-error,
+table#jobinfo tr.state-error {
+    background-color: #f8d7da;
+}
+
+/**********************************************************************
+ * Services
+ **********************************************************************/
+table#servicelogs {
+    th.timestamp,
+    td.timestamp {
+        width: 240px;
+    }
+
+    th.stream,
+    td.stream {
+        width: 300px;
+    }
+}
+
+table#serviceinfo th {
+    width: 100px;
+}
+
+table#servicelist {
+    th.service,
+    td.service,
+    th.actions,
+    td.actions {
+        width: 100px;
+    }
+}

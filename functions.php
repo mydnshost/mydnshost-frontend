@@ -30,7 +30,9 @@
 	function get_mime_type($file) {
 		$mime_types = [];
 		$mime_types['css'] = 'text/css';
+		$mime_types['scss'] = 'text/css';
 		$mime_types['js'] = 'application/javascript';
+		$mime_types['woff'] = 'application/x-font-woff';
 
 		$bits = explode('.', $file);
 		$ext = strtolower(array_pop($bits));
