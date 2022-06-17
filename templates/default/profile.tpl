@@ -64,6 +64,13 @@
 		</tr>
 
 		<tr>
+			<th>Theme</th>
+			<td data-type="option" data-name="sitetheme" data-value="{{ sitetheme }}">
+			{{ sitetheme }}
+			</td>
+		</tr>
+
+		<tr>
 			<th>
 				Account Permissions
 			</th>

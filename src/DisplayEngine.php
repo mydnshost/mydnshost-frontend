@@ -174,6 +174,7 @@
 				$this->setVar('useraccess', $user['access']);
 				$this->setVar('userdomains', session::get('domains'));
 				$this->setVar('csrftoken', session::get('csrftoken'));
+				$this->setVar('sitetheme', session::get('sitetheme'));
 			}
 		}
 

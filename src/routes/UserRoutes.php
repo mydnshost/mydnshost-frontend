@@ -50,6 +50,10 @@
 							$_POST['customdata']['uk.co.mydnshost.www/sidebar/layout'] = $_POST['sidebar_layout'];
 						}
 
+						if (isset($_POST['sitetheme']) && in_array($_POST['sitetheme'], ['normal', 'darkmode'])) {
+							$_POST['customdata']['uk.co.mydnshost.www/sitetheme'] = $_POST['sitetheme'];
+						}
+
 						$result = $api->setUserInfo($_POST);
 
 						if (array_key_exists('error', $result)) {

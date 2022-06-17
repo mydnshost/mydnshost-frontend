@@ -80,6 +80,9 @@
 		$sidebarLayout = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout'] : '';
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
+		$sitetheme = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
+		session::set('sitetheme', empty($sitetheme) ? 'normal' : $sitetheme);
+
 		$domains = [];
 		$sidebarDomains = $domains = $api->getDomains(['type' => 'access']);
 		if ($sidebarLayout == 'labels') {

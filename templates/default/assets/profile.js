@@ -263,6 +263,11 @@ optionsValues['sidebar_layout'] = {
   "labels": "Label View"
 };
 
+optionsValues['sitetheme'] = {
+  "normal": "Normal Theme (Light)",
+  "darkmode": "Dark Mode"
+};
+
 optionsValues['avatar'] = {
   "gravatar": "Use Gravatar",
   "none": "No Avatar"
