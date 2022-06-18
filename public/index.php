@@ -81,6 +81,7 @@
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
 		$sitetheme = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
+		if (!in_array($sitetheme, ['normal', 'night', 'cyborg'])) { $sitetheme = ''; }
 		session::set('sitetheme', empty($sitetheme) ? 'normal' : $sitetheme);
 
 		$domains = [];

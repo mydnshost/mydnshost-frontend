@@ -265,7 +265,8 @@ optionsValues['sidebar_layout'] = {
 
 optionsValues['sitetheme'] = {
   "normal": "Normal Theme (Light)",
-  "darkmode": "Dark Mode"
+  "night": "Night (Dark)",
+  "cyborg": "Cyborg (Dark)"
 };
 
 optionsValues['avatar'] = {

@@ -50,7 +50,7 @@
 							$_POST['customdata']['uk.co.mydnshost.www/sidebar/layout'] = $_POST['sidebar_layout'];
 						}
 
-						if (isset($_POST['sitetheme']) && in_array($_POST['sitetheme'], ['normal', 'darkmode'])) {
+						if (isset($_POST['sitetheme']) && in_array($_POST['sitetheme'], ['normal', 'night', 'cyborg'])) {
 							$_POST['customdata']['uk.co.mydnshost.www/sitetheme'] = $_POST['sitetheme'];
 						}
 
