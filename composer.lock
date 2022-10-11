@@ -217,16 +217,16 @@
         },
         {
             "name": "rmccue/requests",
-            "version": "v2.0.3",
+            "version": "v2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/Requests.git",
-                "reference": "b290dd974051bf1ead51d1947a5a56357e5b80ff"
+                "reference": "b717f1d2f4ef7992ec0c127747ed8b7e170c2f49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/Requests/zipball/b290dd974051bf1ead51d1947a5a56357e5b80ff",
-                "reference": "b290dd974051bf1ead51d1947a5a56357e5b80ff",
+                "url": "https://api.github.com/repos/WordPress/Requests/zipball/b717f1d2f4ef7992ec0c127747ed8b7e170c2f49",
+                "reference": "b717f1d2f4ef7992ec0c127747ed8b7e170c2f49",
                 "shasum": ""
             },
             "require": {
@@ -294,7 +294,7 @@
                 "issues": "https://github.com/WordPress/Requests/issues",
                 "source": "https://github.com/WordPress/Requests"
             },
-            "time": "2022-05-10T08:42:27+00:00"
+            "time": "2022-10-11T08:15:28+00:00"
         },
         {
             "name": "scssphp/scssphp",
