@@ -143,6 +143,21 @@
 				</td>
 			{% endif %}
 		</tr>
+		<tr>
+			<th>Verification State</th>
+			<td>
+				<span class="badge verificationstate state-{{ domain.verificationstate }}" title="Verification state: {{ domain.verificationstate }} as of {{ domain.verificationstatetime | date }}">
+					{%- if domain.verificationstate == 'valid' -%}
+						✓
+					{%- elseif domain.verificationstate == 'invalid' -%}
+						X
+					{%- else -%}
+						?
+					{%- endif -%}
+				</span>
+				{{ domain.verificationstate }} as of {{ domain.verificationstatetime | date }}
+			</td>
+		</tr>
 	</tbody>
 </table>
 </form>

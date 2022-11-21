@@ -213,6 +213,22 @@ table tr.deleted td {
  * Domain Tables
  **********************************************************************/
 
+span.badge.verificationstate {
+    background-color: #20C9EE; // Not used. "Info"
+
+    &.state-valid {
+        background-color: #1E8755; // Success
+    }
+
+    &.state-invalid {
+        background-color: #DB3A4A; // Danger
+    }
+
+    &.state-unknown {
+        background-color: #6C757D; //
+    }
+}
+
 table#domainlist {
     th.domain,
     td.domain {
