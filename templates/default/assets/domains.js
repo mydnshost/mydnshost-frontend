@@ -258,8 +258,8 @@ var optionsValues = {};
 // TODO: This should come via an ajax call or something, not as part of this js file.
 optionsValues['aliasof'] = {
   "": "None",
-  {% for domain,access in userdomains %}
-    {% if access == "owner" %}
+  {% for domain,domaindata in userdomains %}
+    {% if domaindata['access'] == "owner" %}
       "{{ domain }}": "{{ domain }}",
     {% endif %}
   {% endfor %}

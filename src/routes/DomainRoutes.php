@@ -86,10 +86,10 @@
 				$this->setVars($displayEngine);
 				$this->setPageID($displayEngine, '/domains/')->setTitle('Domains');
 
-				$domains = $api->getDomains();
+				$domains = session::get('domains');
 				$allDomains = [];
-				foreach ($domains as $domain => $access) {
-					$domainData = ['domain' => $domain, 'access' => $access];
+				foreach ($domains as $domain => $data) {
+					$domainData = ['domain' => $domain, 'access' => $data['access'], 'verification' => $data['verification']];
 					$rdns = getARPA($domain);
 					if ($rdns !== FALSE) {
 						$domainData['subtitle'] = 'RDNS: '. $rdns;
@@ -99,6 +99,7 @@
 
 					$allDomains[] = $domainData;
 				}
+
 				$displayEngine->setVar('domains', $allDomains);
 				$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
 				$displayEngine->display('alldomains.tpl');

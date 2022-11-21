@@ -250,7 +250,7 @@
 					$menu = [];
 					$sections = [];
 
-					if (session::exists('sidebarDomains') && !startsWith($this->pageID, '/admin')) {
+					if (session::exists('domains') && !startsWith($this->pageID, '/admin')) {
 						$vars['title'] = 'Domains List';
 						$vars['showsearch'] = true;
 
@@ -265,8 +265,11 @@
 
 						$labelNames = ['' => 'Unlabelled'];
 
-						$domains = session::get('sidebarDomains');
-						foreach ($domains as $domain => $label) {
+						$domains = session::get('domains');
+						$sidebarLayout = session::get('sidebar/layout');
+						foreach ($domains as $domain => $data) {
+							$label = ($sidebarLayout == 'labels') ? $data['userdata'] : $data['access'];
+
 							$item = array();
 							$item['link'] = $this->getURL('/domain/' . $domain);
 							if (session::get('domain/defaultpage') == 'records') {

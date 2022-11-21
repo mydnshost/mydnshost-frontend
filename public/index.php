@@ -85,12 +85,8 @@
 		session::set('sitetheme', empty($sitetheme) ? 'normal' : $sitetheme);
 
 		$domains = [];
-		$sidebarDomains = $domains = $api->getDomains(['type' => 'access']);
-		if ($sidebarLayout == 'labels') {
-			$sidebarDomains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label']);
-		}
+		$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label', 'extra' => true]);
 		session::set('domains', $domains);
-		session::set('sidebarDomains', $sidebarDomains);
 
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {
