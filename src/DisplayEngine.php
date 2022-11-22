@@ -277,7 +277,17 @@
 							}
 							$item['title'] = $domain;
 							$item['active'] = ($this->pageID == '/domain/' . $domain);
-
+							$item['badge'] = ['classes' => ['verificationstate', 'state-' . $data['verification']['state']],
+							                  'value' => '?',
+							                  'title' => 'Verification state: ' . $data['verification']['state'] . ' as of ' . date('r', $data['verification']['time']),
+							                 ];
+							if ($data['verification']['state'] == 'valid') {
+								$item['badge']['value'] = '✓';
+							} else if ($data['verification']['state'] == 'invalid') {
+								$item['badge']['value'] = 'X';
+							} else {
+								$item['badge']['value'] = '?';
+							}
 							$dataValue = [$domain];
 
 							$rdns = getARPA($domain);

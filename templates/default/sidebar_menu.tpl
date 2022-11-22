@@ -36,6 +36,9 @@
 			{% else %}
 				<div class="nav-link text-black"><strong>
 			{% endif %}
+			{% if item.badge %}
+				<span class="badge {{ item.badge.classes | join(' ') }}" title="{{ item.badge.title }}">{{ item.badge.value }}</span>
+			{% endif %}
 			{{ item.title }}
 			{% if item.subtitle %}<small class="subtitle">({{item.subtitle}})</small>{% endif %}
 			{% if item.active %}<span class="visually-hidden">(current)</span>{% endif %}
