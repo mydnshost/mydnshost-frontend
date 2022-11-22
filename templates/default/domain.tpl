@@ -156,6 +156,10 @@
 					{%- endif -%}
 				</span>
 				{{ domain.verificationstate }} as of {{ domain.verificationstatetime | date }}
+
+				{% if hasPermission(['domains_verify']) %}
+					<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/verify") }}" class="btn btn-info btn-sm" role="button">Update</a>
+				{% endif %}
 			</td>
 		</tr>
 	</tbody>

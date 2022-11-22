@@ -748,7 +748,15 @@
 			$router->match('GET', '/domain/([^/]+)/sync', function($domain) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
 				$api->syncDomain($domain);
-				$displayEngine->flash('success', '', 'Domain ' . $domain . ' has been synced.');
+				$displayEngine->flash('success', '', 'Domain ' . $domain . ' sync scheduled.');
+				header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
+				return;
+			});
+
+			$router->match('GET', '/domain/([^/]+)/verify', function($domain) use ($router, $displayEngine, $api) {
+				$domain = urldecode($domain);
+				$api->verifyDomain($domain);
+				$displayEngine->flash('success', '', 'Domain ' . $domain . ' verification scheduled.');
 				header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain ));
 				return;
 			});
