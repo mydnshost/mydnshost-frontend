@@ -59,6 +59,7 @@
 			$twig->addFunction(new TwigFunction('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new TwigFunction('showHeaderMenu', function() { $this->showHeaderMenu(); }));
 			$twig->addFunction(new TwigFunction('getARPA', function($domain) { return getARPA($domain); }));
+			$twig->addFunction(new TwigFunction('getThemeInformation', function() { return getThemeInformation(); }));
 
 			$twig->addFilter(new TwigFilter('getARPA', function($domain) {
 				return getARPA($domain);
@@ -175,6 +176,7 @@
 				$this->setVar('userdomains', session::get('domains'));
 				$this->setVar('csrftoken', session::get('csrftoken'));
 				$this->setVar('sitetheme', session::get('sitetheme'));
+				$this->setVar('sitethemedata', session::get('sitethemedata'));
 			}
 		}
 

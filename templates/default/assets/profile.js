@@ -264,9 +264,9 @@ optionsValues['sidebar_layout'] = {
 };
 
 optionsValues['sitetheme'] = {
-  "normal": "Normal Theme (Light)",
-  "night": "Night (Dark)",
-  "cyborg": "Cyborg (Dark)"
+	{% for themeid,theme in getThemeInformation() %}
+		"{{ themeid }}": "{{ theme.name }}",
+  {% endfor %}
 };
 
 optionsValues['avatar'] = {

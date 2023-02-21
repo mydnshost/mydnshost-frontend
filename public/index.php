@@ -81,8 +81,13 @@
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
 		$sitetheme = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
-		if (!in_array($sitetheme, ['normal', 'night', 'cyborg'])) { $sitetheme = ''; }
-		session::set('sitetheme', empty($sitetheme) ? 'normal' : $sitetheme);
+
+		$knownThemes = getThemeInformation();
+
+		if (!in_array($sitetheme, array_keys($knownThemes))) { $sitetheme = 'normal'; }
+
+		session::set('sitetheme', $sitetheme);
+		session::set('sitethemedata', isset($knownThemes[$sitetheme]) ? $knownThemes[$sitetheme] : []);
 
 		$domains = [];
 		$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label', 'extra' => true]);

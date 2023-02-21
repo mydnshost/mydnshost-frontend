@@ -8,16 +8,20 @@ div#actionbuttons {
 
 #sidebar {
     background-color: #454545 !important;
+
+    .nav-link {
+        color: #289BFF;
+    }
+
+    .text-black {
+        color: white !important;
+    }
 }
 
 .jumbotron {
     background-color: #454545;
 }
 
-.nav-link {
-    color: #289BFF;
-}
-
-.text-black {
-    color: white !important;
+table#records tr.error td {
+  background-color: #542020;
 }

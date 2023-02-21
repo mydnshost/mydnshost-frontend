@@ -27,6 +27,18 @@
 		}
 	}
 
+	function getThemeInformation() {
+		$themes = [];
+
+		$themes['normal'] = ['name' => "Normal Theme (Light)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'normal'];
+		$themes['night'] = ['name' => "Night (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'night'];
+		$themes['cyborg'] = ['name' => "Cyborg (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'cyborg'];
+		$themes['bs53light'] = ['name' => "[ALPHA] Bootstrap 5.3 Light (Light)", 'bstheme' => 'light', 'bsversion' => '5.3', 'extracss' => 'bs53light'];
+		$themes['bs53dark'] = ['name' => "[ALPHA] Bootstrap 5.3 Dark (Dark)", 'bstheme' => 'dark', 'bsversion' => '5.3', 'extracss' => 'bs53dark'];
+
+		return $themes;
+	}
+
 	function get_mime_type($file) {
 		$mime_types = [];
 		$mime_types['css'] = 'text/css';
