@@ -97,11 +97,11 @@ $(function() {
 
 		var row = '';
 		row += '<tr class="new">';
-		row += '	<td class="name" data-value="" data-comment=""></td>';
-		row += '	<td class="type" data-value="' + defaultType + '"></td>';
-		row += '	<td class="priority" data-value=""></td>';
-		row += '	<td class="content" data-value=""></td>';
-		row += '	<td class="ttl" data-value=""></td>';
+		row += '	<td class="name mono" data-value="" data-comment=""></td>';
+		row += '	<td class="type mono" data-value="' + defaultType + '"></td>';
+		row += '	<td class="priority mono" data-value=""></td>';
+		row += '	<td class="content mono" data-value=""></td>';
+		row += '	<td class="ttl mono" data-value=""></td>';
 		row += '	<td class="state" data-value="No"></td>';
 		row += '	<td class="actions" data-value="">';
 		row += '		<button type="button" class="btn btn-sm btn-warning" data-action="delete" role="button">Cancel</button>';
@@ -219,7 +219,7 @@ function setEditable(row, recordid) {
 			// Also show the comment.
 			var commentValue = (field.data('edited-comment') == undefined || field.data('edited-comment') == null) ? field.data('comment') : field.data('edited-comment');
 			if (commentValue == undefined || commentValue == null) { commentValue = ''; }
-			field.append($('<div class="d-flex flex-row flex-nowrap"><strong class="align-self-center">Comment:</strong><input style="width: inherit; flex-grow: 1;" type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][comment]" value="' + escapeHtml(commentValue) + '"></div>'));
+			field.append($('<div class="d-flex flex-row flex-nowrap"><strong class="align-self-center">Comment: </strong> <input style="width: inherit; flex-grow: 1;" type="text" class="form-control form-control-sm ' + key + '" name="' + fieldName + '[' + recordid + '][comment]" value="' + escapeHtml(commentValue) + '"></div>'));
 
 			// And the subtitle
 			if (field.data('subtitle') != '') {
