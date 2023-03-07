@@ -2,8 +2,7 @@
 
 	use ReallySimpleJWT\Parse as JWTParse;
 	use ReallySimpleJWT\Jwt as JWTToken;
-	use ReallySimpleJWT\Validate as JWTValidate;
-	use ReallySimpleJWT\Encode as JWTEncode;
+	use ReallySimpleJWT\Decode as JWTDecode;
 
 	function getEnvOrDefault($var, $default) {
 		$result = getEnv($var);
@@ -156,11 +155,11 @@
 
 	function parseJWT($token, $secret = '') {
 		try {
-			$token = new JWTToken($token, $secret);
-			$parse = new JWTParse($token, new JWTValidate(), new JWTEncode());
+			$jwttoken = new JWTToken($token, $secret);
+			$parse = new JWTParse($jwttoken, new JWTDecode());
 
 			if (!empty($secret)) {
-				$parse = $parse->validate();
+				if (!JWTToken::validate($token, $secret)) { throw new Exception('Fail.'); }
 			}
 
 			$parsed = $parse->parse();
