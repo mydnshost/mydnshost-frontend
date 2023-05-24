@@ -100,7 +100,7 @@
         {% endif %}
 
         {% if showsidebar %}
-            <nav class="col-sm-3 col-md-2 hidden-xs-down bg-light sidebar nav" id="sidebar">
+            <nav class="col-sm-3 col-md-2 hidden-xs-down bg-light sidebar nav d-block" id="sidebar">
               {{ showSidebar() }}
             </nav>
 
