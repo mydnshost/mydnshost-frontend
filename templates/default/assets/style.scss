@@ -358,6 +358,10 @@ table#records {
         width: 100%;
     }
 
+    tr.new td {
+        background-color: #def2f2;
+    }
+
     tr.error td {
         background-color: #f2dede;
     }
