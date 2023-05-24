@@ -15,6 +15,10 @@ div#actionbuttons {
 
     .nav-link {
         color: #289BFF;
+
+        &.active {
+            color: white !important;
+        }
     }
 
     .text-black {
