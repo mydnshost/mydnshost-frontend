@@ -482,12 +482,9 @@ table#userlist {
         width: 150px;
     }
 
-    th.actions {
-        width: 200px;
-    }
-
+    th.actions,
     td.actions {
-        width: 200px;
+        width: 300px;
     }
 
     td.permissions table {

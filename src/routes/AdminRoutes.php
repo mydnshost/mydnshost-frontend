@@ -31,6 +31,52 @@
 					$displayEngine->display('admin/domains.tpl');
 				});
 
+				$router->get('/admin/domains/user/(.*)', function($userid) use ($displayEngine, $api) {
+					$user = $api->getUserInfo($userid);
+
+					if ($user == null) {
+						$displayEngine->flash('error', '', 'No such user ID: ' . $userid);
+						header('Location: ' . $displayEngine->getURL('/admin/domains'));
+						return;
+					}
+
+					$userEmail = $user['email'];
+
+					$displayEngine->setPageID('/admin/domains/user')->setTitle('Admin :: Domains :: ' . $userEmail);
+
+					$domains = [];
+					$allDomains = $api->domainAdmin()->getDomains();
+
+					if (isset($allDomains)) {
+						foreach ($allDomains as $domain => $domainData) {
+							if (isset($domainData['users'][$userEmail])) {
+								$accessLevel = $domainData['users'][$userEmail];
+								if (!isset($domains[$accessLevel])) { $domains[$accessLevel] = []; }
+								$domains[$accessLevel][$domain] = $domainData;
+							}
+						}
+					}
+
+					if (isset($domains)) {
+						foreach (array_keys($domains) as $accessLevel) {
+							array_walk($domains[$accessLevel], function (&$domainData, $domain) {
+								$rdns = getARPA($domain);
+								if ($rdns !== FALSE) {
+									$domainData['subtitle'] = 'RDNS: '. $rdns;
+								} else if (do_idn_to_ascii($domain) != $domain) {
+									$domainData['subtitle'] = do_idn_to_ascii($domain);
+								}
+							});
+						}
+					}
+
+					$displayEngine->setVar('adminuserdomains', $domains);
+					$displayEngine->setVar('admindomainuser', $user);
+
+					$displayEngine->setVar('domain_defaultpage', session::get('domain/defaultpage'));
+					$displayEngine->display('admin/domainsforuser.tpl');
+				});
+
 				$router->mount('/admin', function() use ($router, $displayEngine, $api) {
 					(new AdminDomainRoutes())->addRoutes($router, $displayEngine, $api);
 				});

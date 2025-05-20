@@ -123,12 +123,16 @@
 				{% endif %}
 			</td>
 			<td class="actions">
-				{% if userinfo.email != user.email %}
-					{% if hasPermission(['impersonate_users']) %}
-						<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success">Impersonate</a>
-					{% endif %}
+				{% if userinfo.email != user.email and hasPermission(['impersonate_users']) %}
+					<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success">Impersonate</a>
+				{% endif %}
 
-					<button data-action="deleteuser" data-id="{{ userinfo.id }}" class="btn btn-sm btn-danger">Delete</a>
+				{% if hasPermission(['manage_domains']) %}
+					<a href="{{ url('/admin/domains/user/' ~ userinfo.id) }}" class="btn btn-sm btn-primary">Domains</a>
+				{% endif %}
+
+				{% if userinfo.email != user.email %}
+					<button data-action="deleteuser" data-id="{{ userinfo.id }}" class="btn btn-sm btn-danger">Delete</button>
 				{% endif %}
 			</td>
 		</tr>
