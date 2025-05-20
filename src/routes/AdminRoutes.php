@@ -32,12 +32,16 @@
 				});
 
 				$router->get('/admin/domains/user/(.*)', function($userid) use ($displayEngine, $api) {
-					$user = $api->getUserInfo($userid);
+					if ($userid == 0) {
+						$user = ['email' => 'Unowned'];
+					} else {
+						$user = $api->getUserInfo($userid);
 
-					if ($user == null) {
-						$displayEngine->flash('error', '', 'No such user ID: ' . $userid);
-						header('Location: ' . $displayEngine->getURL('/admin/domains'));
-						return;
+						if ($user == null) {
+							$displayEngine->flash('error', '', 'No such user ID: ' . $userid);
+							header('Location: ' . $displayEngine->getURL('/admin/domains'));
+							return;
+						}
 					}
 
 					$userEmail = $user['email'];
@@ -49,8 +53,22 @@
 
 					if (isset($allDomains)) {
 						foreach ($allDomains as $domain => $domainData) {
-							if (isset($domainData['users'][$userEmail])) {
-								$accessLevel = $domainData['users'][$userEmail];
+							$keep = isset($domainData['users'][$userEmail]);
+
+							if ($userid == 0) {
+								$hasOwner = false;
+								foreach ($domainData['users'] as $u => $a) {
+									if ($a == 'owner') {
+										$hasOwner = true;
+										break;
+									}
+								}
+
+								$keep = !$hasOwner;
+							}
+
+							if ($keep) {
+								$accessLevel = $domainData['users'][$userEmail] ?? 'None';
 								if (!isset($domains[$accessLevel])) { $domains[$accessLevel] = []; }
 								$domains[$accessLevel][$domain] = $domainData;
 							}

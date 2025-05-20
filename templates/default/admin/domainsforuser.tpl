@@ -14,7 +14,7 @@
     {% for accesslevel,domains in adminuserdomains %}
 	<tbody>
         <tr>
-            <th span="2">Access: {{ accesslevel | capitalize }}</th>
+            <th colspan="2">Access: {{ accesslevel | capitalize }}</th>
         </tr>
 		{% for name,domain in domains %}
 		<tr data-searchable-value="{{ name }}">
