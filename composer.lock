@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49e0ef45abe5ce1e64c372909cd9a151",
+    "content-hash": "366815b2d3123f02313061d87b8ff6da",
     "packages": [
         {
             "name": "bramus/router",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bramus/router.git",
-                "reference": "968d04f86dafa116abc5f84a9689902393e00ac5"
+                "reference": "8e1d3875b196524bd4c283f18315d873420d9c28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bramus/router/zipball/968d04f86dafa116abc5f84a9689902393e00ac5",
-                "reference": "968d04f86dafa116abc5f84a9689902393e00ac5",
+                "url": "https://api.github.com/repos/bramus/router/zipball/8e1d3875b196524bd4c283f18315d873420d9c28",
+                "reference": "8e1d3875b196524bd4c283f18315d873420d9c28",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-07-29T13:56:21+00:00"
+            "time": "2023-07-29T14:04:27+00:00"
         },
         {
             "name": "google/recaptcha",
@@ -350,8 +350,8 @@
             "type": "library",
             "extra": {
                 "bamarni-bin": {
-                    "forward-command": false,
-                    "bin-links": false
+                    "bin-links": false,
+                    "forward-command": false
                 }
             },
             "autoload": {
@@ -708,8 +708,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
-        "ext-redis": "^5.0"
+        "ext-redis": "^6.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
