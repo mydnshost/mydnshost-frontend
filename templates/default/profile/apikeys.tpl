@@ -27,7 +27,7 @@
 						<em>Hidden - click to view</em>
 					{% endif %}
 				</span><br>
-				<small><strong>Last Used:</strong> {% if keydata.lastused == 0 %}Never{% else %}{{ keydata.lastused | date }}{% endif %}</small>
+				<small class="{% if keydata.lastused < keyoldcutoff %}text-danger{% elseif keydata.lastused < keycutoff %}text-warning{% endif %}"><strong>Last Used:</strong> {% if keydata.lastused == 0 %}Never{% else %}{{ keydata.lastused | date }}{% endif %}</small>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}" rowspan=2>
 				{{ keydata.description }}

@@ -73,6 +73,9 @@
 					}
 				}
 
+				$displayEngine->setVar('keycutoff', time() - (86400 * 180));
+				$displayEngine->setVar('keyoldcutoff', time() - (86400 * 360));
+
 				if (session::checkAuthTime()) {
 					$keys = $api->getAPIKeys();
 					$displayEngine->setVar('apikeys', $keys);
