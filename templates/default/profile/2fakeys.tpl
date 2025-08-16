@@ -65,7 +65,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
 				{{ keydata.description }}
 			</td>
-			<td class="lastused">
+			<td class="lastused {% if keydata.lastused < keyoldcutoff %}text-danger{% elseif keydata.lastused < keycutoff %}text-warning{% endif %}">
 				{% if keydata.lastused == 0 %}
 					<em>Never</em>
 				{% else %}

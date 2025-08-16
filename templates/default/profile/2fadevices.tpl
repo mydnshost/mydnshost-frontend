@@ -21,7 +21,7 @@ Here you can see what devices have been saved to allow logging in without 2FA.
 					<small>(This device)</small>
 				{% endif %}
 			</td>
-			<td class="lastused">
+			<td class="lastused {% if devicedata.lastused < keyoldcutoff %}text-danger{% elseif devicedata.lastused < keycutoff %}text-warning{% endif %}">
 				{% if devicedata.lastused == 0 %}
 					<em>Never</em>
 				{% else %}
