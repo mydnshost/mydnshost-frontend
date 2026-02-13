@@ -81,6 +81,9 @@
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
 		$sitetheme = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
+		if (isset($_REQUEST['__THEME'])) {
+			$sitetheme = $_REQUEST['__THEME'];
+		}
 
 		$knownThemes = getThemeInformation();
 

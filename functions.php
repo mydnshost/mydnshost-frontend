@@ -26,14 +26,81 @@
 		}
 	}
 
+	function getBootstrapVersions() {
+		return [
+			'5.1' => [
+				'css' => [
+					['url' => 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css', 'integrity' => 'sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=='],
+				],
+				'js' => [
+					['url' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js', 'integrity' => 'sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw=='],
+					['url' => 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js', 'integrity' => 'sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ=='],
+				],
+			],
+			'5.3' => [
+				'css' => [
+					['url' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css', 'integrity' => 'sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ'],
+				],
+				'js' => [
+					['url' => 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js', 'integrity' => 'sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE'],
+					['url' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js', 'integrity' => 'sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ'],
+				],
+			],
+			'5.3.8' => [
+				'css' => [
+					['url' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css', 'integrity' => 'sha256-2FMn2Zx6PuH5tdBQDRNwrOo60ts5wWPC9R8jK67b3t4='],
+				],
+				'js' => [
+					['url' => 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js', 'integrity' => 'sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE'],
+					['url' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js', 'integrity' => 'sha256-ew8UiV1pJH/YjpOEBInP1HxVvT/SfrCmwSoUzF9JIgc='],
+				],
+			],
+		];
+	}
+
 	function getThemeInformation() {
+		$bs = getBootstrapVersions();
 		$themes = [];
 
-		$themes['normal'] = ['name' => "Normal Theme (Light)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'normal'];
-		$themes['night'] = ['name' => "Night (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'night'];
-		$themes['cyborg'] = ['name' => "Cyborg (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'cyborg'];
-		$themes['bs53light'] = ['name' => "[ALPHA] Bootstrap 5.3 Light (Light)", 'bstheme' => 'light', 'bsversion' => '5.3', 'extracss' => 'bs53light'];
-		$themes['bs53dark'] = ['name' => "[ALPHA] Bootstrap 5.3 Dark (Dark)", 'bstheme' => 'dark', 'bsversion' => '5.3', 'extracss' => 'bs53dark'];
+		$themes['normal'] = ['name' => "Normal Theme (Light)", 'bstheme' => 'light', 'bsversion' => '5.3.8', 'extracss' => 'bs53light'];
+
+		$themes['bs51normal'] = ['name' => "Bootstrap 5.1 Normal (Light)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'normal'];
+
+		$themes['night'] = [
+			'name' => "Bootstrap 5.1 Night (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'night',
+			'externalcss' => [
+				['url' => 'https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap-night.min.css'],
+			],
+		];
+
+		$themes['cyborg'] = [
+			'name' => "Bootstrap 5.1 Cyborg (Dark)", 'bstheme' => '', 'bsversion' => '5.1', 'extracss' => 'cyborg',
+			'bscss' => [
+				['url' => 'https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/cyborg/bootstrap.min.css', 'integrity' => 'sha256-fO58jx4RDvdVgLJ4VWCNdWLLQF5cXb34EtdoGxlcJ68='],
+			],
+		];
+
+		$themes['bs53light'] = ['name' => "Bootstrap 5.3.0 Light (Light)", 'bstheme' => 'light', 'bsversion' => '5.3', 'extracss' => 'bs53light'];
+		$themes['bs53dark'] = ['name' => "Bootstrap 5.3.0 Dark (Dark)", 'bstheme' => 'dark', 'bsversion' => '5.3', 'extracss' => 'bs53dark'];
+
+		$themes['bs538light'] = ['name' => "[ALPHA] Bootstrap 5.3.8 Light (Light)", 'bstheme' => 'light', 'bsversion' => '5.3.8', 'extracss' => 'bs53light'];
+		$themes['bs538dark'] = ['name' => "[ALPHA] Bootstrap 5.3.8 Dark (Dark)", 'bstheme' => 'dark', 'bsversion' => '5.3.8', 'extracss' => 'bs53dark'];
+
+		$themes['bs538cyborg'] = [
+			'name' => "[ALPHA] Bootstrap 5.3.8 Cyborg (Dark)", 'bstheme' => '', 'bsversion' => '5.3.8', 'extracss' => 'cyborg',
+			'bscss' => [
+				['url' => 'https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/cyborg/bootstrap.min.css', 'integrity' => 'sha256-fa5a59VNtFFUgRkGARsgqJWkITHAdbWQINAtZfTjpRM='],
+			],
+		];
+
+		// Resolve bootstrap version assets into each theme
+		foreach ($themes as &$theme) {
+			$version = $theme['bsversion'];
+			if (!isset($theme['bscss'])) {
+				$theme['bscss'] = $bs[$version]['css'];
+			}
+			$theme['bsjs'] = $bs[$version]['js'];
+		}
 
 		return $themes;
 	}
