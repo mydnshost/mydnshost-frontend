@@ -31,10 +31,14 @@ div#actionbuttons {
     background-color: #292B2C;
 }
 
-table#records tr.error td {
-  background-color: #542020;
-}
-
 table#records tr.new td {
     background-color: #20544d;
+}
+
+table#records tr.error td {
+    background-color: #542020;
+}
+
+table#records tr td.warning {
+    background-color: #544420;
 }
