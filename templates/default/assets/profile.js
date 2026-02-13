@@ -263,10 +263,17 @@ optionsValues['sidebar_layout'] = {
   "labels": "Label View"
 };
 
+{% set themeInfo = getThemeInformation() %}
 optionsValues['sitetheme'] = {
-	{% for themeid,theme in getThemeInformation() %}
-		"{{ themeid }}": "{{ theme.name }}",
-  {% endfor %}
+	"__groupLabels": {{ themeInfo.groups|json_encode|raw }},
+	{% for themeid, theme in themeInfo.themes %}
+		{% if not theme.hidden|default(false) or sitetheme == themeid %}
+			{% set label = (theme.hidden|default(false) ? '[HIDDEN] ' : '') ~ (theme.deprecated|default(false) ? '[DEPRECATED] ' : '') ~ theme.name ~ (theme.default|default(false) ? ' [Default]' : '') %}
+			{% set groups = theme.groups|default('') %}
+			{% if groups is not iterable %}{% set groups = [groups] %}{% endif %}
+			"{{ themeid }}": {"label": "{{ label }}", "groups": {{ groups|json_encode|raw }}},
+		{% endif %}
+	{% endfor %}
 };
 
 optionsValues['avatar'] = {
@@ -289,11 +296,39 @@ function setUserEditable() {
 		}
 
 		if (fieldType == 'option') {
-			var select = '';
-			select += '<select class="form-control form-control-sm" name="' + key + '">';
-			$.each(optionsValues[key], function(optionkey, optionvalue) {
-				select += '	<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
-			});
+			var options = optionsValues[key];
+			var select = '<select class="form-control form-control-sm" name="' + key + '">';
+
+			// Detect rich format (value is object with .label) vs simple (value is string)
+			var isRich = false;
+			$.each(options, function(k, v) { isRich = (typeof v === 'object'); return false; });
+
+			if (isRich) {
+				var groupLabels = options['__groupLabels'] || {};
+				var groups = {};
+				var groupOrder = [];
+				$.each(options, function(optionkey, optiondata) {
+					if (optionkey === '__groupLabels') return;
+					$.each(optiondata.groups || [''], function(i, g) {
+						if (!(g in groups)) { groups[g] = []; groupOrder.push(g); }
+						groups[g].push('<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + escapeHtml(optiondata.label) + '</option>');
+					});
+				});
+				// Emit ungrouped options first
+				if ('' in groups) {
+					select += groups[''].join('');
+				}
+				$.each(groupOrder, function(i, g) {
+					if (g === '') return;
+					var displayLabel = groupLabels[g] || g;
+					select += '<optgroup label="' + escapeHtml(displayLabel) + '">' + groups[g].join('') + '</optgroup>';
+				});
+			} else {
+				$.each(options, function(optionkey, optionvalue) {
+					select += '<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
+				});
+			}
+
 			select += '</select>';
 			field.html(select);
 		} else {
