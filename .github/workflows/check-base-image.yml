@@ -49,6 +49,6 @@ jobs:
 
       - name: Trigger rebuild if base image changed
         if: steps.base.outputs.layers != steps.ours.outputs.layers
-        run: gh workflow run build-and-push.yml
+        run: gh workflow run build-and-push.yml -f trigger_source="External base image update"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

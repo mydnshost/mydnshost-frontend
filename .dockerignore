@@ -1,0 +1,9 @@
+.git
+.github
+.gitignore
+.gitmodules
+.dockerignore
+*.md
+LICENSE
+config.local.php
+templates_c/
