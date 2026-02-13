@@ -88,15 +88,9 @@
 					return;
 				});
 
-			$router->get('/system/jobs/([0-9]+)/logs', function($job) use ($displayEngine, $api) {
-					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs :: ' . $job . ' :: Logs');
-
-					$displayEngine->setVar('jobid', $job);
-
-					$logs = $api->api('/system/jobs/' . $job . '/logs');
-					$displayEngine->setVar('logs', isset($logs['response']) ? $logs['response'] : []);
-
-					$displayEngine->display('system/job_logs.tpl');
+			$router->get('/system/jobs/([0-9]+)/logs', function($job) use ($displayEngine) {
+					header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
+					return;
 				});
 
 				$router->get('/system/jobs/([0-9]+)/cancel', function($job) use ($displayEngine, $api) {
