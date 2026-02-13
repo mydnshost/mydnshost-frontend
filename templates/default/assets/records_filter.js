@@ -35,7 +35,7 @@ $(function() {
 		$('#records tbody tr').each(function() {
 			var row = $(this);
 
-			if (row.hasClass('new') || row.hasClass('edited')) {
+			if (row.hasClass('new') || row.hasClass('edited') || row.hasClass('deleted')) {
 				row.show();
 				return;
 			}

@@ -42,3 +42,8 @@ table#records tr.error td {
 table#records tr td.warning {
     background-color: #544420;
 }
+
+table tr.deleted td {
+    background-color: #3a3a3a;
+    color: #777;
+}
