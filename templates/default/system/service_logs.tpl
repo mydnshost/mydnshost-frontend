@@ -40,10 +40,10 @@
 	<table class="table table-borderless table-sm my-2 font-monospace" style="font-size: 0.8rem;">
 		<tbody>
 			{% for log in logs %}
-			<tr{% if log['stream'] == 'stderr' %} class="text-danger"{% endif %}>
-				<td class="text-nowrap py-0 ps-3 pe-1{% if log['stream'] != 'stderr' %} text-muted{% endif %}" style="width: 1%; white-space: nowrap">{{ log['timestamp'] }}</td>
+			<tr>
+				<td class="text-nowrap py-0 ps-3 pe-1{{ log['stream'] == 'stderr' ? ' text-danger' : ' text-muted' }}" style="width: 1%; white-space: nowrap">{{ log['timestamp'] }}</td>
 				<td class="text-nowrap py-0 pe-1" style="width: 1%; white-space: nowrap"><span class="badge border{{ log['stream'] == 'stderr' ? ' border-danger text-danger' : ' border-secondary text-secondary' }}">{{ log['docker']['name'] }} :: {{ log['stream'] }}</span></td>
-				<td class="py-0" style="width: 100%">{{ log['message'] }}</td>
+				<td class="py-0{{ log['stream'] == 'stderr' ? ' text-danger' : '' }}" style="width: 100%">{{ log['message'] }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

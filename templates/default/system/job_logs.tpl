@@ -10,9 +10,9 @@
 	<table class="table table-borderless table-sm my-2 font-monospace" style="font-size: 0.8rem;">
 		<tbody>
 			{% for log in logs %}
-			<tr data-searchable-value="{{ log.data }}"{% if log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' %} class="text-danger"{% endif %}>
-				<td class="text-nowrap py-0 ps-3 pe-2{% if not (log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION') %} text-muted{% endif %}" style="width: 250px">{{ log.time | date }}</td>
-				<td class="py-0">{{ log.data }}</td>
+			<tr data-searchable-value="{{ log.data }}">
+				<td class="text-nowrap py-0 ps-3 pe-2{{ log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' ? ' text-danger' : ' text-muted' }}" style="width: 250px">{{ log.time | date }}</td>
+				<td class="py-0{{ log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' ? ' text-danger' : '' }}">{{ log.data }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
