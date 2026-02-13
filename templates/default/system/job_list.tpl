@@ -1,6 +1,34 @@
 {% set filterQS %}{% if filter.state|default('') %}&filter[state]={{ filter.state|url_encode }}{% endif %}{% if filter.name|default('') %}&filter[name]={{ filter.name|url_encode }}{% endif %}{% endset %}
 
-<h1>Jobs</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<h1 class="mb-0">Jobs</h1>
+	<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#createJobForm">Create Job</button>
+</div>
+
+<div class="collapse mb-3" id="createJobForm">
+	<div class="card">
+		<div class="card-header">Create Job</div>
+		<div class="card-body">
+			<form method="post" action="{{ url('/system/jobs/create') }}">
+				<input type="hidden" name="csrftoken" value="{{ csrftoken }}">
+				<div class="mb-3">
+					<label for="jobName" class="form-label">Job Name</label>
+					<input type="text" name="name" id="jobName" class="form-control form-control-sm" required placeholder="e.g. verify_domain">
+				</div>
+				<div class="mb-3">
+					<label for="jobData" class="form-label">Payload (JSON)</label>
+					<textarea name="data" id="jobData" class="form-control form-control-sm font-monospace" rows="5" required placeholder='{"domain": "example.com"}'></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="jobDependsOn" class="form-label">Depends On (Job ID)</label>
+					<input type="number" name="dependsOn" id="jobDependsOn" class="form-control form-control-sm" min="1" placeholder="Optional — job ID that must finish first">
+				</div>
+				<button type="submit" class="btn btn-primary btn-sm">Schedule Job</button>
+				<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#createJobForm">Cancel</button>
+			</form>
+		</div>
+	</div>
+</div>
 
 <div class="card mb-3">
 	<div class="card-body py-2">
@@ -15,6 +43,7 @@
 						<option value="blocked"{{ filter.state|default('') == 'blocked' ? ' selected' }}>Blocked</option>
 						<option value="finished"{{ filter.state|default('') == 'finished' ? ' selected' }}>Finished</option>
 						<option value="error"{{ filter.state|default('') == 'error' ? ' selected' }}>Error</option>
+						<option value="cancelled"{{ filter.state|default('') == 'cancelled' ? ' selected' }}>Cancelled</option>
 					</select>
 				</div>
 				<div class="col-auto">
@@ -80,6 +109,8 @@
 					<span class="badge bg-warning text-dark">Blocked</span>
 				{% elseif job.state == 'created' %}
 					<span class="badge bg-secondary">Created</span>
+				{% elseif job.state == 'cancelled' %}
+					<span class="badge bg-dark">Cancelled</span>
 				{% else %}
 					<span class="badge bg-secondary">{{ job.state }}</span>
 				{% endif %}
@@ -98,6 +129,9 @@
 			<td class="text-nowrap">
 				<a href="{{ url('/system/jobs/' ~ job.id) }}" class="btn btn-outline-primary btn-sm" title="View">View</a>
 				<a href="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}" class="btn btn-outline-warning btn-sm" title="Repeat">Repeat</a>
+				{% if job.state in ['created', 'blocked'] %}
+					<a href="{{ url('/system/jobs/' ~ job.id ~ '/cancel') }}" class="btn btn-outline-danger btn-sm" title="Cancel" onclick="return confirm('Cancel job {{ job.id }}?')">Cancel</a>
+				{% endif %}
 			</td>
 		</tr>
 		{% else %}

@@ -4,6 +4,9 @@
 	<a href="{{ url('/system/jobs') }}" class="btn btn-outline-primary btn-sm">Back to Jobs</a>
 	<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
 	<a href="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}" class="btn btn-outline-warning btn-sm">Repeat</a>
+	{% if job.state in ['created', 'blocked'] %}
+		<a href="{{ url('/system/jobs/' ~ jobid ~ '/cancel') }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Cancel job {{ jobid }}?')">Cancel</a>
+	{% endif %}
 </div>
 
 <div class="row">
@@ -33,6 +36,8 @@
 								<span class="badge bg-warning text-dark">Blocked</span>
 							{% elseif job.state == 'created' %}
 								<span class="badge bg-secondary">Created</span>
+							{% elseif job.state == 'cancelled' %}
+								<span class="badge bg-dark">Cancelled</span>
 							{% else %}
 								<span class="badge bg-secondary">{{ job.state }}</span>
 							{% endif %}
