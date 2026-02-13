@@ -224,7 +224,9 @@
 					header('Content-Type: application/json');
 
 					// TODO: Reformat into data-table array.
-					$stats = $api->getSystemStats($stat, ['type' => 'derivative']);
+					$apiOptions = ['type' => 'derivative'];
+					if (isset($_GET['time']) && ctype_digit($_GET['time'])) { $apiOptions['time'] = $_GET['time']; }
+					$stats = $api->getSystemStats($stat, $apiOptions);
 
 					$options = [
 					            'hAxis' => ['title' => 'Time', 'titleTextStyle' => ['color' => '#333']],

@@ -109,7 +109,9 @@
 					header('Content-Type: application/json');
 
 					// TODO: Reformat into data-table array.
-					$stats = $api->getUserStats('domains', ['type' => 'derivative']);
+					$apiOptions = ['type' => 'derivative'];
+					if (isset($_GET['time']) && ctype_digit($_GET['time'])) { $apiOptions['time'] = $_GET['time']; }
+					$stats = $api->getUserStats('domains', $apiOptions);
 
 					$options = ['title' => 'Queries-per-domain',
 					            'hAxis' => ['title' => 'Time', 'titleTextStyle' => ['color' => '#333']],

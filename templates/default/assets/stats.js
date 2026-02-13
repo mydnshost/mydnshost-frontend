@@ -1,214 +1,382 @@
-// Load the Visualization API and the piechart package.
-google.charts.load('current', {'packages':['corechart']});
+(function() {
+	const defaultColors = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395'];
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(loadChartData);
+	function loadChartData(timeSeconds) {
+		document.querySelectorAll('div[data-graph]').forEach(function(element) {
+			// Clear any previous chart content
+			element.innerHTML = '';
 
-function loadChartData() {
-	$('div[data-graph]').each(function() {
-		const element = this;
-		const dataSource = $(element).data('graph');
+			const baseUrl = element.getAttribute('data-graph');
+			const separator = baseUrl.indexOf('?') === -1 ? '?' : '&';
+			const dataSource = timeSeconds ? baseUrl + separator + 'time=' + timeSeconds : baseUrl;
 
-		$.getJSON(dataSource, function (data) {
-			drawChart(element, data);
+			fetch(dataSource)
+				.then(function(response) { return response.json(); })
+				.then(function(data) { drawChart(element, data, timeSeconds); });
 		});
-	});
-}
-
-function drawChart(element, statsData) {
-	const keys = $.map(statsData["stats"], function(element,index) {return index});
-
-	// TODO: Datatable should come from stats.
-	const data = new google.visualization.DataTable();
-	data.addColumn('datetime', 'Time');
-	keys.forEach(function(value) {
-		data.addColumn('number', value);
-	});
-
-	const timedata = {};
-	$.each(statsData["stats"], function(rrtype, rrdata) {
-		$.each(rrdata, function(k, v) {
-			const time = v["time"];
-			const value = v["value"];
-
-			if (timedata[time] === undefined) {
-				timedata[time] = new Array(keys.length + 1);
-				timedata[time][0] = new Date(time * 1000);
-			}
-
-			timedata[time][keys.indexOf(rrtype) + 1] = value;
-		});
-	});
-
-	$.each(timedata, (k, v) => { data.addRow(v); });
-
-	let chartInstance;
-	const baseChartOptions = JSON.parse(JSON.stringify(statsData["options"]));
-
-	if (statsData['graphType'] === 'area') {
-		chartInstance = new google.visualization.AreaChart(element);
 	}
 
-	const graphTitle = $(element).data('title');
-	if (graphTitle !== undefined) {
-		baseChartOptions['title'] = graphTitle;
-	}
+	function drawChart(element, statsData, timeSeconds) {
+		const keys = Object.keys(statsData.stats);
+		if (keys.length === 0) return;
 
-	if (chartInstance !== undefined) {
-		// Store original series configurations and visibility state
-		const seriesConfigurations = [];
-		const defaultColors = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395'];
+		// Derive theme colors from computed styles
+		const computedStyle = getComputedStyle(element);
+		const textColor = computedStyle.color || '#333';
+		const mutedColor = computedStyle.getPropertyValue('--bs-secondary-color').trim() || '#aaa';
+		const bgColor = computedStyle.getPropertyValue('--bs-body-bg').trim() || '#fff';
 
-		keys.forEach((key, index) => {
-			let originalSeriesConfig = {};
-			if (baseChartOptions.series && baseChartOptions.series[index]) {
-				originalSeriesConfig = JSON.parse(JSON.stringify(baseChartOptions.series[index]));
-			}
+		const isStacked = statsData.options && statsData.options.isStacked;
+		const graphTitle = element.getAttribute('data-title') || (statsData.options && statsData.options.title) || '';
+		const yAxisLabel = (statsData.options && statsData.options.vAxis && statsData.options.vAxis.title) || '';
 
-			if (!originalSeriesConfig.color) {
-				originalSeriesConfig.color = defaultColors[index % defaultColors.length];
-			}
-
-			if (statsData['graphType'] === 'area') {
-				if (originalSeriesConfig.lineWidth === undefined) { originalSeriesConfig.lineWidth = 2; }
-				if (originalSeriesConfig.areaOpacity === undefined) { originalSeriesConfig.areaOpacity = 0.3; }
-			}
-
-			seriesConfigurations[index] = {
-				original: originalSeriesConfig,
-				visible: true,
-			};
+		// Build time-indexed data from the stats object
+		const timeMap = {};
+		keys.forEach(function(seriesName) {
+			statsData.stats[seriesName].forEach(function(point) {
+				const time = point.time;
+				if (!timeMap[time]) {
+					timeMap[time] = { date: new Date(time * 1000) };
+					keys.forEach(function(k) { timeMap[time][k] = 0; });
+				}
+				timeMap[time][seriesName] = point.value;
+			});
 		});
 
-		function prepareChartDataAndOptions() {
-			const view = new google.visualization.DataView(data); // 'data' is the original DataTable
-			const columnDefinitions = [0]; // Always include the domain column (index 0, e.g., 'Time')
+		const data = Object.values(timeMap).sort(function(a, b) { return a.date - b.date; });
+		if (data.length === 0) return;
 
-			// The 'keys' array holds the names of the data series.
-			// The original DataTable 'data' has columns: 0=Time, 1=keys[0], 2=keys[1], ...
-			keys.forEach((keyName, originalSeriesIndex) => {
-				// originalSeriesIndex is the 0-based index of the series in the 'keys' array
-				// and corresponds to its configuration in 'seriesConfigurations'.
+		// Track visibility per series
+		const visibility = {};
+		keys.forEach(function(k) { visibility[k] = true; });
 
-				if (seriesConfigurations[originalSeriesIndex].visible) {
-					// If visible, use the original data column from the DataTable.
-					// DataTable column index is originalSeriesIndex + 1.
-					columnDefinitions.push(originalSeriesIndex + 1);
-				} else {
-					// If not visible, create a calculated column that returns null for all data points.
-					// This effectively removes the series from rendering and stacking calculations.
-					columnDefinitions.push({
-						type: data.getColumnType(originalSeriesIndex + 1),
-						label: data.getColumnLabel(originalSeriesIndex + 1),
-						calc: () => null
-					});
-				}
-			});
-			view.setColumns(columnDefinitions);
+		// Dimensions
+		const containerWidth = element.clientWidth || 900;
+		const containerHeight = element.clientHeight || 700;
+		const legendWidth = 180;
+		const margin = { top: 40, right: legendWidth + 20, bottom: 40, left: 70 };
+		const width = containerWidth - margin.left - margin.right;
+		const height = containerHeight - margin.top - margin.bottom;
 
-			// Prepare chart drawing options
-			let drawingOptions = JSON.parse(JSON.stringify(baseChartOptions));
-			drawingOptions.series = {}; // Initialize series-specific options
+		// Color scale
+		const color = function(i) { return defaultColors[i % defaultColors.length]; };
 
-			seriesConfigurations.forEach((config, originalSeriesIndex) => {
-				// The 'series' option is 0-indexed based on the series columns in the DataView.
-				// Since our DataView has a column for every original series (either real or null-calculated),
-				// the originalSeriesIndex maps directly to the series index for styling purposes.
-				if (config.visible) {
-					drawingOptions.series[originalSeriesIndex] = JSON.parse(JSON.stringify(config.original));
-				} else {
-					// Style for hidden series' legend item
-					drawingOptions.series[originalSeriesIndex] = {
-						...JSON.parse(JSON.stringify(config.original)), // Retain other original settings
-						color: '#E0E0E0', // Light grey color for the legend marker
-					};
-				}
-			});
-			return { dataView: view, options: drawingOptions };
+		// Create SVG
+		const svg = d3.select(element)
+			.append('svg')
+			.attr('width', containerWidth)
+			.attr('height', containerHeight);
+
+		const chartGroup = svg.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+		// Title
+		if (graphTitle) {
+			svg.append('text')
+				.attr('x', containerWidth / 2)
+				.attr('y', 20)
+				.attr('text-anchor', 'middle')
+				.style('font-size', '14px')
+				.style('font-weight', 'bold')
+				.style('fill', textColor)
+				.text(graphTitle);
 		}
 
-		google.visualization.events.addListener(chartInstance, 'select', function() {
-			const selection = chartInstance.getSelection();
+		// Scales
+		const x = d3.scaleTime().range([0, width]);
+		const y = d3.scaleLinear().range([height, 0]);
 
-			if (selection.length > 0 && selection[0]) {
-				const item = selection[0];
-				let originalSeriesIndex = -1; // Index in the original 'keys' and 'seriesConfigurations'
+		// Axes groups
+		const xAxisGroup = chartGroup.append('g')
+			.attr('transform', 'translate(0,' + height + ')');
+		const yAxisGroup = chartGroup.append('g');
 
-				if (item.targetID && typeof item.targetID === 'string' && item.targetID.startsWith('legendentry#')) {
-					const parsedIndex = parseInt(item.targetID.substring('legendentry#'.length), 10);
-					if (!isNaN(parsedIndex)) {
-						originalSeriesIndex = parsedIndex;
-					}
-				} else if (item.row === null && typeof item.column === 'number') {
-					// For legend clicks, item.column is often the 1-based index in the *drawn data source* (DataView).
-					// Since our DataView maintains a column for each original series,
-					// item.column (1-based for series) corresponds to originalSeriesIndex (0-based).
-					if (item.column > 0) {
-						originalSeriesIndex = item.column - 1;
-					}
-				}
+		// Y axis label
+		if (yAxisLabel) {
+			chartGroup.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', -margin.left + 15)
+				.attr('x', -height / 2)
+				.attr('text-anchor', 'middle')
+				.style('font-size', '12px')
+				.style('fill', textColor)
+				.text(yAxisLabel);
+		}
 
-				if (originalSeriesIndex !== -1 && originalSeriesIndex >= 0 && originalSeriesIndex < seriesConfigurations.length) {
-					seriesConfigurations[originalSeriesIndex].visible = !seriesConfigurations[originalSeriesIndex].visible;
+		// Clip path so areas don't overflow
+		chartGroup.append('defs').append('clipPath')
+			.attr('id', 'clip-' + Math.random().toString(36).substring(2, 11))
+			.append('rect')
+			.attr('width', width)
+			.attr('height', height);
 
-					chartInstance.currentLegendPage = 0;
-					for (const text of element.getElementsByTagName('text')) {
-						if (text.getAttribute('text-anchor') === 'middle' && text.nextSibling == undefined && text.previousSibling == undefined) {
-							var match = text.innerHTML.match(/^([0-9]+)\/[0-9]+$/);
-							if (match) {
-								chartInstance.currentLegendPage = match[1] - 1;
-								break;
-							}
-						}
-					};
+		const clipId = chartGroup.select('clipPath').attr('id');
+		const areaGroup = chartGroup.append('g')
+			.attr('clip-path', 'url(#' + clipId + ')');
 
-					// Attempt to restore legend page
-					if (chartInstance.currentLegendPage > 0) {
-						google.visualization.events.addOneTimeListener(chartInstance, 'ready', function() {
-							let clicksNeeded = chartInstance.currentLegendPage;
+		// Tooltip
+		const tooltip = d3.select(element)
+			.append('div')
+			.style('position', 'absolute')
+			.style('background', bgColor)
+			.style('color', textColor)
+			.style('border', '1px solid ' + mutedColor)
+			.style('border-radius', '4px')
+			.style('padding', '8px')
+			.style('font-size', '12px')
+			.style('pointer-events', 'none')
+			.style('opacity', 0)
+			.style('z-index', 10);
 
-							function clickNextLegendPageRecursive() {
-								if (clicksNeeded <= 0) {
-									return;
-								}
+		// Make container relative for tooltip positioning
+		element.style.position = 'relative';
 
-								let nextPageButton = undefined;
-								for (const text of element.getElementsByTagName('text')) {
-									if (text.getAttribute('text-anchor') === 'middle' && text.nextSibling == undefined && text.previousSibling == undefined) {
-										var match = text.innerHTML.match(/^([0-9]+)\/[0-9]+$/);
-										if (match) {
-											nextPageButton = text.parentElement.nextSibling;
-											break;
-										}
-									}
-								}
+		// Legend (right side, scrollable HTML div)
+		const legendDiv = d3.select(element)
+			.append('div')
+			.style('position', 'absolute')
+			.style('top', margin.top + 'px')
+			.style('right', '0')
+			.style('width', legendWidth + 'px')
+			.style('max-height', height + 'px')
+			.style('overflow-y', 'auto')
+			.style('font-size', '11px');
 
-								if (nextPageButton) {
-									const clickEvent = new MouseEvent('click', {
-										bubbles: true,
-										cancelable: true,
-										view: window
-									});
-									nextPageButton.dispatchEvent(clickEvent);
+		function buildLegend() {
+			legendDiv.selectAll('*').remove();
 
-									clicksNeeded--;
-									clickNextLegendPageRecursive();
-								} else {
-									clicksNeeded = 0;
-								}
-							}
-							clickNextLegendPageRecursive();
-						});
-					}
+			keys.forEach(function(key, i) {
+				const item = legendDiv.append('div')
+					.style('display', 'flex')
+					.style('align-items', 'center')
+					.style('gap', '4px')
+					.style('padding', '2px 4px')
+					.style('cursor', 'pointer')
+					.style('white-space', 'nowrap')
+					.style('overflow', 'hidden')
+					.style('text-overflow', 'ellipsis')
+					.on('click', function() {
+						visibility[key] = !visibility[key];
+						render();
+					});
 
-					const { dataView, options } = prepareChartDataAndOptions();
-					chartInstance.draw(dataView, options);
-				}
+				item.append('span')
+					.style('display', 'inline-block')
+					.style('width', '12px')
+					.style('height', '12px')
+					.style('min-width', '12px')
+					.style('border-radius', '2px')
+					.style('background', visibility[key] ? color(i) : '#e0e0e0');
+
+				item.append('span')
+					.style('color', visibility[key] ? textColor : mutedColor)
+					.style('overflow', 'hidden')
+					.style('text-overflow', 'ellipsis')
+					.text(key)
+					.attr('title', key);
+			});
+		}
+
+		// Overlay for tooltip interaction
+		const overlay = chartGroup.append('rect')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('fill', 'none')
+			.attr('pointer-events', 'all');
+
+		const hoverLine = chartGroup.append('line')
+			.attr('y1', 0)
+			.attr('y2', height)
+			.attr('stroke', '#999')
+			.attr('stroke-width', 1)
+			.attr('stroke-dasharray', '4,4')
+			.style('opacity', 0);
+
+		// Choose x-axis time format based on selected range
+		function getTimeFormat() {
+			if (!timeSeconds || timeSeconds <= 172800) {
+				return d3.timeFormat('%H:%M');
+			} else if (timeSeconds <= 604800) {
+				return d3.timeFormat('%a %H:%M');
+			} else if (timeSeconds <= 5184000) {
+				return d3.timeFormat('%b %d');
+			} else {
+				return d3.timeFormat('%b %Y');
 			}
-		});
+		}
 
-		// Initial draw
-		const { dataView, options } = prepareChartDataAndOptions();
-		chartInstance.draw(dataView, options);
+		overlay
+			.on('mousemove', function(event) {
+				const [mx] = d3.pointer(event);
+				const hoveredDate = x.invert(mx);
+				const bisect = d3.bisector(function(d) { return d.date; }).left;
+				let idx = bisect(data, hoveredDate);
+				if (idx >= data.length) idx = data.length - 1;
+				if (idx > 0) {
+					const d0 = data[idx - 1];
+					const d1 = data[idx];
+					if (hoveredDate - d0.date > d1.date - hoveredDate) idx = idx;
+					else idx = idx - 1;
+				}
+				const d = data[idx];
+				if (!d) return;
+
+				hoverLine
+					.attr('x1', x(d.date))
+					.attr('x2', x(d.date))
+					.style('opacity', 1);
+
+				const visibleKeys = keys.filter(function(k) { return visibility[k]; });
+				let html = '<strong>' + d3.timeFormat('%Y-%m-%d %H:%M')(d.date) + '</strong>';
+				visibleKeys.forEach(function(k) {
+					const ci = keys.indexOf(k);
+					html += '<br><span style="color:' + color(ci) + '">&#9679;</span> ' + k + ': ' + (d[k] != null ? d[k] : 0);
+				});
+
+				tooltip.html(html).style('opacity', 1);
+
+				// Position tooltip
+				const tooltipNode = tooltip.node();
+				const tipWidth = tooltipNode.offsetWidth;
+				let tipX = x(d.date) + margin.left + 15;
+				if (tipX + tipWidth > containerWidth - 10) {
+					tipX = x(d.date) + margin.left - tipWidth - 15;
+				}
+				tooltip.style('left', tipX + 'px').style('top', (margin.top + 10) + 'px');
+			})
+			.on('mouseleave', function() {
+				tooltip.style('opacity', 0);
+				hoverLine.style('opacity', 0);
+			});
+
+		function render() {
+			const visibleKeys = keys.filter(function(k) { return visibility[k]; });
+
+			// Clear previous paths before redrawing
+			areaGroup.selectAll('*').remove();
+
+			// Update scales
+			x.domain(d3.extent(data, function(d) { return d.date; }));
+
+			if (isStacked && visibleKeys.length > 0) {
+				const stack = d3.stack()
+					.keys(visibleKeys)
+					.value(function(d, key) { return d[key] || 0; })
+					.order(d3.stackOrderNone)
+					.offset(d3.stackOffsetNone);
+
+				const stackedData = stack(data);
+
+				y.domain([0, d3.max(stackedData, function(layer) {
+					return d3.max(layer, function(d) { return d[1]; });
+				}) || 1]).nice();
+
+				// Draw stacked areas
+				const area = d3.area()
+					.x(function(d) { return x(d.data.date); })
+					.y0(function(d) { return y(d[0]); })
+					.y1(function(d) { return y(d[1]); });
+
+				const areas = areaGroup.selectAll('path.area')
+					.data(stackedData, function(d) { return d.key; });
+
+				areas.exit().remove();
+
+				areas.enter()
+					.append('path')
+					.attr('class', 'area')
+					.merge(areas)
+					.attr('d', area)
+					.attr('fill', function(d) { return color(keys.indexOf(d.key)); })
+					.attr('fill-opacity', 0.3)
+					.attr('stroke', function(d) { return color(keys.indexOf(d.key)); })
+					.attr('stroke-width', 1.5);
+			} else {
+				// Non-stacked: individual areas
+				y.domain([0, d3.max(data, function(d) {
+					let max = 0;
+					visibleKeys.forEach(function(k) {
+						if (d[k] > max) max = d[k];
+					});
+					return max;
+				}) || 1]).nice();
+
+				// Bind data as array of {key, values} objects
+				const seriesData = visibleKeys.map(function(k) {
+					return { key: k, values: data };
+				});
+
+				const groups = areaGroup.selectAll('g.series')
+					.data(seriesData, function(d) { return d.key; });
+
+				groups.exit().remove();
+
+				const enter = groups.enter()
+					.append('g')
+					.attr('class', 'series');
+
+				enter.append('path').attr('class', 'area-fill');
+				enter.append('path').attr('class', 'area-line');
+
+				const merged = enter.merge(groups);
+
+				merged.datum(function(d) { return d.key; });
+
+				merged.select('path.area-fill')
+					.attr('d', function(key) {
+						return d3.area()
+							.x(function(d) { return x(d.date); })
+							.y0(height)
+							.y1(function(d) { return y(d[key] || 0); })
+							(data);
+					})
+					.attr('fill', function(key) { return color(keys.indexOf(key)); })
+					.attr('fill-opacity', 0.3);
+
+				merged.select('path.area-line')
+					.attr('d', function(key) {
+						return d3.line()
+							.x(function(d) { return x(d.date); })
+							.y(function(d) { return y(d[key] || 0); })
+							(data);
+					})
+					.attr('stroke', function(key) { return color(keys.indexOf(key)); })
+					.attr('stroke-width', 1.5)
+					.attr('fill', 'none');
+			}
+
+			// Update axes
+			xAxisGroup.call(d3.axisBottom(x).ticks(8).tickFormat(getTimeFormat()));
+			yAxisGroup.call(d3.axisLeft(y).ticks(6));
+
+			// Style axes for current theme
+			svg.selectAll('.tick text').style('fill', textColor);
+			svg.selectAll('.tick line, .domain').style('stroke', mutedColor);
+
+			buildLegend();
+		}
+
+		render();
 	}
-}
+
+	function init() {
+		const selector = document.querySelector('.stats-time-selector');
+		var currentTime = selector ? selector.value : null;
+
+		loadChartData(currentTime);
+
+		if (selector) {
+			selector.addEventListener('change', function() {
+				currentTime = this.value;
+				loadChartData(currentTime);
+			});
+		}
+	}
+
+	// Run when DOM is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
+})();
