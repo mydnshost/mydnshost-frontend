@@ -1,0 +1,54 @@
+name: Check Base Image
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: Check for base image updates
+
+    steps:
+      - name: Get base image layers
+        id: base
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        run: |
+          LAYERS=$(curl -sf \
+            -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            "https://registry.shanemcc.net/v2/public/docker-apache-php-base/manifests/latest" \
+            | jq -c '[.layers[].digest]')
+          if [ -z "$LAYERS" ] || [ "$LAYERS" = "null" ] || [ "$LAYERS" = "[]" ]; then
+            echo "Failed to inspect base image"
+            exit 1
+          fi
+          echo "layers=${LAYERS}" >> "$GITHUB_OUTPUT"
+          echo "count=$(echo "$LAYERS" | jq 'length')" >> "$GITHUB_OUTPUT"
+
+      - name: Get our image layers
+        id: ours
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        run: |
+          MANIFEST=$(curl -sf \
+            -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            "https://registry.shanemcc.net/v2/mydnshost-public/frontend/manifests/latest" \
+            || true)
+          if [ -n "$MANIFEST" ]; then
+            LAYERS=$(echo "$MANIFEST" | jq -c "[.layers[:${{ steps.base.outputs.count }}][].digest]")
+          else
+            LAYERS="[]"
+          fi
+          echo "layers=${LAYERS}" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger rebuild if base image changed
+        if: steps.base.outputs.layers != steps.ours.outputs.layers
+        run: gh workflow run build-and-push.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
