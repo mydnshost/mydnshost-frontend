@@ -11,17 +11,30 @@ jobs:
     name: Check for base image updates
 
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.shanemcc.net
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
       - name: Get base image layers
         id: base
-        env:
-          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
         run: |
-          LAYERS=$(curl -sf \
-            -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://registry.shanemcc.net/v2/public/docker-apache-php-base/manifests/latest" \
-            | jq -c '[.layers[].digest]')
+          RAW=$(docker buildx imagetools inspect --raw \
+            registry.shanemcc.net/public/docker-apache-php-base:latest)
+
+          # Handle manifest list (multi-arch) by resolving to amd64
+          if echo "$RAW" | jq -e '.manifests' > /dev/null 2>&1; then
+            DIGEST=$(echo "$RAW" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "linux") | .digest')
+            RAW=$(docker buildx imagetools inspect --raw \
+              "registry.shanemcc.net/public/docker-apache-php-base@${DIGEST}")
+          fi
+
+          LAYERS=$(echo "$RAW" | jq -c '[.layers[].digest]')
           if [ -z "$LAYERS" ] || [ "$LAYERS" = "null" ] || [ "$LAYERS" = "[]" ]; then
             echo "Failed to inspect base image"
             exit 1
@@ -31,17 +44,18 @@ jobs:
 
       - name: Get our image layers
         id: ours
-        env:
-          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
         run: |
-          MANIFEST=$(curl -sf \
-            -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://registry.shanemcc.net/v2/mydnshost-public/frontend/manifests/latest" \
-            || true)
-          if [ -n "$MANIFEST" ]; then
-            LAYERS=$(echo "$MANIFEST" | jq -c "[.layers[:${{ steps.base.outputs.count }}][].digest]")
+          RAW=$(docker buildx imagetools inspect --raw \
+            registry.shanemcc.net/mydnshost-public/frontend:latest 2>/dev/null || true)
+
+          if [ -n "$RAW" ]; then
+            # Handle manifest list
+            if echo "$RAW" | jq -e '.manifests' > /dev/null 2>&1; then
+              DIGEST=$(echo "$RAW" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "linux") | .digest')
+              RAW=$(docker buildx imagetools inspect --raw \
+                "registry.shanemcc.net/mydnshost-public/frontend@${DIGEST}" 2>/dev/null || true)
+            fi
+            LAYERS=$(echo "$RAW" | jq -c "[.layers[:${{ steps.base.outputs.count }}][].digest]")
           else
             LAYERS="[]"
           fi
