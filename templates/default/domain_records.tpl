@@ -64,6 +64,17 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 			<th class="actions">Actions</th>
 			{% endif %}
 		</tr>
+		<tr class="filter-row">
+			<th><input type="text" class="form-control form-control-sm" data-filter="name" placeholder="Filter..."></th>
+			<th id="typeFilterCell"></th>
+			<th><input type="number" class="form-control form-control-sm" data-filter="priority" placeholder="Filter..." min="0"></th>
+			<th><input type="text" class="form-control form-control-sm" data-filter="content" placeholder="Filter..."></th>
+			<th><input type="number" class="form-control form-control-sm" data-filter="ttl" placeholder="Filter..." min="0"></th>
+			<th><input type="text" class="form-control form-control-sm" data-filter="state" placeholder="Filter..."></th>
+			{% if has_domain_write %}
+			<th><button type="button" class="btn btn-sm btn-outline-light d-none" id="clearFilters">Clear</button></th>
+			{% endif %}
+		</tr>
 	</thead>
 	<tbody>
 		{% for record in records %}
@@ -83,7 +94,7 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 					{{ record.name }}
 				{% endif %}
 				{% if record.comment != '' %}
-					<span class="badge bg-info" title="{{ record.comment }}">!</span>
+					<span class="badge bg-info comment-badge" title="{{ record.comment }}">!</span>
 				{% endif %}
 				{% if record.subtitle != '' %}
 					<br><small><em>{{ record.subtitle }}</em></small>
@@ -140,6 +151,8 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 	</tbody>
 </table>
 
+<script>$(function() { $('#records .comment-badge').tooltip({placement: 'right'}); });</script>
+
 {% if has_domain_write %}
 <div id="actionbuttonsfiller" class="row"></div>
 <div id="actionbuttons" class="row">
@@ -168,3 +181,6 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 
 <script src="{{ url('/assets/records.js') }}"></script>
 {% endif %}
+
+<script src="{{ url('/assets/record_types.js') }}"></script>
+<script src="{{ url('/assets/records_filter.js') }}"></script>

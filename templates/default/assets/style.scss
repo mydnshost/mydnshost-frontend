@@ -346,6 +346,21 @@ table#records {
         width: 200px;
     }
 
+    > thead > tr > th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    > thead > tr.filter-row > th {
+        padding: 4px;
+    }
+
+    > thead > tr.filter-row .dropdown-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     td > input,
     td > select {
         width: 100%;
