@@ -8,9 +8,15 @@
 					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs');
 
 					$filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : [];
+					$page = isset($_REQUEST['page']) ? max(1, intval($_REQUEST['page'])) : 1;
 
-					$jobs = $api->api('/system/jobs/list?' . http_build_query(['filter' => $filter]));
-					$displayEngine->setVar('jobs', isset($jobs['response']) ? $jobs['response'] : []);
+					$params = ['filter' => $filter, 'page' => $page];
+					$result = $api->api('/system/jobs/list?' . http_build_query($params));
+					$data = isset($result['response']) ? $result['response'] : [];
+
+					$displayEngine->setVar('jobs', isset($data['jobs']) ? $data['jobs'] : []);
+					$displayEngine->setVar('pagination', isset($data['pagination']) ? $data['pagination'] : ['page' => 1, 'totalPages' => 1, 'total' => 0]);
+					$displayEngine->setVar('filter', $filter);
 
 					$displayEngine->display('system/job_list.tpl');
 				});
@@ -21,7 +27,19 @@
 
 					$displayEngine->setVar('jobid', $job);
 					$jobinfo = $api->api('/system/jobs/' . $job);
-					$displayEngine->setVar('job', isset($jobinfo['response']) ? $jobinfo['response'] : []);
+					$jobdata = isset($jobinfo['response']) ? $jobinfo['response'] : [];
+
+					// Pretty-print the JSON payload for display.
+					if (isset($jobdata['data'])) {
+						$decoded = json_decode($jobdata['data'], true);
+						if ($decoded !== null) {
+							$jobdata['data_formatted'] = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+						} else {
+							$jobdata['data_formatted'] = $jobdata['data'];
+						}
+					}
+
+					$displayEngine->setVar('job', $jobdata);
 
 					$displayEngine->display('system/job.tpl');
 				});

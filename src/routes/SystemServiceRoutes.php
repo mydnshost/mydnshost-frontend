@@ -26,8 +26,21 @@
 
 					$displayEngine->setVar('service', $service);
 
-					$logs = $api->api('/system/service/' . $service . '/logs');
-					$displayEngine->setVar('logs', isset($logs['response']) ? $logs['response'] : []);
+					$page = isset($_REQUEST['page']) ? max(1, intval($_REQUEST['page'])) : 1;
+					$stream = isset($_REQUEST['stream']) ? $_REQUEST['stream'] : '';
+					$search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
+
+					$params = ['page' => $page];
+					if ($stream !== '') { $params['stream'] = $stream; }
+					if ($search !== '') { $params['search'] = $search; }
+
+					$result = $api->api('/system/service/' . $service . '/logs?' . http_build_query($params));
+					$data = isset($result['response']) ? $result['response'] : [];
+
+					$displayEngine->setVar('logs', isset($data['logs']) ? $data['logs'] : []);
+					$displayEngine->setVar('pagination', isset($data['pagination']) ? $data['pagination'] : ['page' => 1, 'totalPages' => 1, 'total' => 0]);
+					$displayEngine->setVar('filterStream', $stream);
+					$displayEngine->setVar('filterSearch', $search);
 
 					$displayEngine->display('system/service_logs.tpl');
 				});

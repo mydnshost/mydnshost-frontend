@@ -1,24 +1,24 @@
-<H1>Services</H1>
+<h1>Services</h1>
 
-<table id="servicelist" class="table table-striped table-bordered">
-	<thead>
+<table id="servicelist" class="table table-striped table-hover">
+	<thead class="table-light">
 		<tr>
-			<th class="service">Service</th>
-			<th class="actions">Actions</th>
+			<th>Service</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for service in services %}
 		<tr data-searchable-value="{{ service }}">
-			<td class="service">
-				{{ service }}
+			<td><code>{{ service }}</code></td>
+			<td>
+				<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-outline-primary btn-sm">Logs</a>
 			</td>
-			<td class="actions">
-				<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-success btn-sm">Logs</a>
-			</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="2" class="text-center text-muted py-4">No services found.</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
-
-<!-- <script src="{{ url('/assets/services/list.js') }}"></script> -->
