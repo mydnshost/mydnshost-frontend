@@ -164,6 +164,9 @@
 		}
 
 		public function setExtraVars() {
+			$this->setVar('sitetheme', session::get('sitetheme'));
+			$this->setVar('sitethemedata', session::get('sitethemedata'));
+
 			if (session::isLoggedIn()) {
 				$user = session::getCurrentUser();
 				if (isset($user['user'])) {
@@ -175,8 +178,6 @@
 				$this->setVar('useraccess', $user['access']);
 				$this->setVar('userdomains', session::get('domains'));
 				$this->setVar('csrftoken', session::get('csrftoken'));
-				$this->setVar('sitetheme', session::get('sitetheme'));
-				$this->setVar('sitethemedata', session::get('sitethemedata'));
 			}
 		}
 
