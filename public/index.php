@@ -80,29 +80,6 @@
 		$sidebarLayout = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sidebar/layout'] : '';
 		session::set('sidebar/layout', empty($sidebarLayout) ? 'access' : $sidebarLayout);
 
-		$sitetheme = isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme']) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
-		if (isset($_REQUEST['__THEME'])) {
-			$sitetheme = $_REQUEST['__THEME'];
-		}
-
-		$knownThemes = getThemeInformation()['themes'];
-
-		// Resolve theme aliases
-		if (!isset($knownThemes[$sitetheme])) {
-			foreach ($knownThemes as $key => $theme) {
-				if (isset($theme['aliases']) && in_array($sitetheme, $theme['aliases'], true)) {
-					$sitetheme = $key;
-					break;
-				}
-			}
-		}
-
-		// Fall back to default theme if still unknown
-		if (!isset($knownThemes[$sitetheme])) { $sitetheme = array_key_first(array_filter($knownThemes, fn($t) => !empty($t['default']))); }
-
-		session::set('sitetheme', $sitetheme);
-		session::set('sitethemedata', isset($knownThemes[$sitetheme]) ? $knownThemes[$sitetheme] : []);
-
 		$domains = [];
 		$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label', 'extra' => true]);
 		session::set('domains', $domains);
@@ -144,6 +121,29 @@
 
 		(new NotAuthedRoutes())->addRoutes($router, $displayEngine, $api);
 	}
+
+	$sitetheme = ($userdata !== NULL && isset($userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'])) ? $userdata['user']['customdata']['uk.co.mydnshost.www/sitetheme'] : '';
+	if (isset($_REQUEST['__THEME'])) {
+		$sitetheme = $_REQUEST['__THEME'];
+	}
+
+	$knownThemes = getThemeInformation()['themes'];
+
+	// Resolve theme aliases
+	if (!isset($knownThemes[$sitetheme])) {
+		foreach ($knownThemes as $key => $theme) {
+			if (isset($theme['aliases']) && in_array($sitetheme, $theme['aliases'], true)) {
+				$sitetheme = $key;
+				break;
+			}
+		}
+	}
+
+	// Fall back to default theme if still unknown
+	if (!isset($knownThemes[$sitetheme])) { $sitetheme = array_key_first(array_filter($knownThemes, fn($t) => !empty($t['default']))); }
+
+	session::set('sitetheme', $sitetheme);
+	session::set('sitethemedata', isset($knownThemes[$sitetheme]) ? $knownThemes[$sitetheme] : []);
 
 	// Add config routes.
 	addConfigRoutes($router, $displayEngine, $api, $userdata);
