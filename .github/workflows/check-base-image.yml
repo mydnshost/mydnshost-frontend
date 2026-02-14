@@ -61,6 +61,10 @@ jobs:
           fi
           echo "layers=${LAYERS}" >> "$GITHUB_OUTPUT"
 
+      - name: Checkout repository
+        if: steps.base.outputs.layers != steps.ours.outputs.layers
+        uses: actions/checkout@v4
+
       - name: Trigger rebuild if base image changed
         if: steps.base.outputs.layers != steps.ours.outputs.layers
         run: gh workflow run build-and-push.yml -f trigger_source="External base image update"
