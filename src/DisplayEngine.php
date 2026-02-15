@@ -264,15 +264,15 @@
 						if ($this->hasPermission(['domains_create'])) {
 							$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
 						}
-						if (session::get('sidebar/layout') == 'labels') {
-							$section[] = ['title' => 'Edit Labels', 'button' => 'info', 'action' => 'toggleLabelEdit'];
+						$sidebarLayout = session::get('sidebar/layout');
+						if ($sidebarLayout == 'labels') {
+							$section[] = ['div' => '<div id="newLabelDropZone" class="label-drop-zone">Drop here to create new label...</div>'];
 						}
 						$menu[] = $section;
 
 						$labelNames = ['' => 'Unlabelled'];
 
 						$domains = session::get('domains');
-						$sidebarLayout = session::get('sidebar/layout');
 						foreach ($domains as $domain => $data) {
 							$label = ($sidebarLayout == 'labels') ? $data['userdata'] : $data['access'];
 
@@ -309,6 +309,9 @@
 
 							$item['dataValue'] = implode(' ', $dataValue);
 							$item['data'] = ['domain' => $domain];
+							if ($sidebarLayout == 'labels') {
+								$item['data']['draggable-type'] = 'domain';
+							}
 
 							if (!isset($labelNames[strtolower($label)])) { $labelNames[strtolower($label)] = $label; }
 							$sections[strtolower($label)][] = $item;

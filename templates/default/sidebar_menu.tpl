@@ -36,6 +36,9 @@
 			{% else %}
 				<div class="nav-link text-black"><strong>
 			{% endif %}
+			{% if item.data is defined and item.data['draggable-type'] is defined %}
+				<span class="drag-handle" title="Drag to change label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></span>
+			{% endif %}
 			{% if item.badge %}
 				<span class="badge {{ item.badge.classes | join(' ') }}" title="{{ item.badge.title }}">{{ item.badge.value }}</span>
 			{% endif %}
@@ -45,6 +48,7 @@
 			{% endif %}
 			{% if item.subtitle %}<small class="subtitle">({{item.subtitle}})</small>{% endif %}
 			{% if item.active %}<span class="visually-hidden">(current)</span>{% endif %}
+
 			{% if item.link %}
 				</a>
 				{% if item.button %}
@@ -56,6 +60,7 @@
 			{% else %}
 				</strong></div>
 			{% endif %}
+			{% if item.div is defined %}{{ item.div | raw }}{% endif %}
 		</li>
 	{% endfor %}
 	</ul>

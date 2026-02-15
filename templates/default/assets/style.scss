@@ -165,31 +165,47 @@ h1 {
         white-space: nowrap;
     }
 
-    &.label-edit-mode li[data-domain] {
-        cursor: grab;
+    a.nav-link {
+        text-decoration: none;
 
+        &:not(.active):hover {
+            background-color: var(--bs-tertiary-bg);
+        }
+    }
+
+    li[data-draggable-type] {
         &.dragging {
             opacity: 0.4;
         }
     }
 
+    .drag-handle {
+        cursor: grab;
+        color: var(--bs-secondary-color);
+        margin-right: 4px;
+
+        &:hover {
+            color: var(--bs-body-color);
+        }
+    }
+
     ul[data-label-target].drag-over {
-        background-color: rgba(0, 123, 255, 0.1);
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
         border-radius: 4px;
     }
 
     .label-drop-zone {
-        border: 2px dashed #6c757d;
+        border: 2px dashed var(--bs-secondary-color);
         text-align: center;
         padding: 10px;
         margin: 10px;
         border-radius: 4px;
-        color: #6c757d;
+        color: var(--bs-secondary-color);
 
         &.drag-over {
-            border-color: #0d6efd;
-            background-color: rgba(0, 123, 255, 0.1);
-            color: #0d6efd;
+            border-color: var(--bs-primary);
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
         }
     }
 }

@@ -27,7 +27,28 @@
 			{% endembed %}
 		{% endif %}
 
-		{% embed 'blocks/modal_confirm.tpl' with {'id': 'renameLabelModal'} only %}
+		{% embed 'blocks/modal_confirm.tpl' with {'id': 'createLabelModal'} only %}
+		{% block title %}
+			Create Label
+		{% endblock %}
+
+		{% block body %}
+			<div class="form-group row">
+				<label for="createLabelName" class="col-4 col-form-label">Label Name</label>
+				<div class="col-8">
+					<input class="form-control" type="text" value="" id="createLabelName" name="createLabelName">
+				</div>
+			</div>
+			<input type="hidden" id="createLabelDomain" value="">
+		{% endblock %}
+
+		{% block buttons %}
+			<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+			<button type="button" data-action="ok" class="btn btn-success">Create</button>
+		{% endblock %}
+	{% endembed %}
+
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'renameLabelModal'} only %}
 			{% block title %}
 				Rename Label
 			{% endblock %}
