@@ -183,10 +183,16 @@ h1 {
         cursor: grab;
         color: var(--bs-secondary-color);
         margin-right: 4px;
+        opacity: 0;
+        transition: opacity 0.15s;
 
         &:hover {
             color: var(--bs-body-color);
         }
+    }
+
+    a.nav-link:hover .drag-handle {
+        opacity: 1;
     }
 
     ul[data-label-target].drag-over {
@@ -201,6 +207,12 @@ h1 {
         margin: 10px;
         border-radius: 4px;
         color: var(--bs-secondary-color);
+        opacity: 0;
+        transition: opacity 0.15s;
+
+        &.visible {
+            opacity: 1;
+        }
 
         &.drag-over {
             border-color: var(--bs-primary);

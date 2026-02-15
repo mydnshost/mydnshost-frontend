@@ -277,7 +277,7 @@
 						}
 						$sidebarLayout = session::get('sidebar/layout');
 						if ($sidebarLayout == 'labels') {
-							$section[] = ['div' => '<div id="newLabelDropZone" class="label-drop-zone">Drop here to create new label...</div>'];
+							$section[] = ['div' => '<div id="newLabelDropZone" class="label-drop-zone">Drop here to create new label...</div>', 'plain' => true];
 						}
 						$menu[] = $section;
 

@@ -143,10 +143,12 @@ $(function() {
 			e.originalEvent.dataTransfer.setData('text/plain', domain);
 			e.originalEvent.dataTransfer.effectAllowed = 'move';
 			$(this).addClass('dragging');
+			dropZone.addClass('visible');
 		});
 
 		sidebar.on('dragend', 'li[data-draggable-type="domain"]', function () {
 			$(this).removeClass('dragging');
+			dropZone.removeClass('visible');
 		});
 
 		sidebar.on('dragover', 'ul[data-label-target]', function (e) {

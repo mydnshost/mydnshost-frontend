@@ -33,7 +33,7 @@
 				<div class="nav-link">
 				<div class="d-grid mt-2 gap-2">
 				<button class="btn btn-{{ item.button }}" data-action="{{ item.action }}">
-			{% else %}
+			{% elseif not item.plain %}
 				<div class="nav-link text-black"><strong>
 			{% endif %}
 			{% if item.data is defined and item.data['draggable-type'] is defined %}
@@ -48,7 +48,6 @@
 			{% endif %}
 			{% if item.subtitle %}<small class="subtitle">({{item.subtitle}})</small>{% endif %}
 			{% if item.active %}<span class="visually-hidden">(current)</span>{% endif %}
-
 			{% if item.link %}
 				</a>
 				{% if item.button %}
@@ -57,7 +56,7 @@
 				{% endif %}
 			{% elseif item.button %}
 				</button></div></div>
-			{% else %}
+			{% elseif not item.plain %}
 				</strong></div>
 			{% endif %}
 			{% if item.div is defined %}{{ item.div | raw }}{% endif %}
