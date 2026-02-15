@@ -74,3 +74,9 @@ table tr.deleted td {
   background-color: #3a3a3a;
   color: #777;
 }
+
+.sidebar {
+  a.nav-link:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}

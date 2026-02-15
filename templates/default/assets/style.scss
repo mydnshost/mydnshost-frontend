@@ -169,7 +169,7 @@ h1 {
         text-decoration: none;
 
         &:not(.active):hover {
-            background-color: var(--bs-tertiary-bg);
+            background-color: var(--bs-tertiary-bg, rgba(128, 128, 128, 0.15));
         }
     }
 
@@ -181,13 +181,13 @@ h1 {
 
     .drag-handle {
         cursor: grab;
-        color: var(--bs-secondary-color);
+        color: var(--bs-secondary-color, #6c757d);
         margin-right: 4px;
         opacity: 0;
         transition: opacity 0.15s;
 
         &:hover {
-            color: var(--bs-body-color);
+            color: var(--bs-body-color, #dee2e6);
         }
     }
 
@@ -196,17 +196,17 @@ h1 {
     }
 
     ul[data-label-target].drag-over {
-        background-color: rgba(var(--bs-primary-rgb), 0.1);
+        background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.1);
         border-radius: 4px;
     }
 
     .label-drop-zone {
-        border: 2px dashed var(--bs-secondary-color);
+        border: 2px dashed var(--bs-secondary-color, #6c757d);
         text-align: center;
         padding: 10px;
         margin: 10px;
         border-radius: 4px;
-        color: var(--bs-secondary-color);
+        color: var(--bs-secondary-color, #6c757d);
         opacity: 0;
         transition: opacity 0.15s;
 
@@ -215,9 +215,9 @@ h1 {
         }
 
         &.drag-over {
-            border-color: var(--bs-primary);
-            background-color: rgba(var(--bs-primary-rgb), 0.1);
-            color: var(--bs-primary);
+            border-color: var(--bs-primary, #0d6efd);
+            background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.1);
+            color: var(--bs-primary, #0d6efd);
         }
     }
 }
