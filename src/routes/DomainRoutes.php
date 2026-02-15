@@ -232,6 +232,41 @@
 				}
 			});
 
+			$router->post('/domain/([^/]+)/setLabel(\.json)?', function($domain, $json = NULL) use ($displayEngine, $api) {
+				$domain = urldecode($domain);
+				$this->setVars($displayEngine);
+
+				$label = isset($_POST['label']) ? $_POST['label'] : '';
+
+				$apiResult = $api->setDomainData($domain, ['userdata' => ['uk.co.mydnshost.www/domain/label' => $label]]);
+
+				$domains = session::get('domains');
+				if (isset($domains[$domain])) {
+					$domains[$domain]['userdata'] = $label;
+					session::set('domains', $domains);
+				}
+
+				if (array_key_exists('error', $apiResult)) {
+					$result = ['error' => $apiResult['error']];
+				} else {
+					$result = ['success' => 'Label updated.'];
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					return;
+				} else {
+					if (isset($result['success'])) {
+						$displayEngine->flash('success', '', $result['success']);
+					} else {
+						$displayEngine->flash('error', '', $result['error']);
+					}
+					header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain));
+					return;
+				}
+			});
+
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
 				$this->setVars($displayEngine);

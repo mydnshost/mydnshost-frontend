@@ -264,6 +264,9 @@
 						if ($this->hasPermission(['domains_create'])) {
 							$section[] = ['title' => 'Add Domain', 'button' => 'primary', 'action' => 'addUserDomain', 'link' => $this->getURL('/domains/create'),];
 						}
+						if (session::get('sidebar/layout') == 'labels') {
+							$section[] = ['title' => 'Edit Labels', 'button' => 'info', 'action' => 'toggleLabelEdit'];
+						}
 						$menu[] = $section;
 
 						$labelNames = ['' => 'Unlabelled'];
@@ -305,6 +308,7 @@
 							}
 
 							$item['dataValue'] = implode(' ', $dataValue);
+							$item['data'] = ['domain' => $domain];
 
 							if (!isset($labelNames[strtolower($label)])) { $labelNames[strtolower($label)] = $label; }
 							$sections[strtolower($label)][] = $item;
@@ -315,8 +319,10 @@
 							sort($labels);
 							foreach ($labels as $label) {
 								$header = ['title' => $labelNames[strtolower($label)]];
+								$header['data'] = ['label-target' => $labelNames[strtolower($label)]];
 								if ($label !== '') {
-									$header['labelKey'] = $labelNames[strtolower($label)];
+									$header['data']['editable-key'] = $labelNames[strtolower($label)];
+									$header['data']['editable-type'] = 'label';
 								}
 								$menu[] = array_merge([$header], $sections[$label]);
 							}
