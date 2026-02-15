@@ -27,6 +27,27 @@
 			{% endembed %}
 		{% endif %}
 
+		{% embed 'blocks/modal_confirm.tpl' with {'id': 'renameLabelModal'} only %}
+			{% block title %}
+				Rename Label
+			{% endblock %}
+
+			{% block body %}
+				<div class="form-group row">
+					<label for="newLabelName" class="col-4 col-form-label">New Label Name</label>
+					<div class="col-8">
+						<input class="form-control" type="text" value="" id="newLabelName" name="newLabelName">
+					</div>
+				</div>
+				<input type="hidden" id="oldLabelName" value="">
+			{% endblock %}
+
+			{% block buttons %}
+				<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" data-action="ok" class="btn btn-success">Rename</button>
+			{% endblock %}
+		{% endembed %}
+
 		<footer class="footer">
 			<div class="container-fluid">
 				<hr>

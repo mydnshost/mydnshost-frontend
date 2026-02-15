@@ -10,7 +10,7 @@
 	<tbody>
 		<tr>
 			<th>User-Specific Label</th>
-			<td class="mono" data-name="custom_label" data-editable data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}</td>
+			<td class="mono" data-name="custom_label" data-editable data-type="option" data-include-current data-value="{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}">{{ domain.userdata["uk.co.mydnshost.www/domain/label"] }}</td>
 		</tr>
 		<tr>
 			<th>User-Specific Notes</th>

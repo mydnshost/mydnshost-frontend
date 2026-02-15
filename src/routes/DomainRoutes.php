@@ -180,6 +180,58 @@
 				$displayEngine->display('domains_findrecords.tpl');
 			});
 
+			$router->post('/domains/renameLabel(\.json)?', function($json = NULL) use ($displayEngine, $api) {
+				$this->setVars($displayEngine);
+
+				$oldLabel = isset($_POST['oldLabel']) ? $_POST['oldLabel'] : '';
+				$newLabel = isset($_POST['newLabel']) ? $_POST['newLabel'] : '';
+
+				$result = ['error' => 'Unknown error'];
+
+				if (empty($oldLabel) || empty($newLabel) || $oldLabel === $newLabel) {
+					$result = ['error' => 'Invalid label names provided.'];
+				} else {
+					$domains = session::get('domains');
+					$errors = [];
+					$updated = 0;
+
+					foreach ($domains as $domain => $data) {
+						if (isset($data['userdata']) && $data['userdata'] === $oldLabel) {
+							$apiResult = $api->setDomainData($domain, ['userdata' => ['uk.co.mydnshost.www/domain/label' => $newLabel]]);
+							if (array_key_exists('error', $apiResult)) {
+								$errors[] = $domain . ': ' . $apiResult['error'];
+							} else {
+								$updated++;
+								$domains[$domain]['userdata'] = $newLabel;
+							}
+						}
+					}
+
+					session::set('domains', $domains);
+
+					if (!empty($errors)) {
+						$result = ['error' => 'Some domains failed to update: ' . implode(', ', $errors)];
+					} else {
+						$result = ['success' => 'Renamed label on ' . $updated . ' domain(s).'];
+					}
+				}
+
+				if (isset($result['success'])) {
+					$displayEngine->flash('success', '', $result['success']);
+				} else {
+					$displayEngine->flash('error', '', $result['error']);
+				}
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					return;
+				} else {
+					header('Location: ' . $this->getURL($displayEngine, '/domains'));
+					return;
+				}
+			});
+
 			$router->match('GET|POST', '/domain/([^/]+)', function($domain) use ($router, $displayEngine, $api) {
 				$domain = urldecode($domain);
 				$this->setVars($displayEngine);

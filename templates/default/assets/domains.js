@@ -17,6 +17,14 @@ $(function() {
 		if ($(this).data('action') == "editsoa") {
 			setSOAEditable();
 
+			$('table#soainfo select[name="custom_label"]').change(function() {
+				if ($(this).val() === '__new__') {
+					var field = $(this).closest('td');
+					$(this).replaceWith('<input type="text" class="form-control form-control-sm" name="custom_label" value="">');
+					field.find('input[name="custom_label"]').focus();
+				}
+			});
+
 			$(this).data('action', 'cancel');
 			$(this).html('Cancel');
 			$(this).removeClass('btn-primary');
@@ -265,6 +273,18 @@ optionsValues['aliasof'] = {
   {% endfor %}
 };
 
+optionsValues['custom_label'] = {
+  "": "(No label)",
+  "__new__": "New Label...",
+  "Existing Labels": {
+    {% for domain,domaindata in userdomains %}
+      {% if domaindata['userdata'] is defined and domaindata['userdata'] != '' %}
+        "{{ domaindata['userdata'] }}": "{{ domaindata['userdata'] }}",
+      {% endif %}
+    {% endfor %}
+  }
+};
+
 function setSOAEditable() {
 	$('#domaincontrols a').addClass('hidden');
 	$('#domaincontrols button[data-action="savesoa"]').removeClass('hidden');
@@ -286,8 +306,17 @@ function setSOAEditable() {
 			select += '<select class="form-control form-control-sm" name="' + key + '">';
 			foundValue = false;
 			$.each(optionsValues[key], function(optionkey, optionvalue) {
-				foundValue |= (value == optionkey);
-				select += '	<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
+				if (typeof optionvalue === 'object' && optionvalue !== null) {
+					select += '<optgroup label="' + escapeHtml(optionkey) + '">';
+					$.each(optionvalue, function(groupkey, groupvalue) {
+						foundValue |= (value == groupkey);
+						select += '	<option ' + (value == groupkey ? 'selected' : '') + ' value="' + groupkey + '">' + groupvalue + '</option>';
+					});
+					select += '</optgroup>';
+				} else {
+					foundValue |= (value == optionkey);
+					select += '	<option ' + (value == optionkey ? 'selected' : '') + ' value="' + optionkey + '">' + optionvalue + '</option>';
+				}
 			});
 			if (includeCurrent && !foundValue) {
 				select += '	<option selected value="' + value + '">' + value + '</option>';

@@ -314,7 +314,11 @@
 							$labels = array_keys($sections);
 							sort($labels);
 							foreach ($labels as $label) {
-								$menu[] = array_merge([['title' => $labelNames[strtolower($label)]]], $sections[$label]);
+								$header = ['title' => $labelNames[strtolower($label)]];
+								if ($label !== '') {
+									$header['labelKey'] = $labelNames[strtolower($label)];
+								}
+								$menu[] = array_merge([$header], $sections[$label]);
 							}
 						} else {
 							foreach (['owner', 'admin', 'write', 'read'] as $section) {

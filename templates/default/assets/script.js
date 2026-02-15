@@ -36,6 +36,45 @@ $(function() {
 
 	$(".alert").alert()
 
+	$('a.rename-label-link').click(function () {
+		var oldLabel = $(this).data('label');
+		$('#oldLabelName').val(oldLabel);
+		$('#newLabelName').val(oldLabel);
+
+		var okButton = $('#renameLabelModal button[data-action="ok"]');
+		okButton.off('click').click(function () {
+			var newLabel = $('#newLabelName').val().trim();
+			if (newLabel === '' || newLabel === oldLabel) {
+				$('#renameLabelModal').modal('hide');
+				return;
+			}
+
+			okButton.prop('disabled', true).text('Renaming...');
+
+			$.ajax({
+				url: '{{ url('/domains/renameLabel.json') }}',
+				method: 'POST',
+				data: {
+					oldLabel: oldLabel,
+					newLabel: newLabel,
+					csrftoken: '{{ csrftoken }}'
+				},
+				dataType: 'json',
+				success: function (data) {
+					$('#renameLabelModal').modal('hide');
+					location.reload();
+				},
+				error: function () {
+					okButton.prop('disabled', false).text('Rename');
+					alert('Failed to rename label. Please try again.');
+				}
+			});
+		});
+
+		$('#renameLabelModal').modal({'backdrop': 'static'}).modal('show');
+		return false;
+	});
+
 	$("input[data-search-top]").on('input', function() {
 		var value = $(this).val();
 		var searchTop = $(this).data('search-top');
