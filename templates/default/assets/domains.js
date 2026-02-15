@@ -277,10 +277,8 @@ optionsValues['custom_label'] = {
   "": "(No label)",
   "__new__": "New Label...",
   "Existing Labels": {
-    {% for domain,domaindata in userdomains %}
-      {% if domaindata['userdata'] is defined and domaindata['userdata'] != '' %}
-        "{{ domaindata['userdata'] }}": "{{ domaindata['userdata'] }}",
-      {% endif %}
+    {% for label in domainLabels %}
+      "{{ label }}": "{{ label }}",
     {% endfor %}
   }
 };

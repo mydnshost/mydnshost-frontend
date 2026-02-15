@@ -177,6 +177,17 @@
 				}
 				$this->setVar('useraccess', $user['access']);
 				$this->setVar('userdomains', session::get('domains'));
+
+				$domains = session::get('domains');
+				$labels = [];
+				foreach ($domains as $d => $data) {
+					if (isset($data['userdata']) && $data['userdata'] !== '') {
+						$labels[strtolower($data['userdata'])] = $data['userdata'];
+					}
+				}
+				sort($labels);
+				$this->setVar('domainLabels', $labels);
+
 				$this->setVar('csrftoken', session::get('csrftoken'));
 			}
 		}
