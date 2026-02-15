@@ -10,6 +10,12 @@
 					$filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : [];
 					$page = isset($_REQUEST['page']) ? max(1, intval($_REQUEST['page'])) : 1;
 
+					// Fold filter_data_key/filter_data_value into filter[data][key]=value.
+					if (!empty($_REQUEST['filter_data_key']) && isset($_REQUEST['filter_data_value']) && $_REQUEST['filter_data_value'] !== '') {
+						if (!isset($filter['data'])) { $filter['data'] = []; }
+						$filter['data'][$_REQUEST['filter_data_key']] = $_REQUEST['filter_data_value'];
+					}
+
 					$params = ['filter' => $filter, 'page' => $page];
 					$result = $api->api('/system/jobs/list?' . http_build_query($params));
 					$data = isset($result['response']) ? $result['response'] : [];

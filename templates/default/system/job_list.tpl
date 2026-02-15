@@ -1,4 +1,4 @@
-{% set filterQS %}{% if filter.state|default('') %}&filter[state]={{ filter.state|url_encode }}{% endif %}{% if filter.name|default('') %}&filter[name]={{ filter.name|url_encode }}{% endif %}{% endset %}
+{% set filterQS %}{% if filter.state|default('') %}&filter[state]={{ filter.state|url_encode }}{% endif %}{% if filter.name|default('') %}&filter[name]={{ filter.name|url_encode }}{% endif %}{% for dk, dv in filter.data|default({}) %}&filter[data][{{ dk|url_encode }}]={{ dv|url_encode }}{% endfor %}{% endset %}
 
 <h1>Jobs</h1>
 
@@ -20,7 +20,15 @@
 				</div>
 				<div class="col-auto">
 					<label class="form-label mb-0"><small>Job Name</small></label>
-					<input type="text" name="filter[name]" class="form-control form-control-sm" value="{{ filter.name|default('') }}" placeholder="e.g. publish_bind">
+					<input type="text" name="filter[name]" class="form-control form-control-sm" value="{{ filter.name|default('') }}" placeholder="e.g. verify_domain">
+				</div>
+				<div class="col-auto">
+					<label class="form-label mb-0"><small>Payload Key</small></label>
+					<input type="text" name="filter_data_key" class="form-control form-control-sm" value="{{ (filter.data|default({}))|keys|first|default('') }}" placeholder="e.g. domain">
+				</div>
+				<div class="col-auto">
+					<label class="form-label mb-0"><small>Payload Value</small></label>
+					<input type="text" name="filter_data_value" class="form-control form-control-sm" value="{{ (filter.data|default({}))|first|default('') }}" placeholder="e.g. example.com">
 				</div>
 				<div class="col-auto">
 					<button type="submit" class="btn btn-primary btn-sm">Filter</button>
@@ -191,6 +199,7 @@
 	<form method="get" action="{{ url('/system/jobs') }}" class="d-flex align-items-center gap-2 ms-3">
 		{% if filter.state|default('') %}<input type="hidden" name="filter[state]" value="{{ filter.state }}">{% endif %}
 		{% if filter.name|default('') %}<input type="hidden" name="filter[name]" value="{{ filter.name }}">{% endif %}
+		{% for dk, dv in filter.data|default({}) %}<input type="hidden" name="filter[data][{{ dk }}]" value="{{ dv }}">{% endfor %}
 		<small class="text-muted text-nowrap">Page {{ pagination.page }} of {{ pagination.totalPages }}</small>
 		<input type="number" name="page" class="form-control form-control-sm" style="width: 5em" min="1" max="{{ pagination.totalPages }}" placeholder="{{ pagination.page }}">
 		<button type="submit" class="btn btn-outline-secondary btn-sm">Go</button>
