@@ -6,7 +6,7 @@
 		<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
 	</div>
 	<div>
-		<a href="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}" class="btn btn-outline-warning btn-sm">Repeat</a>
+		<button type="button" class="btn btn-outline-warning btn-sm btn-repeat-job" data-repeat-url="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}">Repeat</button>
 		<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" data-job-name="{{ job.name }}" data-job-data="{{ (job.data_formatted|default(job.data))|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
 		{% if job.state == 'created' %}
 			<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" data-republish-url="{{ url('/system/jobs/' ~ jobid ~ '/republish') }}">Republish</button>

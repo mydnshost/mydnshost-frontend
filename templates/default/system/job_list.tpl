@@ -112,7 +112,7 @@
 			<td><small>{{ job.result }}</small></td>
 			<td class="text-nowrap">
 				<a href="{{ url('/system/jobs/' ~ job.id) }}" class="btn btn-outline-primary btn-sm" title="View">View</a>
-				<a href="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}" class="btn btn-outline-warning btn-sm" title="Repeat">Repeat</a>
+				<button type="button" class="btn btn-outline-warning btn-sm btn-repeat-job" title="Repeat" data-repeat-url="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}">Repeat</button>
 				<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" title="Clone" data-job-name="{{ job.name }}" data-job-data="{{ job.data|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
 				{% if job.state == 'created' %}
 					<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" title="Republish" data-republish-url="{{ url('/system/jobs/' ~ job.id ~ '/republish') }}">Republish</button>

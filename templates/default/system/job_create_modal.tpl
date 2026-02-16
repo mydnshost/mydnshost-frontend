@@ -42,4 +42,28 @@ document.querySelectorAll('.btn-clone-job').forEach(function(btn) {
 document.getElementById('createJobModal').addEventListener('hidden.bs.modal', function() {
 	document.getElementById('createJobModalLabel').textContent = 'Create Job';
 });
+
+document.getElementById('createJobForm').addEventListener('submit', function(e) {
+	e.preventDefault();
+	var submitBtn = document.querySelector('button[form="createJobForm"]');
+	submitBtn.disabled = true;
+	submitBtn.textContent = 'Scheduling...';
+	fetch(this.action, {
+		method: 'POST',
+		body: new FormData(this),
+		redirect: 'manual'
+	}).then(function() {
+		location.reload();
+	});
+});
+
+document.querySelectorAll('.btn-repeat-job').forEach(function(btn) {
+	btn.addEventListener('click', function() {
+		this.classList.add('disabled');
+		this.textContent = 'Repeating...';
+		fetch(this.getAttribute('data-repeat-url'), { redirect: 'manual' }).then(function() {
+			location.reload();
+		});
+	});
+});
 </script>

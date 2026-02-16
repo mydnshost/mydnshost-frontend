@@ -11,16 +11,26 @@
 
 	{% block buttons %}
 		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">No, go back</button>
-		<a id="cancelJobConfirm" href="#" class="btn btn-danger btn-sm">Cancel Job</a>
+		<button type="button" id="cancelJobConfirm" class="btn btn-danger btn-sm">Cancel Job</button>
 	{% endblock %}
 {% endembed %}
 
 <script>
+var cancelActionUrl = '';
+
 document.querySelectorAll('.btn-cancel-job').forEach(function(btn) {
 	btn.addEventListener('click', function() {
-		document.getElementById('cancelJobConfirm').href = this.getAttribute('data-cancel-url');
+		cancelActionUrl = this.getAttribute('data-cancel-url');
 		var modal = new bootstrap.Modal(document.getElementById('cancelJobModal'));
 		modal.show();
+	});
+});
+
+document.getElementById('cancelJobConfirm').addEventListener('click', function() {
+	this.disabled = true;
+	this.textContent = 'Cancelling...';
+	fetch(cancelActionUrl, { redirect: 'manual' }).then(function() {
+		location.reload();
 	});
 });
 </script>

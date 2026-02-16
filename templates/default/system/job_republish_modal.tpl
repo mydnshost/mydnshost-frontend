@@ -11,16 +11,26 @@
 
 	{% block buttons %}
 		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-		<a id="republishJobConfirm" href="#" class="btn btn-success btn-sm">Republish</a>
+		<button type="button" id="republishJobConfirm" class="btn btn-success btn-sm">Republish</button>
 	{% endblock %}
 {% endembed %}
 
 <script>
+var republishActionUrl = '';
+
 document.querySelectorAll('.btn-republish-job').forEach(function(btn) {
 	btn.addEventListener('click', function() {
-		document.getElementById('republishJobConfirm').href = this.getAttribute('data-republish-url');
+		republishActionUrl = this.getAttribute('data-republish-url');
 		var modal = new bootstrap.Modal(document.getElementById('republishJobModal'));
 		modal.show();
+	});
+});
+
+document.getElementById('republishJobConfirm').addEventListener('click', function() {
+	this.disabled = true;
+	this.textContent = 'Republishing...';
+	fetch(republishActionUrl, { redirect: 'manual' }).then(function() {
+		location.reload();
 	});
 });
 </script>

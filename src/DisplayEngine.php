@@ -233,10 +233,10 @@
 			$this->banners[] = ['type' => $type, 'title' => $title, 'message' => $message];
 		}
 
-		public function flash($type, $title, $message) {
+		public function flash($type, $title, $message, $raw = false) {
 			if ($type == 'error') { $type = 'danger'; }
 
-			session::append('DisplayEngine::Flash', ['type' => $type, 'title' => $title, 'message' => $message]);
+			session::append('DisplayEngine::Flash', ['type' => $type, 'title' => $title, 'message' => $message, 'raw' => $raw]);
 		}
 
 		public function displayFlash() {

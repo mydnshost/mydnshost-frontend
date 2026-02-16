@@ -84,13 +84,13 @@
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error creating job: ' . $result['error']);
-						header('Location: ' . $displayEngine->getURL('/system/jobs'));
 					} else {
 						$jobid = isset($result['response']['jobid']) ? $result['response']['jobid'] : '';
 						$status = isset($result['response']['status']) ? $result['response']['status'] : 'Job scheduled.';
-						$displayEngine->flash('success', '', $status . ($jobid ? ' Job ID: ' . $jobid : ''));
-						header('Location: ' . $displayEngine->getURL('/system/jobs/' . $jobid));
+						$jobLink = $jobid ? ' <a href="' . htmlspecialchars($displayEngine->getURL('/system/jobs/' . $jobid)) . '">View Job ' . htmlspecialchars($jobid) . '</a>' : '';
+						$displayEngine->flash('success', '', $status . $jobLink, true);
 					}
+					header('Location: ' . $displayEngine->getURL('/system/jobs'));
 					return;
 				});
 
@@ -116,11 +116,10 @@
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error cancelling job: ' . $result['error']);
-						header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
 					} else {
 						$displayEngine->flash('success', '', isset($result['response']['status']) ? $result['response']['status'] : 'Job cancelled.');
-						header('Location: ' . $displayEngine->getURL('/system/jobs'));
 					}
+					header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
 					return;
 				});
 
@@ -129,13 +128,13 @@
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error repeating job: ' . $result['error']);
-						header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
 					} else {
 						$newJobId = isset($result['response']['jobid']) ? $result['response']['jobid'] : '';
 						$status = isset($result['response']['status']) ? $result['response']['status'] : 'Job repeated.';
-						$displayEngine->flash('success', '', $status . ($newJobId ? ' New Job ID: ' . $newJobId : ''));
-						header('Location: ' . $displayEngine->getURL('/system/jobs/' . ($newJobId ?: $job)));
+						$jobLink = $newJobId ? ' <a href="' . htmlspecialchars($displayEngine->getURL('/system/jobs/' . $newJobId)) . '">View Job ' . htmlspecialchars($newJobId) . '</a>' : '';
+						$displayEngine->flash('success', '', $status . $jobLink, true);
 					}
+					header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
 					return;
 				});
 
