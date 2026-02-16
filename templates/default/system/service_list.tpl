@@ -1,7 +1,7 @@
 <h1>Services</h1>
 
 <table id="servicelist" class="table table-striped table-hover">
-	<thead class="table-light">
+	<thead>
 		<tr>
 			<th>Service</th>
 			<th>Actions</th>

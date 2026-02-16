@@ -63,6 +63,15 @@ span.pointer {
     cursor: hand;
 }
 
+table {
+    thead {
+        th {
+            background-color: #343a40 !important;
+            color: #fff !important;
+        }
+    }
+}
+
 /**********************************************************************
  * Style Fixes between Bootstrap 4.0.0-alpha6 and 4.5.0
  **********************************************************************/

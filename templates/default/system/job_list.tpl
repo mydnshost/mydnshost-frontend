@@ -52,7 +52,7 @@
 </div>
 
 <table id="joblist" class="table table-striped table-hover">
-	<thead class="table-light">
+	<thead>
 		<tr>
 			<th>ID</th>
 			<th>Name</th>
