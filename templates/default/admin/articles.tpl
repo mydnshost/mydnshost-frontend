@@ -16,7 +16,8 @@
 			<th class="id">ID</th>
 			<th class="title">Title</th>
 			<th class="content">Content</th>
-			<th class="visible">Visible</th>
+			<th class="visible">Visible From</th>
+			<th class="visible">Visible Until</th>
 			<th class="actions">Actions</th>
 		</tr>
 	</thead>
@@ -33,15 +34,24 @@
 				{{ article.content }}
 			</td>
 			<td class="visible">
-				{% set visible = article.visiblefrom < time and (article.visibleuntil == -1 or article.visibleuntil > time) %}
-
-				<span class="value badge {% if visible %}bg-success{% else %}bg-danger{% endif %}">
-					{{ visible | yesno }}
-				</span>
+				{% if article.visiblefrom < time %}
+					<span class="badge bg-success">{{ article.visiblefrom | date }}</span>
+				{% else %}
+					<span class="badge bg-warning">{{ article.visiblefrom | date }}</span>
+				{% endif %}
 			</td>
-			<td class="actions">
+			<td class="visible">
+				{% if article.visibleuntil == -1 %}
+					<span class="badge bg-success">No expiry</span>
+				{% elseif article.visibleuntil > time %}
+					<span class="badge bg-success">{{ article.visibleuntil | date }}</span>
+				{% else %}
+					<span class="badge bg-danger">{{ article.visibleuntil | date }}</span>
+				{% endif %}
+			</td>
+			<td class="actions text-nowrap">
 				<a href="{{ url('/admin/articles/' ~ article.id) }}" class="btn btn-sm btn-success">View/Edit</a>
-				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</a>
+				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</button>
 			</td>
 		</tr>
 		{% endfor %}

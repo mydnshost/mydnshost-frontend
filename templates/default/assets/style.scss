@@ -248,6 +248,10 @@ h1 {
  * Tables
  **********************************************************************/
 
+table.table-layout-fixed {
+    table-layout: fixed;
+}
+
 table tr.deleted td {
     /* background-color: #f2dede; */
     background-color: #eee;
