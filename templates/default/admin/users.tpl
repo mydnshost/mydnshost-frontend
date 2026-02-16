@@ -45,7 +45,7 @@
 				<span class="action {% if userinfo.disabled != 'true' %}d-none{% endif %}" data-showsuspend="Yes">
 					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-end">Set Suspend Reason</button>
 				</span>
-				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}d-none{% endif %}" data-showsuspend="Yes">
+				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}d-none{% endif %}" data-showsuspend="Yes" data-show-when-reason>
 					<br>
 					<span class="small muted">(<strong>Disabled:</strong> <span class="value" data-raw="yes" data-field="disabledreason">{{ userinfo.disabledreason }}</span>)</span>
 				</span>
@@ -83,31 +83,35 @@
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
-					<span> {{ userinfo.permissions | keys | join(', ') }} </span>
+					<span class="permissionsList"> {{ userinfo.permissions | keys | join(', ') }} </span>
 					{% if hasPermission(['manage_permissions']) %}
 						{% if userinfo.permissions|keys|length > 0 %}<br>{% endif %}
 						<button data-action="editpermissions" class="btn btn-sm btn-info">Edit Permissions</button>
 					{% endif %}
 				</div>
-				<table class="permissionsTable table table-sm d-none">
-				{% for permission in validPermissions %}
-					<tr>
-						<td class="name">
-							{{ permission }}
-						</td>
-						<td class="value">
-							<span class="value badge {% if userinfo.permissions[permission] == 'true' %}bg-primary{% else %}bg-default{% endif %}" data-permission="{{ permission }}" data-class-yes="bg-primary" data-class-no="bg-default">
-								{{ userinfo.permissions[permission] | yesno }}
-							</span>
-						</td>
-						<td class="actions">
-							{% if (userinfo.email != user.email or (permission != "manage_permissions" and permission != "manage_users")) and hasPermission(['manage_permissions']) %}
-								<button type="button" data-permission="{{ permission }}" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info">Toggle</button>
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-				</table>
+				<div class="permissionsEdit d-none">
+					<table class="permissionsTable table table-sm mb-2">
+					{% for permission in validPermissions %}
+						<tr>
+							<td class="name">
+								{{ permission }}
+							</td>
+							<td class="toggle">
+								{% if (userinfo.email != user.email or (permission != "manage_permissions" and permission != "manage_users")) and hasPermission(['manage_permissions']) %}
+									<div class="form-check form-switch mb-0">
+										<input class="form-check-input" type="checkbox" role="switch"
+											data-permission="{{ permission }}" data-user="{{ userinfo.id }}"
+											{% if userinfo.permissions[permission] == 'true' %}checked{% endif %}>
+									</div>
+								{% else %}
+									<span class="badge {% if userinfo.permissions[permission] == 'true' %}bg-primary{% else %}bg-secondary{% endif %}">{{ userinfo.permissions[permission] | yesno }}</span>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+					<button data-action="closepermissions" class="btn btn-sm btn-secondary">Done</button>
+				</div>
 			</td>
 			<td class="state">
 				<span class="value badge {% if userinfo.disabled == 'true' %}bg-success{% else %}bg-danger{% endif %}" data-field="disabled" data-class-yes="bg-success" data-class-no="bg-danger">
