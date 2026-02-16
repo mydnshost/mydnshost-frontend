@@ -7,7 +7,11 @@
 {% endif %}
 <input type="hidden" name="csrftoken" value="{{csrftoken}}">
 
-<table id="blockregex" class="table table-striped table-bordered">
+<table id="blockregex" class="table table-striped table-bordered table-layout-fixed">
+	<colgroup>
+		<col style="width: 300px;">
+		<col>
+	</colgroup>
 	<tbody>
 		{% if not create %}
 			<tr>
@@ -33,9 +37,9 @@
 			<th>Created</th>
 			<td>
 				{% if not create %}
-					{{ blockregex.created }} ({{ blockregex.created | date }})
+					{{ blockregex.created | date }}
 				{% else %}
-					{{ time }} ({{ time | date }})
+					{{ time | date }}
 				{% endif %}
 			</td>
 		</tr>
@@ -60,7 +64,7 @@
 		<tr>
 			<th>&nbsp;</th>
 			<td>
-				<div class="d-grid mt-2 gap-2">
+				<div class="d-flex gap-2 mt-2">
 					<a href="{{ url("/admin/blockregexes") }}" class="btn btn-warning">Cancel</a>
 					<button type="submit" class="btn btn-success">{% if create %}Create{% else %}Edit{% endif %} BlockRegex</button>
 				</div>

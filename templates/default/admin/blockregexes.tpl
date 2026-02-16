@@ -50,9 +50,9 @@
 				</span>
 			</td>
 
-			<td class="actions">
+			<td class="actions text-nowrap">
 				<a href="{{ url('/admin/blockregexes/' ~ blockregex.id) }}" class="btn btn-sm btn-success">View/Edit</a>
-				<button data-action="deleteblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-danger">Delete</a>
+				<button data-action="deleteblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-danger">Delete</button>
 			</td>
 		</tr>
 		{% endfor %}
