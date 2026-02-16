@@ -16,9 +16,9 @@
 			<th class="id">ID</th>
 			<th class="regex">Regex</th>
 			<th class="comment">Comment</th>
-			<th class="signupname">Signup Name</th>
-			<th class="signupemail">Signup Email</th>
-			<th class="domainname">Domain Name</th>
+			<th class="signupname text-nowrap">Signup Name</th>
+			<th class="signupemail text-nowrap">Signup Email</th>
+			<th class="domainname text-nowrap">Domain Name</th>
 			<th class="actions">Actions</th>
 		</tr>
 	</thead>

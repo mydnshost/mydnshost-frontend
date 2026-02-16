@@ -16,8 +16,8 @@
 			<th class="id">ID</th>
 			<th class="title">Title</th>
 			<th class="content">Content</th>
-			<th class="visible">Visible From</th>
-			<th class="visible">Visible Until</th>
+			<th class="visible text-nowrap">Visible From</th>
+			<th class="visible text-nowrap">Visible Until</th>
 			<th class="actions">Actions</th>
 		</tr>
 	</thead>
