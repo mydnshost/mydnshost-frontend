@@ -1,4 +1,6 @@
-{% set filterQS %}{% if filter.state|default('') %}&filter[state]={{ filter.state|url_encode }}{% endif %}{% if filter.name|default('') %}&filter[name]={{ filter.name|url_encode }}{% endif %}{% for dk, dv in filter.data|default({}) %}&filter[data][{{ dk|url_encode }}]={{ dv|url_encode }}{% endfor %}{% endset %}
+{% set filterStates = filter.state|default([]) is iterable ? filter.state|default([]) : (filter.state|default('') ? [filter.state] : []) %}
+{% if filterStates|length == 6 %}{% set filterStates = [] %}{% endif %}
+{% set filterQS %}{% for s in filterStates %}&filter[state][]={{ s|url_encode }}{% endfor %}{% if filter.name|default('') %}&filter[name]={{ filter.name|url_encode }}{% endif %}{% for dk, dv in filter.data|default({}) %}&filter[data][{{ dk|url_encode }}]={{ dv|url_encode }}{% endfor %}{% endset %}
 
 <h1>Jobs</h1>
 
@@ -8,15 +10,16 @@
 			<div class="row g-2 align-items-end">
 				<div class="col-auto">
 					<label class="form-label mb-0"><small>State</small></label>
-					<select name="filter[state]" class="form-select form-select-sm">
-						<option value="">All</option>
-						<option value="created"{{ filter.state|default('') == 'created' ? ' selected' }}>Created</option>
-						<option value="started"{{ filter.state|default('') == 'started' ? ' selected' }}>Started</option>
-						<option value="blocked"{{ filter.state|default('') == 'blocked' ? ' selected' }}>Blocked</option>
-						<option value="finished"{{ filter.state|default('') == 'finished' ? ' selected' }}>Finished</option>
-						<option value="error"{{ filter.state|default('') == 'error' ? ' selected' }}>Error</option>
-						<option value="cancelled"{{ filter.state|default('') == 'cancelled' ? ' selected' }}>Cancelled</option>
-					</select>
+					<div class="dropdown" id="stateFilterDropdown">
+						<button class="form-control form-control-sm dropdown-toggle text-start" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+							{% if filterStates|length > 0 %}{% for s in filterStates %}{{ {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled'}[s]|default(s) }}{{ not loop.last ? ', ' }}{% endfor %}{% else %}All{% endif %}
+						</button>
+						<div class="dropdown-menu">
+							{% for value, label in {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled'} %}
+								<label class="dropdown-item"><input type="checkbox" class="form-check-input me-1" name="filter[state][]" value="{{ value }}"{{ value in filterStates ? ' checked' }}> {{ label }}</label>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 				<div class="col-auto">
 					<label class="form-label mb-0"><small>Job Name</small></label>
@@ -176,7 +179,7 @@
 	</nav>
 
 	<form method="get" action="{{ url('/system/jobs') }}" class="d-flex align-items-center gap-2 ms-3">
-		{% if filter.state|default('') %}<input type="hidden" name="filter[state]" value="{{ filter.state }}">{% endif %}
+		{% for s in filterStates %}<input type="hidden" name="filter[state][]" value="{{ s }}">{% endfor %}
 		{% if filter.name|default('') %}<input type="hidden" name="filter[name]" value="{{ filter.name }}">{% endif %}
 		{% for dk, dv in filter.data|default({}) %}<input type="hidden" name="filter[data][{{ dk }}]" value="{{ dv }}">{% endfor %}
 		<small class="text-muted text-nowrap">Page {{ pagination.page }} of {{ pagination.totalPages }}</small>
@@ -189,3 +192,28 @@
 {% include 'system/job_create_modal.tpl' %}
 {% include 'system/job_republish_modal.tpl' %}
 {% include 'system/job_cancel_modal.tpl' %}
+
+<script>
+(function() {
+	var dropdown = document.getElementById('stateFilterDropdown');
+	var btn = dropdown.querySelector('.dropdown-toggle');
+	var checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+	function updateLabel() {
+		var names = [];
+		checkboxes.forEach(function(cb) {
+			if (cb.checked) names.push(cb.parentElement.textContent.trim());
+		});
+		btn.textContent = (names.length > 0 && names.length < checkboxes.length) ? names.join(', ') : 'All';
+	}
+	checkboxes.forEach(function(cb) {
+		cb.addEventListener('change', updateLabel);
+	});
+	dropdown.closest('form').addEventListener('submit', function() {
+		var allChecked = true;
+		checkboxes.forEach(function(cb) { if (!cb.checked) allChecked = false; });
+		if (allChecked) {
+			checkboxes.forEach(function(cb) { cb.checked = false; });
+		}
+	});
+})();
+</script>
