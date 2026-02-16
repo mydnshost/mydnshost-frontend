@@ -83,9 +83,10 @@
 			</td>
 			<td class="permissions">
 				<div class="permissionsText">
-					<span class="permissionsList"> {{ userinfo.permissions | keys | join(', ') }} </span>
+					{% if userinfo.permissions|keys|length > 0 %}
+						<div class="permissionsList mb-2"> {{ userinfo.permissions | keys | join(', ') }} </div>
+					{% endif %}
 					{% if hasPermission(['manage_permissions']) %}
-						{% if userinfo.permissions|keys|length > 0 %}<br>{% endif %}
 						<button data-action="editpermissions" class="btn btn-sm btn-info">Edit Permissions</button>
 					{% endif %}
 				</div>

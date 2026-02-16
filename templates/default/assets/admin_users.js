@@ -5,16 +5,15 @@ $(function() {
 		permissionsCell.find('.permissionsTable input[data-permission]:checked').each(function() {
 			perms.push($(this).data('permission'));
 		});
-		var listSpan = permissionsCell.find('.permissionsList');
-		listSpan.text(perms.length > 0 ? ' ' + perms.join(', ') + ' ' : ' ');
-
-		// Update the line break before the edit button
-		var editBtn = permissionsCell.find('button[data-action=editpermissions]');
-		if (editBtn.length) {
-			editBtn.prev('br').remove();
-			if (perms.length > 0) {
-				editBtn.before('<br>');
+		var listDiv = permissionsCell.find('.permissionsList');
+		if (perms.length > 0) {
+			if (listDiv.length === 0) {
+				permissionsCell.find('.permissionsText').prepend('<div class="permissionsList mb-2"></div>');
+				listDiv = permissionsCell.find('.permissionsList');
 			}
+			listDiv.text(' ' + perms.join(', ') + ' ');
+		} else {
+			listDiv.remove();
 		}
 	}
 
