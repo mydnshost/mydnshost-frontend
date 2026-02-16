@@ -116,15 +116,52 @@
 	</div>
 </div>
 
+<style>
+.log-prefix-header { color: #0d6efd; font-weight: 700; }
+.log-prefix-result { color: #198754; font-weight: 700; }
+.log-prefix-skip { color: #fd7e14; font-weight: 700; }
+.log-error td:last-child { color: #dc3545; }
+.log-lock td:last-child { opacity: 0.45; }
+.log-cmd-sep td:last-child { opacity: 0.3; }
+.log-cmd td:last-child { font-weight: 600; }
+.log-schedule td:last-child { color: #6c757d; font-style: italic; }
+</style>
+
 <div class="card mb-3">
 	<div class="card-header">Logs</div>
 	{% if job.logs is defined and job.logs %}
 	<table class="table table-borderless table-sm my-2 font-monospace" style="font-size: 0.8rem;">
 		<tbody>
 			{% for log in job.logs %}
-			<tr>
-				<td class="text-nowrap py-0 ps-3 pe-2{{ log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' ? ' text-danger' : ' text-muted' }}" style="width: 250px">{{ log.time | date }}</td>
-				<td class="py-0{{ log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' ? ' text-danger' : '' }}">{{ log.data }}</td>
+			{% if log.data starts with 'JOB ' or log.data starts with 'FUNCTION ' or log.data starts with 'PAYLOAD ' %}
+				{% set logClass = 'log-header' %}
+			{% elseif log.data starts with 'RESULT ' %}
+				{% set logClass = 'log-result' %}
+			{% elseif log.data starts with '# STDERR:' or log.data starts with 'EXCEPTION' or log.data starts with 'ERR ' or log.data starts with 'TRACE ' %}
+				{% set logClass = 'log-error' %}
+			{% elseif log.data starts with 'SKIP ' %}
+				{% set logClass = 'log-skip' %}
+			{% elseif log.data starts with 'acquireLock(' or log.data starts with 'releaseLock(' or log.data starts with 'Lock for ' %}
+				{% set logClass = 'log-lock' %}
+			{% elseif log.data starts with '=====' %}
+				{% set logClass = 'log-cmd-sep' %}
+			{% elseif log.data starts with '$ Running Command:' %}
+				{% set logClass = 'log-cmd' %}
+			{% elseif log.data starts with 'Scheduling background job:' or log.data starts with 'Scheduled as:' or log.data starts with 'Scheduled and finished as:' or log.data starts with 'Running foreground job:' %}
+				{% set logClass = 'log-schedule' %}
+			{% else %}
+				{% set logClass = '' %}
+			{% endif %}
+			<tr class="{{ logClass }}">
+				<td class="text-nowrap text-muted py-0 ps-3 pe-2" style="width: 250px">{{ log.time | date }}</td>
+				<td class="py-0">
+					{% if logClass in ['log-header', 'log-result', 'log-skip'] %}
+						{% set parts = log.data|split(' ', 2) %}
+						<span class="log-prefix-{{ logClass|slice(4) }}">{{ parts[0] }}</span> {{ parts[1]|default('') }}
+					{% else %}
+						{{ log.data }}
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
