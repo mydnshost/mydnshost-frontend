@@ -127,28 +127,26 @@ $(function() {
 
 	$('tr[data-error-data]').each(function (index) {
 		$(this).addClass("error");
-		$(this).addClass("has-danger");
 
 		$(this).tooltip({'title': $(this).data('error-data')});
 	});
 
 	$('td[data-warning-data]').each(function (index) {
 		$(this).addClass("warning");
-		$(this).addClass("has-warning");
 
 		$(this).tooltip({'title': $(this).data('warning-data')});
 	});
 
 	$("#recordsform").validate({
 		highlight: function(element) {
-			$(element).closest('td').addClass('has-danger');
+			$(element).addClass('is-invalid');
 			$(element).closest('tr').addClass('error');
 		},
 		unhighlight: function(element) {
-			$(element).closest('td').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 			$(element).closest('td').tooltip('dispose');
 
-			if ($(element).closest('tr').find('.has-danger').length == 0) {
+			if ($(element).closest('tr').find('.is-invalid').length == 0) {
 				$(element).closest('tr').removeClass('error');
 			}
 		},
@@ -156,7 +154,7 @@ $(function() {
 			$(element).closest('td').tooltip('dispose');
 			$(element).closest('td').tooltip({'title': error});
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 	});
 
 	$('button[type="submit"]').click(function () {

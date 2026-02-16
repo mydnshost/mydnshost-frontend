@@ -1,12 +1,12 @@
 $(function() {
 	$("#blockregexform").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		rules: {
 			regex: {
 				required: true

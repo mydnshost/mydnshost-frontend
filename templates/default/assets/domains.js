@@ -105,12 +105,12 @@ $(function() {
 
 	$("#editaccess").validate({
 		highlight: function(element) {
-			$(element).closest('td').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('td').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback'
+		errorClass: 'invalid-feedback'
 	});
 
 
@@ -177,12 +177,12 @@ $(function() {
 
 	$("#addkeyform").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		errorPlacement: function () { },
 		rules: {
 			description: {
@@ -246,12 +246,12 @@ $(function() {
 
 	$("#addhookform").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		errorPlacement: function () { },
 		rules: {
 			url: {

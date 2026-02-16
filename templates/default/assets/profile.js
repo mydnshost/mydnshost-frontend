@@ -33,14 +33,12 @@ $(function() {
 
 	$("#editprofile").validate({
 		highlight: function(element) {
-			$(element).closest('tr').addClass('has-danger');
-			$(element).closest('tr').find('th').addClass('col-form-label');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('tr').removeClass('has-danger');
-			$(element).closest('tr').find('th').removeClass('col-form-label');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		rules: {
 			password: {
 				minlength: 6,
@@ -118,12 +116,12 @@ $(function() {
 
 	$("#addkeyform").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		errorPlacement: function () { },
 		rules: {
 			description: {
@@ -203,12 +201,12 @@ $(function() {
 
 	$("#add2faform").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		errorPlacement: function () { },
 		rules: {
 			description: {

@@ -138,12 +138,12 @@ $(function() {
 
 	$("#adduser").validate({
 		highlight: function(element) {
-			$(element).closest('.form-group').addClass('has-danger');
+			$(element).addClass('is-invalid');
 		},
 		unhighlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-danger');
+			$(element).removeClass('is-invalid');
 		},
-		errorClass: 'form-control-feedback',
+		errorClass: 'invalid-feedback',
 		rules: {
 			password: {
 				required: function(element) {
@@ -174,8 +174,8 @@ $(function() {
 		} else {
 			inputs.prop("disabled", true);
 			inputs.val("");
-			inputs.closest('.form-group').removeClass('has-danger');
-			inputs.closest('.form-group').find('.form-control-feedback').remove();
+			inputs.removeClass('is-invalid');
+			inputs.closest('.form-group').find('.invalid-feedback').remove();
 		}
 	});
 
