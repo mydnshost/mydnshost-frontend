@@ -37,9 +37,14 @@
 
   <body>
     {% block navbar %}
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">{{ sitename }}</a>
+        {% if user or domainkey %}
+          <button class="btn btn-sm btn-outline-light d-lg-none ms-2 me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+            &#9776;
+          </button>
+        {% endif %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -94,11 +99,11 @@
         {% endif %}
 
         {% if showsidebar %}
-            <nav class="col-sm-3 col-md-2 hidden-xs-down bg-light sidebar nav d-block" id="sidebar">
+            <nav class="collapse d-lg-block bg-light sidebar nav" id="sidebar">
               {{ showSidebar() }}
             </nav>
 
-          <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+          <main class="pt-3 sidebar-main">
         {% else %}
           <main class="col-sm-12 pt-3">
         {% endif %}

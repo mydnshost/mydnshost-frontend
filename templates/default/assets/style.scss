@@ -27,7 +27,7 @@ html {
 }
 
 body {
-    padding-top: 50px;
+    padding-top: var(--navbar-height, 56px);
     margin-bottom: 60px;
 }
 
@@ -132,9 +132,10 @@ h1 {
  **********************************************************************/
 .sidebar {
     position: fixed;
-    top: 51px;
+    top: var(--navbar-height, 56px);
     bottom: 0;
     left: 0;
+    width: 350px;
     z-index: 1000;
     padding: 20px;
     overflow-x: hidden;
@@ -144,8 +145,24 @@ h1 {
     padding-left: 0;
     padding-right: 0;
 
+    /* Below lg: collapsible, flows in document */
+    @media (width < 992px) {
+        position: static;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        z-index: auto;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        flex-direction: column;
+    }
+
     .nav {
         margin-bottom: 20px;
+
+        &:first-of-type {
+            margin-bottom: 0;
+        }
     }
 
     .nav-item {
@@ -204,6 +221,10 @@ h1 {
         border-radius: 4px;
         color: var(--bs-secondary-color, #6c757d);
         opacity: 0;
+
+        @media (width < 992px) {
+            display: none;
+        }
         transition: opacity 0.15s;
 
         &.visible {
@@ -215,6 +236,13 @@ h1 {
             background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.1);
             color: var(--bs-primary, #0d6efd);
         }
+    }
+}
+
+.sidebar-main {
+    @media (width >= 992px) {
+        margin-left: 350px;
+        width: calc(100% - 350px);
     }
 }
 

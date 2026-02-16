@@ -236,6 +236,29 @@ function setDomainLabel(domain, label, onSuccess) {
 	});
 }
 
+// Scroll to top when sidebar is shown on mobile
+$('#sidebar').on('show.bs.collapse', function() {
+	window.scrollTo(0, 0);
+});
+
+// Dynamically adjust body/sidebar spacing when navbar wraps to multiple lines
+(function() {
+	var navbar = document.querySelector('nav.navbar.fixed-top');
+	if (!navbar) return;
+
+	function updateNavbarHeight() {
+		document.documentElement.style.setProperty('--navbar-height', navbar.offsetHeight + 'px');
+	}
+
+	if (typeof ResizeObserver !== 'undefined') {
+		new ResizeObserver(updateNavbarHeight).observe(navbar);
+	} else {
+		window.addEventListener('resize', updateNavbarHeight);
+	}
+
+	updateNavbarHeight();
+})();
+
 function escapeRegExp(str) {
 	return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
