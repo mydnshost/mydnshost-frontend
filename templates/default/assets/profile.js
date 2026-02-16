@@ -187,8 +187,10 @@ $(function() {
 	setSecretVisibility();
 
 	function setSecretVisibility() {
-		if ($('#add2faform select[name="type"]').find(':selected')[0].hasAttribute('data-need')) {
-			var need = $('#add2faform select[name="type"]').find(':selected')[0].getAttribute('data-need');
+		var selected = $('#add2faform select[name="type"]').find(':selected')[0];
+		if (!selected) return;
+		if (selected.hasAttribute('data-need')) {
+			var need = selected.getAttribute('data-need');
 			$('#add2faform input[data-provide="' + need + '"]').show();
 
 			$('#add2faform input[data-provide][data-provide!="' + need + '"]').val("");
@@ -280,8 +282,8 @@ optionsValues['avatar'] = {
 };
 
 function setUserEditable() {
-	$('#usercontrols a').addClass('hidden');
-	$('#usercontrols button[data-action="saveuser"]').removeClass('hidden');
+	$('#usercontrols a').addClass('d-none');
+	$('#usercontrols button[data-action="saveuser"]').removeClass('d-none');
 
 	$('table#profileinfo td[data-name]').each(function (index) {
 		var field = $(this);
@@ -333,13 +335,13 @@ function setUserEditable() {
 			field.html('<input type="' + fieldType + '" class="form-control form-control-sm" id="' + key + '" name="' + key + '" value="' + escapeHtml(value) + '">');
 		}
 	});
-	$('table#profileinfo tr[data-hidden]').show();
+	$('table#profileinfo tr[data-hidden]').removeClass('d-none');
 
 }
 
 function cancelEditUser() {
-	$('#usercontrols a').removeClass('hidden');
-	$('#usercontrols button[data-action="saveuser"]').addClass('hidden');
+	$('#usercontrols a').removeClass('d-none');
+	$('#usercontrols button[data-action="saveuser"]').addClass('d-none');
 
 	$('table#profileinfo td[data-name]').each(function (index) {
 		var field = $(this);
@@ -350,13 +352,13 @@ function cancelEditUser() {
 		}
 		field.data('edited-value', null);
 	});
-	$('table#profileinfo tr[data-hidden]').hide();
+	$('table#profileinfo tr[data-hidden]').addClass('d-none');
 }
 
 var newAPIKeyCount = 0;
 function setKeyEditable(row, recordid) {
-	row.find('button[data-action="deletekey"]').hide();
-	row.find('button[data-action="savekey"]').show();
+	row.find('button[data-action="deletekey"]').addClass('d-none');
+	row.find('button[data-action="savekey"]').removeClass('d-none');
 
 	var fieldName = 'key';
 	if (recordid == undefined) {
@@ -377,8 +379,8 @@ function setKeyEditable(row, recordid) {
 }
 
 function cancelEditKey(row) {
-	row.find('button[data-action="deletekey"]').show();
-	row.find('button[data-action="savekey"]').hide();
+	row.find('button[data-action="deletekey"]').removeClass('d-none');
+	row.find('button[data-action="savekey"]').addClass('d-none');
 
 	$('td[data-radio]', row).each(function (index) {
 		var field = $(this);
@@ -446,8 +448,8 @@ function editableYesNo(row, fieldName, recordid) {
 
 var new2FAKeyCount = 0;
 function set2FAKeyEditable(row, recordid) {
-	row.find('button[data-action="delete2fakey"]').hide();
-	row.find('button[data-action="save2fakey"]').show();
+	row.find('button[data-action="delete2fakey"]').addClass('d-none');
+	row.find('button[data-action="save2fakey"]').removeClass('d-none');
 
 	var fieldName = 'key';
 	if (recordid == undefined) {
@@ -466,8 +468,8 @@ function set2FAKeyEditable(row, recordid) {
 }
 
 function cancelEdit2FAKey(row) {
-	row.find('button[data-action="delete2fakey"]').show();
-	row.find('button[data-action="save2fakey"]').hide();
+	row.find('button[data-action="delete2fakey"]').removeClass('d-none');
+	row.find('button[data-action="save2fakey"]').addClass('d-none');
 
 	$('td[data-radio]', row).each(function (index) {
 		var field = $(this);

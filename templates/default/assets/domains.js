@@ -1,11 +1,11 @@
 $(function() {
 	$('button[data-action="dnssec-more"]').click(function () {
-		if ($('#dnssec-more').is(":visible")) {
+		if (!$('#dnssec-more').hasClass('d-none')) {
 			$(this).text('More...');
-			$('#dnssec-more').hide();
+			$('#dnssec-more').addClass('d-none');
 		} else {
 			$(this).text('Less...');
-			$('#dnssec-more').show();
+			$('#dnssec-more').removeClass('d-none');
 		}
 	});
 
@@ -284,8 +284,8 @@ optionsValues['custom_label'] = {
 };
 
 function setSOAEditable() {
-	$('#domaincontrols a').addClass('hidden');
-	$('#domaincontrols button[data-action="savesoa"]').removeClass('hidden');
+	$('#domaincontrols a').addClass('d-none');
+	$('#domaincontrols button[data-action="savesoa"]').removeClass('d-none');
 
 	$('table#soainfo td[data-name][data-editable]').each(function (index) {
 		var field = $(this);
@@ -338,7 +338,7 @@ function setSOAEditable() {
 		var key = field.data('radio');
 
 		var radioButtons = '';
-		radioButtons += '<div class="btn-group btn-group-toggle" data-bs-toggle="buttons">';
+		radioButtons += '<div class="btn-group" data-bs-toggle="buttons">';
 		radioButtons += '  <label class="btn btn-sm" data-active="btn-danger" data-inactive="btn-outline-danger" data-toggle-class>';
 		radioButtons += '    <input type="radio" class="btn-check" name="' + key + '" value="true" autocomplete="off" ' + (value == "Yes" ? 'checked' : '') + '>Yes';
 		radioButtons += '  </label>';
@@ -378,8 +378,8 @@ function setSOAEditable() {
 }
 
 function cancelEditSOA() {
-	$('#domaincontrols a').removeClass('hidden');
-	$('#domaincontrols button[data-action="savesoa"]').addClass('hidden');
+	$('#domaincontrols a').removeClass('d-none');
+	$('#domaincontrols button[data-action="savesoa"]').addClass('d-none');
 
 	$('table#soainfo td[data-name]').each(function (index) {
 		var field = $(this);
@@ -467,8 +467,8 @@ function setEditAccess(row, who) {
 
 var newAPIKeyCount = 0;
 function setKeyEditable(row, recordid) {
-	row.find('button[data-action="deletekey"]').hide();
-	row.find('button[data-action="savekey"]').show();
+	row.find('button[data-action="deletekey"]').addClass('d-none');
+	row.find('button[data-action="savekey"]').removeClass('d-none');
 
 	var fieldName = 'key';
 	if (recordid == undefined) {
@@ -489,8 +489,8 @@ function setKeyEditable(row, recordid) {
 }
 
 function cancelEditKey(row) {
-	row.find('button[data-action="deletekey"]').show();
-	row.find('button[data-action="savekey"]').hide();
+	row.find('button[data-action="deletekey"]').removeClass('d-none');
+	row.find('button[data-action="savekey"]').addClass('d-none');
 
 	$('td[data-radio]', row).each(function (index) {
 		var field = $(this);
@@ -562,8 +562,8 @@ function editableYesNo(row, fieldName, recordid, inverse) {
 
 var newHookCount = 0;
 function setHookEditable(row, recordid) {
-	row.find('button[data-action="deletehook"]').hide();
-	row.find('button[data-action="savehook"]').show();
+	row.find('button[data-action="deletehook"]').addClass('d-none');
+	row.find('button[data-action="savehook"]').removeClass('d-none');
 
 	var fieldName = 'hook';
 	if (recordid == undefined) {
@@ -584,8 +584,8 @@ function setHookEditable(row, recordid) {
 }
 
 function cancelEditHook(row) {
-	row.find('button[data-action="deletehook"]').show();
-	row.find('button[data-action="savehook"]').hide();
+	row.find('button[data-action="deletehook"]').removeClass('d-none');
+	row.find('button[data-action="savehook"]').addClass('d-none');
 
 	$('td[data-radio]', row).each(function (index) {
 		var field = $(this);

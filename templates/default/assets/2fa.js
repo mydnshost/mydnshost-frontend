@@ -1,9 +1,9 @@
 $(function() {
 	$("#savedevice").change(function() {
 		if (this.checked) {
-			$("#devicename").show();
+			$("#devicename").removeClass('d-none');
 		} else {
-			$("#devicename").hide();
+			$("#devicename").addClass('d-none');
 		}
 	});
 

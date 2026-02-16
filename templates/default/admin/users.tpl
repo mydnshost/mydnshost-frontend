@@ -42,10 +42,10 @@
 			</td>
 			<td class="realname">
 				{{ userinfo.realname }}
-				<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
+				<span class="action {% if userinfo.disabled != 'true' %}d-none{% endif %}" data-showsuspend="Yes">
 					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-end">Set Suspend Reason</button>
 				</span>
-				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}hidden{% endif %}" data-showsuspend="Yes">
+				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}d-none{% endif %}" data-showsuspend="Yes">
 					<br>
 					<span class="small muted">(<strong>Disabled:</strong> <span class="value" data-raw="yes" data-field="disabledreason">{{ userinfo.disabledreason }}</span>)</span>
 				</span>
@@ -89,7 +89,7 @@
 						<button data-action="editpermissions" class="btn btn-sm btn-info">Edit Permissions</button>
 					{% endif %}
 				</div>
-				<table class="permissionsTable table table-sm hidden">
+				<table class="permissionsTable table table-sm d-none">
 				{% for permission in validPermissions %}
 					<tr>
 						<td class="name">
@@ -114,10 +114,10 @@
 					{{ userinfo.disabled | yesno }}
 				</span>
 				{% if userinfo.email != user.email and hasPermission(['manage_users']) %}
-					<span class="action {% if userinfo.disabled != 'true' %}hidden{% endif %}" data-showsuspend="Yes">
+					<span class="action {% if userinfo.disabled != 'true' %}d-none{% endif %}" data-showsuspend="Yes">
 						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-end">Unsuspend</button>
 					</span>
-					<span class="action {% if userinfo.disabled == 'true' %}hidden{% endif %}" data-showsuspend="No">
+					<span class="action {% if userinfo.disabled == 'true' %}d-none{% endif %}" data-showsuspend="No">
 						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-end">Suspend</button>
 					</span>
 				{% endif %}

@@ -20,7 +20,7 @@
       Remember this device
     </label>
   </div>
-  <input type="text" name="devicename" id="devicename" class="form-control hidden" placeholder="Device Name" value="{{devicename}}">
+  <input type="text" name="devicename" id="devicename" class="form-control d-none" placeholder="Device Name" value="{{devicename}}">
 
   <div class="d-grid mt-2 gap-2">
     <button class="btn btn-lg btn-primary" type="submit">Sign in</button>

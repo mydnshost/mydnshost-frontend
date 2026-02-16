@@ -33,14 +33,14 @@
 			</td>
 		</tr>
 		{% if not hasPermission(['admin_managed_user']) %}
-		<tr data-hidden="true" class="hidden">
+		<tr data-hidden="true" class="d-none">
 			<th>
 				New Password<br>
 				<small class="form-text text-muted">(Leave blank if unchanged)</small>
 			</th>
 			<td data-type="password" data-name="password" data-value=""></td>
 		</tr>
-		<tr data-hidden="true" class="hidden">
+		<tr data-hidden="true" class="d-none">
 			<th>
 				Confirm New Password<br>
 				<small class="form-text text-muted">(Leave blank if unchanged)</small>
@@ -90,7 +90,7 @@
 	<div class="col">
 		{% if hasPermission(['user_write']) %}
 			<button type="button" data-action="edituser" class="btn btn-primary" role="button">Edit user details</button>
-			<button type="button" data-action="saveuser" class="btn btn-success hidden" role="button">Save</button>
+			<button type="button" data-action="saveuser" class="btn btn-success d-none" role="button">Save</button>
 		{% endif %}
 		{% if hasPermission(['domains_stats']) %}
 			<a href="{{ url("/profile/stats") }}" class="btn btn-primary" role="button">Profile Statistics</a>

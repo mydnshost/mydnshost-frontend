@@ -69,7 +69,7 @@
 			</td>
 			<td class="actions" rowspan="2">
 				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
+				<button type="button" data-action="savekey" class="d-none btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
 
 				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/editkey/' ~ key) }}">

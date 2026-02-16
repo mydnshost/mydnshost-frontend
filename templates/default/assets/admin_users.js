@@ -40,7 +40,7 @@ $(function() {
 		var col = $(this).closest('td');
 
 		col.find('div.permissionsText').hide();
-		col.find('table.permissionsTable').show();
+		col.find('table.permissionsTable').removeClass('d-none');
 	});
 
 	$('button[data-user-action]').click(function () {
@@ -85,9 +85,9 @@ $(function() {
 
 						row.find('span[data-showsuspend]').each(function() {
 							if ($(this).data('showsuspend') == newVal) {
-								$(this).show();
+								$(this).removeClass('d-none');
 							} else {
-								$(this).hide();
+								$(this).addClass('d-none');
 							}
 						});
 					}

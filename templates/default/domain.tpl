@@ -113,7 +113,7 @@
 
 					<br><br>
 					<button type="button" data-action="dnssec-more" class="btn btn-primary btn-sm" role="button">More..</button>
-					<div id="dnssec-more" class="hidden">
+					<div id="dnssec-more" class="d-none">
 						{# {% for rrtype,rrdata in domain.DNSSEC %}
 							{% if rrtype != 'DS' and rrtype != 'parsed' %}
 								<br><br>
@@ -173,7 +173,7 @@
 		{% endif %}
 
 		<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit Domain Info</button>
-		<button type="button" data-action="savesoa" class="btn btn-success hidden" role="button">Save</button>
+		<button type="button" data-action="savesoa" class="btn btn-success d-none" role="button">Save</button>
 
 		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 
@@ -194,7 +194,7 @@
 				{% endif %}
 			{% endif %}
 			{% if has_domain_owner %}
-				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-backdrop="static">Delete Domain</button>
+				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-backdrop="static">Delete Domain</button>
 			{% endif %}
 		</div>
 
@@ -338,7 +338,7 @@
 			</td>
 			<td class="actions">
 				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savekey" class="hidden btn btn-sm btn-success" role="button">Save</button>
+				<button type="button" data-action="savekey" class="d-none btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
 
 				<form class="d-inline form-inline editkeyform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/editkey/" ~ key) }}">
@@ -409,7 +409,7 @@
 			</td>
 			<td class="actions">
 				<button type="button" data-action="edithook" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savehook" class="hidden btn btn-sm btn-success" role="button">Save</button>
+				<button type="button" data-action="savehook" class="d-none btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="deletehook" class="btn btn-sm btn-danger" role="button">Delete</button>
 
 				<form class="d-inline form-inline edithookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/edithook/" ~ hookid) }}">

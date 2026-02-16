@@ -74,7 +74,7 @@ You will only be able to see the key and associated QR code for any keys that ha
 			</td>
 			<td class="actions">
 				<button type="button" data-action="edit2fakey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="save2fakey" class="hidden btn btn-sm btn-success" role="button">Save</button>
+				<button type="button" data-action="save2fakey" class="d-none btn btn-sm btn-success" role="button">Save</button>
 				<button type="button" data-action="delete2fakey" class="btn btn-sm btn-danger" role="button">Delete</button>
 
 				<form class="d-inline form-inline editform" method="post" action="{{ url('/profile/edit2fakey/' ~ key) }}">

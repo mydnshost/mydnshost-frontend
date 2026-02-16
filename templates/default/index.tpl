@@ -22,7 +22,7 @@
           <div class="d-grid mt-2 gap-2">
             <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
           </div>
-          <div class="float-left">
+          <div class="float-start">
             <a href="{{ url('/forgotpassword') }}" class="">Forgot Password</a>
              -
             <a href="{{ url('/register') }}" class="">Register</a>
