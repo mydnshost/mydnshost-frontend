@@ -172,7 +172,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDeleteKey').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDeleteKey').modal('show');
 	});
 
 	$("#addkeyform").validate({
@@ -241,7 +241,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDeleteHook').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDeleteHook').modal('show');
 	});
 
 	$("#addhookform").validate({

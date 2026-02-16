@@ -133,7 +133,7 @@ $(function() {
 			});
 		});
 
-		$('#confirmDelete').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDelete').modal('show');
 	});
 
 	$("#adduser").validate({
@@ -198,7 +198,7 @@ $(function() {
 			$("#adduser").validate().resetForm();
 		});
 
-		$('#createUser').modal({'backdrop': 'static'}).modal('show');
+		$('#createUser').modal('show');
 
 		return false;
 	});

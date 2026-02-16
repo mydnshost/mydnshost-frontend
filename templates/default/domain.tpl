@@ -194,7 +194,7 @@
 				{% endif %}
 			{% endif %}
 			{% if has_domain_owner %}
-				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-backdrop="static">Delete Domain</button>
+				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Domain</button>
 			{% endif %}
 		</div>
 

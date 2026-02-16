@@ -111,7 +111,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDelete').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDelete').modal('show');
 	});
 
 	$("#addkeyform").validate({
@@ -180,7 +180,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDelete2FA').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDelete2FA').modal('show');
 	});
 
 	$('#add2faform select[name="type"]').change(setSecretVisibility);
@@ -247,7 +247,7 @@ $(function() {
 			deleteform.submit();
 		});
 
-		$('#confirmDelete2FADevice').modal({'backdrop': 'static'}).modal('show');
+		$('#confirmDelete2FADevice').modal('show');
 	});
 });
 

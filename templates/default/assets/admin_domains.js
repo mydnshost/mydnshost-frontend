@@ -33,7 +33,7 @@ $(function() {
 			$("#adddomain").validate().resetForm();
 		});
 
-		$('#createAdminDomain').modal({'backdrop': 'static'}).modal('show');
+		$('#createAdminDomain').modal('show');
 
 		return false;
 	});

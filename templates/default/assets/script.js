@@ -15,7 +15,7 @@ $(function() {
 			$("#createUserDomainForm").validate().resetForm();
 		});
 
-		$('#createUserDomain').modal({'backdrop': 'static'}).modal('show');
+		$('#createUserDomain').modal('show');
 		return false;
 	});
 
@@ -76,7 +76,7 @@ $(function() {
 				});
 			});
 
-			$('#renameLabelModal').modal({'backdrop': 'static'}).modal('show');
+			$('#renameLabelModal').modal('show');
 		}
 
 		return false;
@@ -135,7 +135,7 @@ $(function() {
 				});
 			});
 
-			$('#createLabelModal').modal({'backdrop': 'static'}).modal('show');
+			$('#createLabelModal').modal('show');
 		});
 
 		sidebar.on('dragstart', 'li[data-draggable-type="domain"]', function (e) {
