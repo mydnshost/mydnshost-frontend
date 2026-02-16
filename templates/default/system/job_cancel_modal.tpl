@@ -10,8 +10,8 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">No, go back</button>
-		<button type="button" id="cancelJobConfirm" class="btn btn-danger btn-sm">Cancel Job</button>
+		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, go back</button>
+		<button type="button" id="cancelJobConfirm" class="btn btn-danger">Cancel Job</button>
 	{% endblock %}
 {% endembed %}
 

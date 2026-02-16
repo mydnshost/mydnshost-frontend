@@ -4,12 +4,13 @@
 <input class="form-control" data-search-top="table#userlist" value="" placeholder="Search..."><br>
 
 {% if hasPermission(['manage_users']) %}
-<div class="float-end">
-	<div class="d-grid mt-2 gap-2">
-		<a class="btn btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
+<div class="row mb-2">
+	<div class="col">
+		<div class="float-end">
+			<a class="btn btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
+		</div>
 	</div>
 </div>
-<br><br>
 {% endif %}
 
 <table id="userlist" class="table table-striped table-bordered">

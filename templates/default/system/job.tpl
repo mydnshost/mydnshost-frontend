@@ -1,19 +1,20 @@
 <h1>Job {{ jobid }}</h1>
 
-<div class="d-flex justify-content-between mb-3">
-	<div>
-		<a href="{{ url('/system/jobs') }}" class="btn btn-outline-primary btn-sm">Back to Jobs</a>
-		<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
-	</div>
-	<div>
-		<button type="button" class="btn btn-outline-warning btn-sm btn-repeat-job" data-repeat-url="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}">Repeat</button>
-		<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" data-job-name="{{ job.name }}" data-job-data="{{ (job.data_formatted|default(job.data))|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
-		{% if job.state == 'created' %}
-			<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" data-republish-url="{{ url('/system/jobs/' ~ jobid ~ '/republish') }}">Republish</button>
-		{% endif %}
-		{% if job.state in ['created', 'blocked'] %}
-			<button type="button" class="btn btn-outline-danger btn-sm btn-cancel-job" data-cancel-url="{{ url('/system/jobs/' ~ jobid ~ '/cancel') }}">Cancel</button>
-		{% endif %}
+<div class="row mb-2">
+	<div class="col">
+		<a href="{{ url('/system/jobs') }}" class="btn btn-outline-primary">Back to Jobs</a>
+		<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-secondary">Refresh</a>
+
+		<div class="float-end">
+			<button type="button" class="btn btn-outline-warning btn-repeat-job" data-repeat-url="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}">Repeat</button>
+			<button type="button" class="btn btn-outline-info btn-clone-job" data-job-name="{{ job.name }}" data-job-data="{{ (job.data_formatted|default(job.data))|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
+			{% if job.state == 'created' %}
+				<button type="button" class="btn btn-outline-success btn-republish-job" data-republish-url="{{ url('/system/jobs/' ~ jobid ~ '/republish') }}">Republish</button>
+			{% endif %}
+			{% if job.state in ['created', 'blocked'] %}
+				<button type="button" class="btn btn-outline-danger btn-cancel-job" data-cancel-url="{{ url('/system/jobs/' ~ jobid ~ '/cancel') }}">Cancel</button>
+			{% endif %}
+		</div>
 	</div>
 </div>
 

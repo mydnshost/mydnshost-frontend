@@ -3,12 +3,13 @@
 <input type="hidden" id="csrftoken" value="{{csrftoken}}">
 <input class="form-control" data-search-top="table#blockregexlist" value="" placeholder="Search..."><br>
 
-<div class="float-end">
-	<div class="d-grid mt-2 gap-2">
-		<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}">Add Block Regex</a>
+<div class="row mb-2">
+	<div class="col">
+		<div class="float-end">
+			<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}">Add Block Regex</a>
+		</div>
 	</div>
 </div>
-<br><br>
 
 <table id="articlelist" class="table table-striped table-bordered">
 	<thead>

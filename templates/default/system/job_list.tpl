@@ -47,8 +47,12 @@
 
 <input class="form-control form-control-sm mb-3" data-search-top="table#joblist" value="" placeholder="Search within results...">
 
-<div class="mb-3 text-end">
-	<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#createJobModal">Create Job</button>
+<div class="row mb-2">
+	<div class="col">
+		<div class="float-end">
+			<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createJobModal">Create Job</button>
+		</div>
+	</div>
 </div>
 
 <table id="joblist" class="table table-striped table-hover">

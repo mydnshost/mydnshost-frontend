@@ -22,8 +22,8 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-		<button type="submit" form="createJobForm" class="btn btn-primary btn-sm">Schedule Job</button>
+		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+		<button type="submit" form="createJobForm" class="btn btn-primary">Schedule Job</button>
 	{% endblock %}
 {% endembed %}
 

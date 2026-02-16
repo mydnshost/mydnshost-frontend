@@ -10,8 +10,8 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-		<button type="button" id="republishJobConfirm" class="btn btn-success btn-sm">Republish</button>
+		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+		<button type="button" id="republishJobConfirm" class="btn btn-success">Republish</button>
 	{% endblock %}
 {% endembed %}
 
