@@ -45,32 +45,7 @@
 <input class="form-control form-control-sm mb-3" data-search-top="table#joblist" value="" placeholder="Search within results...">
 
 <div class="mb-3 text-end">
-	<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#createJobForm">Create Job</button>
-</div>
-
-<div class="collapse mb-3" id="createJobForm">
-	<div class="card">
-		<div class="card-header">Create Job</div>
-		<div class="card-body">
-			<form method="post" action="{{ url('/system/jobs/create') }}">
-				<input type="hidden" name="csrftoken" value="{{ csrftoken }}">
-				<div class="mb-3">
-					<label for="jobName" class="form-label">Job Name</label>
-					<input type="text" name="name" id="jobName" class="form-control form-control-sm" required placeholder="e.g. verify_domain">
-				</div>
-				<div class="mb-3">
-					<label for="jobData" class="form-label">Payload (JSON)</label>
-					<textarea name="data" id="jobData" class="form-control form-control-sm font-monospace" rows="5" required placeholder='{"domain": "example.com"}'></textarea>
-				</div>
-				<div class="mb-3">
-					<label for="jobDependsOn" class="form-label">Depends On (Job ID)</label>
-					<input type="number" name="dependsOn" id="jobDependsOn" class="form-control form-control-sm" min="1" placeholder="Optional — job ID that must finish first">
-				</div>
-				<button type="submit" class="btn btn-primary btn-sm">Schedule Job</button>
-				<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#createJobForm">Cancel</button>
-			</form>
-		</div>
-	</div>
+	<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#createJobModal">Create Job</button>
 </div>
 
 <table id="joblist" class="table table-striped table-hover">
@@ -138,8 +113,12 @@
 			<td class="text-nowrap">
 				<a href="{{ url('/system/jobs/' ~ job.id) }}" class="btn btn-outline-primary btn-sm" title="View">View</a>
 				<a href="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}" class="btn btn-outline-warning btn-sm" title="Repeat">Repeat</a>
+				<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" title="Clone" data-job-name="{{ job.name }}" data-job-data="{{ job.data|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
+				{% if job.state == 'created' %}
+					<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" title="Republish" data-republish-url="{{ url('/system/jobs/' ~ job.id ~ '/republish') }}">Republish</button>
+				{% endif %}
 				{% if job.state in ['created', 'blocked'] %}
-					<a href="{{ url('/system/jobs/' ~ job.id ~ '/cancel') }}" class="btn btn-outline-danger btn-sm" title="Cancel" onclick="return confirm('Cancel job {{ job.id }}?')">Cancel</a>
+					<button type="button" class="btn btn-outline-danger btn-sm btn-cancel-job" title="Cancel" data-cancel-url="{{ url('/system/jobs/' ~ job.id ~ '/cancel') }}">Cancel</button>
 				{% endif %}
 			</td>
 		</tr>
@@ -206,3 +185,7 @@
 	</form>
 </div>
 {% endif %}
+
+{% include 'system/job_create_modal.tpl' %}
+{% include 'system/job_republish_modal.tpl' %}
+{% include 'system/job_cancel_modal.tpl' %}

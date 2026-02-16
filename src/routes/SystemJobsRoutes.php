@@ -99,6 +99,18 @@
 					return;
 				});
 
+				$router->get('/system/jobs/([0-9]+)/republish', function($job) use ($displayEngine, $api) {
+					$result = $api->api('/system/jobs/' . $job . '/republish');
+
+					if (array_key_exists('error', $result)) {
+						$displayEngine->flash('error', '', 'Error republishing job: ' . $result['error']);
+					} else {
+						$displayEngine->flash('success', '', isset($result['response']['status']) ? $result['response']['status'] : 'Job republished.');
+					}
+					header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
+					return;
+				});
+
 				$router->get('/system/jobs/([0-9]+)/cancel', function($job) use ($displayEngine, $api) {
 					$result = $api->api('/system/jobs/' . $job . '/cancel');
 
@@ -113,14 +125,18 @@
 				});
 
 				$router->get('/system/jobs/([0-9]+)/repeat', function($job) use ($displayEngine, $api) {
-					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs :: ' . $job . ' :: Repeat');
-
 					$result = $api->api('/system/jobs/' . $job . '/repeat');
 
-					$displayEngine->setVar('result', isset($result['response']) ? $result['response'] : []);
-					$displayEngine->setVar('error', isset($result['error']) ? $result['error'] : []);
-
-					$displayEngine->display('system/job_repeat.tpl');
+					if (array_key_exists('error', $result)) {
+						$displayEngine->flash('error', '', 'Error repeating job: ' . $result['error']);
+						header('Location: ' . $displayEngine->getURL('/system/jobs/' . $job));
+					} else {
+						$newJobId = isset($result['response']['jobid']) ? $result['response']['jobid'] : '';
+						$status = isset($result['response']['status']) ? $result['response']['status'] : 'Job repeated.';
+						$displayEngine->flash('success', '', $status . ($newJobId ? ' New Job ID: ' . $newJobId : ''));
+						header('Location: ' . $displayEngine->getURL('/system/jobs/' . ($newJobId ?: $job)));
+					}
+					return;
 				});
 
 			}
