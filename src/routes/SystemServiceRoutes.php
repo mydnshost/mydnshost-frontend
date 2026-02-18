@@ -7,8 +7,7 @@
 				$router->get('/system/services', function() use ($displayEngine, $api) {
 					$displayEngine->setPageID('/system/services')->setTitle('System :: Services');
 
-					$services = $api->api('/system/service/list');
-					$displayEngine->setVar('services', isset($services['response']) ? $services['response'] : []);
+					$displayEngine->setVar('services', $api->getSystemServices());
 
 					$displayEngine->display('system/service_list.tpl');
 				});
@@ -34,8 +33,7 @@
 					if ($stream !== '') { $params['stream'] = $stream; }
 					if ($search !== '') { $params['search'] = $search; }
 
-					$result = $api->api('/system/service/' . $service . '/logs?' . http_build_query($params));
-					$data = isset($result['response']) ? $result['response'] : [];
+					$data = $api->getSystemServiceLogs($service, $params);
 
 					$displayEngine->setVar('logs', isset($data['logs']) ? $data['logs'] : []);
 					$displayEngine->setVar('pagination', isset($data['pagination']) ? $data['pagination'] : ['page' => 1, 'totalPages' => 1, 'total' => 0]);

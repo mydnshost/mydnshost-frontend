@@ -17,8 +17,7 @@
 					}
 
 					$params = ['filter' => $filter, 'page' => $page];
-					$result = $api->api('/system/jobs/list?' . http_build_query($params));
-					$data = isset($result['response']) ? $result['response'] : [];
+					$data = $api->getSystemJobs($params);
 
 					$displayEngine->setVar('jobs', isset($data['jobs']) ? $data['jobs'] : []);
 					$displayEngine->setVar('pagination', isset($data['pagination']) ? $data['pagination'] : ['page' => 1, 'totalPages' => 1, 'total' => 0]);
@@ -32,8 +31,7 @@
 					$displayEngine->setPageID('/system/jobs')->setTitle('System :: Jobs :: ' . $job);
 
 					$displayEngine->setVar('jobid', $job);
-					$jobinfo = $api->api('/system/jobs/' . $job);
-					$jobdata = isset($jobinfo['response']) ? $jobinfo['response'] : [];
+					$jobdata = $api->getSystemJob($job) ?? [];
 
 					// Pretty-print the JSON payload for display.
 					if (isset($jobdata['data'])) {
@@ -80,7 +78,7 @@
 						$apiData['dependsOn'] = $dependsOn;
 					}
 
-					$result = $api->api('/system/jobs/create', 'POST', $apiData);
+					$result = $api->createSystemJob($apiData);
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error creating job: ' . $result['error']);
@@ -100,7 +98,7 @@
 				});
 
 				$router->get('/system/jobs/([0-9]+)/republish', function($job) use ($displayEngine, $api) {
-					$result = $api->api('/system/jobs/' . $job . '/republish');
+					$result = $api->republishSystemJob($job);
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error republishing job: ' . $result['error']);
@@ -112,7 +110,7 @@
 				});
 
 				$router->get('/system/jobs/([0-9]+)/cancel', function($job) use ($displayEngine, $api) {
-					$result = $api->api('/system/jobs/' . $job . '/cancel');
+					$result = $api->cancelSystemJob($job);
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error cancelling job: ' . $result['error']);
@@ -124,7 +122,7 @@
 				});
 
 				$router->get('/system/jobs/([0-9]+)/repeat', function($job) use ($displayEngine, $api) {
-					$result = $api->api('/system/jobs/' . $job . '/repeat');
+					$result = $api->repeatSystemJob($job);
 
 					if (array_key_exists('error', $result)) {
 						$displayEngine->flash('error', '', 'Error repeating job: ' . $result['error']);
