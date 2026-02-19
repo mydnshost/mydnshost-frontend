@@ -36,6 +36,12 @@
 						<th>Reason</th>
 						<td>{{ job.reason|default('-') }}</td>
 					</tr>
+					{% if job.created_by_job %}
+					<tr>
+						<th>Created By</th>
+						<td><a href="{{ url('/system/jobs/' ~ job.created_by_job) }}">#{{ job.created_by_job }}</a></td>
+					</tr>
+					{% endif %}
 					<tr>
 						<th>State</th>
 						<td>
@@ -121,7 +127,81 @@
 	</div>
 </div>
 
+{% macro jobTreeRow(rj, currentJobId, allJobs, depth, isLast, continuations) %}
+{% set children = allJobs|filter(j => j.created_by_job == rj.id)|sort((a, b) => a.id <=> b.id) %}
+<tr class="{{ rj.id == currentJobId ? 'table-active fw-bold' : '' }}">
+	<td><a href="{{ url('/system/jobs/' ~ rj.id) }}">{{ rj.id }}</a></td>
+	<td>
+		<span class="text-nowrap">{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide text-muted">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide text-muted">{{ isLast ? '└─' : '├─' }}</span> {% endif %}<code>{{ rj.name }}</code></span>{% if rj.reason %} <small class="text-muted fst-italic">({{ rj.reason }})</small>{% endif %}
+		{% if rj.dependsOn %}
+			<br><small class="text-muted">{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide"></span> {% endif %}Depends on:
+			{% for dep in rj.dependsOn %}
+				<a href="{{ url('/system/jobs/' ~ dep) }}">{{ dep }}</a>{{ not loop.last ? ', ' }}
+			{% endfor %}
+			</small>
+		{% endif %}
+	</td>
+	<td>
+		{% if rj.state == 'finished' %}
+			<span class="badge bg-success">Finished</span>
+		{% elseif rj.state == 'error' %}
+			<span class="badge bg-danger">Error</span>
+		{% elseif rj.state == 'started' %}
+			<span class="badge bg-info text-dark">Started</span>
+		{% elseif rj.state == 'blocked' %}
+			<span class="badge bg-warning text-dark">Blocked</span>
+		{% elseif rj.state == 'created' %}
+			<span class="badge bg-secondary">Created</span>
+		{% elseif rj.state == 'cancelled' %}
+			<span class="badge bg-dark">Cancelled</span>
+		{% else %}
+			<span class="badge bg-secondary">{{ rj.state }}</span>
+		{% endif %}
+	</td>
+	<td><small>{{ rj.created | date }}</small></td>
+	<td>
+		{% if rj.finished > 0 and rj.started > 0 %}
+			<small>{{ (rj.finished - rj.started) }}s</small>
+		{% elseif rj.started > 0 %}
+			<small class="text-muted">Running...</small>
+		{% else %}
+			<small class="text-muted">-</small>
+		{% endif %}
+	</td>
+	<td><small>{{ rj.result|default('-') }}</small></td>
+</tr>
+{% for child in children %}
+{{ _self.jobTreeRow(child, currentJobId, allJobs, depth + 1, loop.last, continuations|merge([not isLast])) }}
+{% endfor %}
+{% endmacro %}
+
+{% if job.relatedJobs is defined and job.relatedJobs|length > 1 %}
+{% set relatedIds = job.relatedJobs|map(j => j.id) %}
+<div class="card mb-3">
+	<div class="card-header">Related Jobs</div>
+	<table class="table table-sm table-hover mb-0">
+		<thead>
+			<tr>
+				<th style="width: 100px">ID</th>
+				<th>Name</th>
+				<th style="width: 100px">State</th>
+				<th style="width: 250px">Created</th>
+				<th style="width: 100px">Duration</th>
+				<th style="width: 100px">Result</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% set roots = job.relatedJobs|filter(rj => rj.created_by_job is null or rj.created_by_job not in relatedIds)|sort((a, b) => a.id <=> b.id) %}
+			{% for root in roots %}
+			{{ _self.jobTreeRow(root, job.id, job.relatedJobs, 0, loop.last, []) }}
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %}
+
 <style>
+.tree-guide { display: inline-block; width: 1.5em; }
 .log-prefix-header { color: #0d6efd; font-weight: 700; }
 .log-prefix-result { color: #198754; font-weight: 700; }
 .log-prefix-skip { color: #fd7e14; font-weight: 700; }

@@ -72,8 +72,7 @@
 		<tr data-searchable-value="{{ job.name }} {{ job.id }} {{ job.data }} {{ job.reason|default('') }}">
 			<td><a href="{{ url('/system/jobs/' ~ job.id) }}">{{ job.id }}</a></td>
 			<td>
-				<code>{{ job.name }}</code>
-				{% if job.reason %}<br><small class="text-muted fst-italic">{{ job.reason }}</small>{% endif %}
+				<code>{{ job.name }}</code>{% if job.reason %} <small class="text-muted fst-italic">({{ job.reason }})</small>{% endif %}
 				<br><small class="mono breakable text-muted">{{ job.data }}</small>
 				{% if job.dependsOn %}
 					<br><small class="text-muted">Depends on:
