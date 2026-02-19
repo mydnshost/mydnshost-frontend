@@ -133,8 +133,11 @@
 	<td><a href="{{ url('/system/jobs/' ~ rj.id) }}">{{ rj.id }}</a></td>
 	<td>
 		<span class="text-nowrap">{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide text-muted">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide text-muted">{{ isLast ? '└─' : '├─' }}</span> {% endif %}<code>{{ rj.name }}</code></span>{% if rj.reason %} <small class="text-muted fst-italic">({{ rj.reason }})</small>{% endif %}
+		{% if rj.data %}
+			<br>{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide text-muted">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide text-muted">{{ (not isLast) ? '│' : '' }}</span> {% endif %}<small><code class="text-muted">{{ rj.data_formatted|default(rj.data) }}</code></small>
+		{% endif %}
 		{% if rj.dependsOn %}
-			<br><small class="text-muted">{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide"></span> {% endif %}Depends on:
+			<br><small class="text-muted">{% if depth > 0 %}{% for cont in continuations %}<span class="tree-guide">{{ cont ? '│' : '' }}</span>{% endfor %}<span class="tree-guide">{{ (not isLast) ? '│' : '' }}</span> {% endif %}Depends on:
 			{% for dep in rj.dependsOn %}
 				<a href="{{ url('/system/jobs/' ~ dep) }}">{{ dep }}</a>{{ not loop.last ? ', ' }}
 			{% endfor %}
@@ -178,7 +181,7 @@
 {% if job.relatedJobs is defined and job.relatedJobs|length > 1 %}
 {% set relatedIds = job.relatedJobs|map(j => j.id) %}
 <div class="card mb-3">
-	<div class="card-header">Related Jobs</div>
+	<div class="card-header">Related Jobs <small class="text-muted">({{ job.relatedJobs|length }})</small></div>
 	<table class="table table-sm table-hover mb-0">
 		<thead>
 			<tr>
