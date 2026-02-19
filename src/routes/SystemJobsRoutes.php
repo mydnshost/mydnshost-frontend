@@ -73,6 +73,11 @@
 
 					$apiData = ['name' => $name, 'data' => $decoded];
 
+					$reason = isset($_POST['reason']) ? trim($_POST['reason']) : '';
+					if ($reason !== '') {
+						$apiData['reason'] = $reason;
+					}
+
 					$dependsOn = isset($_POST['dependsOn']) ? intval($_POST['dependsOn']) : 0;
 					if ($dependsOn > 0) {
 						$apiData['dependsOn'] = $dependsOn;

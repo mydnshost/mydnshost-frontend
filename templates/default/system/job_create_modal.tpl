@@ -15,6 +15,10 @@
 				<textarea name="data" id="jobData" class="form-control form-control-sm font-monospace" rows="5" required placeholder='{"domain": "example.com"}'></textarea>
 			</div>
 			<div class="mb-3">
+				<label for="jobReason" class="form-label">Reason</label>
+				<input type="text" name="reason" id="jobReason" class="form-control form-control-sm" placeholder="Optional — why this job is being created">
+			</div>
+			<div class="mb-3">
 				<label for="jobDependsOn" class="form-label">Depends On (Job ID)</label>
 				<input type="number" name="dependsOn" id="jobDependsOn" class="form-control form-control-sm" min="1" placeholder="Optional — job ID that must finish first">
 			</div>
@@ -33,6 +37,7 @@ document.querySelectorAll('.btn-clone-job').forEach(function(btn) {
 		document.getElementById('jobName').value = this.getAttribute('data-job-name');
 		document.getElementById('jobData').value = this.getAttribute('data-job-data');
 		document.getElementById('jobDependsOn').value = this.getAttribute('data-job-depends-on') || '';
+		document.getElementById('jobReason').value = '';
 		document.getElementById('createJobModalLabel').textContent = 'Clone Job';
 		var modal = new bootstrap.Modal(document.getElementById('createJobModal'));
 		modal.show();

@@ -33,6 +33,10 @@
 						<td><code>{{ job.name }}</code></td>
 					</tr>
 					<tr>
+						<th>Reason</th>
+						<td>{{ job.reason|default('-') }}</td>
+					</tr>
+					<tr>
 						<th>State</th>
 						<td>
 							{% if job.state == 'finished' %}
