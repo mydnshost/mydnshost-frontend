@@ -162,6 +162,24 @@
 				{% endif %}
 			</td>
 		</tr>
+		<tr>
+			<th>DNSSEC State</th>
+			<td>
+				{% if domain.dnssecstate == 'signed' %}
+					<span class="badge bg-success">Signed</span>
+				{% elseif domain.dnssecstate == 'signed_extra_keys' %}
+					<span class="badge bg-warning">Signed (Extra Keys)</span>
+				{% elseif domain.dnssecstate == 'broken_signature' %}
+					<span class="badge bg-danger">Broken Signature</span>
+				{% elseif domain.dnssecstate == 'not_signed' %}
+					<span class="badge bg-secondary">Not Signed</span>
+				{% elseif domain.dnssecstate == 'not_verified' %}
+					<span class="badge bg-secondary">Not Verified</span>
+				{% else %}
+					<span class="badge bg-secondary">Unknown</span>
+				{% endif %}
+			</td>
+		</tr>
 	</tbody>
 </table>
 </form>

@@ -294,17 +294,39 @@
 							}
 							$item['title'] = $domain;
 							$item['active'] = ($this->pageID == '/domain/' . $domain);
-							$item['badge'] = ['classes' => ['verificationstate', 'state-' . $data['verification']['state']],
-							                  'value' => '?',
-							                  'title' => 'Verification state: ' . $data['verification']['state'] . ' as of ' . date('r', $data['verification']['time']),
-							                 ];
+							$verificationBadge = ['classes' => ['verificationstate', 'state-' . $data['verification']['state']],
+							                      'value' => '?',
+							                      'title' => 'Verification state: ' . $data['verification']['state'] . ' as of ' . date('r', $data['verification']['time']),
+							                     ];
 							if ($data['verification']['state'] == 'valid') {
-								$item['badge']['value'] = '✓';
+								$verificationBadge['value'] = '✓';
 							} else if ($data['verification']['state'] == 'invalid') {
-								$item['badge']['value'] = 'X';
-							} else {
-								$item['badge']['value'] = '?';
+								$verificationBadge['value'] = 'X';
 							}
+
+							$item['badges'] = [$verificationBadge];
+
+							$lockSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/></svg>';
+							$unlockSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2"/></svg>';
+
+							$dnssecState = isset($data['dnssec']['state']) ? $data['dnssec']['state'] : 'unknown';
+							if ($dnssecState == 'signed' || $dnssecState == 'signed_extra_keys') {
+								$item['badges'][] = ['classes' => ['dnssecstate', 'state-signed'],
+								                     'value' => $lockSVG,
+								                     'title' => 'DNSSEC: ' . $dnssecState,
+								                    ];
+							} else if ($dnssecState == 'broken_signature') {
+								$item['badges'][] = ['classes' => ['dnssecstate', 'state-broken'],
+								                     'value' => $unlockSVG,
+								                     'title' => 'DNSSEC: broken signature',
+								                    ];
+							} else {
+								$item['badges'][] = ['classes' => ['dnssecstate', 'state-none'],
+								                     'value' => $lockSVG,
+								                     'title' => 'DNSSEC: ' . $dnssecState,
+								                    ];
+							}
+
 							$dataValue = [$domain];
 
 							$rdns = getARPA($domain);

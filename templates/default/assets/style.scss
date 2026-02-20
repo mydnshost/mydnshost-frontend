@@ -316,6 +316,25 @@ span.badge.verificationstate {
     }
 }
 
+span.badge.dnssecstate {
+    background-color: transparent;
+    padding: 0 0.1em;
+    font-size: 0.8em;
+
+    &.state-signed {
+        color: #1E8755; // Success green
+    }
+
+    &.state-broken {
+        color: #DB3A4A; // Danger red
+    }
+
+    &.state-none {
+        color: #6C757D; // Muted gray
+        opacity: 0.5;
+    }
+}
+
 table#domainlist {
     th.domain,
     td.domain {

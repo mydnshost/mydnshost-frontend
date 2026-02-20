@@ -89,7 +89,7 @@
 				$domains = session::get('domains');
 				$allDomains = [];
 				foreach ($domains as $domain => $data) {
-					$domainData = ['domain' => $domain, 'access' => $data['access'], 'verification' => $data['verification']];
+					$domainData = ['domain' => $domain, 'access' => $data['access'], 'verification' => $data['verification'], 'dnssec' => isset($data['dnssec']) ? $data['dnssec'] : []];
 					$rdns = getARPA($domain);
 					if ($rdns !== FALSE) {
 						$domainData['subtitle'] = 'RDNS: '. $rdns;
