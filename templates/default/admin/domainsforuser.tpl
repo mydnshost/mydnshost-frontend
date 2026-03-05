@@ -13,7 +13,7 @@
 	</thead>
     {% for accesslevel,domains in adminuserdomains %}
 	<tbody>
-        <tr>
+        <tr class="section-header">
             <th colspan="2">Access: {{ accesslevel | capitalize }}</th>
         </tr>
 		{% for name,domain in domains %}
@@ -46,5 +46,3 @@
 	</tbody>
     {% endfor %}
 </table>
-
-<script src="{{ url('/assets/admin_domains.js') }}"></script>

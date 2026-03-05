@@ -354,6 +354,16 @@ table#domainlist {
     td.actions {
         width: 200px;
     }
+
+    tbody tr.section-header th {
+        --bs-table-bg-type: #000;
+        --bs-table-accent-bg: #000;
+        --bs-table-striped-bg: #000;
+        color: #fff !important;
+        font-size: 1.2em;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
 }
 
 table#accessinfo {
