@@ -168,13 +168,13 @@
 		{% block body %}
 			<form id="adduser" method="post" action="{{ url('/admin/users/create') }}">
 				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				<div class="form-group row">
+				<div class="form-group row mb-3">
 					<label for="email" class="col-3 col-form-label">Email Address</label>
 					<div class="col-9">
 						<input class="form-control" type="email" value="" id="email" name="email">
 					</div>
 				</div>
-				<div class="form-group row">
+				<div class="form-group row mb-3">
 					<label for="realname" class="col-3 col-form-label">Real Name</label>
 					<div class="col-9">
 						<input class="form-control" type="text" value="" id="realname" name="realname">
@@ -188,21 +188,21 @@
 					</label>
 				</div>
 
-				<div class="form-check">
+				<div class="form-check mb-3">
 					<label class="form-check-label">
 						<input type="radio" class="form-check-input" name="registerUser" id="registerUserManual" value="registerUserManual">
 						Choose a password for the new user and do not send them a welcome email.
 					</label>
 				</div>
 
-				<div class="form-group row registerUserManual">
+				<div class="form-group row mb-3 registerUserManual d-none">
 					<label for="password" class="col-3 col-form-label">Password</label>
 					<div class="col-9">
 						<input class="form-control" type="password" value="" id="password" name="password" disabled>
 					</div>
 				</div>
 
-				<div class="form-group row registerUserManual">
+				<div class="form-group row mb-3 registerUserManual d-none">
 					<label for="confirmpassword" class="col-3 col-form-label">Confirm Password</label>
 					<div class="col-9">
 						<input class="form-control" type="password" value="" id="confirmpassword" name="confirmpassword" disabled>

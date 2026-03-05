@@ -199,10 +199,13 @@ $(function() {
 	});
 
 	$('input:radio[name=registerUser]').change(function () {
-		var inputs = $('div.registerUserManual input[type=password]');
+		var rows = $('div.registerUserManual');
+		var inputs = rows.find('input[type=password]');
 		if ($('input:radio[name=registerUser]:checked').val() == "registerUserManual") {
+			rows.removeClass('d-none');
 			inputs.prop("disabled", false);
 		} else {
+			rows.addClass('d-none');
 			inputs.prop("disabled", true);
 			inputs.val("");
 			inputs.removeClass('is-invalid');
@@ -221,6 +224,7 @@ $(function() {
 			}
 		});
 
+		$('div.registerUserManual').addClass('d-none');
 		$('div.registerUserManual input[type=password]').prop("disabled", true);
 		$("#adduser")[0].reset();
 
