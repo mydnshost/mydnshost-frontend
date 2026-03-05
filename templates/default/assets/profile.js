@@ -3,6 +3,31 @@ $(function() {
 		$(this).text($(this).attr('data-hiddenText'));
 	});
 
+	$('.copykey').click(function () {
+		var btn = $(this);
+		var text = '' + btn.data('key');
+		var original = btn.html();
+
+		function onSuccess() {
+			btn.html('&#10003;');
+			setTimeout(function () { btn.html(original); }, 1500);
+		}
+
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard.writeText(text).then(onSuccess);
+		} else {
+			var textarea = document.createElement('textarea');
+			textarea.value = text;
+			textarea.style.position = 'fixed';
+			textarea.style.opacity = '0';
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+			onSuccess();
+		}
+	});
+
 	$('button[data-action="saveuser"]').click(function () {
 		$('#profileinfo').submit();
 	});
@@ -114,6 +139,16 @@ $(function() {
 		$('#confirmDelete').modal('show');
 	});
 
+	$('#showaddkey').click(function () {
+		$('#addkeycard').removeClass('d-none');
+		$(this).addClass('d-none');
+	});
+
+	$('#canceladdkey').click(function () {
+		$('#addkeycard').addClass('d-none');
+		$('#showaddkey').removeClass('d-none');
+	});
+
 	$("#addkeyform").validate({
 		highlight: function(element) {
 			$(element).addClass('is-invalid');
@@ -183,6 +218,16 @@ $(function() {
 		$('#confirmDelete2FA').modal('show');
 	});
 
+	$('#showadd2fa').click(function () {
+		$('#add2facard').removeClass('d-none');
+		$(this).addClass('d-none');
+	});
+
+	$('#canceladd2fa').click(function () {
+		$('#add2facard').addClass('d-none');
+		$('#showadd2fa').removeClass('d-none');
+	});
+
 	$('#add2faform select[name="type"]').change(setSecretVisibility);
 	setSecretVisibility();
 
@@ -191,13 +236,13 @@ $(function() {
 		if (!selected) return;
 		if (selected.hasAttribute('data-need')) {
 			var need = selected.getAttribute('data-need');
-			$('#add2faform input[data-provide="' + need + '"]').show();
+			$('#add2faform [data-provide="' + need + '"]').show();
 
 			$('#add2faform input[data-provide][data-provide!="' + need + '"]').val("");
-			$('#add2faform input[data-provide][data-provide!="' + need + '"]').hide();
+			$('#add2faform [data-provide][data-provide!="' + need + '"]').hide();
 		} else {
 			$('#add2faform input[data-provide]').val("");
-			$('#add2faform input[data-provide]').hide();
+			$('#add2faform [data-provide]').hide();
 		}
 	};
 

@@ -130,7 +130,13 @@
 			$router->post('/profile/addkey(\.json)?', function($json = NULL) use ($router, $displayEngine, $api) {
 				if (!$this->checkAuthTimeOrError($displayEngine, $json)) { return; }
 
-				$apiresult = $api->createAPIKey(['description' => (isset($_POST['description']) ? $_POST['description'] : 'New API Key: ' . date('Y-m-d H:i:s'))]);
+				$data = ['description' => (isset($_POST['description']) ? $_POST['description'] : 'New API Key: ' . date('Y-m-d H:i:s'))];
+				foreach (['domains_read', 'domains_write', 'user_read', 'user_write', 'admin_features', 'recordregex'] as $field) {
+					if (isset($_POST[$field])) {
+						$data[$field] = $_POST[$field];
+					}
+				}
+				$apiresult = $api->createAPIKey($data);
 				$result = ['unknown', 'unknown'];
 
 				if (array_key_exists('error', $apiresult)) {

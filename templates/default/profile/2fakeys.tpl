@@ -90,26 +90,51 @@ You will only be able to see the key and associated QR code for any keys that ha
 </table>
 
 
-<form method="post" action="{{ url('/profile/add2fakey') }}" class="form-inline form-group" id="add2faform">
-	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<select class="form-control col-2 mb-2 me-sm-2 mb-sm-0" name="type">
-		<option value="rfc6238" selected>TOTP (RFC 6238)</option>
-		<option value="onetime">One Time</option>
-		{% if 'yubikeyotp' in twoFactorKeyTypes %}
-			<option value="yubikeyotp" data-need="secret">Yubikey OTP</option>
-		{% endif %}
-		{% if 'authy' in twoFactorKeyTypes %}
-			<option value="authy" data-need="phone">Authy</option>
-		{% endif %}
-	</select>
-	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
+<button type="button" id="showadd2fa" class="btn btn-success mt-3" role="button">Add 2FA Key</button>
 
-	<input data-provide="secret" class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="secret" value="" placeholder="Key data">
-	<input data-provide="phone" class="form-control col-1 mb-2 me-sm-2 mb-sm-0" type="text" name="countrycode" value="" placeholder="Country Code">
-	<input data-provide="phone" class="form-control col-2 mb-2 me-sm-2 mb-sm-0" type="text" name="phone" value="" placeholder="Phone Number">
-
-	<button type="submit" class="btn btn-success" role="button">Add 2FA Key</button>
-</form>
+<div class="card mt-3 d-none" id="add2facard">
+	<div class="card-header">Add 2FA Key</div>
+	<div class="card-body">
+		<form method="post" action="{{ url('/profile/add2fakey') }}" id="add2faform">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+			<div class="row g-3">
+				<div class="col-md-4">
+					<label for="add2fa_type" class="form-label">Type</label>
+					<select class="form-control" name="type" id="add2fa_type">
+						<option value="rfc6238" selected>TOTP (RFC 6238)</option>
+						<option value="onetime">One Time</option>
+						{% if 'yubikeyotp' in twoFactorKeyTypes %}
+							<option value="yubikeyotp" data-need="secret">Yubikey OTP</option>
+						{% endif %}
+						{% if 'authy' in twoFactorKeyTypes %}
+							<option value="authy" data-need="phone">Authy</option>
+						{% endif %}
+					</select>
+				</div>
+				<div class="col-md-8">
+					<label for="add2fa_description" class="form-label">Description</label>
+					<input class="form-control" type="text" name="description" id="add2fa_description" value="" placeholder="Key description...">
+				</div>
+				<div class="col-md-12">
+					<label data-provide="secret" for="add2fa_secret" class="form-label">Key Data</label>
+					<input data-provide="secret" class="form-control" type="text" name="secret" id="add2fa_secret" value="" placeholder="Key data">
+				</div>
+				<div class="col-md-4">
+					<label data-provide="phone" for="add2fa_countrycode" class="form-label">Country Code</label>
+					<input data-provide="phone" class="form-control" type="text" name="countrycode" id="add2fa_countrycode" value="" placeholder="+44">
+				</div>
+				<div class="col-md-8">
+					<label data-provide="phone" for="add2fa_phone" class="form-label">Phone Number</label>
+					<input data-provide="phone" class="form-control" type="text" name="phone" id="add2fa_phone" value="" placeholder="Phone number">
+				</div>
+			</div>
+			<div class="mt-3">
+				<button type="submit" class="btn btn-success" role="button">Add</button>
+				<button type="button" id="canceladd2fa" class="btn btn-warning" role="button">Cancel</button>
+			</div>
+		</form>
+	</div>
+</div>
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete2FA'} only %}
 	{% block title %}
