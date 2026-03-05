@@ -326,7 +326,7 @@
 						if (array_key_exists('error', $result)) {
 							$errorData = $result['error'];
 							if (array_key_exists('errorData', $result)) {
-								$errorData .= ' => ' . is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData'];
+								$errorData .= ' => ' . (is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData']);
 							}
 							if ($create) {
 								$displayEngine->flash('error', '', 'There was an error creating the article: ' . $errorData);
@@ -425,7 +425,7 @@
 						if (array_key_exists('error', $result)) {
 							$errorData = $result['error'];
 							if (array_key_exists('errorData', $result)) {
-								$errorData .= ' => ' . is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData'];
+								$errorData .= ' => ' . (is_array($result['errorData']) ? implode(' / ', $result['errorData']) : $result['errorData']);
 							}
 							if ($create) {
 								$displayEngine->flash('error', '', 'There was an error creating the blockregex: ' . $errorData);
