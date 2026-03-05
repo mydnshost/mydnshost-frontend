@@ -275,6 +275,12 @@
 					$displayEngine->display('admin/articles.tpl');
 				});
 
+				$router->get('/admin/articles/([0-9]+).json', function($articleid) use ($displayEngine, $api) {
+					$article = $api->getArticle($articleid);
+					header('Content-Type: application/json');
+					echo json_encode($article);
+				});
+
 				$router->get('/admin/articles/(create|[0-9]+)', function($articleid) use ($displayEngine, $api) {
 					$error = false;
 

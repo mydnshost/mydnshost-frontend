@@ -6,7 +6,7 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<a class="btn btn-success" href="{{ url('/admin/articles/create') }}">Add Article</a>
+			<a class="btn btn-success" href="{{ url('/admin/articles/create') }}" data-action="addarticle">Add Article</a>
 		</div>
 	</div>
 </div>
@@ -51,13 +51,40 @@
 				{% endif %}
 			</td>
 			<td class="actions text-nowrap">
-				<a href="{{ url('/admin/articles/' ~ article.id) }}" class="btn btn-sm btn-success">View/Edit</a>
+				<a href="{{ url('/admin/articles/' ~ article.id) }}" data-action="editarticle" data-id="{{ article.id }}" class="btn btn-sm btn-success">View/Edit</a>
 				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</button>
 			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
+
+{% embed 'blocks/modal_confirm.tpl' with {'id': 'editArticle', 'large': true, 'csrftoken': csrftoken, 'time': time} only %}
+	{% block title %}
+		Article
+	{% endblock %}
+
+	{% block body %}
+		<form action="" method="POST" id="articleform">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+
+			<table class="table table-striped table-bordered table-layout-fixed">
+				<colgroup>
+					<col style="width: 200px;">
+					<col>
+				</colgroup>
+				<tbody>
+					{% include 'admin/blocks/article_form.tpl' with {'create': true, 'time': time} %}
+				</tbody>
+			</table>
+		</form>
+	{% endblock %}
+
+	{% block buttons %}
+		<button type="button" data-action="cancel" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+		<button type="button" data-action="ok" class="btn btn-success">Create Article</button>
+	{% endblock %}
+{% endembed %}
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete'} only %}
 	{% block title %}
@@ -69,4 +96,5 @@
 	{% endblock %}
 {% endembed %}
 
+<script src="{{ url('/assets/admin_article.js') }}"></script>
 <script src="{{ url('/assets/admin_articles.js') }}"></script>

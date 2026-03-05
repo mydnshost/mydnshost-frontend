@@ -15,17 +15,23 @@ $(function() {
 		return isNaN(ts) ? NaN : ts;
 	}
 
-	// Populate datetime pickers from hidden timestamp fields
-	var fromTs = parseInt($('#visiblefrom').val(), 10) || 0;
-	$('#visiblefrom_picker').val(timestampToDatetimeLocal(fromTs));
+	// Initialize/reinitialize datetime pickers from hidden fields
+	window.initArticleForm = function() {
+		var fromTs = parseInt($('#visiblefrom').val(), 10) || 0;
+		$('#visiblefrom_picker').val(timestampToDatetimeLocal(fromTs));
 
-	var untilTs = parseInt($('#visibleuntil').val(), 10) || 0;
-	if (untilTs < 0) {
-		$('#visibleuntil_never').prop('checked', true);
-		$('#visibleuntil_picker').prop('disabled', true).val('');
-	} else {
-		$('#visibleuntil_picker').val(timestampToDatetimeLocal(untilTs));
-	}
+		var untilTs = parseInt($('#visibleuntil').val(), 10) || 0;
+		if (untilTs < 0) {
+			$('#visibleuntil_never').prop('checked', true);
+			$('#visibleuntil_picker').prop('disabled', true).val('');
+		} else {
+			$('#visibleuntil_never').prop('checked', false);
+			$('#visibleuntil_picker').prop('disabled', false).val(timestampToDatetimeLocal(untilTs));
+		}
+
+		// Reset validation state
+		$('#articleform .is-invalid').removeClass('is-invalid');
+	};
 
 	// Sync picker changes back to hidden fields (only if valid)
 	$('#visiblefrom_picker').on('change', function() {
@@ -97,4 +103,7 @@ $(function() {
 			}
 		},
 	});
+
+	// Initial setup
+	window.initArticleForm();
 });
