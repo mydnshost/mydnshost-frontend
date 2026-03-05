@@ -11,12 +11,7 @@
 				{% block body %}
 					<form id="createUserDomainForm" method="post" action="{{ url('/domains/create') }}">
 						<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-						<div class="form-group row">
-							<label for="domainname" class="col-4 col-form-label">Domain Name</label>
-							<div class="col-8">
-								<input class="form-control" type="text" value="" id="domainname" name="domainname">
-							</div>
-						</div>
+						{% include 'blocks/domain_create_form.tpl' with {'show_owner': false} %}
 					</form>
 				{% endblock %}
 

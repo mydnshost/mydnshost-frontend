@@ -88,20 +88,7 @@
 		{% block body %}
 			<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
 				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				<div class="form-group row">
-					<label for="domainname" class="col-3 col-form-label">Domain Name</label>
-					<div class="col-9">
-						<input class="form-control" type="text" value="" id="domainname" name="domainname">
-					</div>
-				</div>
-				{% if hasPermission(['manage_domains']) %}
-					<div class="form-group row">
-						<label for="owner" class="col-3 col-form-label">Owner</label>
-						<div class="col-9">
-							<input class="form-control" type="text" value="" id="owner" name="owner">
-						</div>
-					</div>
-				{% endif %}
+				{% include 'blocks/domain_create_form.tpl' with {'show_owner': hasPermission(['manage_domains'])} %}
 			</form>
 		{% endblock %}
 
