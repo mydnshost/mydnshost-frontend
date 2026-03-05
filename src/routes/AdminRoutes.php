@@ -199,7 +199,7 @@
 						if (array_key_exists('error', $result)) {
 							$errorData = $result['error'];
 							if (array_key_exists('errorData', $result)) {
-								$errorData .= ' => ' . implode($result['errorData'], ', ');
+								$errorData .= ' => ' . implode(', ', $result['errorData']);
 							} else {
 								$errorData .= 'Unspecified error.';
 							}
