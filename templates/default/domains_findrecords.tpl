@@ -2,15 +2,10 @@
 
 <form id="findRecords" method="post" action="{{ url("#{pathprepend}/domains/findRecords") }}">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<div class="form-group row">
-		<label for="recordContent" class="col-3 col-form-label">Record Content</label>
-		<div class="col-9">
-			<input class="form-control" type="text" value="{{ recordContent }}" id="recordContent" name="recordContent">
-		</div>
-	</div>
+	{% include 'blocks/find_records_form.tpl' %}
 
 	<div class="d-grid mt-2 gap-2">
-		<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-warning" data-bs-dismiss="modal">Cancel</a>
+		<a href="{{ url("#{pathprepend}/domains") }}" class="btn btn-warning">Cancel</a>
 		<button type="submit" data-action="ok" class="btn btn-success">Find Domains</button>
 	</div>
 </form>

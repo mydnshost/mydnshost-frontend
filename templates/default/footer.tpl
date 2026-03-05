@@ -11,7 +11,7 @@
 				{% block body %}
 					<form id="createUserDomainForm" method="post" action="{{ url('/domains/create') }}">
 						<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-						{% include 'blocks/domain_create_form.tpl' with {'show_owner': false} %}
+						{% include 'blocks/domain_create_form.tpl' with {'hide_owner': true} %}
 					</form>
 				{% endblock %}
 
@@ -22,7 +22,25 @@
 			{% endembed %}
 		{% endif %}
 
-		{% embed 'blocks/modal_confirm.tpl' with {'id': 'createLabelModal'} only %}
+		{% embed 'blocks/modal_confirm.tpl' with {'id': 'findRecordsModal', 'large': true, 'csrftoken': csrftoken} only %}
+		{% block title %}
+			Find Domain by Records
+		{% endblock %}
+
+		{% block body %}
+			<form id="findRecordsForm" method="post" action="{{ url('/domains/findRecords') }}">
+				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+				{% include 'blocks/find_records_form.tpl' %}
+			</form>
+		{% endblock %}
+
+		{% block buttons %}
+			<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+			<button type="button" data-action="ok" class="btn btn-success">Find Domains</button>
+		{% endblock %}
+	{% endembed %}
+
+	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createLabelModal'} only %}
 		{% block title %}
 			Create Label
 		{% endblock %}

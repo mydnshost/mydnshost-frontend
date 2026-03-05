@@ -1,5 +1,19 @@
 $(function() {
 	$('a[data-action="addUserDomain"]').click(function () {
+		var actionUrl = $(this).attr('href');
+		$('#createUserDomainForm').attr('action', actionUrl);
+		$('#domainname').val('');
+		$('#owner').val('');
+
+		var ownerRow = $('#domainOwnerRow');
+		if (ownerRow.length) {
+			if ($(this).data('show-owner')) {
+				ownerRow.removeClass('d-none');
+			} else {
+				ownerRow.addClass('d-none');
+			}
+		}
+
 		var okButton = $('#createUserDomain button[data-action="ok"]');
 		okButton.text("Create");
 
@@ -19,6 +33,43 @@ $(function() {
 		return false;
 	});
 
+	$('a[data-action="findRecords"]').click(function () {
+		var actionUrl = $(this).attr('href');
+		$('#findRecordsForm').attr('action', actionUrl);
+		$('#recordContent').val('');
+
+		var okButton = $('#findRecordsModal button[data-action="ok"]');
+		okButton.off('click').click(function () {
+			if ($("#findRecordsForm").valid()) {
+				$("#findRecordsForm").submit();
+				$('#findRecordsModal').modal('hide');
+			}
+		});
+
+		var cancelButton = $('#findRecordsModal button[data-action="cancel"]');
+		cancelButton.off('click').click(function () {
+			$("#findRecordsForm").validate().resetForm();
+		});
+
+		$('#findRecordsModal').modal('show');
+		return false;
+	});
+
+	$("#findRecordsForm").validate({
+		highlight: function(element) {
+			$(element).addClass('is-invalid');
+		},
+		unhighlight: function(element) {
+			$(element).removeClass('is-invalid');
+		},
+		errorClass: 'invalid-feedback',
+		rules: {
+			recordContent: {
+				required: true
+			}
+		},
+	});
+
 	$("#createUserDomainForm").validate({
 		highlight: function(element) {
 			$(element).addClass('is-invalid');
@@ -30,6 +81,9 @@ $(function() {
 		rules: {
 			domainname: {
 				required: true
+			},
+			owner: {
+				email: true
 			}
 		},
 	});

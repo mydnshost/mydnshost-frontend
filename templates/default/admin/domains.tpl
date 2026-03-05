@@ -6,9 +6,9 @@
 	<div class="col">
 		<div class="float-end">
 			<a href="{{ url('/admin/domains/user/0') }}" class="btn btn-primary">Unowned Domains</a>
-			<a href="{{ url('/admin/domains/findRecords') }}" class="btn btn-success">Find Records</a>
+			<a href="{{ url('/admin/domains/findRecords') }}" data-action="findRecords" class="btn btn-success">Find Records</a>
 			{% if hasPermission(['domains_create', 'manage_domains']) %}
-				<a href="{{ url('/admin/domains/create') }}" data-action="addAdminDomain" class="btn btn-success">Add Domain</a>
+				<a href="{{ url('/admin/domains/create') }}" data-action="addUserDomain" data-show-owner="true" class="btn btn-success">Add Domain</a>
 			{% endif %}
 		</div>
 	</div>
@@ -78,25 +78,3 @@
 		{% endfor %}
 	</tbody>
 </table>
-
-{% if hasPermission(['domains_create', 'manage_domains']) %}
-	{% embed 'blocks/modal_confirm.tpl' with {'id': 'createAdminDomain', 'large': true, 'csrftoken': csrftoken} only %}
-		{% block title %}
-			Create Domain
-		{% endblock %}
-
-		{% block body %}
-			<form id="adddomain" method="post" action="{{ url('/admin/domains/create') }}">
-				<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-				{% include 'blocks/domain_create_form.tpl' with {'show_owner': hasPermission(['manage_domains'])} %}
-			</form>
-		{% endblock %}
-
-		{% block buttons %}
-			<button type="button" data-action="cancel" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-			<button type="button" data-action="ok" class="btn btn-success">Ok</button>
-		{% endblock %}
-	{% endembed %}
-{% endif %}
-
-<script src="{{ url('/assets/admin_domains.js') }}"></script>
