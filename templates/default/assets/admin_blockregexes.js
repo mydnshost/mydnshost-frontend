@@ -1,4 +1,67 @@
 $(function() {
+	// Add Block Regex - show modal with empty form
+	$('a[data-action="addblockregex"]').click(function() {
+		$('#blockregexform').attr('action', "{{ url('/admin/blockregexes/create') }}");
+		$('#regex').val('');
+		$('#comment').val('');
+		$('#signup_name').prop('checked', false);
+		$('#signup_email').prop('checked', false);
+		$('#domain_name').prop('checked', false);
+		$('#blockregex-id-row').remove();
+		$('#blockregex-created-display').text(new Date().toLocaleString());
+
+		$('#editBlockRegex .modal-title').text('Block Regex :: Create');
+		var okButton = $('#editBlockRegex button[data-action="ok"]');
+		okButton.text('Create Block Regex');
+		okButton.off('click').click(function() {
+			if ($('#blockregexform').valid()) {
+				$('#blockregexform').submit();
+			}
+		});
+
+		$('#editBlockRegex').modal('show');
+		return false;
+	});
+
+	// Edit Block Regex - fetch data via AJAX, populate form, show modal
+	$('a[data-action="editblockregex"]').click(function() {
+		var blockregexId = $(this).data('id');
+
+		$.getJSON("{{ url('/admin/blockregexes') }}/" + blockregexId + ".json", function(blockregex) {
+			$('#blockregexform').attr('action', "{{ url('/admin/blockregexes') }}/" + blockregex.id);
+			$('#regex').val(blockregex.regex);
+			$('#comment').val(blockregex.comment);
+			$('#signup_name').prop('checked', !!blockregex.signup_name);
+			$('#signup_email').prop('checked', !!blockregex.signup_email);
+			$('#domain_name').prop('checked', !!blockregex.domain_name);
+
+			// Show ID row or create it if it was removed
+			if ($('#blockregex-id-row').length) {
+				$('#blockregex-id-display').text(blockregex.id);
+				$('#blockregex-id-row').show();
+			} else {
+				$('#blockregexform tbody').prepend(
+					'<tr id="blockregex-id-row"><th>ID</th><td id="blockregex-id-display">' + blockregex.id + '</td></tr>'
+				);
+			}
+			$('#blockregex-created-display').text(new Date(blockregex.created * 1000).toLocaleString());
+
+			$('#editBlockRegex .modal-title').text('Block Regex :: ' + blockregex.id);
+			var okButton = $('#editBlockRegex button[data-action="ok"]');
+			okButton.text('Edit Block Regex');
+			okButton.off('click').click(function() {
+				if ($('#blockregexform').valid()) {
+					$('#blockregexform').submit();
+				}
+			});
+
+			$('#editBlockRegex').modal('show');
+		});
+
+		return false;
+	});
+
+	// Delete Block Regex
 	$('button[data-action="deleteblockregex"]').click(function () {
 		var blockregex = $(this).data('id');
 		var row = $(this).closest('tr');

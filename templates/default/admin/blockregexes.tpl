@@ -6,12 +6,12 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}">Add Block Regex</a>
+			<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}" data-action="addblockregex">Add Block Regex</a>
 		</div>
 	</div>
 </div>
 
-<table id="articlelist" class="table table-striped table-bordered">
+<table id="blockregexlist" class="table table-striped table-bordered">
 	<thead>
 		<tr>
 			<th class="id">ID</th>
@@ -52,13 +52,40 @@
 			</td>
 
 			<td class="actions text-nowrap">
-				<a href="{{ url('/admin/blockregexes/' ~ blockregex.id) }}" class="btn btn-sm btn-success">View/Edit</a>
+				<a href="{{ url('/admin/blockregexes/' ~ blockregex.id) }}" data-action="editblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-success">View/Edit</a>
 				<button data-action="deleteblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-danger">Delete</button>
 			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
+
+{% embed 'blocks/modal_confirm.tpl' with {'id': 'editBlockRegex', 'large': true, 'csrftoken': csrftoken, 'time': time} only %}
+	{% block title %}
+		Block Regex
+	{% endblock %}
+
+	{% block body %}
+		<form action="" method="POST" id="blockregexform">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+
+			<table class="table table-striped table-bordered table-layout-fixed">
+				<colgroup>
+					<col style="width: 200px;">
+					<col>
+				</colgroup>
+				<tbody>
+					{% include 'admin/blocks/blockregex_form.tpl' with {'create': true, 'time': time} %}
+				</tbody>
+			</table>
+		</form>
+	{% endblock %}
+
+	{% block buttons %}
+		<button type="button" data-action="cancel" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+		<button type="button" data-action="ok" class="btn btn-success">Create Block Regex</button>
+	{% endblock %}
+{% endembed %}
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDelete'} only %}
 	{% block title %}
@@ -70,4 +97,5 @@
 	{% endblock %}
 {% endembed %}
 
+<script src="{{ url('/assets/admin_blockregex.js') }}"></script>
 <script src="{{ url('/assets/admin_blockregexes.js') }}"></script>

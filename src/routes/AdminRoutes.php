@@ -374,6 +374,12 @@
 					$displayEngine->display('admin/blockregexes.tpl');
 				});
 
+				$router->get('/admin/blockregexes/([0-9]+).json', function($blockregexid) use ($displayEngine, $api) {
+					$blockregex = $api->getBlockRegex($blockregexid);
+					header('Content-Type: application/json');
+					echo json_encode($blockregex);
+				});
+
 				$router->get('/admin/blockregexes/(create|[0-9]+)', function($blockregexid) use ($displayEngine, $api) {
 					$error = false;
 
