@@ -52,7 +52,7 @@
 <div class="card mb-3">
 	<div class="card-header">Event Arguments</div>
 	<div class="card-body">
-		<pre class="mb-0"><code>{{ entry.args_formatted }}</code></pre>
+		<pre class="mb-0"><code>{{ entry.args_formatted | json_highlight }}</code></pre>
 	</div>
 </div>
 {% endif %}

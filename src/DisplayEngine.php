@@ -102,7 +102,25 @@
 				return $result;
 			}, ['is_safe' => ['html']]));
 
-			$twig->addFilter(new TwigFilter('getRFC6238QRCode', function($input) {
+			$twig->addFilter(new TwigFilter('json_highlight', function($json) {
+			return preg_replace_callback(
+				'/"((?:[^"\\\\]|\\\\.)*)"\h*(:?)|\b(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b|\b(true|false|null)\b/',
+				function($m) {
+					if (!empty($m[4])) {
+						return '<span class="json-bool">' . $m[4] . '</span>';
+					} else if (isset($m[3]) && $m[3] !== '') {
+						return '<span class="json-num">' . htmlspecialchars($m[3], ENT_QUOTES, 'UTF-8') . '</span>';
+					} else if ($m[2] === ':') {
+						return '<span class="json-key">"' . htmlspecialchars($m[1], ENT_QUOTES, 'UTF-8') . '"</span>:';
+					} else {
+						return '<span class="json-str">"' . htmlspecialchars($m[1], ENT_QUOTES, 'UTF-8') . '"</span>';
+					}
+				},
+				$json
+			);
+		}, ['is_safe' => ['html']]));
+
+		$twig->addFilter(new TwigFilter('getRFC6238QRCode', function($input) {
 				$ga = new PHPGangsta_GoogleAuthenticator();
 				$user = session::getCurrentUser();
 				return $ga->getQRCodeGoogleUrl($this->getVar('sitename') . ' ' . $user['user']['email'], $input);

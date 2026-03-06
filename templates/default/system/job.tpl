@@ -123,7 +123,7 @@
 <div class="card mb-3">
 	<div class="card-header">Payload</div>
 	<div class="card-body p-0">
-		<pre class="mb-0 p-3"><code>{{ job.data_formatted|default(job.data) }}</code></pre>
+		<pre class="mb-0 p-3"><code>{{ job.data_formatted|default(job.data) | json_highlight }}</code></pre>
 	</div>
 </div>
 

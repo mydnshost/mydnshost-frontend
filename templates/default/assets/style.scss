@@ -725,6 +725,21 @@ table#serviceinfo th {
     width: 100px;
 }
 
+/**********************************************************************
+ * JSON Syntax Highlighting
+ **********************************************************************/
+.json-key { color: #0451a5; }
+.json-str { color: #a31515; }
+.json-num { color: #098658; }
+.json-bool { color: #0000ff; }
+
+[data-bs-theme="dark"] {
+    .json-key { color: #9cdcfe; }
+    .json-str { color: #ce9178; }
+    .json-num { color: #b5cea8; }
+    .json-bool { color: #569cd6; }
+}
+
 table#servicelist {
     th.service,
     td.service,
