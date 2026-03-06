@@ -95,6 +95,7 @@ $(function() {
 	var $elevationControl = $('#elevationControl');
 	var btnColorRe = /\bbtn-(?:outline-)?(?:primary|success|danger|warning|info|dark|light)\b/g;
 	var elevationTimerId = null;
+	var elevationChannel = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('admin_elevation') : null;
 
 	function disableElevationButtons() {
 		$('[data-needs-elevation]').each(function() {
@@ -212,6 +213,7 @@ $(function() {
 				if (elevationTimerId) { clearTimeout(elevationTimerId); elevationTimerId = null; }
 				disableElevationButtons();
 				showElevateButton();
+				if (elevationChannel) elevationChannel.postMessage({ type: 'deelevated' });
 			}
 		});
 	}
@@ -262,6 +264,7 @@ $(function() {
 						$elevateModal.modal('hide');
 						enableElevationButtons();
 						showElevatedButton(data.expires);
+						if (elevationChannel) elevationChannel.postMessage({ type: 'elevated', expires: data.expires });
 					} else {
 						alert(data.error || 'Elevation failed.');
 					}
@@ -278,6 +281,20 @@ $(function() {
 
 		// Wire up de-elevate button if present on page load.
 		$('#deelevateBtn').on('click', deelevate);
+
+		// Listen for elevation changes from other tabs.
+		if (elevationChannel) {
+			elevationChannel.onmessage = function(e) {
+				if (e.data.type === 'elevated') {
+					enableElevationButtons();
+					showElevatedButton(e.data.expires);
+				} else if (e.data.type === 'deelevated') {
+					if (elevationTimerId) { clearTimeout(elevationTimerId); elevationTimerId = null; }
+					disableElevationButtons();
+					showElevateButton();
+				}
+			};
+		}
 
 		// Admin elevation timer countdown (for page-load elevated state).
 		var $timer = $('#elevationTimer');
