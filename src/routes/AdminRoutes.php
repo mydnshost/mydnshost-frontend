@@ -8,6 +8,23 @@
 				$api->domainAdmin();
 			});
 
+			$router->get('/admin/elevate/status\.json', function() use ($displayEngine) {
+				header('Content-Type: application/json');
+
+				if (!session::get('adminElevationEnabled')) {
+					echo json_encode(['elevated' => false, 'enabled' => false]);
+					return;
+				}
+
+				$adminToken = session::get('adminToken');
+				$adminTokenExpiry = session::get('adminTokenExpiry', 0);
+				if ($adminToken && $adminTokenExpiry > time()) {
+					echo json_encode(['elevated' => true, 'enabled' => true, 'expires' => $adminTokenExpiry]);
+				} else {
+					echo json_encode(['elevated' => false, 'enabled' => true]);
+				}
+			});
+
 			$router->get('/admin/elevate', function() use ($displayEngine) {
 				if (!session::get('adminElevationEnabled')) {
 					$displayEngine->flash('error', '', 'Admin elevation is not enabled.');
@@ -27,8 +44,13 @@
 				$displayEngine->display('admin/elevate.tpl');
 			});
 
-			$router->post('/admin/elevate', function() use ($displayEngine, $api) {
+			$router->post('/admin/elevate(\\.json)?', function($json = NULL) use ($displayEngine, $api) {
 				if (!session::get('adminElevationEnabled')) {
+					if ($json !== NULL) {
+						header('Content-Type: application/json');
+						echo json_encode(['success' => false, 'error' => 'Admin elevation is not enabled.']);
+						return;
+					}
 					$displayEngine->flash('error', '', 'Admin elevation is not enabled.');
 					header('Location: ' . $displayEngine->getURL('/admin/domains'));
 					return;
@@ -47,9 +69,23 @@
 				if (isset($result['admintoken'])) {
 					session::set('adminToken', $result['admintoken']);
 					session::set('adminTokenExpiry', $result['expires']);
+
+					if ($json !== NULL) {
+						header('Content-Type: application/json');
+						echo json_encode(['success' => true, 'expires' => $result['expires']]);
+						return;
+					}
+
 					$displayEngine->flash('success', '', 'Admin elevation successful.');
 				} else {
 					$error = isset($result['error']) ? $result['error'] : 'Elevation failed.';
+
+					if ($json !== NULL) {
+						header('Content-Type: application/json');
+						echo json_encode(['success' => false, 'error' => $error]);
+						return;
+					}
+
 					$displayEngine->flash('error', '', $error);
 				}
 
@@ -58,9 +94,16 @@
 				return;
 			});
 
-			$router->post('/admin/deelevate', function() use ($displayEngine, $api) {
+			$router->post('/admin/deelevate(\\.json)?', function($json = NULL) use ($displayEngine, $api) {
 				session::remove('adminToken');
 				session::remove('adminTokenExpiry');
+
+				if ($json !== NULL) {
+					header('Content-Type: application/json');
+					echo json_encode(['success' => true]);
+					return;
+				}
+
 				$displayEngine->flash('info', '', 'Admin elevation cleared.');
 
 				$redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $displayEngine->getURL('/admin/domains');

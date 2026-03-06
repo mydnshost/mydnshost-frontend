@@ -90,13 +90,27 @@ $(function() {
 
 	$(".alert").alert();
 
-	// Admin elevation: shared disable logic.
+	// Admin elevation: shared disable/enable logic.
 	var $elevateModal = $('#elevateModal');
+	var $elevationControl = $('#elevationControl');
 	var btnColorRe = /\bbtn-(?:outline-)?(?:primary|success|danger|warning|info|dark|light)\b/g;
+	var elevationTimerId = null;
 
 	function disableElevationButtons() {
 		$('[data-needs-elevation]').each(function() {
 			var $el = $(this);
+
+			// Store original state for later restoration.
+			if (!$el.data('elevation-original-class')) {
+				$el.data('elevation-original-class', $el.attr('class') || '');
+				$el.data('elevation-original-title', $el.attr('title') || '');
+				if ($el.is('a')) {
+					$el.data('elevation-original-action', $el.attr('data-action') || '');
+					$el.data('elevation-original-bs-toggle', $el.attr('data-bs-toggle') || '');
+					$el.data('elevation-original-bs-target', $el.attr('data-bs-target') || '');
+				}
+			}
+
 			if ($el.is('input')) {
 				$el.prop('disabled', true);
 			} else if ($el.is('a')) {
@@ -118,40 +132,157 @@ $(function() {
 		});
 	}
 
+	function enableElevationButtons() {
+		$('[data-needs-elevation]').each(function() {
+			var $el = $(this);
+			var origClass = $el.data('elevation-original-class');
+			if (!origClass) return;
+
+			$el.attr('class', origClass);
+			var origTitle = $el.data('elevation-original-title');
+			if (origTitle) { $el.attr('title', origTitle); } else { $el.removeAttr('title'); }
+
+			if ($el.is('input')) {
+				$el.prop('disabled', false);
+			} else if ($el.is('a')) {
+				$el.removeClass('disabled').removeAttr('aria-disabled');
+				$el.off('click.elevation');
+				var origAction = $el.data('elevation-original-action');
+				var origToggle = $el.data('elevation-original-bs-toggle');
+				var origTarget = $el.data('elevation-original-bs-target');
+				if (origAction) $el.attr('data-action', origAction);
+				if (origToggle) $el.attr('data-bs-toggle', origToggle);
+				if (origTarget) $el.attr('data-bs-target', origTarget);
+			} else {
+				$el.prop('disabled', false);
+			}
+
+			$el.removeData('elevation-original-class elevation-original-title elevation-original-action elevation-original-bs-toggle elevation-original-bs-target');
+		});
+	}
+
+	function showElevateButton() {
+		$elevationControl.html(
+			'<a href="{{ url("/admin/elevate") }}" class="btn btn-outline-warning my-2 my-sm-0 me-sm-2" data-bs-toggle="modal" data-bs-target="#elevateModal">Elevate</a>'
+		);
+	}
+
+	function showElevatedButton(expires) {
+		var isImpersonating = $elevationControl.data('impersonating') == '1';
+		if (isImpersonating) {
+			$elevationControl.html(
+				'<span class="btn btn-warning my-2 my-sm-0 me-sm-2" style="cursor: default;">Elevated <span class="badge bg-light text-dark" id="elevationTimer"></span></span>'
+			);
+		} else {
+			$elevationControl.html(
+				'<a href="{{ url("/admin/elevate") }}" class="btn btn-warning my-2 my-sm-0 me-sm-2" id="deelevateBtn">Elevated <span class="badge bg-light text-dark" id="elevationTimer"></span></a>'
+			);
+			$('#deelevateBtn').on('click', deelevate);
+		}
+		startElevationTimer(expires);
+	}
+
+	function startElevationTimer(expires) {
+		if (elevationTimerId) clearTimeout(elevationTimerId);
+		function tick() {
+			var $timers = $('#elevationTimer, .elevation-timer');
+			var remaining = expires - Math.floor(Date.now() / 1000);
+			if (remaining <= 0) {
+				$timers.text('Expired');
+				disableElevationButtons();
+				showElevateButton();
+				return;
+			}
+			var mins = Math.floor(remaining / 60);
+			var secs = remaining % 60;
+			$timers.text(mins + ':' + (secs < 10 ? '0' : '') + secs);
+			elevationTimerId = setTimeout(tick, 1000);
+		}
+		tick();
+	}
+
+	function deelevate(e) {
+		if (e) e.preventDefault();
+		$.ajax({
+			url: '{{ url("/admin/deelevate.json") }}',
+			method: 'POST',
+			data: { csrftoken: '{{ csrftoken }}' },
+			dataType: 'json',
+			success: function() {
+				if (elevationTimerId) { clearTimeout(elevationTimerId); elevationTimerId = null; }
+				disableElevationButtons();
+				showElevateButton();
+			}
+		});
+	}
+
 	if ($elevateModal.length) {
 		// Set redirect to current page so user returns here after elevating.
 		$('#elevateRedirect').val(window.location.href);
 
-		// Wire up modal OK button to submit the form.
-		$('#elevateModal button[data-action="ok"]').off('click').click(function() {
-			$('#elevateForm').submit();
+		// Check elevation status before showing modal (handles elevation in another tab).
+		var skipStatusCheck = false;
+		$elevateModal.on('show.bs.modal', function(e) {
+			if (skipStatusCheck) {
+				skipStatusCheck = false;
+				return;
+			}
+			e.preventDefault();
+			$.ajax({
+				url: '{{ url("/admin/elevate/status.json") }}',
+				method: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					if (data.elevated) {
+						enableElevationButtons();
+						showElevatedButton(data.expires);
+					} else {
+						skipStatusCheck = true;
+						$elevateModal.modal('show');
+					}
+				},
+				error: function() {
+					skipStatusCheck = true;
+					$elevateModal.modal('show');
+				}
+			});
 		});
 
-		// Admin elevation timer countdown.
+		// Wire up modal OK button to submit via AJAX.
+		$('#elevateModal button[data-action="ok"]').off('click').click(function() {
+			var $btn = $(this);
+			$btn.prop('disabled', true).text('Elevating...');
+			$.ajax({
+				url: $('#elevateForm').attr('action') + '.json',
+				method: 'POST',
+				data: $('#elevateForm').serialize(),
+				dataType: 'json',
+				success: function(data) {
+					if (data.success) {
+						$elevateModal.modal('hide');
+						enableElevationButtons();
+						showElevatedButton(data.expires);
+					} else {
+						alert(data.error || 'Elevation failed.');
+					}
+				},
+				error: function() {
+					alert('Elevation request failed.');
+				},
+				complete: function() {
+					$btn.prop('disabled', false).text('Elevate');
+					$('#elevateForm')[0].reset();
+				}
+			});
+		});
+
+		// Wire up de-elevate button if present on page load.
+		$('#deelevateBtn').on('click', deelevate);
+
+		// Admin elevation timer countdown (for page-load elevated state).
 		var $timer = $('#elevationTimer');
 		if ($timer.length) {
-			var expires = parseInt($timer.data('expires'), 10);
-			function updateTimer() {
-				var remaining = expires - Math.floor(Date.now() / 1000);
-				if (remaining <= 0) {
-					$timer.text('Expired');
-
-					// Disable all elevation-requiring buttons in-place.
-					disableElevationButtons();
-
-					// Replace the de-elevate form (or span when impersonating) with a modal-triggering Elevate button.
-					var $form = $timer.closest('form');
-					var $container = $form.length ? $form : $timer.closest('span.btn');
-					var $btn = $('<a href="#" class="btn btn-outline-warning my-2 my-sm-0 me-sm-2" data-bs-toggle="modal" data-bs-target="#elevateModal">Elevate</a>');
-					$container.replaceWith($btn);
-					return;
-				}
-				var mins = Math.floor(remaining / 60);
-				var secs = remaining % 60;
-				$timer.text(mins + ':' + (secs < 10 ? '0' : '') + secs);
-				setTimeout(updateTimer, 1000);
-			}
-			updateTimer();
+			startElevationTimer(parseInt($timer.data('expires'), 10));
 		} else {
 			// Not elevated - disable all elements that need elevation.
 			disableElevationButtons();
