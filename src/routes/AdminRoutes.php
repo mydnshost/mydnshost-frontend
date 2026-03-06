@@ -213,6 +213,15 @@
 
 					if (isset($users['response'])) {
 						$displayEngine->setVar('users', $users['response']);
+
+						$anyoneHasAuditLog = false;
+						foreach ($users['response'] as $u) {
+							if (($u['permissions']['system_audit_log'] ?? '') === 'true') {
+								$anyoneHasAuditLog = true;
+								break;
+							}
+						}
+						$displayEngine->setVar('anyoneHasAuditLog', $anyoneHasAuditLog);
 					}
 
 					$displayEngine->display('admin/users.tpl');

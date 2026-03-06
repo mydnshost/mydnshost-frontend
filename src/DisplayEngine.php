@@ -84,6 +84,24 @@
 				return date('r', $input);
 			}));
 
+			$twig->addFilter(new TwigFilter('audit_format', function($input) {
+				// Wrap "quoted strings" in <code> tags, escaping their contents
+				$formatted = preg_replace_callback('/"([^"]*)"/', function($m) {
+					return '<code>' . htmlspecialchars($m[0], ENT_QUOTES, 'UTF-8') . '</code>';
+				}, $input);
+				// Escape everything outside the <code> tags
+				$parts = preg_split('/(<code>.*?<\/code>)/s', $formatted, -1, PREG_SPLIT_DELIM_CAPTURE);
+				$result = '';
+				foreach ($parts as $part) {
+					if (strpos($part, '<code>') === 0) {
+						$result .= $part;
+					} else {
+						$result .= htmlspecialchars($part, ENT_QUOTES, 'UTF-8');
+					}
+				}
+				return $result;
+			}, ['is_safe' => ['html']]));
+
 			$twig->addFilter(new TwigFilter('getRFC6238QRCode', function($input) {
 				$ga = new PHPGangsta_GoogleAuthenticator();
 				$user = session::getCurrentUser();
@@ -416,6 +434,9 @@
 				}
 				if ($this->hasPermission(['system_job_mgmt'])) {
 					$menu[] = ['link' => $this->getURL('/system/jobs'), 'title' => 'Job Status', 'active' => ($this->pageID == '/system/jobs')];
+				}
+				if ($this->hasPermission(['system_audit_log'])) {
+					$menu[] = ['link' => $this->getURL('/system/audit'), 'title' => 'Audit Log', 'active' => ($this->pageID == '/system/audit')];
 				}
 
 				if (count($menu) > 0) {

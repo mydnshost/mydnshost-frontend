@@ -99,7 +99,18 @@
 								{{ permission }}
 							</td>
 							<td class="toggle">
-								{% if (userinfo.email != user.email or (permission != "manage_permissions" and permission != "manage_users")) and hasPermission(['manage_permissions']) %}
+								{% if permission == "system_audit_log" %}
+									{% if hasPermission(['manage_permissions']) and ((hasPermission(['system_audit_log']) and userinfo.email != user.email) or (not anyoneHasAuditLog and userinfo.permissions[permission] != 'true')) %}
+										<div class="form-check form-switch mb-0">
+											<input class="form-check-input" type="checkbox" role="switch"
+												data-permission="{{ permission }}" data-user="{{ userinfo.id }}"
+												{% if userinfo.permissions[permission] == 'true' %}checked{% endif %}
+												data-needs-elevation>
+										</div>
+									{% else %}
+										<span class="badge {% if userinfo.permissions[permission] == 'true' %}bg-primary{% else %}bg-secondary{% endif %}">{{ userinfo.permissions[permission] | yesno }}</span>
+									{% endif %}
+								{% elseif (userinfo.email != user.email or (permission != "manage_permissions" and permission != "manage_users")) and hasPermission(['manage_permissions']) %}
 									<div class="form-check form-switch mb-0">
 										<input class="form-check-input" type="checkbox" role="switch"
 											data-permission="{{ permission }}" data-user="{{ userinfo.id }}"

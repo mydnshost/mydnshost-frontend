@@ -127,6 +127,7 @@
 			(new AdminRoutes())->addRoutes($router, $displayEngine, $api);
 			(new SystemServiceRoutes())->addRoutes($router, $displayEngine, $api);
 			(new SystemJobsRoutes())->addRoutes($router, $displayEngine, $api);
+			(new SystemAuditLogRoutes())->addRoutes($router, $displayEngine, $api);
 		}
 	} else {
 		$hadLoginDetails = session::exists('logindata');
