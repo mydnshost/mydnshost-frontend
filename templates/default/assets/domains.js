@@ -122,6 +122,31 @@ $(function() {
 		$(this).text($(this).attr('data-hiddenText'));
 	});
 
+	$('.copykey').click(function () {
+		var btn = $(this);
+		var text = '' + btn.data('key');
+		var original = btn.html();
+
+		function onSuccess() {
+			btn.html('&#10003;');
+			setTimeout(function () { btn.html(original); }, 1500);
+		}
+
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard.writeText(text).then(onSuccess);
+		} else {
+			var textarea = document.createElement('textarea');
+			textarea.value = text;
+			textarea.style.position = 'fixed';
+			textarea.style.opacity = '0';
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+			onSuccess();
+		}
+	});
+
 	$('button[data-action="editkey"]').click(function () {
 		var row = $(this).parent('td').parent('tr');
 		var recordid = row.data('value');
@@ -173,6 +198,16 @@ $(function() {
 		});
 
 		$('#confirmDeleteKey').modal('show');
+	});
+
+	$('#showaddkey').click(function () {
+		$('#addkeycard').removeClass('d-none');
+		$(this).addClass('d-none');
+	});
+
+	$('#canceladdkey').click(function () {
+		$('#addkeycard').addClass('d-none');
+		$('#showaddkey').removeClass('d-none');
 	});
 
 	$("#addkeyform").validate({
@@ -242,6 +277,16 @@ $(function() {
 		});
 
 		$('#confirmDeleteHook').modal('show');
+	});
+
+	$('#showaddhook').click(function () {
+		$('#addhookcard').removeClass('d-none');
+		$(this).addClass('d-none');
+	});
+
+	$('#canceladdhook').click(function () {
+		$('#addhookcard').addClass('d-none');
+		$('#showaddhook').removeClass('d-none');
 	});
 
 	$("#addhookform").validate({

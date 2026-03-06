@@ -338,7 +338,9 @@
 					{% else %}
 						<em>Hidden - click to view</em>
 					{% endif %}
-				</span><br>
+				</span>
+				<button type="button" class="btn btn-sm btn-outline-secondary ms-1 copykey" data-key="{{ key }}" title="Copy to clipboard">&#128203;</button>
+				<br>
 				<small><strong>Last Used:</strong> {% if keydata.lastused == 0 %}Never{% else %}{{ keydata.lastused | date }}{% endif %}</small>
 			</td>
 			<td class="description" data-text data-name="description" data-value="{{ keydata.description }}">
@@ -371,11 +373,43 @@
 	</tbody>
 </table>
 
-<form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addkey") }}" class="form-inline form-group" id="addkeyform">
-	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add Domain Key</button>
-</form>
+<button type="button" id="showaddkey" class="btn btn-success mt-3" role="button">Add Domain Key</button>
+
+<div class="card mt-3 d-none" id="addkeycard">
+	<div class="card-header">Add Domain Key</div>
+	<div class="card-body">
+		<form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addkey") }}" id="addkeyform">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label for="addkey_description" class="form-label">Description</label>
+					<input class="form-control" type="text" name="description" id="addkey_description" value="" placeholder="Key description...">
+				</div>
+				<div class="col-md-6">
+					<label for="addkey_recordregex" class="form-label">Record Regex</label>
+					<input class="form-control font-monospace" type="text" name="recordregex" id="addkey_recordregex" value="">
+				</div>
+				<div class="col-md-12">
+					<div class="d-flex flex-column gap-2">
+						<div class="d-flex align-items-center">
+							<span class="me-2" style="min-width: 10em;">Domain Write</span>
+							<div class="btn-group" role="group">
+								<input type="radio" class="btn-check" name="domains_write" id="add_domains_write_yes" value="true" autocomplete="off">
+								<label class="btn btn-sm btn-outline-success" for="add_domains_write_yes">Yes</label>
+								<input type="radio" class="btn-check" name="domains_write" id="add_domains_write_no" value="false" autocomplete="off" checked>
+								<label class="btn btn-sm btn-outline-danger" for="add_domains_write_no">No</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mt-3">
+				<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add</button>
+				<button type="button" id="canceladdkey" class="btn btn-warning" role="button">Cancel</button>
+			</div>
+		</form>
+	</div>
+</div>
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDeleteKey'} only %}
 	{% block title %}
@@ -442,12 +476,30 @@
 	</tbody>
 </table>
 
-<form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addhook") }}" class="form-inline form-group" id="addhookform">
-	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
-	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookurl" value="" placeholder="Hook URL...">
-	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookpassword" value="" placeholder="Hook Password">
-	<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add Domain Hook</button>
-</form>
+<button type="button" id="showaddhook" class="btn btn-success mt-3" role="button">Add Domain Hook</button>
+
+<div class="card mt-3 d-none" id="addhookcard">
+	<div class="card-header">Add Domain Hook</div>
+	<div class="card-body">
+		<form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addhook") }}" id="addhookform">
+			<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label for="addhook_url" class="form-label">URL</label>
+					<input class="form-control" type="text" name="hookurl" id="addhook_url" value="" placeholder="Hook URL...">
+				</div>
+				<div class="col-md-6">
+					<label for="addhook_password" class="form-label">Password</label>
+					<input class="form-control" type="text" name="hookpassword" id="addhook_password" value="" placeholder="Hook Password">
+				</div>
+			</div>
+			<div class="mt-3">
+				<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add</button>
+				<button type="button" id="canceladdhook" class="btn btn-warning" role="button">Cancel</button>
+			</div>
+		</form>
+	</div>
+</div>
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDeleteHook'} only %}
 	{% block title %}
