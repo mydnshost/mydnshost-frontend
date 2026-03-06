@@ -8,6 +8,66 @@
 				$api->domainAdmin();
 			});
 
+			$router->get('/admin/elevate', function() use ($displayEngine) {
+				if (!session::get('adminElevationEnabled')) {
+					$displayEngine->flash('error', '', 'Admin elevation is not enabled.');
+					header('Location: ' . $displayEngine->getURL('/admin/domains'));
+					return;
+				}
+
+				$displayEngine->setPageID('/admin/elevate')->setTitle('Admin :: Elevate');
+
+				// Pass redirect target from query param or referer.
+				$redirect = isset($_GET['redirect']) ? $_GET['redirect'] : '';
+				if (empty($redirect) && isset($_SERVER['HTTP_REFERER'])) {
+					$redirect = $_SERVER['HTTP_REFERER'];
+				}
+				$displayEngine->setVar('redirect', $redirect);
+
+				$displayEngine->display('admin/elevate.tpl');
+			});
+
+			$router->post('/admin/elevate', function() use ($displayEngine, $api) {
+				if (!session::get('adminElevationEnabled')) {
+					$displayEngine->flash('error', '', 'Admin elevation is not enabled.');
+					header('Location: ' . $displayEngine->getURL('/admin/domains'));
+					return;
+				}
+
+				$elevationType = session::get('adminElevationType');
+				$data = [];
+				if ($elevationType === '2fa') {
+					$data['code'] = isset($_POST['code']) ? $_POST['code'] : '';
+				} else {
+					$data['password'] = isset($_POST['password']) ? $_POST['password'] : '';
+				}
+
+				$result = $api->getAdminToken($data);
+
+				if (isset($result['admintoken'])) {
+					session::set('adminToken', $result['admintoken']);
+					session::set('adminTokenExpiry', $result['expires']);
+					$displayEngine->flash('success', '', 'Admin elevation successful.');
+				} else {
+					$error = isset($result['error']) ? $result['error'] : 'Elevation failed.';
+					$displayEngine->flash('error', '', $error);
+				}
+
+				$redirect = isset($_POST['redirect']) && !empty($_POST['redirect']) ? $_POST['redirect'] : $displayEngine->getURL('/admin/domains');
+				header('Location: ' . $redirect);
+				return;
+			});
+
+			$router->post('/admin/deelevate', function() use ($displayEngine, $api) {
+				session::remove('adminToken');
+				session::remove('adminTokenExpiry');
+				$displayEngine->flash('info', '', 'Admin elevation cleared.');
+
+				$redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $displayEngine->getURL('/admin/domains');
+				header('Location: ' . $redirect);
+				return;
+			});
+
 			if ($displayEngine->hasPermission(['manage_domains'])) {
 				$router->get('/admin/domains', function() use ($displayEngine, $api) {
 					$displayEngine->setPageID('/admin/domains')->setTitle('Admin :: Domains');
@@ -249,7 +309,7 @@
 							header('Location: ' . $displayEngine->getURL('/admin/users'));
 							return;
 						} else {
-							session::clear(['logindata', 'DisplayEngine::Flash', 'csrftoken']);
+							session::clear(['logindata', 'DisplayEngine::Flash', 'csrftoken', 'adminToken', 'adminTokenExpiry']);
 							session::set('impersonate', $impersonate);
 
 							$displayEngine->flash('info', '', 'Impersonating: ' . $result['user']['realname'] . ' (' . $result['user']['email'] . ')');

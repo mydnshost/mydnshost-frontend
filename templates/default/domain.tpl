@@ -190,8 +190,8 @@
 			<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/records") }}" class="btn btn-primary" role="button">View/Edit Records</a>
 		{% endif %}
 
-		<button type="button" data-action="editsoa" class="btn btn-primary" role="button">Edit Domain Info</button>
-		<button type="button" data-action="savesoa" class="btn btn-success d-none" role="button">Save</button>
+		<button type="button" data-action="editsoa" class="btn btn-primary" role="button" data-needs-elevation>Edit Domain Info</button>
+		<button type="button" data-action="savesoa" class="btn btn-success d-none" role="button" data-needs-elevation>Save</button>
 
 		<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/export") }}" class="btn btn-primary" role="button">Export Zone</a>
 
@@ -206,13 +206,13 @@
 		{% endif %}
 		<div class="float-end">
 			{% if has_domain_write %}
-				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button">Resync Zone</a>
+				<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/sync") }}" class="btn btn-info" role="button" data-needs-elevation>Resync Zone</a>
 				{% if not domain.aliasof %}
-					<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/import") }}" class="btn btn-danger" role="button">Import Zone</a>
+					<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/import") }}" class="btn btn-danger" role="button" data-needs-elevation>Import Zone</a>
 				{% endif %}
 			{% endif %}
 			{% if has_domain_owner %}
-				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Domain</button>
+				<button type="button" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-needs-elevation>Delete Domain</button>
 			{% endif %}
 		</div>
 
@@ -285,7 +285,7 @@
 			{% if has_domain_admin %}
 				<td class="actions">
 					{% if hasHigherAccess(access) or email == user.email %}
-						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button">Edit</button>
+						<button type="button" data-action="editaccess" class="btn btn-sm btn-success" role="button" data-needs-elevation>Edit</button>
 					{% endif %}
 				</td>
 			{% endif %}
@@ -306,8 +306,8 @@
 </table>
 
 {% if has_domain_admin %}
-	<button type="button" data-action="addaccess" class="btn btn-success" role="button">Add Access</button>
-	<button type="submit" class="btn btn-primary" role="button">Update Access</button>
+	<button type="button" data-action="addaccess" class="btn btn-success" role="button" data-needs-elevation>Add Access</button>
+	<button type="submit" class="btn btn-primary" role="button" data-needs-elevation>Update Access</button>
 {% endif %}
 </form>
 
@@ -355,9 +355,9 @@
 				{% endif %}
 			</td>
 			<td class="actions">
-				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savekey" class="d-none btn btn-sm btn-success" role="button">Save</button>
-				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button">Delete</button>
+				<button type="button" data-action="editkey" class="btn btn-sm btn-success" role="button" data-needs-elevation>Edit</button>
+				<button type="button" data-action="savekey" class="d-none btn btn-sm btn-success" role="button" data-needs-elevation>Save</button>
+				<button type="button" data-action="deletekey" class="btn btn-sm btn-danger" role="button" data-needs-elevation>Delete</button>
 
 				<form class="d-inline form-inline editkeyform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/editkey/" ~ key) }}">
 					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
@@ -374,7 +374,7 @@
 <form method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/addkey") }}" class="form-inline form-group" id="addkeyform">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="description" value="" placeholder="Key description...">
-	<button type="submit" class="btn btn-success" role="button">Add Domain Key</button>
+	<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add Domain Key</button>
 </form>
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDeleteKey'} only %}
@@ -426,9 +426,9 @@
 				{% endif %}
 			</td>
 			<td class="actions">
-				<button type="button" data-action="edithook" class="btn btn-sm btn-success" role="button">Edit</button>
-				<button type="button" data-action="savehook" class="d-none btn btn-sm btn-success" role="button">Save</button>
-				<button type="button" data-action="deletehook" class="btn btn-sm btn-danger" role="button">Delete</button>
+				<button type="button" data-action="edithook" class="btn btn-sm btn-success" role="button" data-needs-elevation>Edit</button>
+				<button type="button" data-action="savehook" class="d-none btn btn-sm btn-success" role="button" data-needs-elevation>Save</button>
+				<button type="button" data-action="deletehook" class="btn btn-sm btn-danger" role="button" data-needs-elevation>Delete</button>
 
 				<form class="d-inline form-inline edithookform" method="post" action="{{ url("#{pathprepend}/domain/#{domain.domain}/edithook/" ~ hookid) }}">
 					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
@@ -446,7 +446,7 @@
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookurl" value="" placeholder="Hook URL...">
 	<input class="form-control col-3 mb-2 me-sm-2 mb-sm-0" type="text" name="hookpassword" value="" placeholder="Hook Password">
-	<button type="submit" class="btn btn-success" role="button">Add Domain Hook</button>
+	<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Add Domain Hook</button>
 </form>
 
 {% embed 'blocks/modal_confirm.tpl' with {'id': 'confirmDeleteHook'} only %}

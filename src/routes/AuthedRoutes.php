@@ -30,7 +30,7 @@
 				$person = session::getCurrentUser();
 				$displayEngine->flash('info', '', 'You are no longer impersonating: ' . $person['user']['realname'] . ' (' . $person['user']['email'] . ')');
 
-				session::clear(['logindata', 'DisplayEngine::Flash', 'csrftoken']);
+				session::clear(['logindata', 'DisplayEngine::Flash', 'csrftoken', 'adminToken', 'adminTokenExpiry']);
 
 				header('Location: ' . $displayEngine->getURL('/admin/users'));
 				return;

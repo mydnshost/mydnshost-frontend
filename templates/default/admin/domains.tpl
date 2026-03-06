@@ -8,7 +8,7 @@
 			<a href="{{ url('/admin/domains/user/0') }}" class="btn btn-primary">Unowned Domains</a>
 			<a href="{{ url('/admin/domains/findRecords') }}" data-action="findRecords" class="btn btn-success">Find Records</a>
 			{% if hasPermission(['domains_create', 'manage_domains']) %}
-				<a href="{{ url('/admin/domains/create') }}" data-action="addUserDomain" data-show-owner="true" class="btn btn-success">Add Domain</a>
+				<a href="{{ url('/admin/domains/create') }}" data-action="addUserDomain" data-show-owner="true" class="btn btn-success" data-needs-elevation>Add Domain</a>
 			{% endif %}
 		</div>
 	</div>

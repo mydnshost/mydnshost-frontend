@@ -57,6 +57,21 @@
                 <a href="{{ url('/impersonate/cancel') }}" class="btn btn-danger my-2 my-sm-0 me-sm-2">Cancel Impersonation</a>
             {% endif %}
 
+            {% if shouldShowElevateButton() %}
+              {% if hasAdminToken is defined and hasAdminToken %}
+                {% if impersonating %}
+                  <span class="btn btn-warning my-2 my-sm-0 me-sm-2" style="cursor: default;">Elevated <span class="badge bg-light text-dark" id="elevationTimer" data-expires="{{ adminTokenExpiry }}"></span></span>
+                {% else %}
+                  <form method="post" action="{{ url('/admin/deelevate') }}" class="d-inline me-sm-2">
+                    <input type="hidden" name="csrftoken" value="{{csrftoken}}">
+                    <button type="submit" class="btn btn-warning my-2 my-sm-0">Elevated <span class="badge bg-light text-dark" id="elevationTimer" data-expires="{{ adminTokenExpiry }}"></span></button>
+                  </form>
+                {% endif %}
+              {% else %}
+                <a href="{{ url('/admin/elevate') }}" class="btn btn-outline-warning my-2 my-sm-0 me-sm-2" data-bs-toggle="modal" data-bs-target="#elevateModal">Elevate</a>
+              {% endif %}
+            {% endif %}
+
             {% if user or domainkey %}
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

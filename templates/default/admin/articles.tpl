@@ -6,7 +6,7 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<a class="btn btn-success" href="{{ url('/admin/articles/create') }}" data-action="addarticle">Add Article</a>
+			<a class="btn btn-success" href="{{ url('/admin/articles/create') }}" data-action="addarticle" data-needs-elevation>Add Article</a>
 		</div>
 	</div>
 </div>
@@ -51,8 +51,8 @@
 				{% endif %}
 			</td>
 			<td class="actions text-nowrap">
-				<a href="{{ url('/admin/articles/' ~ article.id) }}" data-action="editarticle" data-id="{{ article.id }}" class="btn btn-sm btn-success">View/Edit</a>
-				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger">Delete</button>
+				<a href="{{ url('/admin/articles/' ~ article.id) }}" data-action="editarticle" data-id="{{ article.id }}" class="btn btn-sm btn-success" data-needs-elevation>View/Edit</a>
+				<button data-action="deletearticle" data-id="{{ article.id }}" class="btn btn-sm btn-danger" data-needs-elevation>Delete</button>
 			</td>
 		</tr>
 		{% endfor %}

@@ -82,6 +82,28 @@
 			{% endblock %}
 		{% endembed %}
 
+	{% if shouldShowElevateButton() and not (hasAdminToken is defined and hasAdminToken) %}
+		{% embed 'blocks/modal_confirm.tpl' with {'id': 'elevateModal'} %}
+			{% block title %}
+				Admin Elevation
+			{% endblock %}
+
+			{% block body %}
+				<p>Additional verification is required for admin write operations.</p>
+				<form id="elevateForm" method="post" action="{{ url('/admin/elevate') }}">
+					<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+					<input type="hidden" name="redirect" value="" id="elevateRedirect">
+					{% include 'admin/blocks/elevate_form.tpl' %}
+				</form>
+			{% endblock %}
+
+			{% block buttons %}
+				<button type="button" data-action="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" data-action="ok" class="btn btn-warning">Elevate</button>
+			{% endblock %}
+		{% endembed %}
+	{% endif %}
+
 		<footer class="footer">
 			<div class="container-fluid">
 				<hr>

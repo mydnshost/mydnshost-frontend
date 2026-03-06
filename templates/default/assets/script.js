@@ -88,7 +88,60 @@ $(function() {
 		},
 	});
 
-	$(".alert").alert()
+	$(".alert").alert();
+
+	// Admin elevation timer countdown.
+	var $timer = $('#elevationTimer');
+	if ($timer.length) {
+		var expires = parseInt($timer.data('expires'), 10);
+		function updateTimer() {
+			var remaining = expires - Math.floor(Date.now() / 1000);
+			if (remaining <= 0) {
+				$timer.text('Expired');
+				location.reload();
+				return;
+			}
+			var mins = Math.floor(remaining / 60);
+			var secs = remaining % 60;
+			$timer.text(mins + ':' + (secs < 10 ? '0' : '') + secs);
+			setTimeout(updateTimer, 1000);
+		}
+		updateTimer();
+	}
+
+	// Admin elevation: disable buttons that need elevation when not elevated.
+	var $elevateModal = $('#elevateModal');
+	if ($elevateModal.length) {
+		// Swap button colours to grey.
+		var btnColorRe = /\bbtn-(?:outline-)?(?:primary|success|danger|warning|info|dark|light)\b/g;
+
+		// Not elevated - disable all elements that need elevation.
+		$('[data-needs-elevation]').each(function() {
+			var $el = $(this);
+			if ($el.is('input')) {
+				$el.prop('disabled', true);
+			} else if ($el.is('a')) {
+				$el.addClass('disabled').attr('aria-disabled', 'true');
+				$el.removeAttr('data-action data-bs-toggle data-bs-target');
+				$el.on('click.elevation', function(e) { e.preventDefault(); e.stopImmediatePropagation(); $elevateModal.modal('show'); });
+			} else {
+				$el.prop('disabled', true);
+			}
+			$el.attr('title', 'Admin elevation required');
+
+			// Grey out the button.
+			var classes = $el.attr('class') || '';
+			$el.attr('class', classes.replace(btnColorRe, 'btn-outline-secondary'));
+		});
+
+		// Set redirect to current page so user returns here after elevating.
+		$('#elevateRedirect').val(window.location.href);
+
+		// Wire up modal OK button to submit the form.
+		$('#elevateModal button[data-action="ok"]').off('click').click(function() {
+			$('#elevateForm').submit();
+		});
+	}
 
 	// Generic sidebar edit link handler
 	$('a.sidebar-edit-link').click(function () {

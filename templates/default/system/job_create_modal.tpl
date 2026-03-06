@@ -26,7 +26,7 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 		<button type="submit" form="createJobForm" class="btn btn-primary">Schedule Job</button>
 	{% endblock %}
 {% endembed %}
@@ -66,7 +66,9 @@ document.querySelectorAll('.btn-repeat-job').forEach(function(btn) {
 	btn.addEventListener('click', function() {
 		this.classList.add('disabled');
 		this.textContent = 'Repeating...';
-		fetch(this.getAttribute('data-repeat-url'), { redirect: 'manual' }).then(function() {
+		var formData = new FormData();
+		formData.append('csrftoken', '{{ csrftoken }}');
+		fetch(this.getAttribute('data-repeat-url'), { method: 'POST', body: formData, redirect: 'manual' }).then(function() {
 			location.reload();
 		});
 	});

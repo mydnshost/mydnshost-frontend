@@ -10,7 +10,7 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, go back</button>
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, go back</button>
 		<button type="button" id="cancelJobConfirm" class="btn btn-danger">Cancel Job</button>
 	{% endblock %}
 {% endembed %}
@@ -29,7 +29,9 @@ document.querySelectorAll('.btn-cancel-job').forEach(function(btn) {
 document.getElementById('cancelJobConfirm').addEventListener('click', function() {
 	this.disabled = true;
 	this.textContent = 'Cancelling...';
-	fetch(cancelActionUrl, { redirect: 'manual' }).then(function() {
+	var formData = new FormData();
+	formData.append('csrftoken', '{{ csrftoken }}');
+	fetch(cancelActionUrl, { method: 'POST', body: formData, redirect: 'manual' }).then(function() {
 		location.reload();
 	});
 });

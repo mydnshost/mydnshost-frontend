@@ -10,7 +10,7 @@
 	{% endblock %}
 
 	{% block buttons %}
-		<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 		<button type="button" id="republishJobConfirm" class="btn btn-success">Republish</button>
 	{% endblock %}
 {% endembed %}
@@ -29,7 +29,9 @@ document.querySelectorAll('.btn-republish-job').forEach(function(btn) {
 document.getElementById('republishJobConfirm').addEventListener('click', function() {
 	this.disabled = true;
 	this.textContent = 'Republishing...';
-	fetch(republishActionUrl, { redirect: 'manual' }).then(function() {
+	var formData = new FormData();
+	formData.append('csrftoken', '{{ csrftoken }}');
+	fetch(republishActionUrl, { method: 'POST', body: formData, redirect: 'manual' }).then(function() {
 		location.reload();
 	});
 });

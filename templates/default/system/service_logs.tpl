@@ -4,7 +4,7 @@
 
 <div class="mb-3">
 	<a href="{{ url('/system/services') }}" class="btn btn-outline-primary btn-sm">Back to Services</a>
-	<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
+	<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-outline-primary btn-sm">Refresh</a>
 </div>
 
 <div class="card mb-3">
@@ -25,7 +25,7 @@
 				</div>
 				<div class="col-auto">
 					<button type="submit" class="btn btn-primary btn-sm">Filter</button>
-					<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-outline-secondary btn-sm">Clear</a>
+					<a href="{{ url('/system/services/' ~ service ~ '/logs') }}" class="btn btn-outline-primary btn-sm">Clear</a>
 				</div>
 				<div class="col-auto ms-auto">
 					<span class="text-muted small">{{ pagination.total }} log entr{{ pagination.total != 1 ? 'ies' : 'y' }}</span>
@@ -100,7 +100,7 @@
 		{% if filterSearch %}<input type="hidden" name="search" value="{{ filterSearch }}">{% endif %}
 		<small class="text-muted text-nowrap">Page {{ pagination.page }} of {{ pagination.totalPages }}</small>
 		<input type="number" name="page" class="form-control form-control-sm" style="width: 5em" min="1" max="{{ pagination.totalPages }}" placeholder="{{ pagination.page }}">
-		<button type="submit" class="btn btn-outline-secondary btn-sm">Go</button>
+		<button type="submit" class="btn btn-outline-primary btn-sm">Go</button>
 	</form>
 </div>
 {% endif %}

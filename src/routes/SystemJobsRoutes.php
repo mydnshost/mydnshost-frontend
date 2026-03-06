@@ -102,7 +102,7 @@
 					return;
 				});
 
-				$router->get('/system/jobs/([0-9]+)/republish', function($job) use ($displayEngine, $api) {
+				$router->post('/system/jobs/([0-9]+)/republish', function($job) use ($displayEngine, $api) {
 					$result = $api->republishSystemJob($job);
 
 					if (array_key_exists('error', $result)) {
@@ -114,7 +114,7 @@
 					return;
 				});
 
-				$router->get('/system/jobs/([0-9]+)/cancel', function($job) use ($displayEngine, $api) {
+				$router->post('/system/jobs/([0-9]+)/cancel', function($job) use ($displayEngine, $api) {
 					$result = $api->cancelSystemJob($job);
 
 					if (array_key_exists('error', $result)) {
@@ -126,7 +126,7 @@
 					return;
 				});
 
-				$router->get('/system/jobs/([0-9]+)/repeat', function($job) use ($displayEngine, $api) {
+				$router->post('/system/jobs/([0-9]+)/repeat', function($job) use ($displayEngine, $api) {
 					$result = $api->repeatSystemJob($job);
 
 					if (array_key_exists('error', $result)) {

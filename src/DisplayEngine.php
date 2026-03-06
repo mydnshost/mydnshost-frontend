@@ -55,6 +55,7 @@
 			$twig->addFunction(new TwigFunction('endsWith', function($haystack, $needle) { return endsWith($haystack, $needle); }));
 			$twig->addFunction(new TwigFunction('parseBool', function($input) { return parseBool($input); }));
 
+			$twig->addFunction(new TwigFunction('shouldShowElevateButton', function() { return $this->shouldShowElevateButton(); }));
 			$twig->addFunction(new TwigFunction('flash', function() { $this->displayFlash(); }));
 			$twig->addFunction(new TwigFunction('showSidebar', function() { $this->showSidebar(); }));
 			$twig->addFunction(new TwigFunction('showHeaderMenu', function() { $this->showHeaderMenu(); }));
@@ -158,6 +159,19 @@
 					}
 				}
 				return true;
+			}
+
+			return false;
+		}
+
+
+		public function shouldShowElevateButton() {
+			if (!$this->getVar('adminElevationEnabled')) { return false; }
+			if (!startsWith($this->pageID, '/admin') && !startsWith($this->pageID, '/system')) { return false; }
+
+			$adminPermissions = ['manage_users', 'manage_domains', 'manage_articles', 'manage_blocks', 'system_stats', 'system_service_mgmt', 'system_job_mgmt', 'impersonate_users'];
+			foreach ($adminPermissions as $perm) {
+				if ($this->hasPermission([$perm])) { return true; }
 			}
 
 			return false;

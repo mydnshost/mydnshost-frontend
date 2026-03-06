@@ -2,7 +2,7 @@
 
 <div class="mb-3">
 	<a href="{{ url("#{pathprepend}/domain/#{domain.domain}") }}" class="btn btn-outline-primary btn-sm">Back</a>
-	<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
+	<a href="{{ url("#{pathprepend}/domain/#{domain.domain}/logs") }}" class="btn btn-outline-primary btn-sm">Refresh</a>
 </div>
 
 <input class="form-control form-control-sm mb-3" data-search-top="table#domainlogs" value="" placeholder="Search logs...">

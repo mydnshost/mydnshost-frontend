@@ -47,7 +47,7 @@
 
 		<div class="d-grid mt-2 gap-2">
 			<a href="{{ url("#{pathprepend}/admin/users") }}" class="btn btn-warning" data-bs-dismiss="modal">Cancel</a>
-			<button type="submit" data-action="ok" class="btn btn-success">Add User</button>
+			<button type="submit" data-action="ok" class="btn btn-success" data-needs-elevation>Add User</button>
 		</div>
 	</form>
 

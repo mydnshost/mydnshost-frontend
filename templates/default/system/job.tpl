@@ -3,16 +3,16 @@
 <div class="row mb-2">
 	<div class="col">
 		<a href="{{ url('/system/jobs') }}" class="btn btn-outline-primary">Back to Jobs</a>
-		<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-secondary">Refresh</a>
+		<a href="{{ url('/system/jobs/' ~ jobid) }}" class="btn btn-outline-primary">Refresh</a>
 
 		<div class="float-end">
-			<button type="button" class="btn btn-outline-warning btn-repeat-job" data-repeat-url="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}">Repeat</button>
-			<button type="button" class="btn btn-outline-info btn-clone-job" data-job-name="{{ job.name }}" data-job-data="{{ (job.data_formatted|default(job.data))|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
+			<button type="button" class="btn btn-outline-warning btn-repeat-job" data-repeat-url="{{ url('/system/jobs/' ~ jobid ~ '/repeat') }}" data-needs-elevation>Repeat</button>
+			<button type="button" class="btn btn-outline-info btn-clone-job" data-job-name="{{ job.name }}" data-job-data="{{ (job.data_formatted|default(job.data))|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}" data-needs-elevation>Clone</button>
 			{% if job.state == 'created' %}
-				<button type="button" class="btn btn-outline-success btn-republish-job" data-republish-url="{{ url('/system/jobs/' ~ jobid ~ '/republish') }}">Republish</button>
+				<button type="button" class="btn btn-outline-success btn-republish-job" data-republish-url="{{ url('/system/jobs/' ~ jobid ~ '/republish') }}" data-needs-elevation>Republish</button>
 			{% endif %}
 			{% if job.state in ['created', 'blocked'] %}
-				<button type="button" class="btn btn-outline-danger btn-cancel-job" data-cancel-url="{{ url('/system/jobs/' ~ jobid ~ '/cancel') }}">Cancel</button>
+				<button type="button" class="btn btn-outline-danger btn-cancel-job" data-cancel-url="{{ url('/system/jobs/' ~ jobid ~ '/cancel') }}" data-needs-elevation>Cancel</button>
 			{% endif %}
 		</div>
 	</div>

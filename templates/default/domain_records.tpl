@@ -123,8 +123,8 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 			</td>
 			{% if has_domain_write %}
 				<td class="actions">
-					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button">Edit</button>
-					<button type="button" class="btn btn-sm btn-danger" data-action="delete" role="button">Delete</button>
+					<button type="button" class="btn btn-sm btn-success" data-action="edit" role="button" data-needs-elevation>Edit</button>
+					<button type="button" class="btn btn-sm btn-danger" data-action="delete" role="button" data-needs-elevation>Delete</button>
 				</td>
 			{% endif %}
 		</tr>
@@ -170,10 +170,10 @@ Please note that all record names will have '<code>.{{ domain.domain }}</code>' 
 		<div class="col-sm-12 pt-3">
 	{% endif %}
 		<div class="d-grid mt-2 gap-2">
-			<button type="button" class="btn btn-primary" data-action="add" role="button">Add Record</button>
+			<button type="button" class="btn btn-primary" data-action="add" role="button" data-needs-elevation>Add Record</button>
 			<br>
-			<button type="button" class="btn btn-warning" data-action="reset" role="button">Reset Changes</button>
-			<button type="submit" class="btn btn-success" role="button">Save Changes</button>
+			<button type="button" class="btn btn-warning" data-action="reset" role="button" data-needs-elevation>Reset Changes</button>
+			<button type="submit" class="btn btn-success" role="button" data-needs-elevation>Save Changes</button>
 		</div>
 	</div>
 </div>

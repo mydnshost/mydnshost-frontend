@@ -35,7 +35,7 @@
 				</div>
 				<div class="col-auto">
 					<button type="submit" class="btn btn-primary btn-sm">Filter</button>
-					<a href="{{ url('/system/jobs') }}" class="btn btn-outline-secondary btn-sm">Clear</a>
+					<a href="{{ url('/system/jobs') }}" class="btn btn-outline-primary btn-sm">Clear</a>
 				</div>
 				<div class="col-auto ms-auto">
 					<span class="text-muted small">{{ pagination.total }} job{{ pagination.total != 1 ? 's' }} found</span>
@@ -50,7 +50,7 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createJobModal">Create Job</button>
+			<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#createJobModal" data-needs-elevation>Create Job</button>
 		</div>
 	</div>
 </div>
@@ -119,13 +119,13 @@
 			<td><small>{{ job.result }}</small></td>
 			<td class="text-nowrap">
 				<a href="{{ url('/system/jobs/' ~ job.id) }}" class="btn btn-outline-primary btn-sm" title="View">View</a>
-				<button type="button" class="btn btn-outline-warning btn-sm btn-repeat-job" title="Repeat" data-repeat-url="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}">Repeat</button>
-				<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" title="Clone" data-job-name="{{ job.name }}" data-job-data="{{ job.data|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}">Clone</button>
+				<button type="button" class="btn btn-outline-warning btn-sm btn-repeat-job" title="Repeat" data-repeat-url="{{ url('/system/jobs/' ~ job.id ~ '/repeat') }}" data-needs-elevation>Repeat</button>
+				<button type="button" class="btn btn-outline-info btn-sm btn-clone-job" title="Clone" data-job-name="{{ job.name }}" data-job-data="{{ job.data|e('html_attr') }}" data-job-depends-on="{{ job.dependsOn|first|default('') }}" data-needs-elevation>Clone</button>
 				{% if job.state == 'created' %}
-					<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" title="Republish" data-republish-url="{{ url('/system/jobs/' ~ job.id ~ '/republish') }}">Republish</button>
+					<button type="button" class="btn btn-outline-success btn-sm btn-republish-job" title="Republish" data-republish-url="{{ url('/system/jobs/' ~ job.id ~ '/republish') }}" data-needs-elevation>Republish</button>
 				{% endif %}
 				{% if job.state in ['created', 'blocked'] %}
-					<button type="button" class="btn btn-outline-danger btn-sm btn-cancel-job" title="Cancel" data-cancel-url="{{ url('/system/jobs/' ~ job.id ~ '/cancel') }}">Cancel</button>
+					<button type="button" class="btn btn-outline-danger btn-sm btn-cancel-job" title="Cancel" data-cancel-url="{{ url('/system/jobs/' ~ job.id ~ '/cancel') }}" data-needs-elevation>Cancel</button>
 				{% endif %}
 			</td>
 		</tr>
@@ -188,7 +188,7 @@
 		{% for dk, dv in filter.data|default({}) %}<input type="hidden" name="filter[data][{{ dk }}]" value="{{ dv }}">{% endfor %}
 		<small class="text-muted text-nowrap">Page {{ pagination.page }} of {{ pagination.totalPages }}</small>
 		<input type="number" name="page" class="form-control form-control-sm" style="width: 5em" min="1" max="{{ pagination.totalPages }}" placeholder="{{ pagination.page }}">
-		<button type="submit" class="btn btn-outline-secondary btn-sm">Go</button>
+		<button type="submit" class="btn btn-outline-primary btn-sm">Go</button>
 	</form>
 </div>
 {% endif %}

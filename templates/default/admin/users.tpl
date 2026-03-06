@@ -7,7 +7,7 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<a class="btn btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser">Add User</a>
+			<a class="btn btn-success" href="{{ url('/admin/users/create') }}" data-action="addNewUser" data-needs-elevation>Add User</a>
 		</div>
 	</div>
 </div>
@@ -44,7 +44,7 @@
 			<td class="realname">
 				{{ userinfo.realname }}
 				<span class="action {% if userinfo.disabled != 'true' %}d-none{% endif %}" data-showsuspend="Yes">
-					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-end">Set Suspend Reason</button>
+					<button type="button" data-extra-prompt="Suspend Reason:" data-user-action="suspendreason" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary float-end" data-needs-elevation>Set Suspend Reason</button>
 				</span>
 				<span class="action {% if userinfo.disabled != 'true' or not userinfo.disabledreason %}d-none{% endif %}" data-showsuspend="Yes" data-show-when-reason>
 					<br>
@@ -52,7 +52,7 @@
 				</span>
 				{% if userinfo.unverified %}
 					<br>
-					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary">Resend Welcome Email</button>
+					<button data-user-action="resendwelcome" data-user="{{ userinfo.id }}" class="btn btn-sm btn-primary" data-needs-elevation>Resend Welcome Email</button>
 				{% endif %}
 				{% if userinfo.pendingreset %}
 					<br>
@@ -88,7 +88,7 @@
 						<div class="permissionsList mb-2"> {{ userinfo.permissions | keys | join(', ') }} </div>
 					{% endif %}
 					{% if hasPermission(['manage_permissions']) %}
-						<button data-action="editpermissions" class="btn btn-sm btn-info">Edit Permissions</button>
+						<button data-action="editpermissions" class="btn btn-sm btn-info" data-needs-elevation>Edit Permissions</button>
 					{% endif %}
 				</div>
 				<div class="permissionsEdit d-none">
@@ -103,7 +103,8 @@
 									<div class="form-check form-switch mb-0">
 										<input class="form-check-input" type="checkbox" role="switch"
 											data-permission="{{ permission }}" data-user="{{ userinfo.id }}"
-											{% if userinfo.permissions[permission] == 'true' %}checked{% endif %}>
+											{% if userinfo.permissions[permission] == 'true' %}checked{% endif %}
+											data-needs-elevation>
 									</div>
 								{% else %}
 									<span class="badge {% if userinfo.permissions[permission] == 'true' %}bg-primary{% else %}bg-secondary{% endif %}">{{ userinfo.permissions[permission] | yesno }}</span>
@@ -121,16 +122,16 @@
 				</span>
 				{% if userinfo.email != user.email and hasPermission(['manage_users']) %}
 					<span class="action {% if userinfo.disabled != 'true' %}d-none{% endif %}" data-showsuspend="Yes">
-						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-end">Unsuspend</button>
+						<button type="button" data-user-action="unsuspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-info float-end" data-needs-elevation>Unsuspend</button>
 					</span>
 					<span class="action {% if userinfo.disabled == 'true' %}d-none{% endif %}" data-showsuspend="No">
-						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-end">Suspend</button>
+						<button type="button" data-user-action="suspend" data-user="{{ userinfo.id }}" class="btn btn-sm btn-warning float-end" data-needs-elevation>Suspend</button>
 					</span>
 				{% endif %}
 			</td>
 			<td class="actions">
 				{% if userinfo.email != user.email and hasPermission(['impersonate_users']) %}
-					<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success">Impersonate</a>
+					<a href="{{ url('/impersonate/user/' ~ userinfo.id) }}" class="btn btn-sm btn-success" data-needs-elevation>Impersonate</a>
 				{% endif %}
 
 				{% if hasPermission(['manage_domains']) %}
@@ -138,7 +139,7 @@
 				{% endif %}
 
 				{% if userinfo.email != user.email %}
-					<button data-action="deleteuser" data-id="{{ userinfo.id }}" class="btn btn-sm btn-danger">Delete</button>
+					<button data-action="deleteuser" data-id="{{ userinfo.id }}" class="btn btn-sm btn-danger" data-needs-elevation>Delete</button>
 				{% endif %}
 			</td>
 		</tr>

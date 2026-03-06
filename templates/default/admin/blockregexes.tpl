@@ -6,7 +6,7 @@
 <div class="row mb-2">
 	<div class="col">
 		<div class="float-end">
-			<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}" data-action="addblockregex">Add Block Regex</a>
+			<a class="btn btn-success" href="{{ url('/admin/blockregexes/create') }}" data-action="addblockregex" data-needs-elevation>Add Block Regex</a>
 		</div>
 	</div>
 </div>
@@ -52,8 +52,8 @@
 			</td>
 
 			<td class="actions text-nowrap">
-				<a href="{{ url('/admin/blockregexes/' ~ blockregex.id) }}" data-action="editblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-success">View/Edit</a>
-				<button data-action="deleteblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-danger">Delete</button>
+				<a href="{{ url('/admin/blockregexes/' ~ blockregex.id) }}" data-action="editblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-success" data-needs-elevation>View/Edit</a>
+				<button data-action="deleteblockregex" data-id="{{ blockregex.id }}" class="btn btn-sm btn-danger" data-needs-elevation>Delete</button>
 			</td>
 		</tr>
 		{% endfor %}

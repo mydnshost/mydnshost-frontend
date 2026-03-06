@@ -19,7 +19,7 @@
 			<td>
 				<div class="d-flex gap-2 mt-2">
 					<a href="{{ url("/admin/blockregexes") }}" class="btn btn-warning">Cancel</a>
-					<button type="submit" class="btn btn-success">{% if create %}Create{% else %}Edit{% endif %} BlockRegex</button>
+					<button type="submit" class="btn btn-success" data-needs-elevation>{% if create %}Create{% else %}Edit{% endif %} BlockRegex</button>
 				</div>
 			</td>
 		</tr>

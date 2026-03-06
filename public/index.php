@@ -47,6 +47,21 @@
 			}
 		}
 
+		// Attach admin token if available.
+		$adminToken = session::get('adminToken');
+		$adminTokenExpiry = session::get('adminTokenExpiry', 0);
+		if ($adminToken && $adminTokenExpiry > time()) {
+			$api->setAdminToken($adminToken);
+			$displayEngine->setVar('hasAdminToken', true);
+			$displayEngine->setVar('adminTokenExpiry', $adminTokenExpiry);
+		} else {
+			if ($adminToken) {
+				session::remove('adminToken', false);
+				session::remove('adminTokenExpiry', false);
+			}
+			$displayEngine->setVar('hasAdminToken', false);
+		}
+
 		if (session::exists('impersonate')) {
 			$api->impersonate(session::get('impersonate'), 'id');
 
@@ -83,6 +98,13 @@
 		$domains = [];
 		$domains = $api->getDomains(['type' => 'userdata', 'key' => 'uk.co.mydnshost.www/domain/label', 'extra' => true]);
 		session::set('domains', $domains);
+
+		if (!session::exists('adminElevationEnabled')) {
+			session::set('adminElevationEnabled', $api->getSystemDataValue('adminElevationEnabled'), false);
+			session::set('adminElevationType', $api->getSystemDataValue('adminElevationType'));
+		}
+		$displayEngine->setVar('adminElevationEnabled', session::get('adminElevationEnabled'));
+		$displayEngine->setVar('adminElevationType', session::get('adminElevationType'));
 
 		$requireTerms = false;
 		if (isset($userdata['user']['acceptterms']) && !parseBool($userdata['user']['acceptterms'])) {

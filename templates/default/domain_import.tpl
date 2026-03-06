@@ -26,7 +26,7 @@ Import records from zone file.
 	{% endif %}
 	<div class="form-group">
 		<div class="d-grid mt-2 gap-2">
-			<button type="submit" class="btn btn-primary">Import Zone</button>
+			<button type="submit" class="btn btn-primary" data-needs-elevation>Import Zone</button>
 		</div>
 	</div>
 </form>
