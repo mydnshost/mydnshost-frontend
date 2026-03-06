@@ -82,7 +82,7 @@
 			{% endblock %}
 		{% endembed %}
 
-	{% if shouldShowElevateButton() and not (hasAdminToken is defined and hasAdminToken) %}
+	{% if shouldShowElevateButton() %}
 		{% embed 'blocks/modal_confirm.tpl' with {'id': 'elevateModal'} %}
 			{% block title %}
 				Admin Elevation

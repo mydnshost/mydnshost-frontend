@@ -90,32 +90,11 @@ $(function() {
 
 	$(".alert").alert();
 
-	// Admin elevation timer countdown.
-	var $timer = $('#elevationTimer');
-	if ($timer.length) {
-		var expires = parseInt($timer.data('expires'), 10);
-		function updateTimer() {
-			var remaining = expires - Math.floor(Date.now() / 1000);
-			if (remaining <= 0) {
-				$timer.text('Expired');
-				location.reload();
-				return;
-			}
-			var mins = Math.floor(remaining / 60);
-			var secs = remaining % 60;
-			$timer.text(mins + ':' + (secs < 10 ? '0' : '') + secs);
-			setTimeout(updateTimer, 1000);
-		}
-		updateTimer();
-	}
-
-	// Admin elevation: disable buttons that need elevation when not elevated.
+	// Admin elevation: shared disable logic.
 	var $elevateModal = $('#elevateModal');
-	if ($elevateModal.length) {
-		// Swap button colours to grey.
-		var btnColorRe = /\bbtn-(?:outline-)?(?:primary|success|danger|warning|info|dark|light)\b/g;
+	var btnColorRe = /\bbtn-(?:outline-)?(?:primary|success|danger|warning|info|dark|light)\b/g;
 
-		// Not elevated - disable all elements that need elevation.
+	function disableElevationButtons() {
 		$('[data-needs-elevation]').each(function() {
 			var $el = $(this);
 			if ($el.is('input')) {
@@ -123,7 +102,11 @@ $(function() {
 			} else if ($el.is('a')) {
 				$el.addClass('disabled').attr('aria-disabled', 'true');
 				$el.removeAttr('data-action data-bs-toggle data-bs-target');
-				$el.on('click.elevation', function(e) { e.preventDefault(); e.stopImmediatePropagation(); $elevateModal.modal('show'); });
+				$el.on('click.elevation', function(e) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					$elevateModal.modal('show');
+				});
 			} else {
 				$el.prop('disabled', true);
 			}
@@ -133,7 +116,9 @@ $(function() {
 			var classes = $el.attr('class') || '';
 			$el.attr('class', classes.replace(btnColorRe, 'btn-outline-secondary'));
 		});
+	}
 
+	if ($elevateModal.length) {
 		// Set redirect to current page so user returns here after elevating.
 		$('#elevateRedirect').val(window.location.href);
 
@@ -141,6 +126,36 @@ $(function() {
 		$('#elevateModal button[data-action="ok"]').off('click').click(function() {
 			$('#elevateForm').submit();
 		});
+
+		// Admin elevation timer countdown.
+		var $timer = $('#elevationTimer');
+		if ($timer.length) {
+			var expires = parseInt($timer.data('expires'), 10);
+			function updateTimer() {
+				var remaining = expires - Math.floor(Date.now() / 1000);
+				if (remaining <= 0) {
+					$timer.text('Expired');
+
+					// Disable all elevation-requiring buttons in-place.
+					disableElevationButtons();
+
+					// Replace the de-elevate form (or span when impersonating) with a modal-triggering Elevate button.
+					var $form = $timer.closest('form');
+					var $container = $form.length ? $form : $timer.closest('span.btn');
+					var $btn = $('<a href="#" class="btn btn-outline-warning my-2 my-sm-0 me-sm-2" data-bs-toggle="modal" data-bs-target="#elevateModal">Elevate</a>');
+					$container.replaceWith($btn);
+					return;
+				}
+				var mins = Math.floor(remaining / 60);
+				var secs = remaining % 60;
+				$timer.text(mins + ':' + (secs < 10 ? '0' : '') + secs);
+				setTimeout(updateTimer, 1000);
+			}
+			updateTimer();
+		} else {
+			// Not elevated - disable all elements that need elevation.
+			disableElevationButtons();
+		}
 	}
 
 	// Generic sidebar edit link handler
