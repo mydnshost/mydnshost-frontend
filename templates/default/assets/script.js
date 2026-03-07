@@ -279,6 +279,71 @@ $(function() {
 			});
 		});
 
+		// 2FA Push for elevation modal.
+		var $elevate2faPush = $('#elevate2fapush');
+		if ($elevate2faPush.length) {
+			var elevatePushXhr = null;
+
+			$elevateModal.on('shown.bs.modal', function() {
+				// Reset push UI.
+				$elevate2faPush.removeClass('alert-success alert-warning').addClass('alert-info d-none');
+				$elevate2faPush.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Waiting for 2FA Push...');
+				$('#elevate2famanual').show();
+
+				// Check if push is available.
+				$.ajax({
+					url: '{{ url("/admin/elevate/2fa_push_check.json") }}',
+					method: 'GET',
+					dataType: 'json',
+					success: function(data) {
+						if (data.error) return;
+
+						// Push available - show spinner and initiate push.
+						$elevate2faPush.removeClass('d-none');
+
+						elevatePushXhr = $.ajax({
+							url: '{{ url("/admin/elevate/2fa_push.json") }}',
+							method: 'GET',
+							dataType: 'json',
+							success: function(pushData) {
+								if (pushData.pushcode) {
+									$elevate2faPush.html('2FA Push approved!');
+									$elevate2faPush.removeClass('alert-info').addClass('alert-success');
+									$('#elevate_code').val(pushData.pushcode);
+									$('#elevate2famanual').hide();
+
+									// Auto-submit via the OK button handler.
+									$('#elevateModal button[data-action="ok"]').click();
+								} else {
+									$elevate2faPush.html('2FA Push failed. Please enter a code manually.');
+									$elevate2faPush.removeClass('alert-info').addClass('alert-warning');
+								}
+							},
+							error: function() {
+								$elevate2faPush.html('2FA Push failed. Please enter a code manually.');
+								$elevate2faPush.removeClass('alert-info').addClass('alert-warning');
+							},
+							complete: function() {
+								elevatePushXhr = null;
+							}
+						});
+					}
+				});
+			});
+
+			$elevateModal.on('hidden.bs.modal', function() {
+				// Abort any in-progress push request.
+				if (elevatePushXhr) {
+					elevatePushXhr.abort();
+					elevatePushXhr = null;
+				}
+				// Reset push UI.
+				$elevate2faPush.removeClass('alert-success alert-warning').addClass('alert-info d-none');
+				$elevate2faPush.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Waiting for 2FA Push...');
+				$('#elevate2famanual').show();
+			});
+		}
+
 		// Wire up de-elevate button if present on page load.
 		$('#deelevateBtn').on('click', deelevate);
 

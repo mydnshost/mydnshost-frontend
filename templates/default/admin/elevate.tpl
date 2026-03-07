@@ -11,7 +11,7 @@
 {% else %}
 <p>Additional verification is required for admin write operations. Please verify your identity to continue.</p>
 
-<form method="post" action="{{ url('/admin/elevate') }}">
+<form id="elevatePageForm" method="post" action="{{ url('/admin/elevate') }}">
 	<input type="hidden" name="csrftoken" value="{{csrftoken}}">
 	<input type="hidden" name="redirect" value="{{ redirect }}">
 
@@ -22,4 +22,44 @@
 		<a href="{{ redirect | default(url('/admin/domains')) }}" class="btn btn-secondary">Cancel</a>
 	</div>
 </form>
+
+<script>
+$(function() {
+	var $push = $('#elevate2fapush');
+	if (!$push.length) return;
+
+	$.ajax({
+		url: '{{ url("/admin/elevate/2fa_push_check.json") }}',
+		method: 'GET',
+		dataType: 'json',
+		success: function(data) {
+			if (data.error) return;
+
+			$push.removeClass('d-none');
+
+			$.ajax({
+				url: '{{ url("/admin/elevate/2fa_push.json") }}',
+				method: 'GET',
+				dataType: 'json',
+				success: function(pushData) {
+					if (pushData.pushcode) {
+						$push.html('2FA Push approved!');
+						$push.removeClass('alert-info').addClass('alert-success');
+						$('#elevate_code').val(pushData.pushcode);
+						$('#elevate2famanual').hide();
+						$('#elevatePageForm').submit();
+					} else {
+						$push.html('2FA Push failed. Please enter a code manually.');
+						$push.removeClass('alert-info').addClass('alert-warning');
+					}
+				},
+				error: function() {
+					$push.html('2FA Push failed. Please enter a code manually.');
+					$push.removeClass('alert-info').addClass('alert-warning');
+				}
+			});
+		}
+	});
+});
+</script>
 {% endif %}

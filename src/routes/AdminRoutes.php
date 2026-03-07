@@ -94,6 +94,32 @@
 				return;
 			});
 
+			$router->get('/admin/elevate/2fa_push_check.json', function() use ($displayEngine, $api) {
+				header('Content-Type: application/json');
+
+				$canPush = $api->check2FAPush();
+				if ($canPush) {
+					echo json_encode(['success' => 'Push is available']);
+					return;
+				} else {
+					echo json_encode(['error' => 'Push not available']);
+					return;
+				}
+			});
+
+			$router->get('/admin/elevate/2fa_push.json', function() use ($displayEngine, $api) {
+				header('Content-Type: application/json');
+				$result = $api->get2FAPushCode();
+
+				if ($result !== null) {
+					echo json_encode(['pushcode' => $result]);
+				} else {
+					echo json_encode(['pushcode' => FALSE]);
+				}
+
+				return;
+			});
+
 			$router->post('/admin/deelevate(\\.json)?', function($json = NULL) use ($displayEngine, $api) {
 				session::remove('adminToken');
 				session::remove('adminTokenExpiry');
