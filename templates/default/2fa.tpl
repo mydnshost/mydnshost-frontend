@@ -4,15 +4,16 @@
   <h1 class="form-signin-heading">2FA Required</h1>
 
   {% if twofactor_push %}
-    <div id="2fapush">
+    <div id="2fapush" class="alert alert-info">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Waiting for 2FA Push...
-      <br><br>
-      You can manually enter a code instead.
     </div>
   {% endif %}
 
-  <label for="input2FAKey" class="visually-hidden">2FA Code</label>
-  <input type="text" name="2fakey" id="input2FAKey" class="form-control" placeholder="2FA Code" autofocus autocomplete="off">
+  <div id="2famanual">
+    <label for="input2FAKey" class="visually-hidden">2FA Code</label>
+    <input type="text" name="2fakey" id="input2FAKey" class="form-control" placeholder="2FA Code" autofocus autocomplete="off">
+  </div>
 
   <div class="form-check">
     <label class="form-check-label">
