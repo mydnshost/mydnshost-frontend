@@ -63,7 +63,7 @@ jobs:
 
       - name: Checkout repository
         if: steps.base.outputs.layers != steps.ours.outputs.layers
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Trigger rebuild if base image changed
         if: steps.base.outputs.layers != steps.ours.outputs.layers
