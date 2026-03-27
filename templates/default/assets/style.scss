@@ -398,6 +398,10 @@ table#domainhooks {
     }
 }
 
+table.dnssec-parsed th {
+    vertical-align: top;
+}
+
 table#domainlist td.domain small.subtitle {
     color: #636c72;
     margin-left: 50px;

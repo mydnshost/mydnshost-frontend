@@ -124,14 +124,23 @@
 						{% for keyid,keydata in domain.DNSSEC.parsed %}
 							<br><br>
 							<h4>Key ID: {{ keyid }}</h4>
-							<table>
+							<table class="dnssec-parsed">
 								{% for dstype,dsdata in keydata %}
-									{% if dstype != "Key ID" %}
-										<tr>
-											<th>{{ dstype }}</th>
+									<tr>
+										<th>
+											{% if dstype == "Key ID" %}ID / Tag{% else %}{{ dstype }}{% endif %}
+											{% if dstype == "Public Key" %}
+												<button type="button" class="btn btn-sm btn-outline-secondary ms-1 copykey" data-key="{{ dsdata | replace({"\n": ""}) }}" title="Copy to clipboard">&#128203;</button>
+											{% endif %}
+										</th>
+										{% if dstype == "Public Key" %}
+											<td class="mono"><div style="user-select: all; word-break: break-all; max-width: 500px;">{{ dsdata | replace({"\n": ""}) }}</div></td>
+										{% elseif (dstype matches '/^Digest \\d+$/') or dstype == "Key ID" %}
+											<td class="mono" style="user-select: all;">{{ dsdata | nl2br }}</td>
+										{% else %}
 											<td class="mono">{{ dsdata | nl2br }}</td>
-										</tr>
-									{% endif %}
+										{% endif %}
+									</tr>
 								{% endfor %}
 							</table>
 						{% endfor %}
