@@ -28,6 +28,7 @@
 						?
 					{%- endif -%}
 				</span>
+				{% include 'blocks/domain_dnssec_badge.tpl' %}
 
 				{{ name }}
 				{% if domain.subtitle %}
