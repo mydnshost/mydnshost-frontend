@@ -796,7 +796,7 @@
 						} else {
 							$displayEngine->flash('success', '', 'The zone has been imported successfully.');
 							if (!empty($result['response']['skipped'])) {
-								$displayEngine->flash('warning', 'The following out-of-zone records were not imported:', $result['response']['skipped']);
+								$displayEngine->flash('warning', 'The following records were not imported:', $result['response']['skipped']);
 							}
 
 							header('Location: ' . $this->getURL($displayEngine, '/domain/' . $domain . '/records'));
