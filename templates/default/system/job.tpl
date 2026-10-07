@@ -57,6 +57,8 @@
 								<span class="badge bg-secondary">Created</span>
 							{% elseif job.state == 'cancelled' %}
 								<span class="badge bg-dark">Cancelled</span>
+							{% elseif job.state == 'expired' %}
+								<span class="badge bg-dark">Expired</span>
 							{% else %}
 								<span class="badge bg-secondary">{{ job.state }}</span>
 							{% endif %}
@@ -157,6 +159,8 @@
 			<span class="badge bg-secondary">Created</span>
 		{% elseif rj.state == 'cancelled' %}
 			<span class="badge bg-dark">Cancelled</span>
+		{% elseif rj.state == 'expired' %}
+			<span class="badge bg-dark">Expired</span>
 		{% else %}
 			<span class="badge bg-secondary">{{ rj.state }}</span>
 		{% endif %}

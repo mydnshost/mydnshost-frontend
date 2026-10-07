@@ -12,10 +12,10 @@
 					<label class="form-label mb-0"><small>State</small></label>
 					<div class="dropdown" id="stateFilterDropdown">
 						<button class="form-control form-control-sm dropdown-toggle text-start" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-							{% if filterStates|length > 0 %}{% for s in filterStates %}{{ {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled'}[s]|default(s) }}{{ not loop.last ? ', ' }}{% endfor %}{% else %}All{% endif %}
+							{% if filterStates|length > 0 %}{% for s in filterStates %}{{ {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled', expired: 'Expired'}[s]|default(s) }}{{ not loop.last ? ', ' }}{% endfor %}{% else %}All{% endif %}
 						</button>
 						<div class="dropdown-menu">
-							{% for value, label in {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled'} %}
+							{% for value, label in {created: 'Created', started: 'Started', blocked: 'Blocked', finished: 'Finished', error: 'Error', cancelled: 'Cancelled', expired: 'Expired'} %}
 								<label class="dropdown-item"><input type="checkbox" class="form-check-input me-1" name="filter[state][]" value="{{ value }}"{{ value in filterStates ? ' checked' }}> {{ label }}</label>
 							{% endfor %}
 						</div>
@@ -102,6 +102,8 @@
 					<span class="badge bg-secondary">Created</span>
 				{% elseif job.state == 'cancelled' %}
 					<span class="badge bg-dark">Cancelled</span>
+				{% elseif job.state == 'expired' %}
+					<span class="badge bg-dark">Expired</span>
 				{% else %}
 					<span class="badge bg-secondary">{{ job.state }}</span>
 				{% endif %}
