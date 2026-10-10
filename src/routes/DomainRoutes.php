@@ -61,6 +61,20 @@
 			return $displayEngine->setPageID($pageid);
 		}
 
+		public function getDefaultNS($api) {
+			$defaultNS = [];
+			$defaultRecords = $api->getSystemDataValue('defaultRecords');
+			if (is_array($defaultRecords)) {
+				foreach ($defaultRecords as $r) {
+					if ($r['type'] == 'NS' && $r['name'] === '') {
+						$defaultNS[] = $r['content'];
+					}
+				}
+			}
+
+			return $defaultNS;
+		}
+
 		public function setVars($displayEngine) {
 			$displayEngine->setVar('pathprepend', '');
 
@@ -654,18 +668,9 @@
 					$displayEngine->setVar('hasNS', $hasNS);
 
 					if (!$hasNS) {
-						$defaultNS = [];
-						$defaultRecords = $api->getSystemDataValue('defaultRecords');
-						if (is_array($defaultRecords)) {
-							foreach ($defaultRecords as $r) {
-								if ($r['type'] == 'NS' && $r['name'] === '') {
-									$defaultNS[] = $r['content'];
-								}
-							}
-
-							if (!empty($defaultNS)) {
-								$displayEngine->setVar('defaultNS', $defaultNS);
-							}
+						$defaultNS = $this->getDefaultNS($api);
+						if (!empty($defaultNS)) {
+							$displayEngine->setVar('defaultNS', $defaultNS);
 						}
 					}
 
@@ -783,11 +788,15 @@
 
 				if ($domainData !== NULL) {
 					$displayEngine->setVar('domain', $domainData);
+					$displayEngine->setVar('defaultNS', $this->getDefaultNS($api));
 					$zone = '';
+					$type = NULL;
+					$replaceNameservers = false;
 					if ($router->getRequestMethod() == "POST") {
 						$zone = isset($_POST['zone']) ? $_POST['zone'] : '';
 						$type = isset($_POST['type']) ? $_POST['type'] : NULL;
-						$result = $api->importZone($domain, $zone, $type);
+						$replaceNameservers = isset($_POST['replaceNameservers']) && parseBool($_POST['replaceNameservers']);
+						$result = $api->importZone($domain, $zone, $type, $replaceNameservers ? true : NULL);
 
 						if (array_key_exists('errorData', $result)) {
 							$displayEngine->flash('error', '', 'There was an error importing the zone: ' . $result['errorData']);
@@ -806,6 +815,7 @@
 
 					$displayEngine->setVar('zone', $zone);
 					$displayEngine->setVar('type', $type);
+					$displayEngine->setVar('replaceNameservers', $replaceNameservers);
 					$displayEngine->display('domain_import.tpl');
 				} else {
 					$displayEngine->setVar('unknowndomain', $domain);

@@ -24,6 +24,17 @@ Import records from zone file.
 			</select>
 		</div>
 	{% endif %}
+	{% if defaultNS %}
+		<div class="form-check mt-2">
+			<input class="form-check-input" type="checkbox" name="replaceNameservers" value="true" id="replaceNameservers" {% if replaceNameservers %}checked{% endif %}>
+			<label class="form-check-label" for="replaceNameservers">
+				Replace the nameservers in the zone file with ours (<code>{{ defaultNS | join(', ') }}</code>)
+			</label>
+			<div class="form-text">
+				Zone files exported from another DNS provider will usually list that provider's nameservers. Domain-level <code>NS</code> records in the zone file will be replaced with ours, and the primary nameserver in the <code>SOA</code> will be updated to match. <code>NS</code> records for sub-domains are not changed.
+			</div>
+		</div>
+	{% endif %}
 	<div class="form-group">
 		<div class="d-grid mt-2 gap-2">
 			<button type="submit" class="btn btn-primary" data-needs-elevation>Import Zone</button>
