@@ -14,6 +14,19 @@
 			{% endfor %}
 		</ul>
 	</p>
+	{% if has_domain_write %}
+	<form method="post">
+		<input type="hidden" name="csrftoken" value="{{csrftoken}}">
+		{% for ns in defaultNS %}
+			<input type="hidden" name="newRecord[{{ loop.index0 }}][name]" value="@">
+			<input type="hidden" name="newRecord[{{ loop.index0 }}][type]" value="NS">
+			<input type="hidden" name="newRecord[{{ loop.index0 }}][content]" value="{{ ns }}">
+			<input type="hidden" name="newRecord[{{ loop.index0 }}][ttl]" value="">
+			<input type="hidden" name="newRecord[{{ loop.index0 }}][priority]" value="">
+		{% endfor %}
+		<button type="submit" class="btn btn-sm btn-primary" data-needs-elevation>Add these nameservers</button>
+	</form>
+	{% endif %}
 	{% endif %}
 </div>
 {% endif %}
